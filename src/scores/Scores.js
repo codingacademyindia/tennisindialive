@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const countryName = "india"
+const matchStatus = ["finished"]
+
 const FixtureResults = () => {
     const [rankingsData, setRankingsData] = useState(null);
     const [error, setError] = useState(null);
@@ -20,16 +23,16 @@ const FixtureResults = () => {
 
     useEffect(() => {
         const fetchRankings = async () => {
-       
+
             const options = {
                 method: 'GET',
                 url: 'https://tennisapi1.p.rapidapi.com/api/tennis/events/23/7/2024',
                 headers: {
-                  'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-                  'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
+                    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
+                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
                 }
-              };
-              
+            };
+
 
             try {
                 const response = await axios.request(options);
@@ -110,6 +113,8 @@ const FixtureResults = () => {
 
 
 
+
+
     function fetchScoreRecord(item) {
         let countryName = "india"
         let objDom = []
@@ -145,7 +150,6 @@ const FixtureResults = () => {
     }
 
     function hasIndian(item) {
-        let countryName = "india"
 
         try {
             let p1 = item['homeTeam']
@@ -154,10 +158,10 @@ const FixtureResults = () => {
             const uniqueTournament = item.tournament.uniqueTournament;
             if (uniqueTournament.name) {
                 if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-                    if (
+                    if ((
                         (p1.country && p1.country.name.toLowerCase() === countryName) ||
                         (p2.country && p2.country.name.toLowerCase() === countryName)
-                    ) {
+                    ) && matchStatus.includes(item?.status?.type)) {
                         return true
 
                     }
@@ -172,7 +176,7 @@ const FixtureResults = () => {
                         p2a.country ? p2a.country.name.toLowerCase() : null,
                         p2b.country ? p2b.country.name.toLowerCase() : null
                     ];
-                    if (countries.includes(countryName)) {
+                    if (countries.includes(countryName) && matchStatus.includes(item?.status?.type)) {
                         return true
                     }
                 }
@@ -193,48 +197,7 @@ const FixtureResults = () => {
 
     }
 
-    function hasIndianPlayer(item) {
-        let countryName = "india"
-        let objDom = []
 
-        try {
-            let p1 = item['homeTeam']
-            let p2 = item['awayTeam']
-            // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
-            const uniqueTournament = item.tournament.uniqueTournament;
-            if (uniqueTournament.name) {
-                if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-                    if (
-                        (p1.country && p1.country.name.toLowerCase() === countryName) ||
-                        (p2.country && p2.country.name.toLowerCase() === countryName)
-                    ) {
-                        return true
-
-                    }
-                } else {
-                    const p1a = p1.subTeams[0];
-                    const p1b = p1.subTeams[1];
-                    const p2a = p2.subTeams[0];
-                    const p2b = p2.subTeams[1];
-                    const countries = [
-                        p1a.country ? p1a.country.name.toLowerCase() : null,
-                        p1b.country ? p1b.country.name.toLowerCase() : null,
-                        p2a.country ? p2a.country.name.toLowerCase() : null,
-                        p2b.country ? p2b.country.name.toLowerCase() : null
-                    ];
-                    if (countries.includes(countryName)) {
-                        return true
-                    }
-                }
-            }
-            // }
-        }
-        catch (err) {
-            console.error(err)
-        }
-
-        return objDom
-    }
     // Example usage
     const homeScore = { period1: 6, period2: 7, period2TieBreak: 7 };
     const awayScore = { period1: 4, period2: 6, period2TieBreak: 5 };
@@ -250,37 +213,28 @@ const FixtureResults = () => {
         return formattedDate
     }
     function recordDom() {
-        return Object.keys(rankingsData).map((tournament) => (
-            (hasIndianInAllScores(rankingsData[tournament])) ?
-                <div key={tournament}>
-                    {<h2 className="text-xl font-bold bg-blue-300">
-                        {/* {tournament.charAt(0).toUpperCase() + tournament.slice(1)} */}
-                        {rankingsData[tournament][0]?.season?.name}
-                        {/* {rankingsData[tournament][0]?.status?.type} */}
-
-                    </h2>}
-                    <ul>
-                        {rankingsData[tournament].map((item, index) => (
-                            (<div key={index} className='m-1 border'>
-                                {fetchScoreRecord(item)}
-                            </div>)
-                        ))}
-
-                    </ul>
-                </div> : ""
-        ))
-
+        return Object.keys(rankingsData).map((tournament, index) => {
+            if (hasIndianInAllScores(rankingsData[tournament])) {
+                return (
+                    <div key={tournament + index}>
+                        <h2 className="text-xl font-bold bg-blue-300">
+                            {rankingsData[tournament][0]?.season?.name}
+                        </h2>
+                        <ul>
+                            {rankingsData[tournament].map((item, subIndex) => (
+                                (hasIndian(item)) && (<li key={subIndex} className='m-1 border bg-green-300'>
+                                    {fetchScoreRecord(item)}
+                                </li>)
+                            ))}
+                        </ul>
+                    </div>
+                );
+            }
+            return null; // Return null if the condition is false
+        });
     }
 
-    function fetchResultRecord() {
-        return rankingsData.map((item) =>
-            <div>
-                <div className='bg-orange-200'>{item.season.name} - {item?.roundInfo?.name} - {item?.status?.type}</div>
-                <div>{item.homeTeam.name}</div>
-                <div>{item.awayTeam.name}</div>
-            </div>
-        )
-    }
+
 
     return (
         <div>
