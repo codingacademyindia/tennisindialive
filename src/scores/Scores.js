@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const countryName = "india"
-const matchStatus = ["finished"]
+const matchStatus = ["notstarted"]
+const tournamentName=''
 
 const FixtureResults = () => {
     const [rankingsData, setRankingsData] = useState(null);
@@ -28,12 +29,10 @@ const FixtureResults = () => {
                 method: 'GET',
                 url: 'https://tennisapi1.p.rapidapi.com/api/tennis/events/23/7/2024',
                 headers: {
-                    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
+                  'x-rapidapi-key': '56f74b1a47mshedf8671383c3383p1c59b0jsnce03cda5bfe8',
+                  'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
                 }
-            };
-
-
+              };
             try {
                 const response = await axios.request(options);
                 setRankingsData(groupItems(response.data['events']));
@@ -69,24 +68,73 @@ const FixtureResults = () => {
         return scores.join(', ');
     }
 
+    // function formatTennisScoreDom(homeScore, awayScore) {
+    //     // Extract the sets' scores
+    //     const homePeriod1 = homeScore.period1 || 0;
+    //     const homePeriod2 = homeScore.period2 || 0;
+    //     const awayPeriod1 = awayScore.period1 || 0;
+    //     const awayPeriod2 = awayScore.period2 || 0;
+
+    //     // Handle tiebreak scores if present
+    //     const homePeriod2TieBreak = homeScore.period2TieBreak || '';
+    //     const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
+
+    //     // Format the scores
+    //     const homeScores = [];
+    //     const awayScores = [];
+
+    //     homeScores.push(`${homePeriod1}`);
+    //     awayScores.push(`${awayPeriod1}`);
+
+    //     if (homePeriod2TieBreak && awayPeriod2TieBreak) {
+    //         homeScores.push(`${homePeriod2} (${homePeriod2TieBreak})`);
+    //         awayScores.push(`${awayPeriod2} (${awayPeriod2TieBreak})`);
+    //     } else {
+    //         homeScores.push(`${homePeriod2}`);
+    //         awayScores.push(`${awayPeriod2}`);
+    //     }
+
+    //     return (
+    //         <div className="flex flex-col bg-orange-100 w-full">
+    //             <div className="flex flex-row space-x-2">
+    //                 {homeScores.map((score, index) => (
+    //                     <div className="w-[50%]"key={index}>{score}</div>
+    //                 ))}
+    //             </div>
+    //             <div className="flex flex-row space-x-2">
+    //                 {awayScores.map((score, index) => (
+    //                     <div className="w-[50%]"key={index}>{score}</div>
+    //                 ))}
+    //             </div>
+    //         </div>
+    //     );
+    // }
+
     function formatTennisScoreDom(homeScore, awayScore) {
         // Extract the sets' scores
         const homePeriod1 = homeScore.period1 || 0;
         const homePeriod2 = homeScore.period2 || 0;
+        const homePeriod3 = homeScore.period3 || 0;
+        const homePeriod4 = homeScore.period4 || 0;
+        const homePeriod5 = homeScore.period5 || 0;
+    
         const awayPeriod1 = awayScore.period1 || 0;
         const awayPeriod2 = awayScore.period2 || 0;
-
+        const awayPeriod3 = awayScore.period3 || 0;
+        const awayPeriod4 = awayScore.period4 || 0;
+        const awayPeriod5 = awayScore.period5 || 0;
+    
         // Handle tiebreak scores if present
         const homePeriod2TieBreak = homeScore.period2TieBreak || '';
         const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
-
+    
         // Format the scores
         const homeScores = [];
         const awayScores = [];
-
+    
         homeScores.push(`${homePeriod1}`);
         awayScores.push(`${awayPeriod1}`);
-
+    
         if (homePeriod2TieBreak && awayPeriod2TieBreak) {
             homeScores.push(`${homePeriod2} (${homePeriod2TieBreak})`);
             awayScores.push(`${awayPeriod2} (${awayPeriod2TieBreak})`);
@@ -94,24 +142,32 @@ const FixtureResults = () => {
             homeScores.push(`${homePeriod2}`);
             awayScores.push(`${awayPeriod2}`);
         }
-
+    
+        homeScores.push(`${homePeriod3}`);
+        awayScores.push(`${awayPeriod3}`);
+    
+        homeScores.push(`${homePeriod4}`);
+        awayScores.push(`${awayPeriod4}`);
+    
+        homeScores.push(`${homePeriod5}`);
+        awayScores.push(`${awayPeriod5}`);
+    
         return (
-            <div className="flex flex-row space-x-2">
-                <div className="home-score">
+            <div className="flex flex-col bg-orange-100 w-full">
+                <div className="flex flex-row space-x-2">
                     {homeScores.map((score, index) => (
-                        <div key={index}>{score}</div>
+                        <div className="w-[20%]" key={index}>{score}</div>
                     ))}
                 </div>
-                <div className="away-score">
+                <div className="flex flex-row space-x-2">
                     {awayScores.map((score, index) => (
-                        <div key={index}>{score}</div>
+                        <div className="w-[20%]" key={index}>{score}</div>
                     ))}
                 </div>
             </div>
         );
     }
-
-
+    
 
 
 
@@ -156,7 +212,7 @@ const FixtureResults = () => {
             let p2 = item['awayTeam']
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
             const uniqueTournament = item.tournament.uniqueTournament;
-            if (uniqueTournament.name) {
+            if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
                     if ((
                         (p1.country && p1.country.name.toLowerCase() === countryName) ||
@@ -222,7 +278,7 @@ const FixtureResults = () => {
                         </h2>
                         <ul>
                             {rankingsData[tournament].map((item, subIndex) => (
-                                (hasIndian(item)) && (<li key={subIndex} className='m-1 border bg-green-300'>
+                                (hasIndian(item)) && (<li key={subIndex} className='m-1 border bg-slate-50'>
                                     {fetchScoreRecord(item)}
                                 </li>)
                             ))}
