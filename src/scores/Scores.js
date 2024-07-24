@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import DatePickerValue from '../common/DatePicker';
+import dayjs from 'dayjs';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 const countryName = "india"
-const matchStatus = ["notstarted"]
-const tournamentName=''
+// const matchStatus = ["notstarted","inprogress","cancelled","finished"]
+const tournamentName = ''
 
 const FixtureResults = () => {
     const [rankingsData, setRankingsData] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [selectedDate, setDate] = React.useState(dayjs('2024-04-17'));
+    const [matchStatus, setMatchStatus] = useState(["notstarted","inprogress","cancelled","finished"]);
+
+    const handleStatusChange = (event) => {
+        if (event.target.value === 'all') {
+            setMatchStatus(["notstarted","inprogress","cancelled","finished"])
+        }
+        else {
+            setMatchStatus([event.target.value]);
+        }
+    };
 
     function groupItems(items) {
         const grouped = items.reduce((acc, item) => {
@@ -22,27 +36,68 @@ const FixtureResults = () => {
 
     }
 
+    const handleSelectDate = newValue => {
+        setDate(newValue)
+    }
+
+    function getStatusControl() {
+        return (<FormControl  variant="outlined">
+                <InputLabel id="status-label">Status</InputLabel>
+                <Select
+                    labelId="status-label"
+                    id="status-select"
+                    value={matchStatus}
+                    onChange={handleStatusChange}
+                    label="Status"
+                >
+                    <MenuItem value="finished">Finished</MenuItem>
+                    <MenuItem value="inprogress">In Progress</MenuItem>
+                    <MenuItem value="notstarted">Not Started</MenuItem>
+                </Select>
+            </FormControl>
+        );
+    }
+
     useEffect(() => {
+
         const fetchRankings = async () => {
+            setLoading(true)
+            // Create a Date object from the ISO string
+            const date = new Date(selectedDate);
+
+            // Extract the year, month, and date
+            const year = date.getUTCFullYear();
+            const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
+            const day = date.getUTCDate();
+
+            // const options = {
+            //     method: 'GET',
+            //     url: 'https://tennisapi1.p.rapidapi.com/api/tennis/events/7/7/2022',
+            //     headers: {
+            //       'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
+            //       'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
+            //     }
+            //   };
 
             const options = {
                 method: 'GET',
-                url: 'https://tennisapi1.p.rapidapi.com/api/tennis/events/23/7/2024',
+                url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
                 headers: {
-                  'x-rapidapi-key': '56f74b1a47mshedf8671383c3383p1c59b0jsnce03cda5bfe8',
-                  'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
+                    'x-rapidapi-key': 'a26a45b260mshdc356af23e2935cp19491fjsn52a1e9b7db18',
+                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
                 }
-              };
+            };
             try {
                 const response = await axios.request(options);
                 setRankingsData(groupItems(response.data['events']));
+                setLoading(false)
             } catch (error) {
                 setError(error.message);
             }
         };
 
         fetchRankings();
-    }, []);
+    }, [selectedDate]);
 
     function formatTennisScoreSimple(homeScore, awayScore) {
         // Extract the sets' scores
@@ -117,24 +172,24 @@ const FixtureResults = () => {
         const homePeriod3 = homeScore.period3 || 0;
         const homePeriod4 = homeScore.period4 || 0;
         const homePeriod5 = homeScore.period5 || 0;
-    
+
         const awayPeriod1 = awayScore.period1 || 0;
         const awayPeriod2 = awayScore.period2 || 0;
         const awayPeriod3 = awayScore.period3 || 0;
         const awayPeriod4 = awayScore.period4 || 0;
         const awayPeriod5 = awayScore.period5 || 0;
-    
+
         // Handle tiebreak scores if present
         const homePeriod2TieBreak = homeScore.period2TieBreak || '';
         const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
-    
+
         // Format the scores
         const homeScores = [];
         const awayScores = [];
-    
+
         homeScores.push(`${homePeriod1}`);
         awayScores.push(`${awayPeriod1}`);
-    
+
         if (homePeriod2TieBreak && awayPeriod2TieBreak) {
             homeScores.push(`${homePeriod2} (${homePeriod2TieBreak})`);
             awayScores.push(`${awayPeriod2} (${awayPeriod2TieBreak})`);
@@ -142,16 +197,16 @@ const FixtureResults = () => {
             homeScores.push(`${homePeriod2}`);
             awayScores.push(`${awayPeriod2}`);
         }
-    
+
         homeScores.push(`${homePeriod3}`);
         awayScores.push(`${awayPeriod3}`);
-    
+
         homeScores.push(`${homePeriod4}`);
         awayScores.push(`${awayPeriod4}`);
-    
+
         homeScores.push(`${homePeriod5}`);
         awayScores.push(`${awayPeriod5}`);
-    
+
         return (
             <div className="flex flex-col bg-orange-100 w-full">
                 <div className="flex flex-row space-x-2">
@@ -167,7 +222,6 @@ const FixtureResults = () => {
             </div>
         );
     }
-    
 
 
 
@@ -182,12 +236,12 @@ const FixtureResults = () => {
             const uniqueTournament = item.tournament.uniqueTournament;
             if (uniqueTournament.name) {
                 if (hasIndian(item)) {
-                    objDom = (<div className="flex flex-row w-full">
+                    objDom = (<div className="flex flex-row w-full text-sm">
                         <div className='w-[10%]'>
                             {item?.roundInfo?.name} - {item?.status?.type}
                         </div>
                         <div>{readableTimeStamp(item.startTimestamp)}</div>
-                        <div className="flex flex-col w-[20%]">
+                        <div className="flex flex-col w-[30%]">
                             <div key={item.id} className="ml-4">{item.homeTeam.name}</div>
                             <div key={item.id} className="ml-4">{item.awayTeam.name}</div>
                         </div>
@@ -227,10 +281,10 @@ const FixtureResults = () => {
                     const p2a = p2.subTeams[0];
                     const p2b = p2.subTeams[1];
                     const countries = [
-                        p1a.country ? p1a.country.name.toLowerCase() : null,
-                        p1b.country ? p1b.country.name.toLowerCase() : null,
-                        p2a.country ? p2a.country.name.toLowerCase() : null,
-                        p2b.country ? p2b.country.name.toLowerCase() : null
+                        (p1a.country) ? p1a.country.name.toLowerCase() : null,
+                        (p1a.country) ? p1b.country.name.toLowerCase() : null,
+                        (p1a.country) ? p2a.country.name.toLowerCase() : null,
+                        (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
                     if (countries.includes(countryName) && matchStatus.includes(item?.status?.type)) {
                         return true
@@ -290,13 +344,18 @@ const FixtureResults = () => {
         });
     }
 
-
+    console.log(rankingsData)
+    console.log(loading)
 
     return (
         <div>
-            <h2>Tennis Rankings</h2>
+            <div className='flex flex-row space-x-4 w full'>
+                <h2>Tennis Scores</h2>
+                <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
+                {getStatusControl()}
+            </div>
             {error && <p>Error: {error}</p>}
-            {rankingsData && (
+            {loading ? "loading" : rankingsData && (
                 <div>
                     <p>Rankings Data:</p>
                     {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
