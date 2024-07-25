@@ -174,12 +174,29 @@ const WtaLiveRankings = () => {
     let statusButtonActiveExclude = "border p-1 bg-blue-500 border-b-4 border-blue-900 text-white w-[200px] rounded-xl"
 
     function getStatusButtons() {
-        return (<div className="flex flex-row space-x-2">
-            <button className={selectedCountry === "india" ? statusButtonActive : statusButtonCss} onClick={handleCountryClick}>INDIA</button>
-            <button className={selectedCountry === "all" ? statusButtonActive : statusButtonCss} onClick={handleCountryClick}>ALL</button>
-            <button className={excludeUnchanged ? statusButtonActiveExclude : statusButtonCssExclude} onClick={handleExcludeUnchange}>
-                {!excludeUnchanged ? "Exclude Unchanged" : "Include Unchanged"}</button>
-        </div>)
+        return (
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+              <button
+                className={selectedCountry === "india" ? statusButtonActive : statusButtonCss}
+                onClick={handleCountryClick}
+              >
+                INDIA
+              </button>
+              <button
+                className={selectedCountry === "all" ? statusButtonActive : statusButtonCss}
+                onClick={handleCountryClick}
+              >
+                ALL
+              </button>
+              <button
+                className={excludeUnchanged ? statusButtonActiveExclude : statusButtonCssExclude}
+                onClick={handleExcludeUnchange}
+              >
+                {!excludeUnchanged ? "Exclude Unchanged" : "Include Unchanged"}
+              </button>
+            </div>
+          );
+          
     }
 
     return (

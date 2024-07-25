@@ -132,16 +132,6 @@ const FixtureResults = () => {
         );
     };
 
-    let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"
-    let statusButtonActive = "border p-1 bg-blue-500 border-b-4 border-blue-900 text-white w-[100px] rounded-xl"
-    function getStatusButtons() {
-        return (<div className="flex flex-row space-x-2">
-            <button className={matchStatus === "inprogress" ? statusButtonActive : statusButtonCss} onClick={handleStatusButtonClick}>Live</button>
-            <button className={matchStatus === "finished" ? statusButtonActive : statusButtonCss} onClick={handleStatusButtonClick}>Finished</button>
-            <button className={matchStatus === "notstarted" ? statusButtonActive : statusButtonCss} onClick={handleStatusButtonClick}>Not Started</button>
-            <button className={matchStatus === "all" ? statusButtonActive : statusButtonCss} onClick={handleStatusButtonClick}>All</button>
-        </div>)
-    }
     useEffect(() => {
         const fetchRankings = async () => {
             setLoading(true)
@@ -559,14 +549,49 @@ const FixtureResults = () => {
         }
     }
 
-    console.log(indianCount)
+        let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"
+    let statusButtonActive = "border p-1 bg-blue-500 border-b-4 border-blue-900 text-white w-[100px] rounded-xl"
+  
+
+
+    function getStatusButtons() {
+        return (
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+              <button
+                className={matchStatus === "inprogress" ? statusButtonActive : statusButtonCss}
+                onClick={handleStatusButtonClick}
+              >
+                Live
+              </button>
+              <button
+                className={matchStatus === "finished" ? statusButtonActive : statusButtonCss}
+                onClick={handleStatusButtonClick}
+              >
+                Finished
+              </button>
+              <button
+                className={matchStatus === "notstarted" ? statusButtonActive : statusButtonCss}
+                onClick={handleStatusButtonClick}
+              >
+                Not Started
+              </button>
+              <button
+                className={matchStatus === "all" ? statusButtonActive : statusButtonCss}
+                onClick={handleStatusButtonClick}
+              >
+                All
+              </button>
+            </div>
+          );
+              }
 
     return (
         <div>
-            <div className='flex flex-row space-x-4 w-[90%] bg-slate-200 items-center p-1 ml-4 border'>
-                <h1>Scores</h1>
+            <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
+                {/* <div className="bg-slate-500 text-white">Scores</div> */}
                 <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
                 {/* {getStatusControl()} */}
+                
                 {getStatusButtons()}
                 {/* <CountryAutocomplete
                     selectedCountry={selectedCountry}
