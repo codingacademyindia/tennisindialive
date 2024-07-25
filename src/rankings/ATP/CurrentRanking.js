@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CustomizedTables from '../../common/grids/CustomizedTables';
 import Loader from '../../common/stateHandlers/LoaderState';
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {

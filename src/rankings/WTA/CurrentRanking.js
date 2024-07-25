@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 import CustomizedTables from '../../common/grids/CustomizedTables';
 import Loader from '../../common/stateHandlers/LoaderState';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -76,7 +78,7 @@ const WtaCurrentRankings = () => {
         const fetchRankings = async () => {
             setLoading(true)
             try {
-                const response = await axios.get('http://localhost:5000/tennis/rankings/wta');
+                const response = await axios.get('/tennis/rankings/wta');
                 setRankingsData(response?.data?.rankings);
                 setFilteredData(response?.data?.rankings)
                 setUpdatedAtTimestamp(response?.data?.updatedAtTimestamp);

@@ -17,6 +17,8 @@ import IconButton from '@mui/material/IconButton';
 import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -154,7 +156,7 @@ const FixtureResults = () => {
         const fetchRankings = async () => {
             setLoading(true)
             try {
-                const response = await axios.get(`http://localhost:5000/tennis/scores?day=${day}&month=${month}&year=${year}`);
+                const response = await axios.get(`${REACT_APP_API_URL}/tennis/scores?day=${day}&month=${month}&year=${year}`);
                 setRankingsData(groupItems(response.data['events']));
                 setLoading(false)
             } catch (error) {

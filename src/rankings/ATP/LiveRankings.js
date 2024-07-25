@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CustomizedTables from '../../common/grids/CustomizedTables';
 import Loader from '../../common/stateHandlers/LoaderState';
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -111,7 +112,7 @@ const ATPCurrentRankings = () => {
 
 
             try {
-                const response = await axios.get("http://localhost:5000/tennis/rankings/atp/live");
+                const response = await axios.get(`${REACT_APP_API_URL}/tennis/rankings/atp/live`);
                 setRankingsData(response?.data?.rankings);
                 // setFilteredData(response?.data?.rankings)
                 getFilteredData(response?.data?.rankings)
