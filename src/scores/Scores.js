@@ -44,7 +44,15 @@ const CustomFormControl = styled(FormControl)({
 const tournamentName = ''
 
 const FixtureResults = () => {
-    const { year, month, day } = useParams();
+    let { year, month, day } = useParams();
+    // const currentDate = dayjs();
+
+    // // Use the parameters if they exist, otherwise fall back to the current date
+    // year = year ? parseInt(year, 10) : currentDate.year();
+    // month = month ? parseInt(month, 10) : currentDate.month() + 1; // month is zero-based in dayjs
+    // day = day ? parseInt(day, 10) : currentDate.date();
+
+    
     const [rankingsData, setRankingsData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -145,16 +153,8 @@ const FixtureResults = () => {
     useEffect(() => {
         const fetchRankings = async () => {
             setLoading(true)
-            const options = {
-                method: 'GET',
-                url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
-                headers: {
-                    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-                }
-            };
             try {
-                const response = await axios.request(options);
+                const response = await axios.get(`http://localhost:5000/tennis/scores?day=${day}&month=${month}&year=${year}`);
                 setRankingsData(groupItems(response.data['events']));
                 setLoading(false)
             } catch (error) {

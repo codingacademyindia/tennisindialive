@@ -107,18 +107,9 @@ const WtaLiveRankings = () => {
 
         const fetchRankings = async () => {
             setLoading(true)
-            const options = {
-                method: 'GET',
-                url: 'https://tennisapi1.p.rapidapi.com/api/tennis/rankings/wta/live',
-                headers: {
-                    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-                }
-            };
-
-
+           
             try {
-                const response = await axios.request(options);
+                const response = await axios.get('http://localhost:5000/tennis/rankings/wta/live');
                 setRankingsData(response?.data?.rankings);
                 setFilteredData(response?.data?.rankings)
                 setUpdatedAtTimestamp(response?.data?.updatedAtTimestamp);
@@ -184,13 +175,15 @@ const WtaLiveRankings = () => {
 
     return (
         <div>
-            <div className='flex flex-row space-x-4 w-[]90%] bg-slate-100 items-center p-2 font-bold ml-5'>
-                <h1>ATP LIVE RANKING</h1>
+           <div className='flex flex-row space-x-4 w-[]90%] bg-slate-200 items-center p-2  ml-5'>
+                <div className='text-2xl font-bold'>WTA LIVE RANKING</div>
                 <IconButton onClick={handleRefresh} variant="contained"><SyncIcon /></IconButton>
 
                 {getStatusButtons()}
-                <span>{readableTimeStamp(updatedAtTimestamp)}</span>
-
+                <div>
+                    <span>Last Updated At: </span>
+                    <span>{readableTimeStamp(updatedAtTimestamp)}</span>
+                </div>
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : rankingsData && (
