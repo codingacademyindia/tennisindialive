@@ -49,18 +49,20 @@ const ATPCurrentRankings = () => {
     const [excludeUnchanged, setExcludeUnchanged] = useState(false)
 
 
-    function getFilteredData() {
-        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+    function getFilteredData(data) {
+        if (data) {
+            let rankingsDataCopy = JSON.parse(JSON.stringify(data))
 
-        if (!excludeUnchanged) {
+            if (!excludeUnchanged) {
 
-            rankingsDataCopy = (rankingsDataCopy.filter(item => item.previousRanking !== item.ranking))
+                rankingsDataCopy = (rankingsDataCopy.filter(item => item.previousRanking !== item.ranking))
+            }
+            if (selectedCountry.toLowerCase() !== 'all') {
+
+                rankingsDataCopy = (rankingsDataCopy.filter(item => item.team.country.name.toLowerCase() === selectedCountry.toLowerCase().toLowerCase()))
+            }
+            setFilteredData(rankingsDataCopy)
         }
-        if (selectedCountry.toLowerCase() !== 'all') {
-
-            rankingsDataCopy = (rankingsDataCopy.filter(item => item.team.country.name.toLowerCase() === selectedCountry.toLowerCase().toLowerCase()))
-        }
-        setFilteredData(rankingsDataCopy)
 
     }
 
@@ -119,7 +121,7 @@ const ATPCurrentRankings = () => {
                 const response = await axios.request(options);
                 setRankingsData(response?.data?.rankings);
                 // setFilteredData(response?.data?.rankings)
-                getFilteredData()
+                getFilteredData(response?.data?.rankings)
                 setUpdatedAtTimestamp(response?.data?.updatedAtTimestamp);
                 setLoading(false)
             } catch (error) {

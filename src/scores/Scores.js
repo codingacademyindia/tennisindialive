@@ -177,6 +177,71 @@ const FixtureResults = () => {
 
 
 
+    // function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
+    //     // Extract the sets' scores
+    //     const homePeriod1 = homeScore.period1 || 0;
+    //     const homePeriod2 = homeScore.period2 || 0;
+    //     const homePeriod3 = homeScore.period3 || 0;
+    //     const homePeriod4 = homeScore.period4 || 0;
+    //     const homePeriod5 = homeScore.period5 || 0;
+
+    //     const awayPeriod1 = awayScore.period1 || 0;
+    //     const awayPeriod2 = awayScore.period2 || 0;
+    //     const awayPeriod3 = awayScore.period3 || 0;
+    //     const awayPeriod4 = awayScore.period4 || 0;
+    //     const awayPeriod5 = awayScore.period5 || 0;
+
+    //     // Handle tiebreak scores if present
+    //     const homePeriod2TieBreak = homeScore.period2TieBreak || '';
+    //     const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
+
+    //     // Format the scores
+    //     const homeScores = [];
+    //     const awayScores = [];
+
+    //     homeScores.push(`${homePeriod1}`);
+    //     awayScores.push(`${awayPeriod1}`);
+
+    //     if (homePeriod2TieBreak && awayPeriod2TieBreak) {
+    //         homeScores.push(`${homePeriod2} (${homePeriod2TieBreak})`);
+    //         awayScores.push(`${awayPeriod2} (${awayPeriod2TieBreak})`);
+    //     } else {
+    //         homeScores.push(`${homePeriod2}`);
+    //         awayScores.push(`${awayPeriod2}`);
+    //     }
+
+    //     if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
+    //         homeScores.push(`${homePeriod3}`);
+    //         awayScores.push(`${awayPeriod3}`);
+    //     }
+
+    //     if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
+    //         homeScores.push(`${homePeriod4}`);
+    //         awayScores.push(`${awayPeriod4}`);
+    //     }
+
+    //     if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
+    //         homeScores.push(`${homePeriod5}`);
+    //         awayScores.push(`${awayPeriod5}`);
+    //     }
+
+    //     return (
+    //         <div className="flex flex-col bg-slate-50 w-full items-center">
+    //             <div className="flex flex-row space-x-2">
+    //                 {homeScores.map((score, index) => (
+    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
+    //                 ))}
+    //                 {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{homeScore?.point}</span>}
+    //             </div>
+    //             <div className="flex flex-row space-x-2">
+    //                 {awayScores.map((score, index) => (
+    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
+    //                 ))}
+    //                 {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{awayScore?.point}</span>}
+    //             </div>
+    //         </div>
+    //     );
+    // }
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
         // Extract the sets' scores
         const homePeriod1 = homeScore.period1 || 0;
@@ -184,47 +249,57 @@ const FixtureResults = () => {
         const homePeriod3 = homeScore.period3 || 0;
         const homePeriod4 = homeScore.period4 || 0;
         const homePeriod5 = homeScore.period5 || 0;
-
+    
         const awayPeriod1 = awayScore.period1 || 0;
         const awayPeriod2 = awayScore.period2 || 0;
         const awayPeriod3 = awayScore.period3 || 0;
         const awayPeriod4 = awayScore.period4 || 0;
         const awayPeriod5 = awayScore.period5 || 0;
-
+    
         // Handle tiebreak scores if present
         const homePeriod2TieBreak = homeScore.period2TieBreak || '';
         const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
-
+    
         // Format the scores
         const homeScores = [];
         const awayScores = [];
-
+    
         homeScores.push(`${homePeriod1}`);
         awayScores.push(`${awayPeriod1}`);
-
+    
         if (homePeriod2TieBreak && awayPeriod2TieBreak) {
-            homeScores.push(`${homePeriod2} (${homePeriod2TieBreak})`);
-            awayScores.push(`${awayPeriod2} (${awayPeriod2TieBreak})`);
+            homeScores.push(
+                <span key="homePeriod2">
+                    {homePeriod2}
+                    <sup className="font-bold">{homePeriod2TieBreak}</sup>
+                </span>
+            );
+            awayScores.push(
+                <span key="awayPeriod2">
+                    {awayPeriod2}
+                    <sup className="font-bold">{awayPeriod2TieBreak}</sup>
+                </span>
+            );
         } else {
             homeScores.push(`${homePeriod2}`);
             awayScores.push(`${awayPeriod2}`);
         }
-
+    
         if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
             homeScores.push(`${homePeriod3}`);
             awayScores.push(`${awayPeriod3}`);
         }
-
+    
         if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
             homeScores.push(`${homePeriod4}`);
             awayScores.push(`${awayPeriod4}`);
         }
-
+    
         if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
             homeScores.push(`${homePeriod5}`);
             awayScores.push(`${awayPeriod5}`);
         }
-
+    
         return (
             <div className="flex flex-col bg-slate-50 w-full items-center">
                 <div className="flex flex-row space-x-2">
@@ -242,7 +317,7 @@ const FixtureResults = () => {
             </div>
         );
     }
-
+    
     function getStatusDom(item) {
         if (item?.status?.type === 'inprogress') {
             return (<Box sx={{ width: '40%' }}>

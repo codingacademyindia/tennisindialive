@@ -50,16 +50,17 @@ const WtaLiveRankings = () => {
 
     const handleExcludeUnchange = (event) => {
         let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
-        
-        if(!excludeUnchanged){
-        
+        if (rankingsData) {
+            if (!excludeUnchanged) {
 
-        setFilteredData(rankingsDataCopy.filter(item => item.previousRanking !== item.ranking))
+
+                setFilteredData(rankingsDataCopy.filter(item => item.previousRanking !== item.ranking))
+            }
+            else {
+                setFilteredData(rankingsDataCopy)
+            }
+            setExcludeUnchanged(!excludeUnchanged)
         }
-        else{
-            setFilteredData(rankingsDataCopy)
-        }
-        setExcludeUnchanged(!excludeUnchanged)
     };
 
     const handleCountryChange = (newCountryCode) => {
@@ -176,8 +177,8 @@ const WtaLiveRankings = () => {
         return (<div className="flex flex-row space-x-2">
             <button className={selectedCountry === "india" ? statusButtonActive : statusButtonCss} onClick={handleCountryClick}>INDIA</button>
             <button className={selectedCountry === "all" ? statusButtonActive : statusButtonCss} onClick={handleCountryClick}>ALL</button>
-            <button className={excludeUnchanged ? statusButtonActiveExclude  : statusButtonCssExclude} onClick={handleExcludeUnchange}>
-                {!excludeUnchanged?"Exclude Unchanged":"Include Unchanged"}</button>
+            <button className={excludeUnchanged ? statusButtonActiveExclude : statusButtonCssExclude} onClick={handleExcludeUnchange}>
+                {!excludeUnchanged ? "Exclude Unchanged" : "Include Unchanged"}</button>
         </div>)
     }
 
