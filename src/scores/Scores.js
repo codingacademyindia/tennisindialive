@@ -101,9 +101,9 @@ const FixtureResults = () => {
         const date = new Date(newValue);
 
         // Extract the year, month, and date
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
-        const day = date.getUTCDate();
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based, so add 1
+        const year = date.getFullYear();
 
         setDate(newValue)
         window.location.href = `/results/${year}/${month}/${day}`
@@ -292,13 +292,13 @@ const FixtureResults = () => {
 
         return (
             <div className="flex flex-col h-full w-full items-center  justify-center">
-                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-lg border-b-2 border-slate-200">
+                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm border-b-2 border-slate-200">
                     {homeScores.map((score, index) => (
                         <div className="w-[20%] p-1" key={index}>{score}</div>
                     ))}
                     {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{homeScore?.point}</span>}
                 </div>
-                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-lg">
+                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm">
                     {awayScores.map((score, index) => (
                         <div className="w-[20%] p-1" key={index}>{score}</div>
                     ))}
@@ -310,7 +310,7 @@ const FixtureResults = () => {
 
     function getStatusDom(item) {
         if (item?.status?.type === 'inprogress') {
-            return (<Box sx={{ width: '40%' }}>
+            return (<Box sx={{ width: '50%', mt: 2 }}>
                 <LinearProgress color="success" />
             </Box>)
         }
@@ -414,7 +414,7 @@ const FixtureResults = () => {
                         (p1a.country) ? p2a.country.name.toLowerCase() : null,
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
-                    if (countries.includes(selectedCountry) && matchStatus.includes(item?.status?.type)) {
+                    if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
                         return (<div>
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
@@ -497,7 +497,7 @@ const FixtureResults = () => {
                             {getPlayerDom1(item)}
                         </div>
 
-                        <div className='w-[20%] bg-slate-100'>{formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
+                        <div className='w-[20%] bg-slate-100'>{item?.status?.type !== "notstarted" && formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
                     </div>
                     )
                     return objDom
@@ -540,7 +540,7 @@ const FixtureResults = () => {
                         (p1a.country) ? p2a.country.name.toLowerCase() : null,
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
-                    if (countries.includes(selectedCountry) && matchStatus.includes(item?.status?.type)) {
+                    if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
                         return true
                     }
                 }
@@ -556,7 +556,7 @@ const FixtureResults = () => {
 
 
 
-    function hasIndianInAllScores(allTournamentScore) {
+    function hasIndianInAllScores(allTournamentScore, tournament) {
         let hasIndianList = allTournamentScore.map(item => hasIndian(item))
         return hasIndianList.includes(true)
     }
@@ -595,20 +595,28 @@ const FixtureResults = () => {
 
     function getScoreHeader(tournament) {
         let name = rankingsData[tournament][0]?.season?.name
-        if (name.includes("Men")) {
-            return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
-                <span>{name} </span>
-                <FcBusinessman />
-            </div>
-            )
-        }
-        else {
-            return (<div className="flex flex-row bg-pink-300 text-lg items-center p-1">
-                <span>{name} </span>
-                <FcBusinesswoman />
-            </div>
-            )
+        if (name) {
+            if (name.includes("Men")) {
+                return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
+                    <span>{name} </span>
+                    <FcBusinessman />
+                </div>
+                )
+            }
+            else {
+                return (<div className="flex flex-row bg-pink-300 text-lg items-center p-1">
+                    <span>{name} </span>
+                    <FcBusinesswoman />
+                </div>
+                )
 
+            }
+        }
+        else{
+            return (<div className="flex flex-row bg-gray-300 text-lg items-center p-1">
+                <span>{tournament} </span>
+                <FcBusinessman />
+            </div>)
         }
     }
 
@@ -634,7 +642,8 @@ const FixtureResults = () => {
 
     function recordDom() {
         // Filter the rankingsData to only include tournaments with Indian players
-        const filteredRankingsData = Object.keys(rankingsData).filter(tournament => hasIndianInAllScores(rankingsData[tournament]));
+        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+        const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
 
         if (filteredRankingsData.length === 0) {
             return <NotFound msg="No Results Found" />

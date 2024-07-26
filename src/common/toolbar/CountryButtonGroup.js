@@ -42,26 +42,6 @@ function CountryButtonGroup({ countryName, handleCountryClick }) {
     };
     if (isSmallScreen) {
         return (
-            // <ToggleButtonGroup
-            //     value={matchStatus}
-            //     exclusive
-            //     onChange={handleStatusButtonClick}
-            //     aria-label="match status"
-            //     className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2"
-            // >
-            //     <ToggleButton value="inprogress">
-            //         Live
-            //     </ToggleButton>
-            //     <ToggleButton value="finished">
-            //         Finished
-            //     </ToggleButton>
-            //     <ToggleButton value="notstarted">
-            //         Not Started
-            //     </ToggleButton>
-            //     <ToggleButton value="all">
-            //         All
-            //     </ToggleButton>
-            // </ToggleButtonGroup>
             <React.Fragment>
                 <ButtonGroup
                     variant="contained"
@@ -122,14 +102,14 @@ function CountryButtonGroup({ countryName, handleCountryClick }) {
         return (
             <div className="flex flex-row space-x-2">
                 <Button
-                    variant={countryName === "inprogress" ? "contained" : "outlined"}
+                    variant={countryName === "all" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleCountryClick(e)}
                 >
                     All
                 </Button>
                 <Button
-                    variant={countryName === "finished" ? "contained" : "outlined"}
+                    variant={countryName === "india" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleCountryClick(e)}
                 >
