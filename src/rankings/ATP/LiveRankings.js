@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CustomizedTables from '../../common/grids/CustomizedTables';
 import Loader from '../../common/stateHandlers/LoaderState';
+import CountryButtonGroup from '../../common/toolbar/CountryButtonGroup';
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -201,11 +202,12 @@ const ATPCurrentRankings = () => {
     }
     return (
         <div>
-            <div className='flex flex-row space-x-4 w-[]90%] bg-slate-200 items-center p-2  ml-5'>
+            <div className='flex flex-row space-x-4 w-[]90%] bg-slate-200 items-center p-2'>
                 <div className='text-2xl font-bold'>ATP LIVE RANKING</div>
                 <IconButton onClick={handleRefresh} variant="contained"><SyncIcon /></IconButton>
 
-                {getStatusButtons()}
+                {/* {getStatusButtons()} */}
+                <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick}/>
                 <div>
                     <span>Last Updated At: </span>
                     <span>{readableTimeStamp(updatedAtTimestamp)}</span>
@@ -213,7 +215,7 @@ const ATPCurrentRankings = () => {
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : rankingsData && (
-                <div className=" w-[90%] mx-auto border">
+                <div className=" w-[100%] mx-auto border">
                     {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
                     {/* {recordDom()} */}
                     <CustomizedTables data={filteredData} />

@@ -16,7 +16,7 @@ const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
-      <div className="flex flex-col min-h-screen w-full sm:w-[80%] mx-auto">
+        <div className="flex flex-col min-h-screen w-full border sm:w-[80%] mx-auto">
           <ResponsiveAppBar />
           <div className="flex-grow">
             <Routes>

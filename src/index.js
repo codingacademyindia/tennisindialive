@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ReactGA from 'react-ga4';
 
-ReactGA.initialize('G-EJQNJVTGT6');
+ReactGA.initialize('G-PY89LSN4V3');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

@@ -16,7 +16,7 @@ import Loader from '../common/stateHandlers/LoaderState';
 import IconButton from '@mui/material/IconButton';
 import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
-
+import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -77,7 +77,7 @@ const FixtureResults = () => {
         else if (event.target.innerText.toLowerCase() === 'finished') {
             setMatchStatus("finished");
         }
-        else{
+        else {
             setMatchStatus("all");
         }
 
@@ -239,24 +239,24 @@ const FixtureResults = () => {
         const homePeriod3 = homeScore.period3 || 0;
         const homePeriod4 = homeScore.period4 || 0;
         const homePeriod5 = homeScore.period5 || 0;
-    
+
         const awayPeriod1 = awayScore.period1 || 0;
         const awayPeriod2 = awayScore.period2 || 0;
         const awayPeriod3 = awayScore.period3 || 0;
         const awayPeriod4 = awayScore.period4 || 0;
         const awayPeriod5 = awayScore.period5 || 0;
-    
+
         // Handle tiebreak scores if present
         const homePeriod2TieBreak = homeScore.period2TieBreak || '';
         const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
-    
+
         // Format the scores
         const homeScores = [];
         const awayScores = [];
-    
+
         homeScores.push(`${homePeriod1}`);
         awayScores.push(`${awayPeriod1}`);
-    
+
         if (homePeriod2TieBreak && awayPeriod2TieBreak) {
             homeScores.push(
                 <span key="homePeriod2">
@@ -274,31 +274,31 @@ const FixtureResults = () => {
             homeScores.push(`${homePeriod2}`);
             awayScores.push(`${awayPeriod2}`);
         }
-    
+
         if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
             homeScores.push(`${homePeriod3}`);
             awayScores.push(`${awayPeriod3}`);
         }
-    
+
         if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
             homeScores.push(`${homePeriod4}`);
             awayScores.push(`${awayPeriod4}`);
         }
-    
+
         if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
             homeScores.push(`${homePeriod5}`);
             awayScores.push(`${awayPeriod5}`);
         }
-    
+
         return (
-            <div className="flex flex-col bg-slate-50 w-full items-center">
-                <div className="flex flex-row space-x-2">
+            <div className="flex flex-col h-full w-full items-center  justify-center">
+                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-lg border-b-2 border-slate-200">
                     {homeScores.map((score, index) => (
                         <div className="w-[20%] p-1" key={index}>{score}</div>
                     ))}
                     {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{homeScore?.point}</span>}
                 </div>
-                <div className="flex flex-row space-x-2">
+                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-lg">
                     {awayScores.map((score, index) => (
                         <div className="w-[20%] p-1" key={index}>{score}</div>
                     ))}
@@ -307,7 +307,7 @@ const FixtureResults = () => {
             </div>
         );
     }
-    
+
     function getStatusDom(item) {
         if (item?.status?.type === 'inprogress') {
             return (<Box sx={{ width: '40%' }}>
@@ -372,6 +372,98 @@ const FixtureResults = () => {
         )
     }
 
+    function getPlayerDom1(item) {
+
+        try {
+            let p1 = item['homeTeam']
+            let p2 = item['awayTeam']
+            // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
+            const uniqueTournament = item.tournament.uniqueTournament;
+            if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
+                if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
+                    if ((
+                        (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
+                        (p2.country && p2.country.name.toLowerCase() === selectedCountry)
+                    ) && matchStatusList.includes(item?.status?.type)) {
+                        return (<div className='flex flex-col w-full h-full border'>
+                            <div key={item.id} className="flex space-x-2 w-full h-full flex-row items-center  ">
+                                <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
+                                <div className="h-full flex items-center ">{p1.name}</div>
+                                {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+                            </div>
+                            <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
+                                <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2?.name} size={15} /></div>
+                                <div className="h-full flex items-center">{p2.name}</div>
+                                {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                            </div>
+                        </div>
+                        )
+
+                    }
+                } else {
+                    const p1a = p1.subTeams[0];
+                    const p1b = p1.subTeams[1];
+                    const p2a = p2.subTeams[0];
+                    const p2b = p2.subTeams[1];
+                    const countries = [
+                        (p1a.country) ? p1a.country.name.toLowerCase() : null,
+                        (p1a.country) ? p1b.country.name.toLowerCase() : null,
+                        (p1a.country) ? p2a.country.name.toLowerCase() : null,
+                        (p1a.country) ? p2b.country.name.toLowerCase() : null
+                    ];
+                    if (countries.includes(selectedCountry) && matchStatus.includes(item?.status?.type)) {
+                        return (<div>
+                            <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
+                                <div className='w-full flex flex-col'>
+                                    <div className='w-full flex flex-row space-x-2 items-center'>
+                                        <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
+                                        <span>{p1a.name}</span>
+                                        {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                        {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                    </div>
+                                    <div className='w-full flex flex-row space-x-2'>
+                                        <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
+                                        <span>{p1b.name}</span>
+                                        {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                        {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
+                                <div className='w-full flex flex-col'>
+                                    <div className='w-full flex flex-row space-x-2 items-center'>
+                                        <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
+                                        <span>{p2a.name}</span>
+                                    </div>
+                                    <div className='w-full flex flex-row space-x-2 items-center'>
+                                        <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
+                                        <span>{p2b.name}</span>
+                                    </div>
+                                </div>
+
+                                {/* {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""} */}
+                            </div>
+                        </div>
+                        )
+
+                    }
+                }
+            }
+            // }
+        }
+        catch (err) {
+            console.error(err)
+        }
+
+
+    }
+
+
     function fetchScoreRecord(item) {
 
         let objDom = []
@@ -385,17 +477,29 @@ const FixtureResults = () => {
 
                 if (hasIndian(item)) {
 
-                    objDom = (<div className="flex flex-row w-full text-sm space-x-8">
-                        <div className='w-[10%] flex flex-col justify-center text-center items-center bg-slate-100  font-bold'>
+                    // objDom = (<div className="flex flex-row w-full text-sm space-x-8">
+                    //     <div className='w-[10%] flex flex-col justify-center text-center items-center bg-slate-100  font-bold'>
+                    //         <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
+                    //         <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
+                    //     </div>
+                    //     <div className="flex flex-col w-[30%]">
+                    //         {getPlayerDom1(item)}
+                    //     </div>
+                    //     <div className='w-[20%] bg-slate-100'>{formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
+
+                    // </div>)
+                    objDom = (<div className="flex flex-row w-full h-full text-sm space-x-4 sm:space-x-8">
+                        <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
                             <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
                         </div>
-                        <div className="flex flex-col w-[30%]">
-                            {getPlayerDom(item)}
+                        <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
+                            {getPlayerDom1(item)}
                         </div>
-                        <div className='w-[20%]'>{formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
 
-                    </div>)
+                        <div className='w-[20%] bg-slate-100'>{formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
+                    </div>
+                    )
                     return objDom
                 }
             }
@@ -449,6 +553,8 @@ const FixtureResults = () => {
 
         return false
     }
+
+
 
     function hasIndianInAllScores(allTournamentScore) {
         let hasIndianList = allTournamentScore.map(item => hasIndian(item))
@@ -531,7 +637,7 @@ const FixtureResults = () => {
         const filteredRankingsData = Object.keys(rankingsData).filter(tournament => hasIndianInAllScores(rankingsData[tournament]));
 
         if (filteredRankingsData.length === 0) {
-            return <NotFound msg="No Results Found"/>
+            return <NotFound msg="No Results Found" />
         }
         else {
             return filteredRankingsData.map((tournament, index) => (
@@ -549,41 +655,41 @@ const FixtureResults = () => {
         }
     }
 
-        let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"
+    let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"
     let statusButtonActive = "border p-1 bg-blue-500 border-b-4 border-blue-900 text-white w-[100px] rounded-xl"
-  
 
 
-    function getStatusButtons() {
-        return (
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-              <button
-                className={matchStatus === "inprogress" ? statusButtonActive : statusButtonCss}
-                onClick={handleStatusButtonClick}
-              >
-                Live
-              </button>
-              <button
-                className={matchStatus === "finished" ? statusButtonActive : statusButtonCss}
-                onClick={handleStatusButtonClick}
-              >
-                Finished
-              </button>
-              <button
-                className={matchStatus === "notstarted" ? statusButtonActive : statusButtonCss}
-                onClick={handleStatusButtonClick}
-              >
-                Not Started
-              </button>
-              <button
-                className={matchStatus === "all" ? statusButtonActive : statusButtonCss}
-                onClick={handleStatusButtonClick}
-              >
-                All
-              </button>
-            </div>
-          );
-              }
+
+    // function getStatusButtons() {
+    //     return (
+    //         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+    //             <button
+    //                 className={matchStatus === "inprogress" ? statusButtonActive : statusButtonCss}
+    //                 onClick={handleStatusButtonClick}
+    //             >
+    //                 Live
+    //             </button>
+    //             <button
+    //                 className={matchStatus === "finished" ? statusButtonActive : statusButtonCss}
+    //                 onClick={handleStatusButtonClick}
+    //             >
+    //                 Finished
+    //             </button>
+    //             <button
+    //                 className={matchStatus === "notstarted" ? statusButtonActive : statusButtonCss}
+    //                 onClick={handleStatusButtonClick}
+    //             >
+    //                 Not Started
+    //             </button>
+    //             <button
+    //                 className={matchStatus === "all" ? statusButtonActive : statusButtonCss}
+    //                 onClick={handleStatusButtonClick}
+    //             >
+    //                 All
+    //             </button>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div>
@@ -591,8 +697,9 @@ const FixtureResults = () => {
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}
                 <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
                 {/* {getStatusControl()} */}
-                
-                {getStatusButtons()}
+
+                {/* {getStatusButtons()} */}
+                <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
                 {/* <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
@@ -601,7 +708,7 @@ const FixtureResults = () => {
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : rankingsData && (
-                <div className=" w-[90%] mx-auto">
+                <div className=" w-[100%] mx-auto">
                     {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
                     {true ? recordDom() : "No Indian"}
                 </div>
