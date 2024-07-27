@@ -610,7 +610,7 @@ const FixtureResults = () => {
     }
 
     function getScoreHeader(tournament) {
-        let name = rankingsData[tournament][0]?.season?.name
+        let name = rankingsData[tournament][0]?.tournament?.name
         if (name) {
             if (name.includes("Men")) {
                 return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
