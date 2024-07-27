@@ -35,6 +35,7 @@ const CustomFormControl = styled(FormControl)({
 
 
 const ATPCurrentRankings = () => {
+    document.title="Tennis India Live - ATP Live Rankings"
     const { year, month, day } = useParams();
     const [rankingsData, setRankingsData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);

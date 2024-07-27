@@ -44,6 +44,7 @@ const CustomFormControl = styled(FormControl)({
 const tournamentName = ''
 
 const FixtureResults = () => {
+    document.title="Tennis India Live - Live Scores and Results"
     let params = useParams();
     let day, month, year
     if (Object.keys(params).length === 0) {
@@ -610,7 +611,7 @@ const FixtureResults = () => {
     }
 
     function getScoreHeader(tournament) {
-        let name = rankingsData[tournament][0]?.tournament?.name
+        let name = rankingsData[tournament][0]?.season?.name
         if (name) {
             if (name.includes("Men")) {
                 return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
