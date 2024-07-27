@@ -44,7 +44,22 @@ const CustomFormControl = styled(FormControl)({
 const tournamentName = ''
 
 const FixtureResults = () => {
-    const { year, month, day } = useParams();
+    let params = useParams();
+    let day, month, year
+    if (Object.keys(params).length === 0) {
+        const date = new Date();
+
+        // Extract the year, month, and date
+        day = String(date.getDate());
+        month = String(date.getMonth() + 1); // Months are zero-based, so add 1
+        year = String(date.getFullYear());
+    }
+    else {
+        day = params.day
+        month = params.month
+        year = params.year
+    }
+
     const [rankingsData, setRankingsData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -421,14 +436,13 @@ const FixtureResults = () => {
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
                                         <span>{p1a.name}</span>
-                                        {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                        {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                                     </div>
                                     <div className='w-full flex flex-row space-x-2'>
                                         <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
                                         <span>{p1b.name}</span>
-                                        {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                        {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                        {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                    {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
                                     </div>
 
                                 </div>
@@ -442,11 +456,13 @@ const FixtureResults = () => {
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
                                         <span>{p2b.name}</span>
+                                        {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                    {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
                                     </div>
+
                                 </div>
 
-                                {/* {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""} */}
                             </div>
                         </div>
                         )
@@ -612,7 +628,7 @@ const FixtureResults = () => {
 
             }
         }
-        else{
+        else {
             return (<div className="flex flex-row bg-gray-300 text-lg items-center p-1">
                 <span>{tournament} </span>
                 <FcBusinessman />
