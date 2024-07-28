@@ -345,17 +345,22 @@ const FixtureResults = () => {
         if (!round) {
             return ""
         }
+        round=round.toLowerCase()
         const roundMap = {
-            'Round of 128': 'R128',
-            'Round of 64': 'R64',
-            'Round of 32': 'R32',
-            'Round of 16': 'R16',
-            'Quarterfinal': 'QF',
-            'Quarterfinals': 'QF',
-            'Semifinals': 'SF',
-            'Semifinal': 'SF',
-            'Final': 'F',
-            'Finals': 'F'
+            'round of 128': 'R128',
+            'round of 64': 'R64',
+            'round of 32': 'R32',
+            'round of 16': 'R16',
+            'quarterfinal': 'QF',
+            'quarterfinals': 'QF',
+            'qualification round 1': 'QR1',
+            'qualification round 2': 'QR2',
+            'qualification round 3': 'QR3',
+            'qualification final round': 'Final Q',
+            'semifinals': 'SF',
+            'semifinal': 'SF',
+            'final': 'F',
+            'finals': 'F'
         };
 
         const lowerCaseRound = round.toLowerCase();
@@ -366,7 +371,7 @@ const FixtureResults = () => {
         }
 
         // Default case if the round is not found
-        return 'Unknown Round';
+        return '';
     }
 
     function getPlayerDom(item) {
@@ -611,9 +616,10 @@ const FixtureResults = () => {
     }
 
     function getScoreHeader(tournament) {
-        let name = rankingsData[tournament][0]?.season?.name
-        if (name) {
-            if (name.includes("Men")) {
+        let seasonName = rankingsData[tournament][0]?.season?.name
+        let  name= rankingsData[tournament][0]?.tournament?.name
+        if (seasonName) {
+            if (seasonName.includes("Men")) {
                 return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
                     <span>{name} </span>
                     <FcBusinessman />
@@ -744,3 +750,4 @@ const FixtureResults = () => {
 };
 
 export default FixtureResults;
+
