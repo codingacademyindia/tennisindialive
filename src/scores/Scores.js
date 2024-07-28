@@ -17,6 +17,8 @@ import IconButton from '@mui/material/IconButton';
 import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
+import CountryAutocomplete from '../common/CountryAutoComplete'
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -44,7 +46,7 @@ const CustomFormControl = styled(FormControl)({
 const tournamentName = ''
 
 const FixtureResults = () => {
-    document.title="Tennis India Live - Live Scores and Results"
+    document.title = "Tennis India Live - Live Scores and Results"
     let params = useParams();
     let day, month, year
     if (Object.keys(params).length === 0) {
@@ -248,6 +250,21 @@ const FixtureResults = () => {
     //         </div>
     //     );
     // }
+
+    function convertName(slug) {
+        // Split the slug by hyphens
+        const parts = slug.split('-');
+
+        // Capitalize the first letter of each part and join them with spaces
+        const name = parts.map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+
+        // Move the last name to the front
+        const lastName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+        const firstName = parts.slice(1).map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+
+        return `${firstName} ${lastName}`;
+    }
+
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
         // Extract the sets' scores
         const homePeriod1 = homeScore.period1 || 0;
@@ -345,7 +362,7 @@ const FixtureResults = () => {
         if (!round) {
             return ""
         }
-        round=round.toLowerCase()
+        round = round.toLowerCase()
         const roundMap = {
             'round of 128': 'R128',
             'round of 64': 'R64',
@@ -402,10 +419,9 @@ const FixtureResults = () => {
             const uniqueTournament = item.tournament.uniqueTournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-                    if ((
-                        (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
-                        (p2.country && p2.country.name.toLowerCase() === selectedCountry)
-                    ) && matchStatusList.includes(item?.status?.type)) {
+                    if ((selectedCountry === '' || (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
+                        (p2.country && p2.country.name.toLowerCase() === selectedCountry))
+                        && matchStatusList.includes(item?.status?.type)) {
                         return (<div className='flex flex-col w-full h-full border'>
                             <div key={item.id} className="flex space-x-2 w-full h-full flex-row items-center  ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
@@ -435,7 +451,7 @@ const FixtureResults = () => {
                         (p1a.country) ? p2a.country.name.toLowerCase() : null,
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
-                    if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
+                    if ((selectedCountry === '' || countries.includes(selectedCountry)) && matchStatusList.includes(item?.status?.type)) {
                         return (<div>
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
@@ -447,7 +463,7 @@ const FixtureResults = () => {
                                         <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
                                         <span>{p1b.name}</span>
                                         {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                    {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                        {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                                     </div>
 
@@ -463,7 +479,7 @@ const FixtureResults = () => {
                                         <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
                                         <span>{p2b.name}</span>
                                         {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                    {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                        {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                                     </div>
 
@@ -538,6 +554,9 @@ const FixtureResults = () => {
     function hasIndian(item) {
 
         try {
+            if (selectedCountry===''){
+                return true
+            }
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
@@ -617,7 +636,7 @@ const FixtureResults = () => {
 
     function getScoreHeader(tournament) {
         let seasonName = rankingsData[tournament][0]?.season?.name
-        let  name= rankingsData[tournament][0]?.tournament?.name
+        let name = rankingsData[tournament][0]?.tournament?.name
         if (seasonName) {
             if (seasonName.includes("Men")) {
                 return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
@@ -665,8 +684,16 @@ const FixtureResults = () => {
 
     function recordDom() {
         // Filter the rankingsData to only include tournaments with Indian players
+
         let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
-        const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
+        let filteredRankingsData
+        if (selectedCountry === '') {
+            filteredRankingsData = Object.keys(rankingsDataCopy)
+        }
+        else {
+            filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
+        }
+
 
         if (filteredRankingsData.length === 0) {
             return <NotFound msg="No Results Found" />
@@ -732,10 +759,10 @@ const FixtureResults = () => {
 
                 {/* {getStatusButtons()} */}
                 <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
-                {/* <CountryAutocomplete
+                <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
-                /> */}
+                />
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
             </div>
             {error && <p>Error: {error}</p>}
