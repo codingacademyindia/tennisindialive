@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import { GiTennisBall } from "react-icons/gi";
+import SocialMedia from '../common/SocialMedia';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
     background: 'navy',
@@ -90,7 +91,7 @@ function ResponsiveAppBar() {
                         </Menu>
                     </Box>
 
-                    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: { xs: 'center', md: 'center' } }}>
+                    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: { xs: 'center', md: 'left' } }}>
                         {/* <div className="text-3xl font-bold bg-gradient-to-r from-green-600 via-blue-500 to-orange-600 text-white text-center flex items-center rounded-xl p-1"> */}
                         <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1">
                             <GiTennisBall className="h-5 w-5 sm:h-8 sm:w-8 mr-2 text-green-300" />
@@ -99,7 +100,7 @@ function ResponsiveAppBar() {
                         </div>
                     </Box>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
                         {pages.map((page) => (
                             <Button
                                 key={page}
@@ -110,6 +111,7 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
+                    <SocialMedia/>
                 </Toolbar>
             </Container>
         </StyledAppBar>
