@@ -94,9 +94,11 @@ function ResponsiveAppBar() {
                     <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: { xs: 'center', md: 'left' } }}>
                         {/* <div className="text-3xl font-bold bg-gradient-to-r from-green-600 via-blue-500 to-orange-600 text-white text-center flex items-center rounded-xl p-1"> */}
                         <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1">
-                            <GiTennisBall className="h-5 w-5 sm:h-8 sm:w-8 mr-2 text-green-300" />
-                            <div className="text-lg sm:text-xl">TENNIS INDIA</div>
-                            <div className="text-lg sm:text-xl animate-pulse ml-2">LIVE</div>
+                            <a href="/" rel="noopener noreferrer" className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1 no-underline">
+                                <GiTennisBall className="h-5 w-5 sm:h-8 sm:w-8 mr-2 text-green-300" />
+                                <div className="text-lg sm:text-xl">TENNIS INDIA</div>
+                                <div className="text-lg sm:text-xl animate-pulse ml-2">LIVE</div>
+                            </a>
                         </div>
                     </Box>
 
@@ -111,7 +113,7 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
-                    <SocialMedia/>
+                    <SocialMedia />
                 </Toolbar>
             </Container>
         </StyledAppBar>

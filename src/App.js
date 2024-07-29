@@ -9,6 +9,7 @@ import WtaCurrentRankings from './rankings/WTA/CurrentRanking';
 import WtaLiveRankings from './rankings/WTA/LiveRankings';
 import ResponsiveAppBar from './header/Header';
 import Footer from './common/Footer';
+import NotFound from './common/stateHandlers/NotFound';
 
 const App = () => {
   const date = new Date();
@@ -26,7 +27,7 @@ const App = () => {
               <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
               <Route path="/rankings/live/wta" element={<WtaLiveRankings />} />
               <Route path="/rankings/current/wta" element={<WtaCurrentRankings />} />
-              <Route path="*" element={<p>Path not resolved</p>} />
+              <Route path="*" element={<NotFound msg="Page Not Found" />}/>
             </Routes>
           </div>
           <Footer />

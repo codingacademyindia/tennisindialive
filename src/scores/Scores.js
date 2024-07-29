@@ -150,7 +150,7 @@ const FixtureResults = () => {
 
     useEffect(() => {
         const fetchRankings = async () => {
-            setLoading(true)
+            setLoading(true);
             const options = {
                 method: 'GET',
                 url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
@@ -162,13 +162,16 @@ const FixtureResults = () => {
             try {
                 const response = await axios.request(options);
                 setRankingsData(groupItems(response.data['events']));
-                setLoading(false)
+                setLoading(false);
             } catch (error) {
                 setError(error.message);
             }
         };
 
         fetchRankings();
+        const intervalId = setInterval(fetchRankings, 120000); // 
+
+        return () => clearInterval(intervalId); // 
     }, [day, month, year, refreshScore]);
 
     useEffect(() => {
