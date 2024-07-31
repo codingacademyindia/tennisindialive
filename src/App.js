@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import FixtureResults from './scores/Scores';
+import FixtureResultsFlash from './scores/ScoresFlashLive';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ATPLiveRankings from './rankings/ATP/LiveRankings';
@@ -22,7 +23,7 @@ const App = () => {
           <div className="flex-grow">
             <Routes>
             <Route path="/" element={<FixtureResults />} />
-              <Route path="/results/:year/:month/:day" element={<FixtureResults />} />
+              <Route path="/results/:year/:month/:day" element={<FixtureResultsFlash />} />
               <Route path="/rankings/live/atp" element={<ATPLiveRankings />} />
               <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
               <Route path="/rankings/live/wta" element={<WtaLiveRankings />} />
