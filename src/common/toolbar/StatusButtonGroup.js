@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-const options = ['All', 'Live', 'Finished', "Not Started"];
+const options = ['All', 'Live', 'Finished', "Scheduled"];
 
 function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
     const theme = useTheme();
@@ -122,7 +122,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
         return (
             <div className="flex flex-row space-x-2">
                 <Button
-                    variant={matchStatus === "inprogress" ? "contained" : "outlined"}
+                    variant={matchStatus === "live" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleStatusButtonClick(e)}
                 >
@@ -136,11 +136,11 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
                     Finished
                 </Button>
                 <Button
-                    variant={matchStatus === "notstarted" ? "contained" : "outlined"}
+                    variant={matchStatus === "scheduled" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleStatusButtonClick(e)}
                 >
-                    Not Started
+                    Scheduled
                 </Button>
                 <Button
                     variant={matchStatus === "all" ? "contained" : "outlined"}

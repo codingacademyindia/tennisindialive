@@ -190,6 +190,7 @@ const countryIdToCode = {
     "United Arab Emirates": "AE",
     "United Kingdom": "GB",
     "United States of America": "US",
+    "USA": "US",
     "Uruguay": "UY",
     "Uzbekistan": "UZ",
     "Vanuatu": "VU",
@@ -200,12 +201,12 @@ const countryIdToCode = {
     "Zimbabwe": "ZW"
 };
 
-const CountryIcon = ({ countryCode, name, size = 64 }) => {
+const CountryIcon = ({ countryName, name, size = 64 }) => {
     return (
         <div>
             {/* <Tooltip title={name}> */}
 
-                <FlagIcon code={countryCode} size={size} />
+                <FlagIcon code={countryIdToCode[countryName]} size={size} />
             {/* </Tooltip> */}
         </div>
 
