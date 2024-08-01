@@ -26,14 +26,21 @@ const DatePagination = () => {
     const [page, setPage] = useState(5);
     const [dates, setDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
         const datesAroundSelected = generateDates(selectedDate);
         setDates(datesAroundSelected);
+        const today = dayjs().startOf('day');
+        const selectedDay = dayjs(selectedDate).startOf('day');
+        const newOffset = selectedDay.diff(today, 'day');
+        setOffset(newOffset);
     }, [selectedDate]);
 
     const handleChange = (event, value) => {
         setPage(value);
+        const selectedDateFromPage = dayjs(selectedDate).startOf('month').add(value - 1, 'day').toDate();
+        setSelectedDate(selectedDateFromPage);
     };
 
     const handleDateChange = (date) => {
@@ -61,6 +68,7 @@ const DatePagination = () => {
         }
     };
 
+    console.log(offset)
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#DDDDD' }}>
             <IconButton onClick={handlePrev}>
