@@ -74,6 +74,7 @@ const FixtureResults = () => {
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["live", "scheduled", "cancelled", "finished"]);
     const [selectedCountry, setSelectedCountry] = useState('');
+    const [offset, setOffset] = useState(0);
 
     const handleCountryChange = (newCountryCode) => {
         setSelectedCountry(newCountryCode);
@@ -83,6 +84,11 @@ const FixtureResults = () => {
         setLoading(true)
         setMatchStatus(event.target.value);
 
+    };
+
+    
+    const handleOffset = (value) => {
+        setOffset(value)
     };
 
 
@@ -114,7 +120,7 @@ const FixtureResults = () => {
             const options = {
                 method: 'GET',
                 url: `https://flashlive-sports.p.rapidapi.com/v1/events/list`,
-                params: { "locale": "en_INT", "sport_id": "2", "timezone": "-4", "indent_days": 0 },
+                params: { "locale": "en_INT", "sport_id": "2", "timezone": "-4", "indent_days": offset },
                 headers: {
                     'x-rapidapi-key': '56f74b1a47mshedf8671383c3383p1c59b0jsnce03cda5bfe8',
                     'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
@@ -134,7 +140,7 @@ const FixtureResults = () => {
         // const intervalId = setInterval(fetchRankings, 12000000000); // 
 
         // return () => clearInterval(intervalId); // 
-    }, [day, month, year, refreshScore]);
+    }, [day, month, year, refreshScore, offset]);
 
     useEffect(() => {
         setLoading(true);
@@ -160,7 +166,7 @@ const FixtureResults = () => {
         }
         setLoading(false)
 
-    }, [matchStatus, selectedCountry]);
+    }, [matchStatus, selectedCountry, rankingsData]);
 
     // useEffect(() => {
     //     let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
@@ -633,7 +639,7 @@ const FixtureResults = () => {
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
             </div>
             <div className="w-full">
-                <DatePagination />
+                <DatePagination handleOffset={handleOffset}/>
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : filteredData && (

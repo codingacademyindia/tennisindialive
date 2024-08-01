@@ -4,6 +4,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { CalendarToday as CalendarTodayIcon, ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import dayjs from 'dayjs';
+import { PiEyedropperSample } from 'react-icons/pi';
 
 const ITEMS_PER_PAGE = 1;
 
@@ -22,7 +23,7 @@ const generateDates = (selectedDate) => {
     return dates;
 };
 
-const DatePagination = () => {
+const DatePagination = (props) => {
     const [page, setPage] = useState(5);
     const [dates, setDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -35,6 +36,7 @@ const DatePagination = () => {
         const selectedDay = dayjs(selectedDate).startOf('day');
         const newOffset = selectedDay.diff(today, 'day');
         setOffset(newOffset);
+        props.handleOffset(newOffset)
     }, [selectedDate]);
 
     const handleChange = (event, value) => {
