@@ -17,6 +17,9 @@ import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import CountryIcon from '../common/CountryFlagName';
+import CountryAutocomplete from '../common/CountryAutoComplete'
+import DatePagination from '../pagination/DatePagination';
+
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -70,8 +73,7 @@ const FixtureResults = () => {
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["live", "scheduled", "cancelled", "finished"]);
-    const [selectedCountry, setSelectedCountry] = useState('india');
-    const [indianCount, setIndianCount] = useState(0);
+    const [selectedCountry, setSelectedCountry] = useState('');
 
     const handleCountryChange = (newCountryCode) => {
         setSelectedCountry(newCountryCode);
@@ -108,15 +110,15 @@ const FixtureResults = () => {
     useEffect(() => {
         const fetchRankings = async () => {
             setLoading(true);
+            setError("")
             const options = {
                 method: 'GET',
                 url: `https://flashlive-sports.p.rapidapi.com/v1/events/list`,
                 params: { "locale": "en_INT", "sport_id": "2", "timezone": "-4", "indent_days": 0 },
                 headers: {
-                    'x-rapidapi-key': '44544b0a27msh2b83bfad60bded0p105a45jsnc1fd02593d67',
+                    'x-rapidapi-key': '56f74b1a47mshedf8671383c3383p1c59b0jsnce03cda5bfe8',
                     'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
                 }
-
             };
             try {
                 const response = await axios.request(options);
@@ -129,29 +131,50 @@ const FixtureResults = () => {
         };
 
         fetchRankings();
-        const intervalId = setInterval(fetchRankings, 120000); // 
+        // const intervalId = setInterval(fetchRankings, 12000000000); // 
 
-        return () => clearInterval(intervalId); // 
+        // return () => clearInterval(intervalId); // 
     }, [day, month, year, refreshScore]);
 
     useEffect(() => {
+        setLoading(true);
+        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+        let filterByCountry
+        if (selectedCountry !== '') {
+            filterByCountry = filterDataByCountry(rankingsDataCopy)
+        }
+        else {
+            filterByCountry = rankingsDataCopy
+        }
         // let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData));
         if (matchStatus.includes("all")) {
             setMatchStatusList(["live", "scheduled", "cancelled", "finished"])
+            let filterByStatus = filterDataByStatus(filterByCountry, ["live", "scheduled", "cancelled", "finished"])
+            setFilteredData(filterByStatus)
         }
         else {
             setMatchStatusList([matchStatus])
+            let filterByStatus = filterDataByStatus(filterByCountry, [matchStatus])
+            setFilteredData(filterByStatus)
 
         }
         setLoading(false)
 
-    }, [matchStatus]);
+    }, [matchStatus, selectedCountry]);
 
-    useEffect(() => {
-        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
-        setFilteredData(filterDataByStatus(filterDataByCountry(rankingsDataCopy), matchStatusList))
+    // useEffect(() => {
+    //     let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+    //     let filterByCountry
+    //     if (selectedCountry !== '') {
+    //         filterByCountry = filterDataByCountry(rankingsDataCopy)
+    //     }
+    //     else {
+    //         filterByCountry = rankingsDataCopy
+    //     }
+    //     let filterByStatus = filterDataByStatus(filterByCountry, matchStatusList)
+    //     setFilteredData(filterByStatus)
 
-    }, [matchStatusList, selectedCountry]);
+    // }, [matchStatusList, selectedCountry]);
 
 
 
@@ -252,8 +275,10 @@ const FixtureResults = () => {
         else if (matchStatus.toLowerCase() === 'scheduled') {
             return readableTimeStamp(startTime)
         }
-        else if (matchStatus.toLowerCase === 'finished') {
-            return "Finished"
+        else if (matchStatus.toLowerCase() === 'finished') {
+            return (<div className='flex flex-row'><span>Finished</span>
+                {readableDate(startTime)}
+            </div>)
         }
         else {
             return matchStatus
@@ -358,6 +383,9 @@ const FixtureResults = () => {
     }
 
     function hasIndian(item) {
+        if (selectedCountry === '') {
+            return true
+        }
         const countries = [
             item.HOME_PARTICIPANT_COUNTRY_NAME_ONE ? item.HOME_PARTICIPANT_COUNTRY_NAME_ONE.toLowerCase() : null,
             item.HOME_PARTICIPANT_COUNTRY_NAME_TWO ? item.HOME_PARTICIPANT_COUNTRY_NAME_TWO.toLowerCase() : null,
@@ -445,19 +473,46 @@ const FixtureResults = () => {
         return formattedDate;
     }
 
-    function getScoreHeader(tournament) {
-        if (tournament) {
-            if (tournament.includes("Men")) {
-                return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
-                    <span>{tournament} </span>
-                    <FcBusinessman />
+    function readableDate(timestamp) {
+        // Convert to milliseconds (JavaScript timestamps are in milliseconds)
+        const date = new Date(timestamp * 1000);
+
+        // Get date components
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'short' }); // 'default' locale, short month format
+        const year = date.getFullYear();
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        // Convert hours to 12-hour format
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+
+        // Pad minutes with leading zero if needed
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+        // Format date string
+        const formattedDate = `${day}-${month}`;
+        return formattedDate;
+    }
+
+    function getScoreHeader(item) {
+        if (item) {
+            if (item.EVENTS.length === 0) {
+                return ""
+            }
+            if (item.NAME.toLowerCase().includes("women") || item.NAME.toLowerCase().includes("wta")) {
+                return (<div className="flex flex-row bg-pink-300 text-lg items-center p-1">
+                    <img src={item.TOURNAMENT_IMAGE} height="30px" width="30px" />
+                    <span className='ml-1'>{item.NAME} </span>
                 </div>
                 )
             }
             else {
-                return (<div className="flex flex-row bg-pink-300 text-lg items-center p-1">
-                    <span>{tournament} </span>
-                    <FcBusinesswoman />
+                return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
+                    <img src={item.TOURNAMENT_IMAGE} height="30px" width="30px" />
+                    <span className='ml-1'>{item.NAME} </span>
                 </div>
                 )
 
@@ -465,8 +520,8 @@ const FixtureResults = () => {
         }
         else {
             return (<div className="flex flex-row bg-gray-300 text-lg items-center p-1">
-                <span>{tournament} </span>
-                <FcBusinessman />
+                <img src={item.TOURNAMENT_IMAGE} height="30px" width="30px" />
+                <span className='ml-1'>{item.NAME} </span>
             </div>)
         }
     }
@@ -474,16 +529,21 @@ const FixtureResults = () => {
 
 
     function recordDom() {
-        return filteredData.map((item, index) => {
-            return (
+        if (filteredData.length > 0) {
+            return filteredData.map((item, index) => {
+                return (
 
-                (item.NAME === TOURNAMENT_NAME || TOURNAMENT_NAME === '') && (<div className='flex flex-col'>
-                    {getScoreHeader(item.NAME)}
-                    {item['EVENTS'].map(record => fetchScoreRecord(record, item.NAME))}
-                    {/* {fetchScoreRecord(item, item.NAME)} */}
-                </div>))
+                    (item.NAME === TOURNAMENT_NAME || TOURNAMENT_NAME === '') && (<div className='flex flex-col'>
+                        {getScoreHeader(item)}
+                        {item['EVENTS'].map(record => fetchScoreRecord(record, item.NAME))}
+                        {/* {fetchScoreRecord(item, item.NAME)} */}
+                    </div>))
+            }
+            )
         }
-        )
+        else {
+            return "NO RESULT"
+        }
     }
 
     function filterEventsByStatus(events, statusList) {
@@ -500,6 +560,9 @@ const FixtureResults = () => {
         }
     }
     function isIndianPlayerFound(item) {
+        if (selectedCountry === '') {
+            return true
+        }
         let countryList = [getProperty(item, 'HOME_PARTICIPANT_COUNTRY_NAME_ONE').toLowerCase(),
         getProperty(item, 'HOME_PARTICIPANT_COUNTRY_NAME_TWO').toLowerCase(),
         getProperty(item, 'AWAY_PARTICIPANT_COUNTRY_NAME_ONE').toLowerCase(),
@@ -532,7 +595,9 @@ const FixtureResults = () => {
     }
 
     function filterDataByCountry(rankingsDataCopy) {
-
+        if (selectedCountry === '') {
+            return rankingsDataCopy
+        }
         if (rankingsDataCopy) {
             // Iterate over each item and filter its EVENTS
             rankingsDataCopy = rankingsDataCopy.map(item => {
@@ -554,22 +619,26 @@ const FixtureResults = () => {
         <div>
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}
-                <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
+                {/* <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} /> */}
+
                 {/* {getStatusControl()} */}
 
                 {/* {getStatusButtons()} */}
+                <div className="font-bold">Filter Scores</div>
                 <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
-                {/* <CountryAutocomplete
+                <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
-                /> */}
+                />
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
+            </div>
+            <div className="w-full">
+                <DatePagination />
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : filteredData && (
                 <div className=" w-[100%] mx-auto">
-                    {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
-                    {true ? recordDom() : "No Indian"}
+                    {recordDom()}
                 </div>
             )}
         </div>
