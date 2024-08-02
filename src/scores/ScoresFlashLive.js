@@ -47,7 +47,9 @@ const CustomFormControl = styled(FormControl)({
 
 const TOURNAMENT_NAME = ''
 
+
 const FixtureResults = () => {
+    const formatDate = (date) => dayjs(date).format('DD-MMM'); // Format date as DD-MMM
     document.title = "Tennis India Live - Live Scores and Results"
     let params = useParams();
     let day, month, year
@@ -65,17 +67,97 @@ const FixtureResults = () => {
         year = params.year
     }
 
+    const formatDateToDayMonth = (day, month, year) => {
+        // Create a Date object
+        const date = new Date(year, month - 1, day);
+
+        // Format the date using dayjs
+        const formattedDate = dayjs(date).format('DD-MMM');
+
+        return formattedDate;
+    };
+
     const [rankingsData, setRankingsData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
+    const [selectedDate, setSelectedDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["live", "scheduled", "cancelled", "finished"]);
     const [selectedCountry, setSelectedCountry] = useState('');
-    const [offset, setOffset] = useState(0);
+    const [offset, setOffset] = useState(null);
+    const [page, setPage] = useState(5);
+    const [dates, setDates] = useState([]);
+    const [buttonText, setButtonText] = useState(`${formatDateToDayMonth(day, month, year)}`)
+    // const [selectedDate, setSelectedDate] = useState(new Date());
 
+
+
+
+    const parseDateString = (dateString) => {
+        const currentYear = dayjs().year(); // Get the current year
+        const formattedDateString = `${dateString}-${currentYear}`; // Append the current year to the input string
+
+        const parsedDate = dayjs(formattedDateString, 'DD-MMM-YYYY'); // Parse the date using dayjs
+
+        if (!parsedDate.isValid()) {
+            throw new Error('Invalid date format');
+        }
+
+        const day = parsedDate.date(); // Extract the day
+        const month = parsedDate.month() + 1; // Extract the month (0-based index, hence the +1)
+        const year = parsedDate.year(); // Extract the year
+
+        return { day, month, year, parsedDate };
+    };
+
+    const handlePageChange = (event, dateValue, value) => {
+        setPage(value);
+        // const selectedDateFromPage = dayjs(selectedDate).startOf('month').add(value - 1, 'day').toDate();
+        // const date = new Date(selectedDateFromPage);
+        const { day, month, year, parsedDate } = parseDateString(dateValue)
+        // Extract the year, month, and date
+        // const day = date.getDate();
+        // const month = date.getMonth() + 1; // Months are zero-based, so add 1
+        // const year = date.getFullYear();
+        setSelectedDate(parsedDate);
+        window.location.href = `/results/${year}/${month}/${day}`
+    };
+
+    const handleDateChange = (date) => {
+        const date1 = new Date(date);
+
+        // Extract the year, month, and date
+        const day = date1.getDate();
+        const month = date1.getMonth() + 1; // Months are zero-based, so add 1
+        const year = date1.getFullYear();
+
+        setSelectedDate(date);
+        const formattedDate = formatDate(date);
+        const dateIndex = dates.findIndex(d => d === formattedDate);
+        if (dateIndex !== -1) {
+            setPage(dateIndex + 1);
+        } else {
+            const newDates = generateDates(date);
+            setDates(newDates);
+            setPage(newDates.indexOf(formattedDate) + 1);
+        }
+        window.location.href = `/results/${year}/${month}/${day}`
+
+    };
+
+    const handleNext = () => {
+        if (page < dates.length) {
+            setPage(page + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
     const handleCountryChange = (newCountryCode) => {
         setSelectedCountry(newCountryCode);
     };
@@ -86,7 +168,7 @@ const FixtureResults = () => {
 
     };
 
-    
+
     const handleOffset = (value) => {
         setOffset(value)
     };
@@ -99,18 +181,30 @@ const FixtureResults = () => {
     };
 
 
-    const handleSelectDate = newValue => {
-        const date = new Date(newValue);
+    // const handleSelectDate = newValue => {
+    //     const date = new Date(newValue);
 
-        // Extract the year, month, and date
-        const day = date.getDate();
-        const month = date.getMonth() + 1; // Months are zero-based, so add 1
-        const year = date.getFullYear();
+    //     // Extract the year, month, and date
+    //     const day = date.getDate();
+    //     const month = date.getMonth() + 1; // Months are zero-based, so add 1
+    //     const year = date.getFullYear();
 
-        setDate(newValue)
-        window.location.href = `/results/${year}/${month}/${day}`
+    //     setDate(newValue)
+    //     window.location.href = `/results/${year}/${month}/${day}`
 
-    }
+    // }
+
+
+
+    useEffect(() => {
+        const datesAroundSelected = generateDates(selectedDate);
+        setDates(datesAroundSelected);
+        const today = dayjs().startOf('day');
+        const selectedDay = dayjs(selectedDate).startOf('day');
+        const newOffset = selectedDay.diff(today, 'day');
+        setOffset(newOffset)
+
+    }, [selectedDate]);
 
 
     useEffect(() => {
@@ -122,7 +216,7 @@ const FixtureResults = () => {
                 url: `https://flashlive-sports.p.rapidapi.com/v1/events/list`,
                 params: { "locale": "en_INT", "sport_id": "2", "timezone": "-4", "indent_days": offset },
                 headers: {
-                    'x-rapidapi-key': '56f74b1a47mshedf8671383c3383p1c59b0jsnce03cda5bfe8',
+                    'x-rapidapi-key': 'a26a45b260mshdc356af23e2935cp19491fjsn52a1e9b7db18',
                     'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
                 }
             };
@@ -135,12 +229,13 @@ const FixtureResults = () => {
                 setError(error.message);
             }
         };
-
-        fetchRankings();
+        if (offset) {
+            fetchRankings();
+        }
         // const intervalId = setInterval(fetchRankings, 12000000000); // 
 
         // return () => clearInterval(intervalId); // 
-    }, [day, month, year, refreshScore, offset]);
+    }, [refreshScore, offset]);
 
     useEffect(() => {
         setLoading(true);
@@ -414,8 +509,6 @@ const FixtureResults = () => {
         const uniqueTournament = tournament_name;
         if (uniqueTournament) {
             try {
-                console.log(matchStatusList)
-                console.log(item.STAGE_TYPE)
                 // if (matchStatusList.includes(item.STAGE_TYPE.toLowerCase())) {
                 if (hasIndian(item)) {
 
@@ -620,7 +713,20 @@ const FixtureResults = () => {
 
 
 
+    const generateDates = (selectedDate) => {
+        // Generate dates around the selected date in DD-MMM format
+        const startDate = dayjs(selectedDate).subtract(7, 'day');
+        const endDate = dayjs(selectedDate).add(7, 'day');
+        let dates = [];
 
+        for (let date = startDate; date.isBefore(endDate); date = date.add(1, 'day')) {
+            dates.push(formatDate(date));
+        }
+
+        return dates;
+    };
+
+    console.log(offset)
     return (
         <div>
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
@@ -639,7 +745,8 @@ const FixtureResults = () => {
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
             </div>
             <div className="w-full">
-                <DatePagination handleOffset={handleOffset}/>
+                <DatePagination dates={dates} page={page} handleNext={handleNext} handlePrev={handlePrev} handleDateChange={handleDateChange}
+                    handleChange={handlePageChange} selectedDate={selectedDate} buttonText={buttonText} />
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : filteredData && (
