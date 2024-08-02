@@ -229,7 +229,7 @@ const FixtureResults = () => {
                 setError(error.message);
             }
         };
-        if (offset) {
+        if (offset!==undefined || offset!==null) {
             fetchRankings();
         }
         // const intervalId = setInterval(fetchRankings, 12000000000); // 
