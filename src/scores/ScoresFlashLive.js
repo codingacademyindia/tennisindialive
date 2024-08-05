@@ -141,7 +141,7 @@ const FixtureResults = () => {
         } else {
             const newDates = generateDates(date);
             setDates(newDates);
-            setPage(newDates.indexOf(formattedDate) + 1);
+            // setPage(newDates.indexOf(formattedDate) + 1);
         }
         window.location.href = `/results/${year}/${month}/${day}`
 
@@ -159,7 +159,12 @@ const FixtureResults = () => {
         }
     };
     const handleCountryChange = (newCountryCode) => {
+        if (!newCountryCode.includes('russian')){
         setSelectedCountry(newCountryCode);
+        }
+        else{
+            setSelectedCountry("world")
+        }
     };
 
     const handleStatusChange = (event) => {
@@ -825,19 +830,32 @@ const FixtureResults = () => {
 
 
 
-    const generateDates = (selectedDate) => {
-        // Generate dates around the selected date in DD-MMM format
-        const startDate = dayjs(selectedDate).subtract(7, 'day');
-        const endDate = dayjs(selectedDate).add(7, 'day');
-        let dates = [];
+    // const generateDates = (selectedDate) => {
+    //     // Generate dates around the selected date in DD-MMM format
+    //     const startDate = dayjs(selectedDate).subtract(7, 'day');
+    //     const endDate = dayjs(selectedDate).add(7, 'day');
+    //     let dates = [];
 
-        for (let date = startDate; date.isBefore(endDate); date = date.add(1, 'day')) {
+    //     for (let date = startDate; date.isBefore(endDate); date = date.add(1, 'day')) {
+    //         dates.push(formatDate(date));
+    //     }
+
+    //     return dates;
+    // };
+
+    const generateDates = () => {
+        // Use the current date as the reference point
+        const currentDate = dayjs();
+        const startDate = currentDate.subtract(7, 'day');
+        const endDate = currentDate.add(7, 'day');
+        let dates = [];
+    
+        for (let date = startDate; date.isBefore(endDate) || date.isSame(endDate, 'day'); date = date.add(1, 'day')) {
             dates.push(formatDate(date));
         }
-
+    
         return dates;
     };
-
     console.log(offset)
     return (
         <div>
