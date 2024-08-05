@@ -177,6 +177,9 @@ const FixtureResults = () => {
 
     const handleStatusButtonClick = (event) => {
         setMatchStatus(event.target.innerText.toLowerCase())
+        if(event.target.innerText.toLowerCase()==='live'){
+            setOffset(0)
+        }
 
     };
 
@@ -229,7 +232,7 @@ const FixtureResults = () => {
                 setError(error.message);
             }
         };
-        if (offset!==undefined || offset!==null) {
+        if (offset !== undefined && offset !== null) {
             fetchRankings();
         }
         // const intervalId = setInterval(fetchRankings, 12000000000); // 
@@ -287,87 +290,174 @@ const FixtureResults = () => {
     // }, [selectedCountry]);
 
 
+    // function formatTennisScoreDom(item) {
+    //     // Extract the sets' scores
+    //     const homePeriod1 = item.HOME_SCORE_PART_1 || 0;
+    //     const homePeriod2 = item.HOME_SCORE_PART_2 || 0;
+    //     const homePeriod3 = item.HOME_SCORE_PART_3 || 0;
+    //     const homePeriod4 = item.HOME_SCORE_PART_4 || 0;
+    //     const homePeriod5 = item.HOME_SCORE_PART_5 || 0;
+
+    //     const awayPeriod1 = item.AWAY_SCORE_PART_1 || 0;
+    //     const awayPeriod2 = item.AWAY_SCORE_PART_2 || 0;
+    //     const awayPeriod3 = item.AWAY_SCORE_PART_3 || 0;
+    //     const awayPeriod4 = item.AWAY_SCORE_PART_4 || 0;
+    //     const awayPeriod5 = item.AWAY_SCORE_PART_5 || 0;
+
+    //     // Handle tiebreak scores if present
+    //     const homePeriod2TieBreak = item['HOME_TIEBREAK_PART_1'] || '';
+    //     const awayPeriod2TieBreak = item['AWAY_TIEBREAK_PART_1'] || '';
+
+    //     // Format the scores
+    //     const homeScores = [];
+    //     const awayScores = [];
+
+    //     homeScores.push(`${homePeriod1}`);
+    //     awayScores.push(`${awayPeriod1}`);
+
+    //     if (homePeriod2TieBreak && awayPeriod2TieBreak) {
+    //         homeScores.push(
+    //             <span key="homePeriod2">
+    //                 {homePeriod2}
+    //                 <sup className="font-bold">{homePeriod2TieBreak}</sup>
+    //             </span>
+    //         );
+    //         awayScores.push(
+    //             <span key="awayPeriod2">
+    //                 {awayPeriod2}
+    //                 <sup className="font-bold">{awayPeriod2TieBreak}</sup>
+    //             </span>
+    //         );
+    //     } else {
+    //         homeScores.push(`${homePeriod2}`);
+    //         awayScores.push(`${awayPeriod2}`);
+    //     }
+
+    //     if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
+    //         homeScores.push(`${homePeriod3}`);
+    //         awayScores.push(`${awayPeriod3}`);
+    //     }
+
+    //     if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
+    //         homeScores.push(`${homePeriod4}`);
+    //         awayScores.push(`${awayPeriod4}`);
+    //     }
+
+    //     if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
+    //         homeScores.push(`${homePeriod5}`);
+    //         awayScores.push(`${awayPeriod5}`);
+    //     }
+
+    //     let currentStatus = item.STAGE_TYPE ? item.STAGE_TYPE.toLowerCase() : ''
+
+    //     return (
+    //         <div className="flex flex-col h-full w-full items-center  justify-center">
+    //             <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm border-b-2 border-slate-200">
+    //                 {homeScores.map((score, index) => (
+    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
+    //                 ))}
+    //                 {currentStatus === 'live' && <span className="border text-green-800 p-1 font-bold">{item?.HOME_SCORE_PART_GAME}</span>}
+    //             </div>
+    //             <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm">
+    //                 {awayScores.map((score, index) => (
+    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
+    //                 ))}
+    //                 {currentStatus === 'live' && <span className="border text-green-800 p-1 font-bold">{item?.AWAY_SCORE_PART_GAME}</span>}
+    //             </div>
+    //         </div>
+    //     );
+    // }
+
     function formatTennisScoreDom(item) {
         // Extract the sets' scores
-        const homePeriod1 = item.HOME_SCORE_PART_1 || 0;
-        const homePeriod2 = item.HOME_SCORE_PART_2 || 0;
-        const homePeriod3 = item.HOME_SCORE_PART_3 || 0;
-        const homePeriod4 = item.HOME_SCORE_PART_4 || 0;
-        const homePeriod5 = item.HOME_SCORE_PART_5 || 0;
-
-        const awayPeriod1 = item.AWAY_SCORE_PART_1 || 0;
-        const awayPeriod2 = item.AWAY_SCORE_PART_2 || 0;
-        const awayPeriod3 = item.AWAY_SCORE_PART_3 || 0;
-        const awayPeriod4 = item.AWAY_SCORE_PART_4 || 0;
-        const awayPeriod5 = item.AWAY_SCORE_PART_5 || 0;
-
+        const homeScores = [
+          item.HOME_SCORE_PART_1 || '',
+          item.HOME_SCORE_PART_2 || '',
+          item.HOME_SCORE_PART_3 || '',
+          item.HOME_SCORE_PART_4 || '',
+          item.HOME_SCORE_PART_5 || '',
+        ];
+      
+        const awayScores = [
+          item.AWAY_SCORE_PART_1 || '',
+          item.AWAY_SCORE_PART_2 || '',
+          item.AWAY_SCORE_PART_3 || '',
+          item.AWAY_SCORE_PART_4 || '',
+          item.AWAY_SCORE_PART_5 || '',
+        ];
+      
         // Handle tiebreak scores if present
-        const homePeriod2TieBreak = item['HOME_TIEBREAK_PART_1'] || '';
-        const awayPeriod2TieBreak = item['AWAY_TIEBREAK_PART_1'] || '';
-
+        const homeTiebreaks = [
+          item['HOME_TIEBREAK_PART_1'] || '',
+          item['HOME_TIEBREAK_PART_2'] || '',
+          item['HOME_TIEBREAK_PART_3'] || '',
+          item['HOME_TIEBREAK_PART_4'] || '',
+          item['HOME_TIEBREAK_PART_5'] || '',
+        ];
+      
+        const awayTiebreaks = [
+          item['AWAY_TIEBREAK_PART_1'] || '',
+          item['AWAY_TIEBREAK_PART_2'] || '',
+          item['AWAY_TIEBREAK_PART_3'] || '',
+          item['AWAY_TIEBREAK_PART_4'] || '',
+          item['AWAY_TIEBREAK_PART_5'] || '',
+        ];
+      
         // Format the scores
-        const homeScores = [];
-        const awayScores = [];
-
-        homeScores.push(`${homePeriod1}`);
-        awayScores.push(`${awayPeriod1}`);
-
-        if (homePeriod2TieBreak && awayPeriod2TieBreak) {
-            homeScores.push(
-                <span key="homePeriod2">
-                    {homePeriod2}
-                    <sup className="font-bold">{homePeriod2TieBreak}</sup>
-                </span>
+        const formattedHomeScores = [];
+        const formattedAwayScores = [];
+      
+        for (let i = 0; i < homeScores.length; i++) {
+          if (homeTiebreaks[i] && awayTiebreaks[i]) {
+            formattedHomeScores.push(
+              <span key={`homePeriod${i + 1}`}>
+                {homeScores[i]}
+                <sup className="font-bold">{homeTiebreaks[i]}</sup>
+              </span>
             );
-            awayScores.push(
-                <span key="awayPeriod2">
-                    {awayPeriod2}
-                    <sup className="font-bold">{awayPeriod2TieBreak}</sup>
-                </span>
+            formattedAwayScores.push(
+              <span key={`awayPeriod${i + 1}`}>
+                {awayScores[i]}
+                <sup className="font-bold">{awayTiebreaks[i]}</sup>
+              </span>
             );
-        } else {
-            homeScores.push(`${homePeriod2}`);
-            awayScores.push(`${awayPeriod2}`);
+          } else {
+            formattedHomeScores.push(<span key={`homePeriod${i + 1}`}>{homeScores[i]}</span>);
+            formattedAwayScores.push(<span key={`awayPeriod${i + 1}`}>{awayScores[i]}</span>);
+          }
         }
-
-        if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
-            homeScores.push(`${homePeriod3}`);
-            awayScores.push(`${awayPeriod3}`);
-        }
-
-        if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
-            homeScores.push(`${homePeriod4}`);
-            awayScores.push(`${awayPeriod4}`);
-        }
-
-        if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
-            homeScores.push(`${homePeriod5}`);
-            awayScores.push(`${awayPeriod5}`);
-        }
-
-        let currentStatus = item.STAGE_TYPE ? item.STAGE_TYPE.toLowerCase() : ''
-
+      
+        let currentStatus = item.STAGE_TYPE ? item.STAGE_TYPE.toLowerCase() : '';
+      
         return (
-            <div className="flex flex-col h-full w-full items-center  justify-center">
-                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm border-b-2 border-slate-200">
-                    {homeScores.map((score, index) => (
-                        <div className="w-[20%] p-1" key={index}>{score}</div>
-                    ))}
-                    {currentStatus === 'live' && <span className="border text-green-800 p-1 font-bold">{item?.HOME_SCORE_PART_GAME}</span>}
+          <div className="flex flex-col h-full w-full items-center justify-center">
+            <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm border-b-2 border-slate-200">
+              {formattedHomeScores.map((score, index) => (
+                <div className="w-[20%] p-1" key={index}>
+                  {score}
                 </div>
-                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm">
-                    {awayScores.map((score, index) => (
-                        <div className="w-[20%] p-1" key={index}>{score}</div>
-                    ))}
-                    {currentStatus === 'live' && <span className="border text-green-800 p-1 font-bold">{item?.AWAY_SCORE_PART_GAME}</span>}
-                </div>
+              ))}
+              {currentStatus === 'live' && (
+                <span className="border text-green-800 p-1 font-bold">{item?.HOME_SCORE_PART_GAME}</span>
+              )}
             </div>
+            <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm">
+              {formattedAwayScores.map((score, index) => (
+                <div className="w-[20%] p-1" key={index}>
+                  {score}
+                </div>
+              ))}
+              {currentStatus === 'live' && (
+                <span className="border text-green-800 p-1 font-bold">{item?.AWAY_SCORE_PART_GAME}</span>
+              )}
+            </div>
+          </div>
         );
-    }
+      }
 
-
-
-    function getStatusDom(matchStatus, startTime) {
+    function getStatusDom(item) {
+        let matchStatus = item.STAGE_TYPE
+        let startTime = item.START_TIME
         if (matchStatus.toLowerCase() === 'live') {
             return (<Box sx={{ width: '50%', mt: 2 }}>
                 <LinearProgress color="success" />
@@ -376,21 +466,25 @@ const FixtureResults = () => {
         else if (matchStatus.toLowerCase() === 'scheduled') {
             return readableTimeStamp(startTime)
         }
-        else if (matchStatus.toLowerCase() === 'finished') {
-            return (<div className='flex flex-row'><span>Finished</span>
+        // else if (matchStatus.toLowerCase() === 'finished') {
+        //     return (<div className='flex flex-row'><span>Finished</span>
+        //         {readableDate(startTime)}
+        //     </div>)
+        // }
+        else {
+            return (<div className='flex flex-col'><span>{item.STAGE}</span>
                 {readableDate(startTime)}
             </div>)
-        }
-        else {
-            return matchStatus
+
         }
     }
 
     function getRoundAbbreviation(round) {
         if (!round) {
-            return ""
+            return "";
         }
-        round = round.toLowerCase()
+        round = round.toLowerCase();
+        
         const roundMap = {
             'round of 128': 'R128',
             'round of 64': 'R64',
@@ -398,26 +492,33 @@ const FixtureResults = () => {
             'round of 16': 'R16',
             'quarterfinal': 'QF',
             'quarterfinals': 'QF',
+            'Quarter-finals': 'QF',
+            'Semi-finals': 'SF',
             'qualification round 1': 'QR1',
             'qualification round 2': 'QR2',
             'qualification round 3': 'QR3',
             'qualification final round': 'Final Q',
             'semifinals': 'SF',
             'semifinal': 'SF',
-            'final': 'F',
-            'finals': 'F'
+            'final': 'Final',
+            'finals': 'Final',
+            '1/8-finals': 'R16',  // Added 1/8 finals as R16
+            '1/16-finals': 'R32', // Added 1/16 finals as R32
+            '1/32-finals': 'R64', // Added 1/32 finals as R64
+            '1/64-finals': 'R128' // Added 1/64 finals as R128
         };
-
+    
         const lowerCaseRound = round.toLowerCase();
         for (const [key, value] of Object.entries(roundMap)) {
             if (key.toLowerCase() === lowerCaseRound) {
                 return value;
             }
         }
-
+    
         // Default case if the round is not found
         return '';
     }
+    
 
     function getPlayerDom(item, tournamentName) {
         try {
@@ -431,12 +532,14 @@ const FixtureResults = () => {
                         <div key={item.id} className="flex space-x-2 w-full h-full flex-row items-center">
                             <div className="h-full flex items-center"><CountryIcon countryName={item['HOME_PARTICIPANT_COUNTRY_NAME_ONE']} name={p1.country?.name} size={15} /></div>
                             <div className="h-full flex items-center">{p1}</div>
+                            {/* <img src={item.HOME_IMAGES[0]} height="20px" width="20px"/> */}
                             {item.SERVICE === 1 && item.STAGE_TYPE.toLowerCase() === 'live' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                             {item.WINNER === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                         </div>
                         <div key={item.id} className="space-x-2 h-full flex flex-row items-center">
                             <div className="h-full flex items-center"><CountryIcon countryName={item['AWAY_PARTICIPANT_COUNTRY_NAME_ONE']} name={p2.country?.name} size={15} /></div>
                             <div className="h-full flex items-center">{p2}</div>
+                            {/* <img src={item.AWAY_IMAGES[0]} height="20px" width="20px"/> */}
                             {item.SERVICE === 2 && item.STAGE_TYPE.toLowerCase() === 'live' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                             {item.WINNER === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                         </div>
@@ -459,6 +562,10 @@ const FixtureResults = () => {
                                 <div className='w-full flex flex-row space-x-2'>
                                     <span><CountryIcon countryName={item['HOME_PARTICIPANT_COUNTRY_NAME_TWO']} name={p1b.country?.name} size={15} /></span>
                                     <span>{p1b}</span>
+                                    {item.SERVICE === 1 && item.STAGE_TYPE.toLowerCase() === 'live' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                    {item.WINNER === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+
                                 </div>
                             </div>
                         </div>
@@ -471,8 +578,13 @@ const FixtureResults = () => {
                                 <div className='w-full flex flex-row space-x-2 items-center'>
                                     <span><CountryIcon countryName={item['AWAY_PARTICIPANT_COUNTRY_NAME_TWO']} name={p2b.country?.name} size={15} /></span>
                                     <span>{p2b}</span>
+                                    {item.SERVICE === 2 && item.STAGE_TYPE.toLowerCase() === 'live' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                    {item.WINNER === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
                                 </div>
+
                             </div>
+
                         </div>
                     </div>
                 );
@@ -512,16 +624,16 @@ const FixtureResults = () => {
                 // if (matchStatusList.includes(item.STAGE_TYPE.toLowerCase())) {
                 if (hasIndian(item)) {
 
-                    objDom = (<div className="flex flex-row w-full h-full text-sm space-x-4 sm:space-x-8">
+                    objDom = (<div className="flex flex-row w-full h-full text-sm space-x-4 sm:space-x-8 m-1 border bg-blue-100">
                         <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
-                            <span className="text-xs">{item?.ROUND} </span>
-                            <span className="text-xs w-full flex justify-center">{getStatusDom(item.STAGE_TYPE, item.START_TIME)}</span>
+                            <span className="text-xs">{getRoundAbbreviation(item?.ROUND)} </span>
+                            <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
                         </div>
                         <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom(item, tournament_name)}
                         </div>
 
-                        <div className='w-[20%] bg-slate-100'>{item?.status?.type !== "notstarted" && formatTennisScoreDom(item)}</div>
+                        <div className='w-[20%] bg-slate-100'>{item?.STAGE_TYPE !== "SCHEDULED" && formatTennisScoreDom(item)}</div>
                     </div>
                     )
                     return objDom
@@ -641,7 +753,7 @@ const FixtureResults = () => {
             )
         }
         else {
-            return "NO RESULT"
+            return <NotFound msg="No Results Found" />
         }
     }
 

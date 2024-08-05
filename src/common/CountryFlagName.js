@@ -198,7 +198,8 @@ const countryIdToCode = {
     "Vietnam": "VN",
     "Yemen": "YE",
     "Zambia": "ZM",
-    "Zimbabwe": "ZW"
+    "Zimbabwe": "ZW",
+    "World":"RU"
 };
 
 const CountryIcon = ({ countryName, name, size = 64 }) => {

@@ -39,7 +39,7 @@ const DatePagination = (props) => {
             <IconButton onClick={props.handleNext}>
                 <ArrowForwardIos />
             </IconButton>
-            <Box sx={{ width: '5%', textAlign: 'center' }}>
+            {/* <Box sx={{ width: '5%', textAlign: 'center' }}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                         value={props.selectedDate}
@@ -50,7 +50,7 @@ const DatePagination = (props) => {
                         inputFormat="dd-MMM-yyyy"
                     />
                 </LocalizationProvider>
-            </Box>
+            </Box> */}
         </Box>
     );
 };
