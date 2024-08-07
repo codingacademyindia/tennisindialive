@@ -19,7 +19,8 @@ import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import CountryIcon from '../common/CountryFlagName';
 import CountryAutocomplete from '../common/CountryAutoComplete'
 import DatePagination from '../pagination/DatePagination';
-
+import MatchStats from '../common/dialogs/MatchStats';
+import useApiCall from '../common/apiCalls/useApiCall';
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -47,12 +48,23 @@ const CustomFormControl = styled(FormControl)({
 
 const TOURNAMENT_NAME = ''
 
+const HEADERS = {
+    'x-rapidapi-key': 'a26a45b260mshdc356af23e2935cp19491fjsn52a1e9b7db18',
+    'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
+}
 
 const FixtureResults = () => {
+
     const formatDate = (date) => dayjs(date).format('DD-MMM'); // Format date as DD-MMM
     document.title = "Tennis India Live - Live Scores and Results"
+
+
     let params = useParams();
+
     let day, month, year
+
+    const { data, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
+
     if (Object.keys(params).length === 0) {
         const date = new Date();
 
@@ -90,6 +102,16 @@ const FixtureResults = () => {
     const [page, setPage] = useState(5);
     const [dates, setDates] = useState([]);
     const [buttonText, setButtonText] = useState(`${formatDateToDayMonth(day, month, year)}`)
+    const [openMatchStat, setOpenMatchStat] = React.useState(false);
+    const [eventId, setEventId] = React.useState(0);
+
+    const handleClickOpenMatchStat = (id) => {
+        setEventId(id)
+        setOpenMatchStat(true);
+    };
+    const handleCloseMatchStat = () => {
+        setOpenMatchStat(false);
+    };
     // const [selectedDate, setSelectedDate] = useState(new Date());
 
 
@@ -159,10 +181,10 @@ const FixtureResults = () => {
         }
     };
     const handleCountryChange = (newCountryCode) => {
-        if (!newCountryCode.includes('russian')){
-        setSelectedCountry(newCountryCode);
+        if (!newCountryCode.includes('russian')) {
+            setSelectedCountry(newCountryCode);
         }
-        else{
+        else {
             setSelectedCountry("world")
         }
     };
@@ -182,7 +204,7 @@ const FixtureResults = () => {
 
     const handleStatusButtonClick = (event) => {
         setMatchStatus(event.target.innerText.toLowerCase())
-        if(event.target.innerText.toLowerCase()==='live'){
+        if (event.target.innerText.toLowerCase() === 'live') {
             setOffset(0)
         }
 
@@ -223,10 +245,7 @@ const FixtureResults = () => {
                 method: 'GET',
                 url: `https://flashlive-sports.p.rapidapi.com/v1/events/list`,
                 params: { "locale": "en_INT", "sport_id": "2", "timezone": "-4", "indent_days": offset },
-                headers: {
-                    'x-rapidapi-key': 'a26a45b260mshdc356af23e2935cp19491fjsn52a1e9b7db18',
-                    'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
-                }
+                headers: HEADERS
             };
             try {
                 const response = await axios.request(options);
@@ -271,28 +290,26 @@ const FixtureResults = () => {
 
     }, [matchStatus, selectedCountry, rankingsData]);
 
-    // useEffect(() => {
-    //     let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
-    //     let filterByCountry
-    //     if (selectedCountry !== '') {
-    //         filterByCountry = filterDataByCountry(rankingsDataCopy)
-    //     }
-    //     else {
-    //         filterByCountry = rankingsDataCopy
-    //     }
-    //     let filterByStatus = filterDataByStatus(filterByCountry, matchStatusList)
-    //     setFilteredData(filterByStatus)
-
-    // }, [matchStatusList, selectedCountry]);
+    //
 
 
+    useEffect(() => {
+        if (openMatchStat) {
+            const options = {
+                method: 'GET',
+                url: 'https://flashlive-sports.p.rapidapi.com/v1/events/statistics',
+                params: {
+                    event_id: eventId,
+                    locale: 'en_INT'
+                },
+                headers: HEADERS
+            };
+            fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS, params: options.params })
 
-    // useEffect(() => {
-    //     filterDataByCountry()
-    //     setLoading(false)
+        }
 
 
-    // }, [selectedCountry]);
+    }, [eventId]);
 
 
     // function formatTennisScoreDom(item) {
@@ -376,89 +393,89 @@ const FixtureResults = () => {
     function formatTennisScoreDom(item) {
         // Extract the sets' scores
         const homeScores = [
-          item.HOME_SCORE_PART_1 || '',
-          item.HOME_SCORE_PART_2 || '',
-          item.HOME_SCORE_PART_3 || '',
-          item.HOME_SCORE_PART_4 || '',
-          item.HOME_SCORE_PART_5 || '',
+            item.HOME_SCORE_PART_1 || '',
+            item.HOME_SCORE_PART_2 || '',
+            item.HOME_SCORE_PART_3 || '',
+            item.HOME_SCORE_PART_4 || '',
+            item.HOME_SCORE_PART_5 || '',
         ];
-      
+
         const awayScores = [
-          item.AWAY_SCORE_PART_1 || '',
-          item.AWAY_SCORE_PART_2 || '',
-          item.AWAY_SCORE_PART_3 || '',
-          item.AWAY_SCORE_PART_4 || '',
-          item.AWAY_SCORE_PART_5 || '',
+            item.AWAY_SCORE_PART_1 || '',
+            item.AWAY_SCORE_PART_2 || '',
+            item.AWAY_SCORE_PART_3 || '',
+            item.AWAY_SCORE_PART_4 || '',
+            item.AWAY_SCORE_PART_5 || '',
         ];
-      
+
         // Handle tiebreak scores if present
         const homeTiebreaks = [
-          item['HOME_TIEBREAK_PART_1'] || '',
-          item['HOME_TIEBREAK_PART_2'] || '',
-          item['HOME_TIEBREAK_PART_3'] || '',
-          item['HOME_TIEBREAK_PART_4'] || '',
-          item['HOME_TIEBREAK_PART_5'] || '',
+            item['HOME_TIEBREAK_PART_1'] || '',
+            item['HOME_TIEBREAK_PART_2'] || '',
+            item['HOME_TIEBREAK_PART_3'] || '',
+            item['HOME_TIEBREAK_PART_4'] || '',
+            item['HOME_TIEBREAK_PART_5'] || '',
         ];
-      
+
         const awayTiebreaks = [
-          item['AWAY_TIEBREAK_PART_1'] || '',
-          item['AWAY_TIEBREAK_PART_2'] || '',
-          item['AWAY_TIEBREAK_PART_3'] || '',
-          item['AWAY_TIEBREAK_PART_4'] || '',
-          item['AWAY_TIEBREAK_PART_5'] || '',
+            item['AWAY_TIEBREAK_PART_1'] || '',
+            item['AWAY_TIEBREAK_PART_2'] || '',
+            item['AWAY_TIEBREAK_PART_3'] || '',
+            item['AWAY_TIEBREAK_PART_4'] || '',
+            item['AWAY_TIEBREAK_PART_5'] || '',
         ];
-      
+
         // Format the scores
         const formattedHomeScores = [];
         const formattedAwayScores = [];
-      
+
         for (let i = 0; i < homeScores.length; i++) {
-          if (homeTiebreaks[i] && awayTiebreaks[i]) {
-            formattedHomeScores.push(
-              <span key={`homePeriod${i + 1}`}>
-                {homeScores[i]}
-                <sup className="font-bold">{homeTiebreaks[i]}</sup>
-              </span>
-            );
-            formattedAwayScores.push(
-              <span key={`awayPeriod${i + 1}`}>
-                {awayScores[i]}
-                <sup className="font-bold">{awayTiebreaks[i]}</sup>
-              </span>
-            );
-          } else {
-            formattedHomeScores.push(<span key={`homePeriod${i + 1}`}>{homeScores[i]}</span>);
-            formattedAwayScores.push(<span key={`awayPeriod${i + 1}`}>{awayScores[i]}</span>);
-          }
+            if (homeTiebreaks[i] && awayTiebreaks[i]) {
+                formattedHomeScores.push(
+                    <span key={`homePeriod${i + 1}`}>
+                        {homeScores[i]}
+                        <sup className="font-bold">{homeTiebreaks[i]}</sup>
+                    </span>
+                );
+                formattedAwayScores.push(
+                    <span key={`awayPeriod${i + 1}`}>
+                        {awayScores[i]}
+                        <sup className="font-bold">{awayTiebreaks[i]}</sup>
+                    </span>
+                );
+            } else {
+                formattedHomeScores.push(<span key={`homePeriod${i + 1}`}>{homeScores[i]}</span>);
+                formattedAwayScores.push(<span key={`awayPeriod${i + 1}`}>{awayScores[i]}</span>);
+            }
         }
-      
+
         let currentStatus = item.STAGE_TYPE ? item.STAGE_TYPE.toLowerCase() : '';
-      
+
         return (
-          <div className="flex flex-col h-full w-full items-center justify-center">
-            <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm border-b-2 border-slate-200">
-              {formattedHomeScores.map((score, index) => (
-                <div className="w-[20%] p-1" key={index}>
-                  {score}
+            <div className="flex flex-col h-full w-full items-center justify-center">
+                <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm border-b-2 border-slate-200">
+                    {formattedHomeScores.map((score, index) => (
+                        <div className="w-[20%] p-1" key={index}>
+                            {score}
+                        </div>
+                    ))}
+                    {currentStatus === 'live' && (
+                        <span className="border text-green-800 p-1 font-bold">{item?.HOME_SCORE_PART_GAME}</span>
+                    )}
                 </div>
-              ))}
-              {currentStatus === 'live' && (
-                <span className="border text-green-800 p-1 font-bold">{item?.HOME_SCORE_PART_GAME}</span>
-              )}
-            </div>
-            <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm">
-              {formattedAwayScores.map((score, index) => (
-                <div className="w-[20%] p-1" key={index}>
-                  {score}
+                <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm">
+                    {formattedAwayScores.map((score, index) => (
+                        <div className="w-[20%] p-1" key={index}>
+                            {score}
+                        </div>
+                    ))}
+                    {currentStatus === 'live' && (
+                        <span className="border text-green-800 p-1 font-bold">{item?.AWAY_SCORE_PART_GAME}</span>
+                    )}
                 </div>
-              ))}
-              {currentStatus === 'live' && (
-                <span className="border text-green-800 p-1 font-bold">{item?.AWAY_SCORE_PART_GAME}</span>
-              )}
             </div>
-          </div>
         );
-      }
+    }
 
     function getStatusDom(item) {
         let matchStatus = item.STAGE_TYPE
@@ -489,7 +506,7 @@ const FixtureResults = () => {
             return "";
         }
         round = round.toLowerCase();
-        
+
         const roundMap = {
             'round of 128': 'R128',
             'round of 64': 'R64',
@@ -512,18 +529,18 @@ const FixtureResults = () => {
             '1/32-finals': 'R64', // Added 1/32 finals as R64
             '1/64-finals': 'R128' // Added 1/64 finals as R128
         };
-    
+
         const lowerCaseRound = round.toLowerCase();
         for (const [key, value] of Object.entries(roundMap)) {
             if (key.toLowerCase() === lowerCaseRound) {
                 return value;
             }
         }
-    
+
         // Default case if the round is not found
         return '';
     }
-    
+
 
     function getPlayerDom(item, tournamentName) {
         try {
@@ -631,6 +648,7 @@ const FixtureResults = () => {
 
                     objDom = (<div className="flex flex-row w-full h-full text-sm space-x-4 sm:space-x-8 m-1 border bg-blue-100">
                         <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
+                            <button onClick={(e)=>handleClickOpenMatchStat(item.EVENT_ID)}>Stats</button>
                             <span className="text-xs">{getRoundAbbreviation(item?.ROUND)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
                         </div>
@@ -849,16 +867,17 @@ const FixtureResults = () => {
         const startDate = currentDate.subtract(7, 'day');
         const endDate = currentDate.add(7, 'day');
         let dates = [];
-    
+
         for (let date = startDate; date.isBefore(endDate) || date.isSame(endDate, 'day'); date = date.add(1, 'day')) {
             dates.push(formatDate(date));
         }
-    
+
         return dates;
     };
     console.log(offset)
     return (
         <div>
+            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} />
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}
                 {/* <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} /> */}
