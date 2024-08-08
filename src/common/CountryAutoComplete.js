@@ -31,24 +31,25 @@ const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
       )}
       renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
       size="small"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          color: 'white',
-        },
-        '& .MuiInputLabel-root': {
-          color: 'white',
-        },
-        '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'white',
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'white',
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'white',
-        },
-        width:200
-      }}
+      sx={{width:200}}
+      // sx={{
+      //   '& .MuiOutlinedInput-root': {
+      //     color: 'white',
+      //   },
+      //   '& .MuiInputLabel-root': {
+      //     color: 'white',
+      //   },
+      //   '& .MuiOutlinedInput-notchedOutline': {
+      //     borderColor: 'white',
+      //   },
+      //   '&:hover .MuiOutlinedInput-notchedOutline': {
+      //     borderColor: 'white',
+      //   },
+      //   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      //     borderColor: 'white',
+      //   },
+      //   width:200
+      // }}
     />
   );
 };

@@ -17,6 +17,8 @@ import IconButton from '@mui/material/IconButton';
 import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
+import CountryAutocomplete from '../common/CountryAutoComplete'
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -44,7 +46,7 @@ const CustomFormControl = styled(FormControl)({
 const tournamentName = ''
 
 const FixtureResults = () => {
-    document.title="Tennis India Live - Live Scores and Results"
+    document.title = "Tennis India Live - Live Scores and Results"
     let params = useParams();
     let day, month, year
     if (Object.keys(params).length === 0) {
@@ -151,6 +153,7 @@ const FixtureResults = () => {
     useEffect(() => {
         const fetchRankings = async () => {
             setLoading(true);
+            setError("")
             const options = {
                 method: 'GET',
                 url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
@@ -348,7 +351,7 @@ const FixtureResults = () => {
         if (!round) {
             return ""
         }
-        round=round.toLowerCase()
+        round = round.toLowerCase()
         const roundMap = {
             'round of 128': 'R128',
             'round of 64': 'R64',
@@ -396,7 +399,60 @@ const FixtureResults = () => {
         )
     }
 
-    function getPlayerDom1(item) {
+    // function getFullName(name, slug) {
+    //     // Split the input name to get last name and initial
+    //     const nameParts = name.split(' ');
+    //     const lastName = nameParts[0];
+    //     const initial = nameParts[1].replace('.', ''); // Remove the period from the initial
+    
+    //     // Split the slug to get potential names
+    //     const slugParts = slug.split('-');
+    
+    //     // Check if last_name is part of the slug_parts
+    //     if (slugParts.some(part => part.toLowerCase() === lastName.toLowerCase())) {
+    //         // Remove last_name from the slug_parts
+    //         const firstNameParts = slugParts.filter(part => part.toLowerCase() !== lastName.toLowerCase());
+    
+    //         // Combine the initial with the remaining parts to form the first name
+    //         const firstName = firstNameParts.join(' ');
+    
+    //         // Construct the full name
+    //         const fullName = `${firstName} ${lastName}`;
+    //         return fullName;
+    //     } else {
+    //         return "Name not matched in slug";
+    //     }
+    // }
+    function capitalize(str) {
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    }
+    
+    
+    function getFullName(name, slug) {
+        // Split the input name to get last name and initial
+        const nameParts = name.split(' ');
+        const lastName = nameParts[0];
+        const initial = nameParts[1].replace('.', ''); // Remove the period from the initial
+    
+        // Split the slug to get potential names
+        const slugParts = slug.split('-');
+    
+        // Check if last_name is part of the slug_parts
+        if (slugParts.some(part => part.toLowerCase() === lastName.toLowerCase())) {
+            // Remove last_name from the slug_parts
+            const firstNameParts = slugParts.filter(part => part.toLowerCase() !== lastName.toLowerCase());
+    
+            // Combine the initial with the remaining parts to form the first name
+            const firstName = firstNameParts.join(' ');
+    
+            // Construct the full name
+            const fullName = `${capitalize(firstName)} ${capitalize(lastName)}`;
+            return fullName;
+        } else {
+            return "Name not matched in slug";
+        }
+    }
+    function    getPlayerDom1(item) {
 
         try {
             let p1 = item['homeTeam']
@@ -409,17 +465,17 @@ const FixtureResults = () => {
                         (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
                         (p2.country && p2.country.name.toLowerCase() === selectedCountry)
                     ) && matchStatusList.includes(item?.status?.type)) {
-                        return (<div className='flex flex-col w-full h-full border'>
-                            <div key={item.id} className="flex space-x-2 w-full h-full flex-row items-center  ">
+                        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
+                            <div  className="flex space-x-2 w-full h-full flex-row items-center  ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-                                <div className="h-full flex items-center ">{p1.name}</div>
+                                <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
                                 {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                             </div>
                             <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2?.name} size={15} /></div>
-                                <div className="h-full flex items-center">{p2.name}</div>
+                                <div className="h-full flex items-center">{getFullName(p2.name, p2.slug)}</div>
                                 {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                             </div>
@@ -439,18 +495,18 @@ const FixtureResults = () => {
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
                     if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
-                        return (<div>
+                        return (<div key={`${item.id}-${uniqueTournament}`}> 
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                                        <span>{p1a.name}</span>
+                                        <span>{getFullName(p1a.name, p1a.slug)}</span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2'>
                                         <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                                        <span>{p1b.name}</span>
+                                        <span>{getFullName(p1b.name, p1b.slug)}</span>
                                         {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                    {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                        {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                                     </div>
 
@@ -460,13 +516,13 @@ const FixtureResults = () => {
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
-                                        <span>{p2a.name}</span>
+                                        <span>{getFullName(p2a.name, p2a.slug)}</span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
-                                        <span>{p2b.name}</span>
+                                        <span>{getFullName(p2b.name, p2b.slug)}</span>
                                         {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                    {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                                        {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                                     </div>
 
@@ -620,19 +676,19 @@ const FixtureResults = () => {
 
     function getScoreHeader(tournament) {
         let seasonName = rankingsData[tournament][0]?.season?.name
-        let  name= rankingsData[tournament][0]?.tournament?.name
+        let name = rankingsData[tournament][0]?.tournament?.name
         if (seasonName) {
             if (seasonName.includes("Men")) {
                 return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
-                    <span>{name} </span>
-                    <FcBusinessman />
+                    <span>{seasonName} </span>
+                    {/* <FcBusinessman /> */}
                 </div>
                 )
             }
             else {
                 return (<div className="flex flex-row bg-pink-300 text-lg items-center p-1">
-                    <span>{name} </span>
-                    <FcBusinesswoman />
+                    <span>{seasonName} </span>
+                    {/* <FcBusinesswoman /> */}
                 </div>
                 )
 
@@ -735,10 +791,10 @@ const FixtureResults = () => {
 
                 {/* {getStatusButtons()} */}
                 <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
-                {/* <CountryAutocomplete
+                <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
-                /> */}
+                />
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
             </div>
             {error && <p>Error: {error}</p>}
