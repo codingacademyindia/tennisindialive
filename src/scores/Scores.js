@@ -339,12 +339,14 @@ const FixtureResults = () => {
         else if (item?.status?.type === 'notstarted') {
             return readableTimeStamp(item.startTimestamp)
         }
-        else if (item?.status?.type === 'finished') {
-            return "Finished"
-        }
         else {
-            return item?.status?.type
+            return (<div className='flex flex-col'>
+
+                {readableDate(item.startTimestamp)}
+                <span>Ended</span>
+            </div>)
         }
+
     }
 
     function getRoundAbbreviation(round) {
@@ -404,18 +406,18 @@ const FixtureResults = () => {
     //     const nameParts = name.split(' ');
     //     const lastName = nameParts[0];
     //     const initial = nameParts[1].replace('.', ''); // Remove the period from the initial
-    
+
     //     // Split the slug to get potential names
     //     const slugParts = slug.split('-');
-    
+
     //     // Check if last_name is part of the slug_parts
     //     if (slugParts.some(part => part.toLowerCase() === lastName.toLowerCase())) {
     //         // Remove last_name from the slug_parts
     //         const firstNameParts = slugParts.filter(part => part.toLowerCase() !== lastName.toLowerCase());
-    
+
     //         // Combine the initial with the remaining parts to form the first name
     //         const firstName = firstNameParts.join(' ');
-    
+
     //         // Construct the full name
     //         const fullName = `${firstName} ${lastName}`;
     //         return fullName;
@@ -426,33 +428,35 @@ const FixtureResults = () => {
     function capitalize(str) {
         return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
-    
-    
+    function removeLastTwoCharacters(str) {
+        if (str.length <= 2) {
+            return ''; // If the string length is 2 or less, return an empty string
+        }
+        return str.slice(0, -2).trim(); // Remove the last two characters
+    }
     function getFullName(name, slug) {
         // Split the input name to get last name and initial
-        const nameParts = name.split(' ');
-        const lastName = nameParts[0];
-        const initial = nameParts[1].replace('.', ''); // Remove the period from the initial
-    
-        // Split the slug to get potential names
-        const slugParts = slug.split('-');
-    
-        // Check if last_name is part of the slug_parts
-        if (slugParts.some(part => part.toLowerCase() === lastName.toLowerCase())) {
-            // Remove last_name from the slug_parts
-            const firstNameParts = slugParts.filter(part => part.toLowerCase() !== lastName.toLowerCase());
-    
-            // Combine the initial with the remaining parts to form the first name
-            const firstName = firstNameParts.join(' ');
-    
-            // Construct the full name
-            const fullName = `${capitalize(firstName)} ${capitalize(lastName)}`;
-            return fullName;
-        } else {
-            return "Name not matched in slug";
+        try {
+            if (slug.includes("almeida")) {
+                let a = 1
+            }
+            const nameParts = name.split(' ');
+            const lastName = removeLastTwoCharacters(name).toLowerCase();
+            // Split the slug to get potential names
+            // const slugParts = slug.replaceAll("-"," ")
+
+            let firstName = slug.replaceAll(lastName.replaceAll(" ", "-"), "").replaceAll("-", " ").trim()
+            const fullName = `${firstName} ${lastName}`;
+            return capitalize(fullName)
+
+            // Check if last_name is part of the slug_parts
+
+        } catch (err) {
+
+            return name
         }
     }
-    function    getPlayerDom1(item) {
+    function getPlayerDom1(item) {
 
         try {
             let p1 = item['homeTeam']
@@ -466,7 +470,7 @@ const FixtureResults = () => {
                         (p2.country && p2.country.name.toLowerCase() === selectedCountry)
                     ) && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
-                            <div  className="flex space-x-2 w-full h-full flex-row items-center  ">
+                            <div className="flex space-x-2 w-full h-full flex-row items-center  ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
                                 <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
                                 {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
@@ -495,7 +499,7 @@ const FixtureResults = () => {
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
                     if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
-                        return (<div key={`${item.id}-${uniqueTournament}`}> 
+                        return (<div key={`${item.id}-${uniqueTournament}`}>
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
@@ -571,7 +575,7 @@ const FixtureResults = () => {
                     // </div>)
                     objDom = (<div className="flex flex-row w-full h-full text-sm space-x-4 sm:space-x-8">
                         <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
-                            <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
+                            <span className="text-sm">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
                         </div>
                         <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
@@ -673,6 +677,20 @@ const FixtureResults = () => {
         const formattedDate = `${day}-${month} ${hours}:${minutesStr} ${ampm}`;
         return formattedDate;
     }
+
+    function readableDate(timestamp) {
+        // Convert to milliseconds (JavaScript timestamps are in milliseconds)
+        const date = new Date(timestamp * 1000);
+
+        // Get date components
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'short' }); // 'default' locale, short month format
+        const year = date.getFullYear();
+
+        const formattedDate = `${day}-${month}`;
+        return formattedDate;
+    }
+
 
     function getScoreHeader(tournament) {
         let seasonName = rankingsData[tournament][0]?.season?.name
@@ -791,10 +809,10 @@ const FixtureResults = () => {
 
                 {/* {getStatusButtons()} */}
                 <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
-                <CountryAutocomplete
+                {/* <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
-                />
+                /> */}
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
             </div>
             {error && <p>Error: {error}</p>}
