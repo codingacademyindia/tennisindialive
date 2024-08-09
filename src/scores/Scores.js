@@ -19,8 +19,9 @@ import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import CountryAutocomplete from '../common/CountryAutoComplete'
 import { RiCalendarScheduleFill } from "react-icons/ri";
-import { AiOutlineSchedule  } from "react-icons/ai";
-
+import { AiOutlineSchedule } from "react-icons/ai";
+import MatchStats from '../common/dialogs/MatchStats';
+import useApiCall from '../common/apiCalls/useApiCall';
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -45,6 +46,10 @@ const CustomFormControl = styled(FormControl)({
     },
 });
 
+const HEADERS = {
+    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
+    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
+}
 const tournamentName = ''
 
 const FixtureResults = () => {
@@ -74,7 +79,17 @@ const FixtureResults = () => {
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "cancelled", "finished"]);
     const [selectedCountry, setSelectedCountry] = useState('india');
     const [indianCount, setIndianCount] = useState(0);
+    const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
+    const [openMatchStat, setOpenMatchStat] = React.useState(false);
+    const [eventId, setEventId] = React.useState(0);
 
+    const handleClickOpenMatchStat = (id) => {
+        setEventId(id)
+        setOpenMatchStat(true);
+    };
+    const handleCloseMatchStat = () => {
+        setOpenMatchStat(false);
+    };
     const handleCountryChange = (newCountryCode) => {
         setSelectedCountry(newCountryCode);
     };
@@ -159,10 +174,7 @@ const FixtureResults = () => {
             const options = {
                 method: 'GET',
                 url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
-                headers: {
-                    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-                }
+                headers: HEADERS
             };
             try {
                 const response = await axios.request(options);
@@ -190,6 +202,20 @@ const FixtureResults = () => {
     }, [matchStatus]);
 
 
+
+    useEffect(() => {
+        if (openMatchStat) {
+            const options = {
+                method: 'GET',
+                url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`,
+                headers: HEADERS
+            };
+            fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+
+        }
+
+
+    }, [eventId]);
 
     // function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
     //     // Extract the sets' scores
@@ -341,7 +367,7 @@ const FixtureResults = () => {
         else if (item?.status?.type === 'notstarted') {
             return (<div className='flex flex-row items-center'>
                 {readableTimeStamp(item.startTimestamp)}
-                
+
             </div>)
         }
         else {
@@ -434,21 +460,11 @@ const FixtureResults = () => {
         return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
     function removeLastTwoCharacters(str) {
-        let textToReplace=getTextAfterLastSpace(str)
+        let textToReplace = getTextAfterLastSpace(str)
         return str.replace(textToReplace, "").trim()
     }
 
-    function replaceLastNameInSlug(name, slug) {
-        // Normalize the name and slug by removing diacritics and converting to lowercase
-        const normalizedLastName = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ')[0].toLowerCase();
-        const normalizedSlug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    
-        // Replace the last name in the slug
-        const firstName = normalizedSlug.replace(normalizedLastName, '').replace('-', ' ').trim();
-    
-        // Capitalize the first name and return the full name
-        return `${capitalize(firstName)} ${name.split(' ')[0]}`;
-    }
+
 
     function getTextAfterLastSpace(str) {
         const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
@@ -465,7 +481,7 @@ const FixtureResults = () => {
             const lastName = removeLastTwoCharacters(name).toLowerCase();
             // Split the slug to get potential names
             // const slugParts = slug.replaceAll("-"," ")
-            const normalizedLastName=lastName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            const normalizedLastName = lastName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
             const normalizedSlug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 
@@ -489,9 +505,9 @@ const FixtureResults = () => {
             const uniqueTournament = item.tournament.uniqueTournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-                    if ((
-                        (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
-                        (p2.country && p2.country.name.toLowerCase() === selectedCountry)
+                    if ((selectedCountry === '' ||
+                        ((p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
+                            (p2.country && p2.country.name.toLowerCase() === selectedCountry))
                     ) && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
                             <div className="flex space-x-2 w-full h-full flex-row items-center  ">
@@ -522,7 +538,7 @@ const FixtureResults = () => {
                         (p1a.country) ? p2a.country.name.toLowerCase() : null,
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
-                    if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
+                    if ((countries.includes(selectedCountry) || selectedCountry === '') && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`}>
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
@@ -601,6 +617,7 @@ const FixtureResults = () => {
                         <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
                             <span className="text-sm">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
+                            <span className="text-xs w-full flex justify-center"><button onClick={(e) => handleClickOpenMatchStat(item.id)}>Stats</button></span>
                         </div>
                         <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom1(item)}
@@ -631,9 +648,9 @@ const FixtureResults = () => {
             const uniqueTournament = item.tournament.uniqueTournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-                    if ((
-                        (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
-                        (p2.country && p2.country.name.toLowerCase() === selectedCountry)
+                    if ((selectedCountry === '' ||
+                        ((p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
+                            (p2.country && p2.country.name.toLowerCase() === selectedCountry))
                     ) && matchStatusList.includes(item?.status?.type)) {
                         return true
 
@@ -649,7 +666,7 @@ const FixtureResults = () => {
                         (p1a.country) ? p2a.country.name.toLowerCase() : null,
                         (p1a.country) ? p2b.country.name.toLowerCase() : null
                     ];
-                    if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
+                    if ((selectedCountry === '' || countries.includes(selectedCountry)) && matchStatusList.includes(item?.status?.type)) {
                         return true
                     }
                 }
@@ -826,6 +843,8 @@ const FixtureResults = () => {
 
     return (
         <div>
+            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} data={matchStatsData}/>
+
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}
                 <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
@@ -833,10 +852,10 @@ const FixtureResults = () => {
 
                 {/* {getStatusButtons()} */}
                 <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
-                {/* <CountryAutocomplete
+                <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
-                /> */}
+                />
                 <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
             </div>
             {error && <p>Error: {error}</p>}
