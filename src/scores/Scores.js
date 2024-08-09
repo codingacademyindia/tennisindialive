@@ -82,10 +82,13 @@ const FixtureResults = () => {
     const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
     const [openMatchStat, setOpenMatchStat] = React.useState(false);
     const [eventId, setEventId] = React.useState(0);
+    const [scoreRecord, setScoreRecord] = React.useState(null);
 
-    const handleClickOpenMatchStat = (id) => {
-        setEventId(id)
+    const handleClickOpenMatchStat = (item) => {
+        setEventId(item.id)
+        setScoreRecord(item)
         setOpenMatchStat(true);
+
     };
     const handleCloseMatchStat = () => {
         setOpenMatchStat(false);
@@ -617,7 +620,7 @@ const FixtureResults = () => {
                         <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
                             <span className="text-sm">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
-                            <span className="text-xs w-full flex justify-center"><button onClick={(e) => handleClickOpenMatchStat(item.id)}>Stats</button></span>
+                            <span className="text-xs w-full flex justify-center">{item?.status?.type !== "notstarted" && <button onClick={(e) => handleClickOpenMatchStat(item)}>Stats</button>}</span>
                         </div>
                         <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom1(item)}
@@ -843,7 +846,9 @@ const FixtureResults = () => {
 
     return (
         <div>
-            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} data={matchStatsData}/>
+            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} data={matchStatsData}
+            scoreRecord={scoreRecord}
+            />
 
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}

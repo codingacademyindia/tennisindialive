@@ -125,6 +125,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
                     variant={matchStatus === "inprogress" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleStatusButtonClick(e)}
+                    size="small"
                 >
                     Live
                 </Button>
@@ -132,6 +133,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
                     variant={matchStatus === "finished" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleStatusButtonClick(e)}
+                    size="small"
                 >
                     Finished
                 </Button>
@@ -139,6 +141,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
                     variant={matchStatus === "notstarted" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleStatusButtonClick(e)}
+                    size="small"
                 >
                     Not Started
                 </Button>
@@ -146,6 +149,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
                     variant={matchStatus === "all" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleStatusButtonClick(e)}
+                    size="small"
                 >
                     All
                 </Button>
