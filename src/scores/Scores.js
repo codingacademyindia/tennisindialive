@@ -18,6 +18,8 @@ import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import CountryAutocomplete from '../common/CountryAutoComplete'
+import { RiCalendarScheduleFill } from "react-icons/ri";
+import { AiOutlineSchedule  } from "react-icons/ai";
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -337,7 +339,10 @@ const FixtureResults = () => {
             </Box>)
         }
         else if (item?.status?.type === 'notstarted') {
-            return readableTimeStamp(item.startTimestamp)
+            return (<div className='flex flex-row items-center'>
+                {readableTimeStamp(item.startTimestamp)}
+                
+            </div>)
         }
         else {
             return (<div className='flex flex-col'>
@@ -429,23 +434,42 @@ const FixtureResults = () => {
         return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
     function removeLastTwoCharacters(str) {
-        if (str.length <= 2) {
-            return ''; // If the string length is 2 or less, return an empty string
-        }
-        return str.slice(0, -2).trim(); // Remove the last two characters
+        let textToReplace=getTextAfterLastSpace(str)
+        return str.replace(textToReplace, "").trim()
     }
+
+    function replaceLastNameInSlug(name, slug) {
+        // Normalize the name and slug by removing diacritics and converting to lowercase
+        const normalizedLastName = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ')[0].toLowerCase();
+        const normalizedSlug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    
+        // Replace the last name in the slug
+        const firstName = normalizedSlug.replace(normalizedLastName, '').replace('-', ' ').trim();
+    
+        // Capitalize the first name and return the full name
+        return `${capitalize(firstName)} ${name.split(' ')[0]}`;
+    }
+
+    function getTextAfterLastSpace(str) {
+        const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
+        return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
+    }
+
     function getFullName(name, slug) {
         // Split the input name to get last name and initial
         try {
-            if (slug.includes("almeida")) {
+            if (slug.includes("mingge")) {
                 let a = 1
             }
             const nameParts = name.split(' ');
             const lastName = removeLastTwoCharacters(name).toLowerCase();
             // Split the slug to get potential names
             // const slugParts = slug.replaceAll("-"," ")
+            const normalizedLastName=lastName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            const normalizedSlug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
-            let firstName = slug.replaceAll(lastName.replaceAll(" ", "-"), "").replaceAll("-", " ").trim()
+
+            let firstName = normalizedSlug.replaceAll(normalizedLastName.replaceAll(" ", "-"), "").replaceAll("-", " ").trim()
             const fullName = `${firstName} ${lastName}`;
             return capitalize(fullName)
 
