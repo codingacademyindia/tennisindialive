@@ -21,6 +21,7 @@ import CountryAutocomplete from '../common/CountryAutoComplete'
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import { AiOutlineSchedule } from "react-icons/ai";
 import MatchStats from '../common/dialogs/MatchStats';
+import Head2Head from '../common/dialogs/HeadToHead';
 import useApiCall from '../common/apiCalls/useApiCall';
 import { IoStatsChartSharp } from "react-icons/io5";
 
@@ -83,7 +84,10 @@ const FixtureResults = () => {
     const [selectedCountry, setSelectedCountry] = useState('india');
     const [indianCount, setIndianCount] = useState(0);
     const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
+    const { data: h2hData, loading: loadingH2H, error: errorH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
+
     const [openMatchStat, setOpenMatchStat] = React.useState(false);
+    const [openH2H, setOpenH2H] = React.useState(false);
     const [eventId, setEventId] = React.useState(0);
     const [scoreRecord, setScoreRecord] = React.useState(null);
 
@@ -91,10 +95,20 @@ const FixtureResults = () => {
         setEventId(item.id)
         setScoreRecord(item)
         setOpenMatchStat(true);
+        
 
     };
+
+    const handleClickOpenH2H = (item) => {
+        setEventId(item.id)
+        setScoreRecord(item)
+        setOpenH2H(true);
+
+    };
+
     const handleCloseMatchStat = () => {
         setOpenMatchStat(false);
+        setOpenH2H(false)
     };
     const handleCountryChange = (newCountryCode) => {
         setSelectedCountry(newCountryCode);
@@ -217,6 +231,20 @@ const FixtureResults = () => {
                 headers: HEADERS
             };
             fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+
+        }
+
+
+    }, [eventId]);
+
+    useEffect(() => {
+        if (openH2H) {
+            const options = {
+                method: 'GET',
+                url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/duel`,
+                headers: HEADERS
+            };
+            fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
 
         }
 
@@ -624,7 +652,11 @@ const FixtureResults = () => {
                             <span className="text-sm">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
                             <span className="text-xs w-full flex justify-center">{item?.status?.type !== "notstarted" && <button onClick={(e) => handleClickOpenMatchStat(item)}>
-                                <IoStatsChartSharp color="green"/></button>}</span>
+                                <IoStatsChartSharp color="green" /></button>}</span>
+                            <span className="text-xs w-full flex justify-center">
+                                <button onClick={(e) => handleClickOpenH2H(item)}>H2H</button>
+                            </span>
+
                         </div>
                         <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom1(item)}
@@ -850,10 +882,15 @@ const FixtureResults = () => {
 
     return (
         <div>
-            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} 
-            loadingStats={loadingStats}
-            data={matchStatsData}
-            scoreRecord={scoreRecord}
+            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat}
+                loadingStats={loadingStats}
+                data={matchStatsData}
+                scoreRecord={scoreRecord}
+            />
+            <Head2Head open={openH2H} handleClose={handleCloseMatchStat}
+                loading={loadingH2H}
+                data={h2hData}
+                scoreRecord={scoreRecord}
             />
 
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
