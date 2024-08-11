@@ -22,6 +22,9 @@ import { RiCalendarScheduleFill } from "react-icons/ri";
 import { AiOutlineSchedule } from "react-icons/ai";
 import MatchStats from '../common/dialogs/MatchStats';
 import useApiCall from '../common/apiCalls/useApiCall';
+import { IoStatsChartSharp } from "react-icons/io5";
+
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -620,7 +623,8 @@ const FixtureResults = () => {
                         <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
                             <span className="text-sm">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                             <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
-                            <span className="text-xs w-full flex justify-center">{item?.status?.type !== "notstarted" && <button onClick={(e) => handleClickOpenMatchStat(item)}>Stats</button>}</span>
+                            <span className="text-xs w-full flex justify-center">{item?.status?.type !== "notstarted" && <button onClick={(e) => handleClickOpenMatchStat(item)}>
+                                <IoStatsChartSharp color="green"/></button>}</span>
                         </div>
                         <div className="flex flex-col min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom1(item)}
@@ -846,7 +850,9 @@ const FixtureResults = () => {
 
     return (
         <div>
-            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} data={matchStatsData}
+            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat} 
+            loadingStats={loadingStats}
+            data={matchStatsData}
             scoreRecord={scoreRecord}
             />
 

@@ -9,7 +9,8 @@ const Loader = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100vh',
+                height: '80vh',
+                width:'50vw'
             }}
         >
             <CircularProgress />
