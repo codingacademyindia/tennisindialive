@@ -44,12 +44,17 @@ const useApiCall = (apiRequest) => {
         }
         else if (request.method === 'post') {
           const response = await axios.post(request.url, request.payload);
-          dispatch({ type: API_SUCCESS, payload: response.data, headers: request.request?request.headers:[] });
+          dispatch({ type: API_SUCCESS, loading: response.loading, payload: response.data, headers: request.request?request.headers:[] });
         }
+        else if (request.method === 'image') {
+          const response = await axios.get(request.url, request.payload);
+          dispatch({ type: API_SUCCESS, loading: response.loading,payload: response.data, headers: request.request?request.headers:[] });
+        }
+
         else if (request.method === 'put') {
           // axios.defaults.headers.post['content-type'] = 'application/json'
           const response = await axios.put(request.url, request.payload);
-          dispatch({ type: API_SUCCESS, payload: response.data,headers: request.headers?request.headers:[] });
+          dispatch({ type: API_SUCCESS, loading: response.loading, payload: response.data,headers: request.headers?request.headers:[] });
         }
         else if (request.method === 'delete') {
           const response = await axios.delete(request.url, request.payload);

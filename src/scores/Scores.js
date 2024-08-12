@@ -92,10 +92,17 @@ const FixtureResults = () => {
     const [scoreRecord, setScoreRecord] = React.useState(null);
 
     const handleClickOpenMatchStat = (item) => {
+
         setEventId(item.id)
         setScoreRecord(item)
         setOpenMatchStat(true);
-        
+        const options = {
+            method: 'GET',
+            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`,
+            headers: HEADERS
+        };
+        fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+
 
     };
 
@@ -103,6 +110,14 @@ const FixtureResults = () => {
         setEventId(item.id)
         setScoreRecord(item)
         setOpenH2H(true);
+        const options = {
+            method: 'GET',
+            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`,
+            headers: HEADERS
+        };
+        fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+
+
 
     };
 
@@ -223,33 +238,33 @@ const FixtureResults = () => {
 
 
 
-    useEffect(() => {
-        if (openMatchStat) {
-            const options = {
-                method: 'GET',
-                url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`,
-                headers: HEADERS
-            };
-            fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+    // useEffect(() => {
+    //     if (openMatchStat) {
+    //         const options = {
+    //             method: 'GET',
+    //             url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`,
+    //             headers: HEADERS
+    //         };
+    //         fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
 
-        }
-
-
-    }, [eventId]);
-
-    useEffect(() => {
-        if (openH2H) {
-            const options = {
-                method: 'GET',
-                url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/duel`,
-                headers: HEADERS
-            };
-            fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
-
-        }
+    //     }
 
 
-    }, [eventId]);
+    // }, [eventId]);
+
+    // useEffect(() => {
+    //     if (openH2H) {
+    //         const options = {
+    //             method: 'GET',
+    //             url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/duel`,
+    //             headers: HEADERS
+    //         };
+    //         fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+
+    //     }
+
+
+    // }, [eventId]);
 
     // function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
     //     // Extract the sets' scores
@@ -886,11 +901,13 @@ const FixtureResults = () => {
                 loadingStats={loadingStats}
                 data={matchStatsData}
                 scoreRecord={scoreRecord}
+                eventId={eventId}
             />
             <Head2Head open={openH2H} handleClose={handleCloseMatchStat}
                 loading={loadingH2H}
                 data={h2hData}
                 scoreRecord={scoreRecord}
+                eventId={eventId}
             />
 
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
