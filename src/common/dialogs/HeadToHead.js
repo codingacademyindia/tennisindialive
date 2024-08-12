@@ -30,6 +30,7 @@ import useApiCall from '../apiCalls/useApiCall';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(1), // Reduced padding
+    overflowX:'hidden'
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
@@ -229,7 +230,11 @@ export default function Head2Head(props) {
   let h2hFieldCss = "bg-blue-200 w-[30%] text-xm font-bold h-full"
   let h2hValueCss = "w-[30%] text-center flex flex-row justify-center "
   function h2hDom() {
-    return (<div className='flex-col w-full h-[20h] flex mx-auto text-center'>
+    let liveRanking1=p1ranking?p1ranking.rankings[1]:null
+    let liveRanking2=p1ranking?p2ranking.rankings[1]:null;
+
+
+    return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden'>
       <div className='w-full'>
         <div className='flex flex-row w-full bg-slate-200 items-center text-sm'>
           <span className='text-center w-[40%] flex justify-center'>{props.scoreRecord && getPlayerDom1(props.scoreRecord['homeTeam'], props.scoreRecord, p1Image)}</span>
@@ -241,14 +246,14 @@ export default function Head2Head(props) {
         </div>
       </div>
       <div className='flex flex-row w-full  border m-1 justify-center text-center'>
-        <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0].ranking : "N/A"}</div>
+        <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div>
         <span className={h2hFieldCss}>Ranking</span>
-        <div className={h2hValueCss}>{p2ranking ? p2ranking.rankings && p2ranking.rankings[0].ranking : "N/A"}</div>
+        <div className={h2hValueCss}>{p2ranking ? p2ranking.rankings && p2ranking.rankings[0]?.ranking : "N/A"}</div>
       </div>
       <div className='flex flex-row w-full border m-1 justify-center'>
-        <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[1].ranking : "NA"}</div>
+        <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && (liveRanking1 ? liveRanking1?.ranking : 'Not available') : "NA"}</div>
         <span className={h2hFieldCss}>Live Ranking</span>
-        <div className={h2hValueCss}>{p2ranking ? p2ranking.rankings && p2ranking.rankings[1].ranking : "N/A"}</div>
+        <div className={h2hValueCss}>{p2ranking ? p2ranking.rankings && (liveRanking2 ? liveRanking2?.ranking : 'Not available') : "N/A"}</div>
       </div>
       {p1Data?.team?.type == 1 && <>
         <div className='flex flex-row w-full border m-1 justify-center'>
@@ -316,7 +321,7 @@ export default function Head2Head(props) {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <div className='w-full'>
+        <div className="w-full overflow-x-hidden">
           {props.loading ? <Loader /> : h2hDom()}
         </div>
       </BootstrapDialog>
