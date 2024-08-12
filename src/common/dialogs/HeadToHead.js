@@ -231,7 +231,7 @@ export default function Head2Head(props) {
   let h2hValueCss = "w-[30%] text-center flex flex-row justify-center "
   function h2hDom() {
     let liveRanking1=p1ranking?p1ranking.rankings[1]:null
-    let liveRanking2=p1ranking?p2ranking.rankings[1]:null;
+    let liveRanking2=p2ranking?p2ranking.rankings[1]:null;
 
 
     return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden'>
