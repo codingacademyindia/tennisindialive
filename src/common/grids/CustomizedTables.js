@@ -47,7 +47,7 @@ export default function CustomizedTables(props) {
               })}
             >
               <StyledTableCell component="th" scope="row">
-                {row.ranking}-{row.id}
+                {row.ranking}
               </StyledTableCell>
               <StyledTableCell align="left">
                 <div className='flex flex-row items-center space-x-2'>

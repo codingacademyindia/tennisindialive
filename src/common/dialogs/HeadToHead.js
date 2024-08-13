@@ -26,11 +26,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import Loader from '../stateHandlers/LoaderState';
 import NotFound from '../stateHandlers/NotFound';
 import useApiCall from '../apiCalls/useApiCall';
+import { CgUnavailable } from "react-icons/cg";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(1), // Reduced padding
-    overflowX:'hidden'
+    overflowX: 'hidden'
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
@@ -131,11 +132,14 @@ export default function Head2Head(props) {
       if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
           <div className="flex flex-col space-x-2 w-full h-full  items-center font-bold ">
-            <img src={pImage} alt="My Image" id="player1" width={"100px"} height={"100px"} />
+            <img src={pImage} alt={getFullName(p1.name, p1.slug)} id="player1" width={"100px"} height={"100px"} />
 
             <div className='flex flex-row items center m-1 space-x-1 items-center'>
-              <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-              <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
+              <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
+              <div className="h-full w-full  flex items-center text-sm">
+                {getFullName(p1.name, p1.slug)}
+              </div>
+
             </div>
           </div>
         </div>
@@ -147,13 +151,13 @@ export default function Head2Head(props) {
         return (<div key={`${item.id}-${uniqueTournament}`}>
           <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
             <div className='w-full flex flex-col'>
-              <div className='w-full flex flex-row space-x-2 items-center'>
+              <div className='w-full flex flex-row space-x-1 items-center'>
                 <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                <span>{getFullName(p1a.name, p1a.slug)}</span>
+                <span className='w-full'>{getFullName(p1a.name, p1a.slug)}</span>
               </div>
-              <div className='w-full flex flex-row space-x-2'>
+              <div className='w-full flex flex-row space-x-1  items-center'>
                 <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                <span>{getFullName(p1b.name, p1b.slug)}</span>
+                <span className='w-full '>{getFullName(p1b.name, p1b.slug)}</span>
 
 
               </div>
@@ -216,82 +220,113 @@ export default function Head2Head(props) {
     return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
   }
 
+  const notAvailableDom=<div  className='bg-slate-300 space-x-2 flex flex-row items-center text-xs'><CgUnavailable/> Not Available</div>
+
   function getPrizeMoney(prizeMoneyDict) {
+    if(prizeMoneyDict){
     return `${prizeMoneyDict.value} ${prizeMoneyDict.currency}`
+    }
+    else{
+      return notAvailableDom
+    }
   }
 
-  function CircleWithNumber( number) {
+  function h2hFieldDom(playerInfo, field) {
+    if (playerInfo) {
+      if (playerInfo[field]) {
+        return playerInfo[field]
+      }
+      else {
+        return notAvailableDom
+      }
+    }
+    else {
+      return notAvailableDom
+    }
+  }
+
+  function CircleWithNumber(number) {
     return (
-      <div className="flex items-center justify-center w-20 h-20 bg-blue-500 text-white font-bold text-xl rounded-full">
+      <div className="flex items-center justify-center w-8 h-8 sm:w-16 sm:h-16 bg-slate-800 text-white font-bold text-lg sm:text-xl rounded-full">
         {number}
       </div>
     );
-  };
+  }
   let h2hFieldCss = "bg-blue-200 w-[30%] text-xm font-bold h-full"
-  let h2hValueCss = "w-[30%] text-center flex flex-row justify-center "
+  let h2hValueCss = "w-[30%] text-center flex flex-row justify-center bg-slate-100 font-bold"
   function h2hDom() {
-    let liveRanking1=p1ranking?p1ranking.rankings[1]:null
-    let liveRanking2=p2ranking?p2ranking.rankings[1]:null;
+    let liveRanking1 = p1ranking ? p1ranking.rankings[1] : null
+    let liveRanking2 = p2ranking ? p2ranking.rankings[1] : null;
+    let currentRanking1 = p1ranking ? p1ranking.rankings[0] : null
+    let currentRanking2 = p2ranking ? p2ranking.rankings[0] : null;
 
 
-    return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden'>
+    return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden text-sm'>
       <div className='w-full'>
         <div className='flex flex-row w-full bg-slate-200 items-center text-sm'>
-          <span className='text-center w-[40%] flex justify-center'>{props.scoreRecord && getPlayerDom1(props.scoreRecord['homeTeam'], props.scoreRecord, p1Image)}</span>
-          <div className="flex flex-row space-x-2">
+          <span className='text-left w-[35%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['homeTeam'], props.scoreRecord, p1Image)}</span>
+          <div className="flex flex-row space-x-2  w-[28%] text-center justify-center">
             {CircleWithNumber(h2hData ? h2hData.homeWins : 0)}
             {CircleWithNumber(h2hData ? h2hData.awayWins : 0)}
-            </div>
-          <span className='text-center w-[40%] flex justify-center'>{props.scoreRecord && getPlayerDom1(props.scoreRecord['awayTeam'], props.scoreRecord, p2Image)}</span>
+          </div>
+          <span className='text-left w-[35%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['awayTeam'], props.scoreRecord, p2Image)}</span>
         </div>
       </div>
       <div className='flex flex-row w-full  border m-1 justify-center text-center'>
-        <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div>
-        <span className={h2hFieldCss}>Ranking</span>
-        <div className={h2hValueCss}>{p2ranking ? p2ranking.rankings && p2ranking.rankings[0]?.ranking : "N/A"}</div>
+        {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+        <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "bestRanking") : notAvailableDom)}</div>
+        <span className={h2hFieldCss}>Career Best Ranking</span>
+        <div className={h2hValueCss}>{(currentRanking2 ? h2hFieldDom(currentRanking2, "bestRanking") : notAvailableDom)}</div>
+      </div>
+
+      <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+        {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+        <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
+        <span className={h2hFieldCss}>Actual Ranking</span>
+        <div className={h2hValueCss}>{(currentRanking2 ? h2hFieldDom(currentRanking2, "ranking") : notAvailableDom)}</div>
       </div>
       <div className='flex flex-row w-full border m-1 justify-center'>
-        <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && (liveRanking1 ? liveRanking1?.ranking : 'Not available') : "NA"}</div>
+        <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
         <span className={h2hFieldCss}>Live Ranking</span>
-        <div className={h2hValueCss}>{p2ranking ? p2ranking.rankings && (liveRanking2 ? liveRanking2?.ranking : 'Not available') : "N/A"}</div>
+        <div className={h2hValueCss}>{(liveRanking2 ? h2hFieldDom(liveRanking2, "ranking") : notAvailableDom)}</div>
       </div>
       {p1Data?.team?.type == 1 && <>
         <div className='flex flex-row w-full border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && p1Data.team.playerTeamInfo.height : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
           <span className={h2hFieldCss}>Height</span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && p2Data.team.playerTeamInfo.height : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ?  h2hFieldDom(p2Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
         </div>
         <div className='flex flex-row w-full  border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && p1Data.team.playerTeamInfo.residence : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
           <span className={h2hFieldCss}>Residence</span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && p2Data.team.playerTeamInfo.residence : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
         </div>
         <div className='flex flex-row w-full border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && p1Data.team.playerTeamInfo.weight : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
           <span className={h2hFieldCss}>Weight</span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && p2Data.team.playerTeamInfo.weight : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
         </div>
         <div className='flex flex-row w-full  border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && p1Data.team.playerTeamInfo.plays : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
           <span className={h2hFieldCss}>Plays</span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && p2Data.team.playerTeamInfo.plays : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "plays") : "N/A"}</div>
         </div>
 
         <div className='flex flex-row w-full border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && p1Data.team.playerTeamInfo.turnedPro : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
           <span className={h2hFieldCss}>Turned Pro</span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && p2Data.team.playerTeamInfo.turnedPro : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
         </div>
         <div className='flex flex-row w-full border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && getPrizeMoney(p1Data.team.playerTeamInfo.prizeTotalRaw) : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
           <span className={h2hFieldCss}>Total Prize Money </span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && getPrizeMoney(p2Data.team.playerTeamInfo.prizeTotalRaw) : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ? getPrizeMoney(h2hFieldDom(p2Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
         </div>
 
         <div className='flex flex-row w-full  border m-1 justify-center'>
-          <div className={h2hValueCss}>{p1Data ? p1Data.team.playerTeamInfo && getPrizeMoney(p1Data.team.playerTeamInfo?.prizeCurrentRaw) : "N/A"}</div>
+          <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
           <span className={h2hFieldCss}>YTD Price Money</span>
-          <div className={h2hValueCss}>{p2Data ? p2Data.team.playerTeamInfo && getPrizeMoney(p2Data.team.playerTeamInfo?.prizeCurrentRaw) : "N/A"}</div>
+          <div className={h2hValueCss}>{p2Data ? getPrizeMoney(h2hFieldDom(p2Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
         </div>
       </>}
 
@@ -299,6 +334,7 @@ export default function Head2Head(props) {
     )
   }
 
+  console.log(h2hData)
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -322,7 +358,7 @@ export default function Head2Head(props) {
           </IconButton>
         </DialogTitle>
         <div className="w-full overflow-x-hidden">
-          {props.loading ? <Loader /> : h2hDom()}
+          {(props.loading || loadingP1 || loadingP2 || loadingP1ranking || loadingP2ranking) ? <Loader /> : h2hDom()}
         </div>
       </BootstrapDialog>
     </React.Fragment>
