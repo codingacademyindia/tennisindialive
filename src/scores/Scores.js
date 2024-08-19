@@ -71,7 +71,7 @@ const FixtureResults = () => {
     const [refreshScore, setRefreshScore] = useState(false);
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
-    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "cancelled", "finished"]);
+    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "cancelled", "finished","interrupted"]);
     const [selectedCountry, setSelectedCountry] = useState('india');
     const [indianCount, setIndianCount] = useState(0);
 
@@ -181,7 +181,7 @@ const FixtureResults = () => {
 
     useEffect(() => {
         if (matchStatus.includes("all")) {
-            setMatchStatusList(["notstarted", "inprogress", "cancelled", "finished"])
+            setMatchStatusList(["notstarted", "inprogress", "cancelled", "finished","interrupted"])
         }
         else {
             setMatchStatusList([matchStatus])
@@ -336,6 +336,7 @@ const FixtureResults = () => {
         if (item?.status?.type === 'inprogress') {
             return (<Box sx={{ width: '50%', mt: 2 }}>
                 <LinearProgress color="success" />
+                <span className='capitalize'>{item?.status?.description }</span>
             </Box>)
         }
         else if (item?.status?.type === 'notstarted') {
@@ -348,7 +349,7 @@ const FixtureResults = () => {
             return (<div className='flex flex-col'>
 
                 {readableDate(item.startTimestamp)}
-                <span>Ended</span>
+                <span className='capitalize'>{item?.status?.description }</span>
             </div>)
         }
 
