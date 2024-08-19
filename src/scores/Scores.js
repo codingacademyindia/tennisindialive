@@ -335,8 +335,8 @@ const FixtureResults = () => {
     function getStatusDom(item) {
         if (item?.status?.type === 'inprogress') {
             return (<Box sx={{ width: '50%', mt: 2 }}>
+                <span className='capitalize mb-1'>{item?.status?.description }</span>
                 <LinearProgress color="success" />
-                <span className='capitalize'>{item?.status?.description }</span>
             </Box>)
         }
         else if (item?.status?.type === 'notstarted') {
