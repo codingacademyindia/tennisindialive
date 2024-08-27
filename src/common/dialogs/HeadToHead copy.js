@@ -247,7 +247,7 @@ export default function Head2Head(props) {
 
   function CircleWithNumber(number) {
     return (
-      <div className="flex items-center justify-center w-8 h-8 lg:w-16 lg:h-16 bg-slate-800 text-white font-bold text-lg sm:text-xl rounded-full">
+      <div className="flex items-center justify-center w-8 h-8 sm:w-16 sm:h-16 bg-slate-800 text-white font-bold text-lg sm:text-xl rounded-full">
         {number}
       </div>
     );
@@ -272,7 +272,63 @@ export default function Head2Head(props) {
           <span className='text-left w-[35%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['awayTeam'], props.scoreRecord, p2Image)}</span>
         </div>
       </div>
-     
+      <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+        {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+        <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "bestRanking") : notAvailableDom)}</div>
+        <span className={h2hFieldCss}>Career Best Ranking</span>
+        <div className={h2hValueCss}>{(currentRanking2 ? h2hFieldDom(currentRanking2, "bestRanking") : notAvailableDom)}</div>
+      </div>
+
+      {/* <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+        {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+        <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
+        <span className={h2hFieldCss}>Actual Ranking</span>
+        <div className={h2hValueCss}>{(currentRanking2 ? h2hFieldDom(currentRanking2, "ranking") : notAvailableDom)}</div>
+      </div>
+      <div className='flex flex-row w-full border m-1 justify-center'>
+        <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
+        <span className={h2hFieldCss}>Live Ranking</span>
+        <div className={h2hValueCss}>{(liveRanking2 ? h2hFieldDom(liveRanking2, "ranking") : notAvailableDom)}</div>
+      </div>
+      {p1Data?.team?.type == 1 && <>
+        <div className='flex flex-row w-full border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
+          <span className={h2hFieldCss}>Height</span>
+          <div className={h2hValueCss}>{p2Data ?  h2hFieldDom(p2Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
+        </div>
+        <div className='flex flex-row w-full  border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
+          <span className={h2hFieldCss}>Residence</span>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
+        </div>
+        <div className='flex flex-row w-full border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
+          <span className={h2hFieldCss}>Weight</span>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
+        </div>
+        <div className='flex flex-row w-full  border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
+          <span className={h2hFieldCss}>Plays</span>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "plays") : "N/A"}</div>
+        </div>
+
+        <div className='flex flex-row w-full border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
+          <span className={h2hFieldCss}>Turned Pro</span>
+          <div className={h2hValueCss}>{p2Data ? h2hFieldDom(p2Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
+        </div>
+        <div className='flex flex-row w-full border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
+          <span className={h2hFieldCss}>Total Prize Money </span>
+          <div className={h2hValueCss}>{p2Data ? getPrizeMoney(h2hFieldDom(p2Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
+        </div>
+
+        <div className='flex flex-row w-full  border m-1 justify-center'>
+          <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
+          <span className={h2hFieldCss}>YTD Price Money</span>
+          <div className={h2hValueCss}>{p2Data ? getPrizeMoney(h2hFieldDom(p2Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
+        </div>
+      </>} */}
 
     </div>
     )

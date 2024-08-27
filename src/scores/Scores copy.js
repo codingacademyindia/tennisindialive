@@ -482,7 +482,7 @@ const FixtureResults = () => {
                     ];
                     if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`}>
-                            <div key={item.id} className="space-x-2 p-1 flex flex-row items-center text-xs sm:text-sm xs:text-base">
+                            <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
@@ -498,7 +498,7 @@ const FixtureResults = () => {
 
                                 </div>
                             </div>
-                            <div key={item.id} className="space-x-2  p-1 flex flex-row items-center text-xs sm:text-sm xs:text-base">
+                            <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
@@ -563,9 +563,9 @@ const FixtureResults = () => {
                         {/* <div className="flex flex-col bg-orange-200 min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom1(item)}
                         </div> */}
-                        <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[30%]">
+                        <div className="relative flex flex-col bg-orange-200 min-h-full justify-center w-[60%] sm:w-[30%]">
                             {getPlayerDom1(item)}
-                            {/* <button className="absolute bottom-2 right-2 bg-blue-500 text-white">Stats</button> */}
+                            <button className="absolute bottom-2 right-2 bg-blue-500 text-white">Stats</button>
                         </div>
                         <div className='w-[20%] bg-slate-100'>{item?.status?.type !== "notstarted" && formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
                     </div>
