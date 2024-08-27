@@ -35,11 +35,11 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
   };
 
   let fontSizeCSS={
-    xs: '0.5rem',  // 14px for extra-small screens
-    sm: '0.5rem',      // 16px for small screens
-    md: '0.7rem',   // 20px for medium screens
-    lg: '0.8rem',    // 24px for large screens
-    xl: '0.8rem'       // 32px for extra-large screens
+    xs: '0.7rem',  // 14px for extra-small screens
+    sm: '0.8rem',      // 16px for small screens
+    md: '0.9rem',   // 20px for medium screens
+    lg: '0.9rem',    // 24px for large screens
+    xl: '0.9rem'       // 32px for extra-large screens
 }
 
   if (isSmallScreen) {
