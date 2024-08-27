@@ -30,10 +30,10 @@ function ResponsiveAppBar() {
             return "live scores"
         }
         else if (href.includes("live/atp")) {
-            return "atp live ranking"
+            return "atp ranking"
         }
         else if (href.includes("live/wta")) {
-            return "wta live ranking"
+            return "wta ranking"
         }
 
     }
@@ -45,9 +45,9 @@ function ResponsiveAppBar() {
         const text = e.target.innerText.toLowerCase();
         if (text === 'live scores') {
             window.location.href = `/results/${year}/${month}/${day}`;
-        } else if (text === 'atp live ranking') {
+        } else if (text === 'atp ranking') {
             window.location.href = "/rankings/live/atp";
-        } else if (text === 'wta live ranking') {
+        } else if (text === 'wta ranking') {
             window.location.href = "/rankings/live/wta";
         }
         setAnchorElNav(null);
@@ -124,7 +124,7 @@ function ResponsiveAppBar() {
                                 onClick={handleCloseNavMenu}
                                 sx={{ color: 'white', ml: 2, 
                                     whiteSpace: 'nowrap',
-                                    fontSize: ['0.6rem', '0.65rem', '0.75rem', '1rem', '1.2rem'],
+                                    fontSize: ['0.6rem', '0.65rem', '0.75rem', '0.9rem', '1.1rem'],
                                     backgroundColor: getActivePage() === page.toLowerCase() ? 'rgba(255, 255, 255, 0.2)' : 'transparent' }}
                             >
                                 {page}

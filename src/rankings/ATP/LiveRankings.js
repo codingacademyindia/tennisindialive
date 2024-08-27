@@ -55,10 +55,10 @@ const ATPCurrentRankings = () => {
         if (data) {
             let rankingsDataCopy = JSON.parse(JSON.stringify(data))
 
-            if (!excludeUnchanged) {
+            // if (!excludeUnchanged) {
 
-                rankingsDataCopy = (rankingsDataCopy.filter(item => item.previousRanking !== item.ranking))
-            }
+            //     rankingsDataCopy = (rankingsDataCopy.filter(item => item.previousRanking !== item.ranking))
+            // }
             if (selectedCountry.toLowerCase() !== 'all') {
 
                 rankingsDataCopy = (rankingsDataCopy.filter(item => item.team.country.name.toLowerCase() === selectedCountry.toLowerCase().toLowerCase()))
@@ -204,13 +204,13 @@ const ATPCurrentRankings = () => {
     return (
         <div>
             <div className='flex flex-row space-x-4 w-[]90%] bg-slate-200 items-center p-2'>
-                <div className='text-2xl font-bold'>ATP LIVE RANKING</div>
+                <div className='text-xl font-bold'>ATP LIVE RANKING</div>
                 <IconButton onClick={handleRefresh} variant="contained"><SyncIcon /></IconButton>
 
                 {/* {getStatusButtons()} */}
                 <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick}/>
-                <div>
-                    <span>Last Updated At: </span>
+                <div className='text-xs bg-yellow-600 text-white p-1'>
+                    <span className='font-bold'>Last Update: </span>
                     <span>{readableTimeStamp(updatedAtTimestamp)}</span>
                 </div>
             </div>
