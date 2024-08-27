@@ -761,17 +761,18 @@ const FixtureResultsAll = () => {
     function fetchH2HStatsDom(item) {
         return (
             <div className="flex flex-row justify-center space-x-2 w-full text-xs bg-gray-100 p-2 rounded-md">
-                {item?.status?.type !== "notstarted" && (
+                {(
                     <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[50%] md:w-[25%]"
+                        className="text-center justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[50%] md:w-[25%]"
                         onClick={(e) => handleClickOpenMatchStat(item)}
+                        disabled={item?.status?.type === "notstarted"}
                     >
                         <IoStatsChartSharp color="white" />
                         <span>MATCH STATS</span>
                     </button>
                 )}
                 <button
-                    className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 p-1 rounded-sm w-[50%] md:w-[25%]"
+                    className="text-center bg-yellow-500 hover:bg-yellow-700 text-white p-1 rounded-sm w-[50%] md:w-[25%]"
                     onClick={(e) => handleClickOpenH2H(item)}
                 >
                     H2H

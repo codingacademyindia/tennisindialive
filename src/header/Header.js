@@ -19,7 +19,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 }));
 
 
-const pages = ['Live Scores', 'ATP Live Ranking', 'WTA Live Ranking'];
+const pages = ['Live Scores', 'ATP Ranking', 'WTA Ranking'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -85,7 +85,22 @@ function ResponsiveAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Typography
+                                        textAlign="center"
+                                        sx={{
+                                            whiteSpace: 'nowrap',
+                                            fontSize: {
+                                                xs: '0.875rem',  // 14px for extra-small screens
+                                                sm: '1rem',      // 16px for small screens
+                                                md: '1.25rem',   // 20px for medium screens
+                                                lg: '1.5rem',    // 24px for large screens
+                                                xl: '2rem'       // 32px for extra-large screens
+                                            },
+                                        }}
+                                    >
+                                        {page}
+                                    </Typography>
+
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -96,8 +111,8 @@ function ResponsiveAppBar() {
                         <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1">
                             <a href="/" rel="noopener noreferrer" className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1 no-underline">
                                 <GiTennisBall className="h-5 w-5 sm:h-8 sm:w-8 mr-2 text-green-300" />
-                                <div className="text-lg sm:text-xl">TENNIS INDIA</div>
-                                <div className="text-lg sm:text-xl animate-pulse ml-2">LIVE</div>
+                                <div className="text-lg   whitespace-nowrap">TENNIS INDIA</div>
+                                <div className="text-lg animate-pulse ml-2">LIVE</div>
                             </a>
                         </div>
                     </Box>
@@ -107,7 +122,10 @@ function ResponsiveAppBar() {
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ color: 'white', ml: 2, backgroundColor: getActivePage() === page.toLowerCase() ? 'rgba(255, 255, 255, 0.2)' : 'transparent' }}
+                                sx={{ color: 'white', ml: 2, 
+                                    whiteSpace: 'nowrap',
+                                    fontSize: ['0.6rem', '0.65rem', '0.75rem', '1rem', '1.2rem'],
+                                    backgroundColor: getActivePage() === page.toLowerCase() ? 'rgba(255, 255, 255, 0.2)' : 'transparent' }}
                             >
                                 {page}
                             </Button>

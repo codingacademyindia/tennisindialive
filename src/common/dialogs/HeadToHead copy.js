@@ -279,7 +279,7 @@ export default function Head2Head(props) {
         <div className={h2hValueCss}>{(currentRanking2 ? h2hFieldDom(currentRanking2, "bestRanking") : notAvailableDom)}</div>
       </div>
 
-      {/* <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+      <div className='flex flex-row w-full  border m-1 justify-center text-center'>
         {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
         <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
         <span className={h2hFieldCss}>Actual Ranking</span>
@@ -328,7 +328,7 @@ export default function Head2Head(props) {
           <span className={h2hFieldCss}>YTD Price Money</span>
           <div className={h2hValueCss}>{p2Data ? getPrizeMoney(h2hFieldDom(p2Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
         </div>
-      </>} */}
+      </>}
 
     </div>
     )
