@@ -28,6 +28,8 @@ import CountryDialog from '../common/country/CountryDialog';
 import { FaFlag } from "react-icons/fa6";
 import { RxTable } from "react-icons/rx";
 import { HiMiniTableCells } from "react-icons/hi2";
+import { setItem, getItem } from '../indexDb/indexedDB';
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -138,9 +140,11 @@ const FixtureResultsAll = () => {
         setOpenMatchStat(false);
         setOpenH2H(false)
     };
-    const handleCountryChange = (newCountryCode) => {
+    const handleCountryChange = async (newCountryCode) => {
         setSelectedCountry(newCountryCode);
+        await setItem('country', newCountryCode);
     };
+    
 
     const handleStatusChange = (event) => {
 
@@ -249,7 +253,14 @@ const FixtureResultsAll = () => {
 
     }, [matchStatus]);
 
+    useEffect(() => {
+        const fetchValue = async () => {
+            const storedValue = await getItem('country');
+            setSelectedCountry(storedValue || 'india');
+        };
 
+        fetchValue();
+    }, []);
 
     // useEffect(() => {
     //     if (openMatchStat) {
