@@ -809,17 +809,6 @@ const FixtureResultsAll = () => {
 
                 if (hasIndian(item)) {
 
-                    // objDom = (<div className="flex flex-row w-full text-sm space-x-8">
-                    //     <div className='w-[10%] flex flex-col justify-center text-center items-center bg-slate-100  font-bold'>
-                    //         <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
-                    //         <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
-                    //     </div>
-                    //     <div className="flex flex-col w-[30%]">
-                    //         {getPlayerDom1(item)}
-                    //     </div>
-                    //     <div className='w-[20%] bg-slate-100'>{formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
-
-                    // </div>)
                     objDom = (<div className='flex flex-col bg-slate-200 border'>
                         <div className='bg-indigo-300'>{fetchH2HStatsDom(item)}</div>
 
@@ -948,14 +937,14 @@ const FixtureResultsAll = () => {
         let name = rankingsData[tournament][0]?.tournament?.name
         if (seasonName) {
             if (seasonName.includes("Men")) {
-                return (<div className="flex flex-row bg-blue-300 text-lg items-center p-1">
+                return (<div className="flex flex-row bg-blue-300  items-center p-1">
                     <span>{seasonName} </span>
                     {/* <FcBusinessman /> */}
                 </div>
                 )
             }
             else {
-                return (<div className="flex flex-row bg-pink-300 text-lg items-center p-1">
+                return (<div className="flex flex-row bg-pink-300 items-center p-1">
                     <span>{seasonName} </span>
                     {/* <FcBusinesswoman /> */}
                 </div>
@@ -1001,8 +990,8 @@ const FixtureResultsAll = () => {
         }
         else {
             return filteredRankingsData.map((tournament, index) => (
-                <div key={tournament + index} className="border m-1 bg-indigo-300">
-                    {getScoreHeader(tournament)}
+                <div key={tournament + index} className="border m-1 bg-slate-300">
+                    <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
                     <ul>
                         {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
                             <li key={subIndex} className='m-2 border '>
