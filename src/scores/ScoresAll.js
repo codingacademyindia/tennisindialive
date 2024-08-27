@@ -1,6 +1,6 @@
 import { Refresh } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Button, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
@@ -24,8 +24,10 @@ import MatchStats from '../common/dialogs/MatchStats';
 import Head2Head from '../common/dialogs/HeadToHead';
 import useApiCall from '../common/apiCalls/useApiCall';
 import { IoStatsChartSharp } from "react-icons/io5";
-
-
+import CountryDialog from '../common/country/CountryDialog';
+import { FaFlag } from "react-icons/fa6";
+import { RxTable } from "react-icons/rx";
+import { HiMiniTableCells } from "react-icons/hi2";
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -87,10 +89,20 @@ const FixtureResultsAll = () => {
     const { data: h2hData, loading: loadingH2H, error: errorH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
 
     const [openMatchStat, setOpenMatchStat] = React.useState(false);
+    const [selectedMatchStatus, setSelectedMatchStatus] = React.useState("notstarted");
+
     const [openH2H, setOpenH2H] = React.useState(false);
     const [eventId, setEventId] = React.useState(0);
     const [scoreRecord, setScoreRecord] = React.useState(null);
+    const [dialogOpenCountry, setDialogOpenCountry] = useState(false);
 
+    const handleClickOpenCountry = () => {
+        setDialogOpenCountry(true);
+    };
+
+    const handleCloseCountry = () => {
+        setDialogOpenCountry(false);
+    };
     const handleClickOpenMatchStat = (item) => {
 
         setEventId(item.id)
@@ -102,6 +114,7 @@ const FixtureResultsAll = () => {
             headers: HEADERS
         };
         fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+        setSelectedMatchStatus(item?.status?.type)
 
 
     };
@@ -760,28 +773,29 @@ const FixtureResultsAll = () => {
     // }
     function fetchH2HStatsDom(item) {
         return (
-            <div className="flex flex-row justify-center space-x-2 w-full text-xs bg-gray-100 p-2 rounded-md">
+            <div className="flex flex-row justify-center space-x-2 w-full text-xs bg-indigo-200   rounded-md">
                 {(
                     <button
-                        className="text-center justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[50%] md:w-[25%]"
+                        className="text-center font-bold justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[50%] md:w-[25%]"
                         onClick={(e) => handleClickOpenMatchStat(item)}
-                        disabled={item?.status?.type === "notstarted"}
+                        // disabled={item?.status?.type === "notstarted"}
                     >
                         <IoStatsChartSharp color="white" />
                         <span>MATCH STATS</span>
                     </button>
                 )}
                 <button
-                    className="text-center bg-yellow-500 hover:bg-yellow-700 text-white p-1 rounded-sm w-[50%] md:w-[25%]"
+                    className="space-x-2 flex flex-row items-center justify-center font-bold bg-yellow-500 hover:bg-yellow-700 text-white p-1 rounded-sm w-[50%] md:w-[25%]"
                     onClick={(e) => handleClickOpenH2H(item)}
                 >
-                    H2H
+                    <span><HiMiniTableCells/> </span>
+                    <span>H2H</span>
                 </button>
             </div>
         );
     }
-    
-    
+
+
     function fetchScoreRecord(item) {
 
         let objDom = []
@@ -807,23 +821,18 @@ const FixtureResultsAll = () => {
 
                     // </div>)
                     objDom = (<div className='flex flex-col bg-slate-200 border'>
-                        <div>{fetchH2HStatsDom(item)}</div>
+                        <div className='bg-indigo-300'>{fetchH2HStatsDom(item)}</div>
 
-                        <div className="flex flex-row w-full h-full text-sm sm:text-xs xs:text-xs space-x-2 sm:space-x-4">
-                            <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center bg-slate-100 font-bold'>
-                                <span className="text-sm">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
+                        <div className="flex flex-row w-full h-full text-sm sm:text-xs xs:text-xs space-x-2 sm:space-x-4 border">
+                            <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center font-bold'>
+                                <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                                 <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
                             </div>
-                            {/* <div>{fetchH2HStatsDom(item)}</div> */}
                             <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[30%]">
                                 {getPlayerDom1(item)}
-                                {/* <div className="absolute bottom-1 right-1 items-center flex flex-row space-x-1">
-                                {fetchH2HStatsDom(item)}
-                            </div> */}
-                                {/* <button className="absolute bottom-2 right-2 bg-blue-500 text-white">Stats</button> */}
                             </div>
 
-                            <div className='w-[20%] bg-slate-100'>{item?.status?.type !== "notstarted" && formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
+                            <div className='w-[20%]'>{item?.status?.type !== "notstarted" && formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
                         </div>
                     </div>
                     )
@@ -992,11 +1001,11 @@ const FixtureResultsAll = () => {
         }
         else {
             return filteredRankingsData.map((tournament, index) => (
-                <div key={tournament + index} className="border m-1 bg-slate-400">
+                <div key={tournament + index} className="border m-1 bg-indigo-300">
                     {getScoreHeader(tournament)}
                     <ul>
                         {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
-                            <li key={subIndex} className='m-1 border '>
+                            <li key={subIndex} className='m-2 border '>
                                 {fetchScoreRecord(item)}
                             </li>
                         ))}
@@ -1044,11 +1053,13 @@ const FixtureResultsAll = () => {
 
     return (
         <div>
+            <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat}
                 loadingStats={loadingStats}
                 data={matchStatsData}
                 scoreRecord={scoreRecord}
                 eventId={eventId}
+                selectedMatchStatus={selectedMatchStatus}
             />
             <Head2Head open={openH2H} handleClose={handleCloseMatchStat}
                 loading={loadingH2H}
@@ -1068,11 +1079,18 @@ const FixtureResultsAll = () => {
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
                 />
-                <IconButton onClick={handleRefresh}><SyncIcon /></IconButton>
+                {/* <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                    <Tooltip title="Country Details">
+                        <IconButton variant="contained" onClick={handleClickOpenCountry}>
+                            <FaFlag />
+                        </IconButton>
+                    </Tooltip>
+                </Box> */}
+                <IconButton onClick={handleRefresh} sx={{color:'black'}}><SyncIcon /></IconButton>
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : rankingsData && (
-                <div className=" w-[100%] mx-auto">
+                <div className="w-[100%] mx-auto">
                     {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
                     {true ? recordDom() : "No Indian"}
                 </div>

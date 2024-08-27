@@ -24,6 +24,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import CountryIcon from '../Country';
 import CheckIcon from '@mui/icons-material/Check';
 import Loader from '../stateHandlers/LoaderState';
+import NotFound from '../stateHandlers/NotFound';
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -197,7 +199,7 @@ export default function MatchStats(props) {
           </IconButton>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container spacing={1}> {/* Reduced spacing */}
+          {props.selectedMatchStatus==='notstarted'? <NotFound msg={<div className='text-xl '>Match Not Started Yet !</div>} />: <Grid container spacing={1}> {/* Reduced spacing */}
             <Grid item xs={12}>
               <Tabs
                 value={selectedTab}
@@ -260,7 +262,7 @@ export default function MatchStats(props) {
                   ))}
                 </Grid>
               )}
-          </Grid>
+          </Grid>}
         </DialogContent>
 
       </BootstrapDialog>

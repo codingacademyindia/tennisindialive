@@ -1,15 +1,8 @@
 import React from 'react';
-import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Popper, MenuItem, MenuList, Paper, Grow, ClickAwayListener, Tooltip } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
 
 const options = ['All', 'Live', 'Finished', 'Not Started'];
 
@@ -41,6 +34,14 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
     setOpen(false);
   };
 
+  let fontSizeCSS={
+    xs: '0.5rem',  // 14px for extra-small screens
+    sm: '0.5rem',      // 16px for small screens
+    md: '0.7rem',   // 20px for medium screens
+    lg: '0.8rem',    // 24px for large screens
+    xl: '0.8rem'       // 32px for extra-large screens
+}
+
   if (isSmallScreen) {
     return (
       <React.Fragment>
@@ -49,7 +50,13 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
           ref={anchorRef}
           aria-label="Button group with a nested menu"
         >
-          <Button onClick={handleClick} size="small">{options[selectedIndex]}</Button>
+          <Button
+            onClick={handleClick}
+            size="small"
+            sx={{ fontSize: fontSizeCSS ,whiteSpace: 'nowrap'}} // Adjust font size for smaller screens
+          >
+            {options[selectedIndex]}
+          </Button>
           <Button
             size="small"
             aria-controls={open ? 'split-button-menu' : undefined}
@@ -84,6 +91,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
                         key={option}
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index)}
+                        sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
                       >
                         {option}
                       </MenuItem>
@@ -104,6 +112,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
           color="primary"
           onClick={(e) => handleStatusButtonClick(e)}
           size="small"
+          sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
         >
           Live
         </Button>
@@ -112,6 +121,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
           color="primary"
           onClick={(e) => handleStatusButtonClick(e)}
           size="small"
+          sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
         >
           Finished
         </Button>
@@ -120,6 +130,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
           color="primary"
           onClick={(e) => handleStatusButtonClick(e)}
           size="small"
+          sx={{ fontSize: fontSizeCSS, whiteSpace: 'nowrap' }} // Adjust font size for smaller screens
         >
           Not Started
         </Button>
@@ -128,6 +139,7 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
           color="primary"
           onClick={(e) => handleStatusButtonClick(e)}
           size="small"
+          sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
         >
           All
         </Button>
