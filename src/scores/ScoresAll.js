@@ -144,7 +144,7 @@ const FixtureResultsAll = () => {
         setSelectedCountry(newCountryCode);
         await setItem('country', newCountryCode);
     };
-    
+
 
     const handleStatusChange = (event) => {
 
@@ -453,28 +453,54 @@ const FixtureResultsAll = () => {
 
     // }
 
-    function getStatusDom(item) {
+    // function getStatusDom(item) {
+    //     if (item?.status?.type === 'inprogress') {
+    //         return (<Box sx={{ width: '100%' }}>
+    //             <span className='capitalize text-xs'>{item?.status?.description}</span>
+    //             <LinearProgress color="success" sx={{ width: '50%', mx: 'auto', mt: 1 }} />
+    //         </Box>)
+    //     }
+    //     else if (item?.status?.type === 'notstarted') {
+    //         return (<div className='flex flex-row items-center text-[xs] justify-center  w-full'>
+    //             {readableTimeStamp(item.startTimestamp)}
+
+    //         </div>)
+    //     }
+    //     else {
+    //         return (<div className='flex flex-col w-full '>
+
+    //             {readableDate(item.startTimestamp)}
+    //             <span className='capitalize'>{item?.status?.description}</span>
+    //         </div>)
+    //     }
+
+    // }
+
+     function getStatusDom(item) {
+       
+            return (<div className='flex flex-row items-center text-[xs] justify-center  w-full'>
+                {readableTimeStamp(item.startTimestamp)}
+
+            </div>)
+       
+
+    }
+
+function getStatusOnlyDom(item) {
         if (item?.status?.type === 'inprogress') {
             return (<Box sx={{ width: '100%' }}>
                 <span className='capitalize text-xs'>{item?.status?.description}</span>
                 <LinearProgress color="success" sx={{ width: '50%', mx: 'auto', mt: 1 }} />
             </Box>)
         }
-        else if (item?.status?.type === 'notstarted') {
-            return (<div className='flex flex-row items-center text-[xs] justify-center  w-full'>
-                {readableTimeStamp(item.startTimestamp)}
-
-            </div>)
-        }
         else {
             return (<div className='flex flex-col w-full '>
-
-                {readableDate(item.startTimestamp)}
                 <span className='capitalize'>{item?.status?.description}</span>
             </div>)
         }
 
     }
+
     function getRoundAbbreviation(round) {
         if (!round) {
             return ""
@@ -787,19 +813,24 @@ const FixtureResultsAll = () => {
             <div className="flex flex-row justify-center space-x-2 w-full text-xs bg-indigo-200   rounded-md">
                 {(
                     <button
-                        className="text-center font-bold justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[50%] md:w-[25%]"
+                        className="text-center font-bold justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[30%] md:w-[20%]"
                         onClick={(e) => handleClickOpenMatchStat(item)}
-                        // disabled={item?.status?.type === "notstarted"}
+                    // disabled={item?.status?.type === "notstarted"}
                     >
                         <IoStatsChartSharp color="white" />
                         <span>MATCH STATS</span>
                     </button>
                 )}
+                <div className='w-[30%] md:w-[20%] flex flex-col justify-center text-center items-center font-bold'>
+                    <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
+                    <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
+                </div>
+
                 <button
-                    className="space-x-2 flex flex-row items-center justify-center font-bold bg-yellow-500 hover:bg-yellow-700 text-white p-1 rounded-sm w-[50%] md:w-[25%]"
+                    className="space-x-2 flex flex-row items-center justify-center font-bold bg-yellow-500 hover:bg-yellow-700 text-white p-1 rounded-sm w-[30%] md:w-[20%]"
                     onClick={(e) => handleClickOpenH2H(item)}
                 >
-                    <span><HiMiniTableCells/> </span>
+                    <span><HiMiniTableCells /> </span>
                     <span>H2H</span>
                 </button>
             </div>
@@ -824,9 +855,9 @@ const FixtureResultsAll = () => {
                         <div className='bg-indigo-300'>{fetchH2HStatsDom(item)}</div>
 
                         <div className="flex flex-row w-full h-full text-sm sm:text-xs xs:text-xs space-x-2 sm:space-x-4 border">
-                            <div className='w-[20%] sm:w-[10%] flex flex-col justify-center text-center items-center font-bold'>
-                                <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
-                                <span className="text-xs w-full flex justify-center">{getStatusDom(item)}</span>
+                            <div className='w-[10%] sm:w-[10%] flex flex-col justify-center text-center items-center font-bold'>
+                                {/* <span className="text-xs">{getRoundAbbreviation(item?.roundInfo?.name)} </span> */}
+                                <span className="text-xs w-full flex justify-center">{getStatusOnlyDom(item)}</span>
                             </div>
                             <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[30%]">
                                 {getPlayerDom1(item)}
@@ -1086,7 +1117,7 @@ const FixtureResultsAll = () => {
                         </IconButton>
                     </Tooltip>
                 </Box> */}
-                <IconButton onClick={handleRefresh} sx={{color:'black'}}><SyncIcon /></IconButton>
+                <IconButton onClick={handleRefresh} sx={{ color: 'black' }}><SyncIcon /></IconButton>
             </div>
             {error && <p>Error: {error}</p>}
             {loading ? <Loader /> : rankingsData && (
