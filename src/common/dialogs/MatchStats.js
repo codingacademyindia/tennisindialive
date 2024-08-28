@@ -150,11 +150,18 @@ export default function MatchStats(props) {
   }
 
 
-  let notFoundDom = (<div className='h-[10vh] w-[20vw] text-xl flex flex-row items-center justify-center'>
-      <AiOutlineClockCircle className="mr-2 text-green-800 text-xl" size={30}/> {/* Icon with margin-right for spacing */}
-      <span className='text-xl font-bold'>Match Not Started</span>
-    </div>
-  );
+  // let notFoundDom = (<div className='h-[10vh] w-[20vw] text-xl flex flex-row items-center justify-center'>
+  //     <AiOutlineClockCircle className="mr-2 text-green-800 text-xl" size={30}/> {/* Icon with margin-right for spacing */}
+  //     <span className='text-xl font-bold'>Match Not Started</span>
+  //   </div>
+  // );
+
+  const notFoundDom = <div className="flex flex-col md:flex-row items-center justify-center h-auto md:h-[10vh] w-full md:w-[20vw] text-lg md:text-xl p-4">
+        <AiOutlineClockCircle className="mr-2 text-green-800 text-lg md:text-xl" size={30} />
+        <span className="font-bold text-lg md:text-xl">Match Not Started</span>
+      </div>
+
+
   function getTextAfterLastSpace(str) {
     const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
     return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
@@ -169,7 +176,7 @@ export default function MatchStats(props) {
     else if (tab === "3RD") {
       return "SET 3"
     }
-    else if (tab === "4RD") {
+    else if (tab === "4TH") {
       return "SET 4"
     }
 
