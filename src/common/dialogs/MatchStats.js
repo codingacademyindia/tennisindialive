@@ -248,14 +248,14 @@ export default function MatchStats(props) {
                               <TableRow key={itemIndex}>
                                 <TableCell sx={{ color: 'black', textAlign: 'center', padding: '4px' }}>
                                   <div className='flex flex-row items-center justify-center space-x-1'>
-                                    <span>{item.home}</span>
+                                    <span className='text-xs md:text-sm'>{item.home}</span>
                                     <span>{item.compareCode === 1 && <FaCheckCircle color="green" size={10} />}</span>
                                   </div>
                                 </TableCell>
                                 <TableCell sx={{ color: 'black', textAlign: 'center', padding: '4px' }}>{item.name}</TableCell>
                                 <TableCell sx={{ color: 'black', textAlign: 'center', padding: '4px' }}>
                                   <div className='flex flex-row items-center justify-center space-x-1'>
-                                    <span>{item.away}</span>
+                                    <span className='text-xs md:text-sm'>{item.away}</span>
                                     <span>{item.compareCode === 2 && <FaCheckCircle color="green" size={10} />}</span>
                                   </div>
                                 </TableCell>

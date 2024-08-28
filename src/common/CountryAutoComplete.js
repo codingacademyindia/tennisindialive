@@ -7,6 +7,7 @@ import enLocale from 'i18n-iso-countries/langs/en.json';
 import { FlagIcon } from 'react-flag-kit';
 
 countries.registerLocale(enLocale);
+
 const excludedCountries = [
   'ATA' // Add other countries you want to exclude here
 ];
@@ -31,13 +32,13 @@ const countryArray = Object.keys(countryList)
 const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isVerySmallScreen = useMediaQuery('(max-width:415px)');
 
   const selectedCountryData = countryArray.find(
     (country) => (country.name.toLowerCase() === selectedCountry.toLowerCase() || country.alpha3.toLowerCase() === selectedCountry.toLowerCase())
   );
 
-  let fontSizeCSS = "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center"
-
+  const fontSizeCSS = "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center";
 
   return (
     <Autocomplete
@@ -49,8 +50,8 @@ const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
       }}
       renderOption={(props, option) => (
         <li {...props} key={option.code} className={fontSizeCSS}>
-          <span><FlagIcon code={option.code} size={isSmallScreen ? 12 : 16} style={{ marginRight: isSmallScreen ? '4px' : '8px' }} /></span>
-          {false ? option.alpha3 : option.label}
+          <FlagIcon code={option.code} size={isVerySmallScreen ? 14 : isSmallScreen ? 16 : 20} style={{ marginRight: '8px' }} />
+          {option.label}
         </li>
       )}
       renderInput={(params) => (
@@ -64,7 +65,7 @@ const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
             style: { fontSize: isSmallScreen ? '12px' : '14px' },
             startAdornment: selectedCountryData ? (
               <InputAdornment position="start">
-                <FlagIcon code={selectedCountryData.code} size={isSmallScreen ? 12 : 16} />
+                <FlagIcon code={selectedCountryData.code} size={isVerySmallScreen ? 14 : isSmallScreen ? 16 : 20} />
               </InputAdornment>
             ) : null,
           }}

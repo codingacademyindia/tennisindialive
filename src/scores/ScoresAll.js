@@ -453,40 +453,40 @@ const FixtureResultsAll = () => {
 
     // }
 
-    // function getStatusDom(item) {
-    //     if (item?.status?.type === 'inprogress') {
-    //         return (<Box sx={{ width: '100%' }}>
-    //             <span className='capitalize text-xs'>{item?.status?.description}</span>
-    //             <LinearProgress color="success" sx={{ width: '50%', mx: 'auto', mt: 1 }} />
-    //         </Box>)
-    //     }
-    //     else if (item?.status?.type === 'notstarted') {
-    //         return (<div className='flex flex-row items-center text-[xs] justify-center  w-full'>
-    //             {readableTimeStamp(item.startTimestamp)}
-
-    //         </div>)
-    //     }
-    //     else {
-    //         return (<div className='flex flex-col w-full '>
-
-    //             {readableDate(item.startTimestamp)}
-    //             <span className='capitalize'>{item?.status?.description}</span>
-    //         </div>)
-    //     }
-
-    // }
-
-     function getStatusDom(item) {
-       
-            return (<div className='flex flex-row items-center text-[xs] justify-center space-x-1 w-full'>
-                {readableTimeStamp(item.startTimestamp)}
+    function getStatusDom(item) {
+        if (item?.status?.type === 'inprogress') {
+            return (<div className='flex flex-row w-full text-center space-x-1 items-center justify-center'>
+                <span className='capitalize text-xs'>{item?.status?.description}</span>
+                <span className='w-8'><LinearProgress color="success" /></span>
+            </div>)
+        }
+        else if (item?.status?.type === 'notstarted') {
+            return (<div className='flex flex-row items-center text-xs justify-center space-x-1 w-full'>
+                <AiOutlineClockCircle/>
+                <span>{readableTimeStamp(item.startTimestamp)}</span>
 
             </div>)
-       
+        }
+        else {
+            return (<div className='flex flex-col w-full justify-center'>
+
+                {readableDate(item.startTimestamp)}
+            </div>)
+        }
 
     }
 
-function getStatusOnlyDom(item) {
+    // function getStatusDom(item) {
+
+    //     return (<div className='flex flex-row items-center text-[xs] justify-center space-x-1 w-full'>
+    //         {readableTimeStamp(item.startTimestamp)}
+
+    //     </div>)
+
+
+    // }
+
+    function getStatusOnlyDom(item) {
         if (item?.status?.type === 'inprogress') {
             return (<Box sx={{ width: '100%' }}>
                 <span className='capitalize text-xs'>{item?.status?.description}</span>
@@ -810,10 +810,16 @@ function getStatusOnlyDom(item) {
     // }
     function fetchH2HStatsDom(item) {
         return (
-            <div className="flex flex-row justify-center space-x-2 w-full text-xs bg-indigo-200   rounded-md">
+            <div className="flex flex-row  space-x-2 w-full text-xs bg-indigo-200   rounded-md">
+                <div className='w-[40%] md:w-[25%] flex flex-row items-center font-bold space-x-1'>
+                    <span className="text-xs  text-center bg-slate-600 text-white p-1">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
+                    <span className="text-xs w-[80%] whitespace-nowrap border text-center rounded p-1">{getStatusDom(item)}</span>
+                     
+                </div>
+
                 {(
                     <button
-                        className="text-center font-bold justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[35%] md:w-[20%]"
+                        className="text-center font-bold justify-center bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-sm flex items-center space-x-2 w-[25%] md:w-[20%]"
                         onClick={(e) => handleClickOpenMatchStat(item)}
                     // disabled={item?.status?.type === "notstarted"}
                     >
@@ -821,10 +827,6 @@ function getStatusOnlyDom(item) {
                         <span>MATCH STATS</span>
                     </button>
                 )}
-                <div className='w-[40%] md:w-[40%] flex flex-row justify-around items-center font-bold space-x-1 rounded-lg'>
-                    <span className="text-xs  w-[30%] text-center">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
-                    <span className="text-xs w-full flex justify-center ">{getStatusDom(item)}</span>
-                </div>
 
                 <button
                     className="space-x-2 flex flex-row items-center justify-center font-bold bg-yellow-600 hover:bg-yellow-700 text-white p-1 rounded-sm w-[20%] md:w-[20%]"
