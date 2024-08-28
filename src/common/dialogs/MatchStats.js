@@ -25,7 +25,7 @@ import CountryIcon from '../Country';
 import CheckIcon from '@mui/icons-material/Check';
 import Loader from '../stateHandlers/LoaderState';
 import NotFound from '../stateHandlers/NotFound';
-
+import { AiOutlineClockCircle } from 'react-icons/ai'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -149,6 +149,12 @@ export default function MatchStats(props) {
     }
   }
 
+
+  let notFoundDom = (<div className='h-[10vh] w-[20vw] text-xl flex flex-row items-center justify-center'>
+      <AiOutlineClockCircle className="mr-2 text-green-800 text-xl" size={30}/> {/* Icon with margin-right for spacing */}
+      <span className='text-xl font-bold'>Match Not Started</span>
+    </div>
+  );
   function getTextAfterLastSpace(str) {
     const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
     return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
@@ -199,7 +205,7 @@ export default function MatchStats(props) {
           </IconButton>
         </DialogTitle>
         <DialogContent dividers>
-          {props.selectedMatchStatus==='notstarted'? <NotFound msg={<div className='text-xl '>Match Not Started Yet !</div>} />: <Grid container spacing={1}> {/* Reduced spacing */}
+          {props.selectedMatchStatus==='notstarted'? notFoundDom: <Grid container spacing={1}> {/* Reduced spacing */}
             <Grid item xs={12}>
               <Tabs
                 value={selectedTab}
