@@ -30,6 +30,8 @@ import { RxTable } from "react-icons/rx";
 import { HiMiniTableCells } from "react-icons/hi2";
 import { setItem, getItem } from '../indexDb/indexedDB';
 import { AiOutlineClockCircle } from 'react-icons/ai'
+import { FlagIcon } from 'react-flag-kit';
+import { FaGlobe } from "react-icons/fa";
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -86,6 +88,7 @@ const FixtureResultsAll = () => {
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "cancelled", "finished"]);
     const [selectedCountry, setSelectedCountry] = useState('india');
+    const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
     const [indianCount, setIndianCount] = useState(0);
     const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
     const { data: h2hData, loading: loadingH2H, error: errorH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
@@ -140,9 +143,11 @@ const FixtureResultsAll = () => {
         setOpenMatchStat(false);
         setOpenH2H(false)
     };
-    const handleCountryChange = async (newCountryCode) => {
+    const handleCountryChange = async (newCountryCode, newValue) => {
         setSelectedCountry(newCountryCode);
+        setSelectedCountryCode(newValue?newValue.code:null)
         await setItem('country', newCountryCode);
+        await setItem('countryCode', newValue?newValue.code:null);
     };
 
 
@@ -256,7 +261,9 @@ const FixtureResultsAll = () => {
     useEffect(() => {
         const fetchValue = async () => {
             const storedValue = await getItem('country');
+            const storedCountryCode = await getItem('countryCode');
             setSelectedCountry(storedValue || 'india');
+            setSelectedCountryCode(storedCountryCode || 'IN');
         };
 
         fetchValue();
@@ -462,7 +469,7 @@ const FixtureResultsAll = () => {
         }
         else if (item?.status?.type === 'notstarted') {
             return (<div className='flex flex-row items-center text-xs justify-center space-x-1 w-full'>
-                <AiOutlineClockCircle/>
+                <AiOutlineClockCircle />
                 <span>{readableTimeStamp(item.startTimestamp)}</span>
 
             </div>)
@@ -814,7 +821,7 @@ const FixtureResultsAll = () => {
                 <div className='w-[40%] md:w-[25%] flex flex-row items-center font-bold space-x-1'>
                     <span className="text-xs  text-center bg-slate-600 text-white p-1">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
                     <span className="text-xs w-[80%] whitespace-nowrap border text-center rounded p-1">{getStatusDom(item)}</span>
-                     
+
                 </div>
 
                 {(
@@ -1052,37 +1059,17 @@ const FixtureResultsAll = () => {
     let statusButtonActive = "border p-1 bg-blue-500 border-b-4 border-blue-900 text-white w-[100px] rounded-xl"
 
 
+    function formatDate(isoDate) {
 
-    // function getStatusButtons() {
-    //     return (
-    //         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-    //             <button
-    //                 className={matchStatus === "inprogress" ? statusButtonActive : statusButtonCss}
-    //                 onClick={handleStatusButtonClick}
-    //             >
-    //                 Live
-    //             </button>
-    //             <button
-    //                 className={matchStatus === "finished" ? statusButtonActive : statusButtonCss}
-    //                 onClick={handleStatusButtonClick}
-    //             >
-    //                 Finished
-    //             </button>
-    //             <button
-    //                 className={matchStatus === "notstarted" ? statusButtonActive : statusButtonCss}
-    //                 onClick={handleStatusButtonClick}
-    //             >
-    //                 Not Started
-    //             </button>
-    //             <button
-    //                 className={matchStatus === "all" ? statusButtonActive : statusButtonCss}
-    //                 onClick={handleStatusButtonClick}
-    //             >
-    //                 All
-    //             </button>
-    //         </div>
-    //     );
-    // }
+        const dateObj = new Date(isoDate);
+        const day = dateObj.getUTCDate();
+        const month = dateObj.toLocaleString('default', { month: 'short' });
+        const year = dateObj.getUTCFullYear();
+
+        // Format the date as "DD-MMM-YYYY"
+        const formattedDate = `${day}-${month}-${year}`;
+        return formattedDate
+    }
 
     return (
         <div>
@@ -1121,7 +1108,16 @@ const FixtureResultsAll = () => {
                 </Box> */}
                 <IconButton onClick={handleRefresh} sx={{ color: 'black' }}><SyncIcon /></IconButton>
             </div>
-            {error && <p>Error: {error}</p>}
+            <div className="sm:hidden text-xs w-full bg-slate-700 text-white text-center flex flex-row justify-center space-x-1 items-center">
+                <span className="mr-2">Showing Results for</span>
+                <span>{selectedCountryCode?<CountryIcon countryCode={selectedCountryCode} size={15} />:<FaGlobe className='text-green-100'/>}</span>
+                <span className="uppercase  font-bold">{selectedCountryCode?selectedCountry:"All Countries"}</span>
+                {/* <div className='flex flex-row space-x-1 items-center ml-2'>
+                    <AiOutlineClockCircle  />
+                    <span className="capitalize">{formatDate(selectedDate)}</span>
+                </div> */}
+            </div>
+            {error && <p></p>}
             {loading ? <Loader /> : rankingsData && (
                 <div className="w-[100%] mx-auto">
                     {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}

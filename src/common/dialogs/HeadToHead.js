@@ -278,7 +278,6 @@ export default function Head2Head(props) {
     )
   }
 
-  console.log(h2hData)
   return (
     <React.Fragment>
       <BootstrapDialog

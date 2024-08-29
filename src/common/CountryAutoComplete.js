@@ -17,14 +17,13 @@ const alpha2ToAlpha3 = countries.getAlpha2Codes();
 const countryArray = Object.keys(countryList)
   .filter((key) => !excludedCountries.includes(alpha2ToAlpha3[key]))
   .map((key) => {
-    const label = countryList[key];
+    let label = countryList[key];
     const alpha3 = alpha2ToAlpha3[key];
-
     return {
       code: key,
       label,
       abbreviatedLabel: key, // ISO 3166-1 alpha-2 country code
-      name: label.toLowerCase(),
+      name: alpha3==='USA'?"usa":label.toLowerCase(),
       alpha3,
     };
   });
@@ -38,7 +37,7 @@ const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
     (country) => (country.name.toLowerCase() === selectedCountry.toLowerCase() || country.alpha3.toLowerCase() === selectedCountry.toLowerCase())
   );
 
-  const fontSizeCSS = "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center";
+  const fontSizeCSS = "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center text-left p-1";
 
   return (
     <Autocomplete
@@ -46,13 +45,13 @@ const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
       getOptionLabel={(option) => option.label}  // Always use full name for searching
       value={selectedCountryData || null}
       onChange={(event, newValue) => {
-        handleCountryChange(newValue ? newValue.name : '');
+        handleCountryChange(newValue ? newValue.name : '', newValue);
       }}
       renderOption={(props, option) => (
-        <li {...props} key={option.code} className={fontSizeCSS}>
+        <button {...props} key={option.code} className={fontSizeCSS}>
           <FlagIcon code={option.code} size={isVerySmallScreen ? 14 : isSmallScreen ? 16 : 20} style={{ marginRight: '8px' }} />
           {option.label}
-        </li>
+        </button>
       )}
       renderInput={(params) => (
         <TextField
