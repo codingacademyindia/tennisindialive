@@ -37,7 +37,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
   '& .MuiPaper-root': {
-    maxWidth: '60 0px', // Increase the maxWidth of the dialog
+    maxWidth: '600px', // Increase the maxWidth of the dialog
     width: '100%', // Ensure the dialog takes the full width of the parent
   },
 }));
@@ -130,13 +130,13 @@ export default function Head2Head(props) {
       // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
       const uniqueTournament = item.tournament.uniqueTournament;
       if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
+        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border text-xs md:text-sm'>
           <div className="flex flex-col space-x-2 w-full h-full  items-center font-bold ">
             <img src={pImage} alt={getFullName(p1.name, p1.slug)} id="player1" width={"100px"} height={"100px"} />
 
             <div className='flex flex-row items center m-1 space-x-1 items-center'>
               <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
-              <div className="h-full w-full  flex items-center text-sm">
+              <div className="h-full w-full  flex items-center text-sm whitespace-nowrap">
                 {getFullName(p1.name, p1.slug)}
               </div>
 
@@ -149,15 +149,15 @@ export default function Head2Head(props) {
         const p1b = p1.subTeams[1];
 
         return (<div key={`${item.id}-${uniqueTournament}`}>
-          <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
+          <div key={item.id} className="space-x-2 p-1 flex flex-row items-center text-xs md:text-sm">
             <div className='w-full flex flex-col'>
               <div className='w-full flex flex-row space-x-1 items-center'>
                 <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                <span className='w-full'>{getFullName(p1a.name, p1a.slug)}</span>
+                <span className='w-full whitespace-nowrap'>{getFullName(p1a.name, p1a.slug)}</span>
               </div>
               <div className='w-full flex flex-row space-x-1  items-center'>
                 <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                <span className='w-full '>{getFullName(p1b.name, p1b.slug)}</span>
+                <span className='w-full whitespace-nowrap'>{getFullName(p1b.name, p1b.slug)}</span>
 
 
               </div>
@@ -247,7 +247,7 @@ export default function Head2Head(props) {
 
   function CircleWithNumber(number) {
     return (
-      <div className="flex items-center justify-center w-8 h-8 lg:w-16 lg:h-16 bg-slate-800 text-white font-bold text-lg sm:text-xl rounded-full">
+      <div className="flex items-center justify-center w-8 h-8 lg:w-12 lg:h-12 bg-indigo-800 text-white font-bold text-lg sm:text-xl rounded-full">
         {number}
       </div>
     );
@@ -264,12 +264,12 @@ export default function Head2Head(props) {
     return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden text-sm'>
       <div className='w-full'>
         <div className='flex flex-row w-full bg-slate-200 items-center text-sm'>
-          <span className='text-left w-[35%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['homeTeam'], props.scoreRecord, p1Image)}</span>
-          <div className="flex flex-row space-x-2  w-[28%] text-center justify-center">
+          <span className='text-left w-[40%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['homeTeam'], props.scoreRecord, p1Image)}</span>
+          <div className="flex flex-row space-x-2  w-[20%] text-center justify-center">
             {CircleWithNumber(h2hData ? h2hData.homeWins : 0)}
             {CircleWithNumber(h2hData ? h2hData.awayWins : 0)}
           </div>
-          <span className='text-left w-[35%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['awayTeam'], props.scoreRecord, p2Image)}</span>
+          <span className='text-left w-[40%] flex justify-center '>{props.scoreRecord && getPlayerDom1(props.scoreRecord['awayTeam'], props.scoreRecord, p2Image)}</span>
         </div>
       </div>
      

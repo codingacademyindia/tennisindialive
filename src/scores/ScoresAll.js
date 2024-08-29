@@ -824,7 +824,8 @@ const FixtureResultsAll = () => {
                     // disabled={item?.status?.type === "notstarted"}
                     >
                         <IoStatsChartSharp color="white" />
-                        <span>MATCH STATS</span>
+                        <span className="hidden md:inline">MATCH STATS</span> {/* Shown on md and larger screens */}
+                        <span className="inline md:hidden">STATS</span> {/* Shown on screens smaller than md */}
                     </button>
                 )}
 

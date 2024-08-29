@@ -64,10 +64,10 @@ export default function MatchStats(props) {
       // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
       const uniqueTournament = item.tournament.uniqueTournament;
       if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
-          <div className="flex space-x-2 w-full h-full flex-row items-center font-bold ">
+        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border text-xs md:text-sm '>
+          <div className="flex space-x-2 w-full h-full flex-row items-center font-bold whitespace-nowrap ">
             <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-            <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
+            <div className="h-full flex items-center whitespace-nowrap">{getFullName(p1.name, p1.slug)}</div>
 
 
           </div>
@@ -81,15 +81,15 @@ export default function MatchStats(props) {
         const p1b = p1.subTeams[1];
 
         return (<div key={`${item.id}-${uniqueTournament}`}>
-          <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
+          <div key={item.id} className="space-x-2 p-1 flex flex-row items-center text-xs md:text-sm">
             <div className='w-full flex flex-col'>
-              <div className='w-full flex flex-row space-x-2 items-center'>
+              <div className='w-full flex flex-row space-x-2 items-center whitespace-nowrap'>
                 <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                <span>{getFullName(p1a.name, p1a.slug)}</span>
+                <span className='whitespace-nowrap'>{getFullName(p1a.name, p1a.slug)}</span>
               </div>
-              <div className='w-full flex flex-row space-x-2'>
+              <div className='w-full flex flex-row space-x-2 whitespace-nowrap'>
                 <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                <span>{getFullName(p1b.name, p1b.slug)}</span>
+                <span className='whitespace-nowrap'>{getFullName(p1b.name, p1b.slug)}</span>
 
 
               </div>
@@ -126,9 +126,6 @@ export default function MatchStats(props) {
   function getFullName(name, slug) {
     // Split the input name to get last name and initial
     try {
-      if (slug.includes("mingge")) {
-        let a = 1
-      }
       const nameParts = name.split(' ');
       const lastName = removeLastTwoCharacters(name).toLowerCase();
       // Split the slug to get potential names
@@ -150,11 +147,6 @@ export default function MatchStats(props) {
   }
 
 
-  // let notFoundDom = (<div className='h-[10vh] w-[20vw] text-xl flex flex-row items-center justify-center'>
-  //     <AiOutlineClockCircle className="mr-2 text-green-800 text-xl" size={30}/> {/* Icon with margin-right for spacing */}
-  //     <span className='text-xl font-bold'>Match Not Started</span>
-  //   </div>
-  // );
 
   const notFoundDom = <div className="flex flex-col md:flex-row items-center justify-center h-auto md:h-[10vh] w-full md:w-[20vw] text-lg md:text-xl p-4">
         <AiOutlineClockCircle className="mr-2 text-green-800 text-lg md:text-xl" size={30} />
