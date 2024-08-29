@@ -86,7 +86,7 @@ const FixtureResultsAll = () => {
     const [refreshScore, setRefreshScore] = useState(false);
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
-    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "cancelled", "finished"]);
+    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished"]);
     const [selectedCountry, setSelectedCountry] = useState('india');
     const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
     const [indianCount, setIndianCount] = useState(0);
