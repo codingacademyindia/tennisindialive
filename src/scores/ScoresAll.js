@@ -145,9 +145,9 @@ const FixtureResultsAll = () => {
     };
     const handleCountryChange = async (newCountryCode, newValue) => {
         setSelectedCountry(newCountryCode);
-        setSelectedCountryCode(newValue?newValue.code:null)
+        setSelectedCountryCode(newValue ? newValue.code : null)
         await setItem('country', newCountryCode);
-        await setItem('countryCode', newValue?newValue.code:null);
+        await setItem('countryCode', newValue ? newValue.code : null);
     };
 
 
@@ -203,26 +203,6 @@ const FixtureResultsAll = () => {
     }
 
 
-    function getStatusControl() {
-        return (
-            <FormControl variant="outlined" sx={{ width: 200 }}>
-                <InputLabel id="status-label">Match Status</InputLabel>
-                <Select
-                    labelId="status-label"
-                    id="status-select"
-                    value={matchStatus}
-                    onChange={handleStatusChange}
-                    label="Match Status"
-                    size="small"
-                >
-                    <MenuItem value="all">All</MenuItem>
-                    <MenuItem value="inprogress">Live</MenuItem>
-                    <MenuItem value="finished">Finished</MenuItem>
-                    <MenuItem value="notstarted">Not Started</MenuItem>
-                </Select>
-            </FormControl>
-        );
-    };
 
     useEffect(() => {
         const fetchRankings = async () => {
@@ -269,99 +249,7 @@ const FixtureResultsAll = () => {
         fetchValue();
     }, []);
 
-    // useEffect(() => {
-    //     if (openMatchStat) {
-    //         const options = {
-    //             method: 'GET',
-    //             url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`,
-    //             headers: HEADERS
-    //         };
-    //         fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
 
-    //     }
-
-
-    // }, [eventId]);
-
-    // useEffect(() => {
-    //     if (openH2H) {
-    //         const options = {
-    //             method: 'GET',
-    //             url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/duel`,
-    //             headers: HEADERS
-    //         };
-    //         fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
-
-    //     }
-
-
-    // }, [eventId]);
-
-    // function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
-    //     // Extract the sets' scores
-    //     const homePeriod1 = homeScore.period1 || 0;
-    //     const homePeriod2 = homeScore.period2 || 0;
-    //     const homePeriod3 = homeScore.period3 || 0;
-    //     const homePeriod4 = homeScore.period4 || 0;
-    //     const homePeriod5 = homeScore.period5 || 0;
-
-    //     const awayPeriod1 = awayScore.period1 || 0;
-    //     const awayPeriod2 = awayScore.period2 || 0;
-    //     const awayPeriod3 = awayScore.period3 || 0;
-    //     const awayPeriod4 = awayScore.period4 || 0;
-    //     const awayPeriod5 = awayScore.period5 || 0;
-
-    //     // Handle tiebreak scores if present
-    //     const homePeriod2TieBreak = homeScore.period2TieBreak || '';
-    //     const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
-
-    //     // Format the scores
-    //     const homeScores = [];
-    //     const awayScores = [];
-
-    //     homeScores.push(`${homePeriod1}`);
-    //     awayScores.push(`${awayPeriod1}`);
-
-    //     if (homePeriod2TieBreak && awayPeriod2TieBreak) {
-    //         homeScores.push(`${homePeriod2} (${homePeriod2TieBreak})`);
-    //         awayScores.push(`${awayPeriod2} (${awayPeriod2TieBreak})`);
-    //     } else {
-    //         homeScores.push(`${homePeriod2}`);
-    //         awayScores.push(`${awayPeriod2}`);
-    //     }
-
-    //     if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
-    //         homeScores.push(`${homePeriod3}`);
-    //         awayScores.push(`${awayPeriod3}`);
-    //     }
-
-    //     if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
-    //         homeScores.push(`${homePeriod4}`);
-    //         awayScores.push(`${awayPeriod4}`);
-    //     }
-
-    //     if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
-    //         homeScores.push(`${homePeriod5}`);
-    //         awayScores.push(`${awayPeriod5}`);
-    //     }
-
-    //     return (
-    //         <div className="flex flex-col bg-slate-50 w-full items-center">
-    //             <div className="flex flex-row space-x-2">
-    //                 {homeScores.map((score, index) => (
-    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
-    //                 ))}
-    //                 {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{homeScore?.point}</span>}
-    //             </div>
-    //             <div className="flex flex-row space-x-2">
-    //                 {awayScores.map((score, index) => (
-    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
-    //                 ))}
-    //                 {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{awayScore?.point}</span>}
-    //             </div>
-    //         </div>
-    //     );
-    // }
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
         // Extract the sets' scores
         const homePeriod1 = homeScore.period1 || 0;
@@ -438,27 +326,7 @@ const FixtureResultsAll = () => {
         );
     }
 
-    // function getStatusDom(item) {
-    //     if (item?.status?.type === 'inprogress') {
-    //         return (<Box sx={{ width: '50%', mt: 2 }}>
-    //             <LinearProgress color="success" />
-    //         </Box>)
-    //     }
-    //     else if (item?.status?.type === 'notstarted') {
-    //         return (<div className='flex flex-row items-center'>
-    //             {readableTimeStamp(item.startTimestamp)}
 
-    //         </div>)
-    //     }
-    //     else {
-    //         return (<div className='flex flex-col'>
-
-    //             {readableDate(item.startTimestamp)}
-    //             <span>Ended</span>
-    //         </div>)
-    //     }
-
-    // }
 
     function getStatusDom(item) {
         if (item?.status?.type === 'inprogress') {
@@ -483,30 +351,8 @@ const FixtureResultsAll = () => {
 
     }
 
-    // function getStatusDom(item) {
-
-    //     return (<div className='flex flex-row items-center text-[xs] justify-center space-x-1 w-full'>
-    //         {readableTimeStamp(item.startTimestamp)}
-
-    //     </div>)
 
 
-    // }
-
-    function getStatusOnlyDom(item) {
-        if (item?.status?.type === 'inprogress') {
-            return (<Box sx={{ width: '100%' }}>
-                <span className='capitalize text-xs'>{item?.status?.description}</span>
-                <LinearProgress color="success" sx={{ width: '50%', mx: 'auto', mt: 1 }} />
-            </Box>)
-        }
-        else {
-            return (<div className='flex flex-col w-full '>
-                <span className='capitalize'>{item?.status?.description}</span>
-            </div>)
-        }
-
-    }
 
     function getRoundAbbreviation(round) {
         if (!round) {
@@ -526,8 +372,8 @@ const FixtureResultsAll = () => {
             'qualification final round': 'Final Q',
             'semifinals': 'SF',
             'semifinal': 'SF',
-            'final': 'F',
-            'finals': 'F'
+            'final': 'FINAL',
+            'finals': 'FINAL'
         };
 
         const lowerCaseRound = round.toLowerCase();
@@ -541,49 +387,7 @@ const FixtureResultsAll = () => {
         return '';
     }
 
-    function getPlayerDom(item) {
-        return (<div>
-            <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
-                <span><CountryIcon countryCode={item.homeTeam.country?.alpha2} name={item.homeTeam.country?.name} size={15} /></span>
-                <span>{item.homeTeam.name}</span>
-                {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-
-            </div>
-            <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
-                <span><CountryIcon countryCode={item.awayTeam.country?.alpha2} name={item.homeTeam.country?.name} size={15} /></span>
-                <span>{item.awayTeam.name}</span>
-                {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-            </div>
-        </div>
-        )
-    }
-
-    // function getFullName(name, slug) {
-    //     // Split the input name to get last name and initial
-    //     const nameParts = name.split(' ');
-    //     const lastName = nameParts[0];
-    //     const initial = nameParts[1].replace('.', ''); // Remove the period from the initial
-
-    //     // Split the slug to get potential names
-    //     const slugParts = slug.split('-');
-
-    //     // Check if last_name is part of the slug_parts
-    //     if (slugParts.some(part => part.toLowerCase() === lastName.toLowerCase())) {
-    //         // Remove last_name from the slug_parts
-    //         const firstNameParts = slugParts.filter(part => part.toLowerCase() !== lastName.toLowerCase());
-
-    //         // Combine the initial with the remaining parts to form the first name
-    //         const firstName = firstNameParts.join(' ');
-
-    //         // Construct the full name
-    //         const fullName = `${firstName} ${lastName}`;
-    //         return fullName;
-    //     } else {
-    //         return "Name not matched in slug";
-    //     }
-    // }
+   
     function capitalize(str) {
         return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
@@ -602,9 +406,7 @@ const FixtureResultsAll = () => {
     function getFullName(name, slug) {
         // Split the input name to get last name and initial
         try {
-            if (slug.includes("mingge")) {
-                let a = 1
-            }
+         
             const nameParts = name.split(' ');
             const lastName = removeLastTwoCharacters(name).toLowerCase();
             // Split the slug to get potential names
@@ -624,97 +426,6 @@ const FixtureResultsAll = () => {
             return name
         }
     }
-    // function getPlayerDom1(item) {
-
-    //     try {
-    //         let p1 = item['homeTeam']
-    //         let p2 = item['awayTeam']
-    //         // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
-    //         const uniqueTournament = item.tournament.uniqueTournament;
-    //         if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
-    //             if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-    //                 if ((
-    //                     (p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
-    //                     (p2.country && p2.country.name.toLowerCase() === selectedCountry)
-    //                 ) && matchStatusList.includes(item?.status?.type)) {
-    //                     return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border text-xs sm:text-sm xs:text-base'>
-    //                         <div className="flex space-x-2 w-full h-full flex-row items-center  ">
-    //                             <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-    //                             <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
-    //                             {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-    //                             {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-
-    //                         </div>
-    //                         <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
-    //                             <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2?.name} size={15} /></div>
-    //                             <div className="h-full flex items-center">{getFullName(p2.name, p2.slug)}</div>
-    //                             {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-    //                             {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-    //                         </div>
-    //                     </div>
-    //                     )
-
-    //                 }
-    //             } else {
-    //                 const p1a = p1.subTeams[0];
-    //                 const p1b = p1.subTeams[1];
-    //                 const p2a = p2.subTeams[0];
-    //                 const p2b = p2.subTeams[1];
-    //                 const countries = [
-    //                     (p1a.country) ? p1a.country.name.toLowerCase() : null,
-    //                     (p1a.country) ? p1b.country.name.toLowerCase() : null,
-    //                     (p1a.country) ? p2a.country.name.toLowerCase() : null,
-    //                     (p1a.country) ? p2b.country.name.toLowerCase() : null
-    //                 ];
-    //                 if (countries.includes(selectedCountry) && matchStatusList.includes(item?.status?.type)) {
-    //                     return (<div key={`${item.id}-${uniqueTournament}`}>
-    //                         <div key={item.id} className="space-x-2 p-1 flex flex-row items-center text-xs sm:text-sm xs:text-base">
-    //                             <div className='w-full flex flex-col'>
-    //                                 <div className='w-full flex flex-row space-x-2 items-center'>
-    //                                     <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-    //                                     <span>{getFullName(p1a.name, p1a.slug)}</span>
-    //                                 </div>
-    //                                 <div className='w-full flex flex-row space-x-2'>
-    //                                     <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-    //                                     <span>{getFullName(p1b.name, p1b.slug)}</span>
-    //                                     {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-    //                                     {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-
-    //                                 </div>
-
-    //                             </div>
-    //                         </div>
-    //                         <div key={item.id} className="space-x-2  p-1 flex flex-row items-center text-xs sm:text-sm xs:text-base">
-    //                             <div className='w-full flex flex-col'>
-    //                                 <div className='w-full flex flex-row space-x-2 items-center'>
-    //                                     <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
-    //                                     <span>{getFullName(p2a.name, p2a.slug)}</span>
-    //                                 </div>
-    //                                 <div className='w-full flex flex-row space-x-2 items-center'>
-    //                                     <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
-    //                                     <span>{getFullName(p2b.name, p2b.slug)}</span>
-    //                                     {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-    //                                     {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-
-    //                                 </div>
-
-    //                             </div>
-
-    //                         </div>
-    //                     </div>
-    //                     )
-
-    //                 }
-    //             }
-    //         }
-    //         // }
-    //     }
-    //     catch (err) {
-    //         console.error(err)
-    //     }
-
-
-    // }
 
     function getPlayerDom1(item) {
 
@@ -739,7 +450,7 @@ const FixtureResultsAll = () => {
                             </div>
                             {/* {fetchH2HStatsDom(item)} */}
                             <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
-                                <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2?.name} size={15} /></div>
+                                <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2.country?.name} size={15} /></div>
                                 <div className="h-full flex items-center">{getFullName(p2.name, p2.slug)}</div>
                                 {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
@@ -809,12 +520,6 @@ const FixtureResultsAll = () => {
 
     }
 
-    // function fetchH2HStatsDom(item) {
-    //     return (<div className="flex flex-row  justify-center  space-x-2  text-white w-full text-xs bg-green-200">   {item?.status?.type !== "notstarted" &&
-    //         <button className="bg-green-600 p-[1px] rounded-sm flex items-center space-x-2 w-[40%]" onClick={(e) => handleClickOpenMatchStat(item)}>
-    //             <IoStatsChartSharp color="white" /> <span>MATCH STATS</span></button>}
-    //         <button className="bg-yellow-600 text-white  p-[2px] rounded-sm w-[40%]" onClick={(e) => handleClickOpenH2H(item)}>H2H</button></div>)
-    // }
     function fetchH2HStatsDom(item) {
         return (
             <div className="flex flex-row  space-x-2 w-full text-xs bg-indigo-200   rounded-md">
@@ -894,6 +599,10 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
+            if (p1.slug.includes("rublev")) {
+                let a = 1
+            }
+
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
             const uniqueTournament = item.tournament.uniqueTournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
@@ -1040,7 +749,7 @@ const FixtureResultsAll = () => {
             return <NotFound msg="No Results Found" />
         }
         else {
-            return filteredRankingsData.map((tournament, index) => (
+            let objDom= filteredRankingsData.map((tournament, index) => (
                 <div key={tournament + index} className="border m-1 bg-slate-300">
                     <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
                     <ul>
@@ -1052,7 +761,10 @@ const FixtureResultsAll = () => {
                     </ul>
                 </div>
             ));
+            return objDom
         }
+
+        
     }
 
     let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"
@@ -1110,8 +822,8 @@ const FixtureResultsAll = () => {
             </div>
             <div className="sm:hidden text-xs w-full bg-slate-700 text-white text-center flex flex-row justify-center space-x-1 items-center">
                 <span className="mr-2">Showing Results for</span>
-                <span>{selectedCountryCode?<CountryIcon countryCode={selectedCountryCode} size={15} />:<FaGlobe className='text-green-100'/>}</span>
-                <span className="uppercase  font-bold">{selectedCountryCode?selectedCountry:"All Countries"}</span>
+                <span>{selectedCountryCode ? <CountryIcon countryCode={selectedCountryCode} size={15} /> : <FaGlobe className='text-green-100' />}</span>
+                <span className="uppercase  font-bold">{selectedCountryCode ? selectedCountry : "All Countries"}</span>
                 {/* <div className='flex flex-row space-x-1 items-center ml-2'>
                     <AiOutlineClockCircle  />
                     <span className="capitalize">{formatDate(selectedDate)}</span>
@@ -1121,7 +833,7 @@ const FixtureResultsAll = () => {
             {loading ? <Loader /> : rankingsData && (
                 <div className="w-[100%] mx-auto">
                     {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
-                    {true ? recordDom() : "No Indian"}
+                    {recordDom()}
                 </div>
             )}
         </div>

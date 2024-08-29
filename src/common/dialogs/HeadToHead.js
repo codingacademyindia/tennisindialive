@@ -136,7 +136,7 @@ export default function Head2Head(props) {
 
             <div className='flex flex-row items center m-1 space-x-1 items-center'>
               <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
-              <div className="h-full w-full  flex items-center text-sm">
+              <div className="h-full w-full  flex items-center text-xs md:text-sm">
                 {getFullName(p1.name, p1.slug)}
               </div>
 

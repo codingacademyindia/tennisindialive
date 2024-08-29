@@ -6,10 +6,10 @@ import { Tooltip } from '@mui/material';
 const CountryIcon = ({ countryCode, name, size = 64 }) => {
     return (
         <div>
-            {/* <Tooltip title={name}> */}
+            <Tooltip title={name}>
 
                 <FlagIcon code={countryCode} size={size} />
-            {/* </Tooltip> */}
+            </Tooltip>
         </div>
 
     );
