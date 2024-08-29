@@ -65,9 +65,9 @@ export default function MatchStats(props) {
       const uniqueTournament = item.tournament.uniqueTournament;
       if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border text-xs md:text-sm '>
-          <div className="flex space-x-2 w-full h-full flex-row items-center font-bold whitespace-nowrap ">
+          <div className="flex space-x-2 w-full h-full flex-row items-center font-bold  ">
             <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-            <div className="h-full flex items-center whitespace-nowrap">{getFullName(p1.name, p1.slug)}</div>
+            <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
 
 
           </div>
@@ -83,13 +83,13 @@ export default function MatchStats(props) {
         return (<div key={`${item.id}-${uniqueTournament}`}>
           <div key={item.id} className="space-x-2 p-1 flex flex-row items-center text-xs md:text-sm">
             <div className='w-full flex flex-col'>
-              <div className='w-full flex flex-row space-x-2 items-center whitespace-nowrap'>
+              <div className='w-full flex flex-row space-x-2 items-center'>
                 <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                <span className='whitespace-nowrap'>{getFullName(p1a.name, p1a.slug)}</span>
+                <span className='text-left'>{getFullName(p1a.name, p1a.slug)}</span>
               </div>
-              <div className='w-full flex flex-row space-x-2 whitespace-nowrap'>
+              <div className='w-full flex flex-row space-x-2'>
                 <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                <span className='whitespace-nowrap'>{getFullName(p1b.name, p1b.slug)}</span>
+                <span className='text-left'>{getFullName(p1b.name, p1b.slug)}</span>
 
 
               </div>

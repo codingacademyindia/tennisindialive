@@ -136,7 +136,7 @@ export default function Head2Head(props) {
 
             <div className='flex flex-row items center m-1 space-x-1 items-center'>
               <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
-              <div className="h-full w-full  flex items-center text-sm whitespace-nowrap">
+              <div className="h-full w-full  flex items-center text-sm">
                 {getFullName(p1.name, p1.slug)}
               </div>
 
@@ -153,11 +153,11 @@ export default function Head2Head(props) {
             <div className='w-full flex flex-col'>
               <div className='w-full flex flex-row space-x-1 items-center'>
                 <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                <span className='w-full whitespace-nowrap'>{getFullName(p1a.name, p1a.slug)}</span>
+                <span className='w-full'>{getFullName(p1a.name, p1a.slug)}</span>
               </div>
               <div className='w-full flex flex-row space-x-1  items-center'>
                 <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                <span className='w-full whitespace-nowrap'>{getFullName(p1b.name, p1b.slug)}</span>
+                <span className='w-full'>{getFullName(p1b.name, p1b.slug)}</span>
 
 
               </div>
