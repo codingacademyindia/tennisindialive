@@ -250,73 +250,212 @@ const FixtureResultsAll = () => {
     }, []);
 
 
+    // function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
+    //     // Extract the sets' scores
+    //     const homePeriod1 = homeScore.period1 || 0;
+    //     const homePeriod2 = homeScore.period2 || 0;
+    //     const homePeriod3 = homeScore.period3 || 0;
+    //     const homePeriod4 = homeScore.period4 || 0;
+    //     const homePeriod5 = homeScore.period5 || 0;
+
+    //     const awayPeriod1 = awayScore.period1 || 0;
+    //     const awayPeriod2 = awayScore.period2 || 0;
+    //     const awayPeriod3 = awayScore.period3 || 0;
+    //     const awayPeriod4 = awayScore.period4 || 0;
+    //     const awayPeriod5 = awayScore.period5 || 0;
+
+    //     // Handle tiebreak scores if present
+    //     const homePeriod2TieBreak = homeScore.period2TieBreak || '';
+    //     const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
+
+    //     // Format the scores
+    //     const homeScores = [];
+    //     const awayScores = [];
+
+    //     homeScores.push(`${homePeriod1}`);
+    //     awayScores.push(`${awayPeriod1}`);
+
+    //     if (homePeriod2TieBreak && awayPeriod2TieBreak) {
+    //         homeScores.push(
+    //             <span key="homePeriod2">
+    //                 {homePeriod2}
+    //                 <sup className="font-bold">{homePeriod2TieBreak}</sup>
+    //             </span>
+    //         );
+    //         awayScores.push(
+    //             <span key="awayPeriod2">
+    //                 {awayPeriod2}
+    //                 <sup className="font-bold">{awayPeriod2TieBreak}</sup>
+    //             </span>
+    //         );
+    //     } else {
+    //         homeScores.push(`${homePeriod2}`);
+    //         awayScores.push(`${awayPeriod2}`);
+    //     }
+
+    //     if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
+    //         homeScores.push(`${homePeriod3}`);
+    //         awayScores.push(`${awayPeriod3}`);
+    //     }
+
+    //     if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
+    //         homeScores.push(`${homePeriod4}`);
+    //         awayScores.push(`${awayPeriod4}`);
+    //     }
+
+    //     if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
+    //         homeScores.push(`${homePeriod5}`);
+    //         awayScores.push(`${awayPeriod5}`);
+    //     }
+
+    //     return (
+    //         <div className="flex flex-col h-full w-full items-center  justify-center">
+    //             <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm border-b-2 border-slate-200">
+    //                 {homeScores.map((score, index) => (
+    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
+    //                 ))}
+    //                 {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{homeScore?.point}</span>}
+    //             </div>
+    //             <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm">
+    //                 {awayScores.map((score, index) => (
+    //                     <div className="w-[20%] p-1" key={index}>{score}</div>
+    //                 ))}
+    //                 {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{awayScore?.point}</span>}
+    //             </div>
+    //         </div>
+    //     );
+    // }
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
         // Extract the sets' scores
-        const homePeriod1 = homeScore.period1 || 0;
-        const homePeriod2 = homeScore.period2 || 0;
-        const homePeriod3 = homeScore.period3 || 0;
-        const homePeriod4 = homeScore.period4 || 0;
-        const homePeriod5 = homeScore.period5 || 0;
-
-        const awayPeriod1 = awayScore.period1 || 0;
-        const awayPeriod2 = awayScore.period2 || 0;
-        const awayPeriod3 = awayScore.period3 || 0;
-        const awayPeriod4 = awayScore.period4 || 0;
-        const awayPeriod5 = awayScore.period5 || 0;
-
+        const homePeriods = [
+            homeScore.period1 || 0,
+            homeScore.period2 || 0,
+            homeScore.period3 || 0,
+            homeScore.period4 || 0,
+            homeScore.period5 || 0
+        ];
+    
+        const awayPeriods = [
+            awayScore.period1 || 0,
+            awayScore.period2 || 0,
+            awayScore.period3 || 0,
+            awayScore.period4 || 0,
+            awayScore.period5 || 0
+        ];
+    
         // Handle tiebreak scores if present
-        const homePeriod2TieBreak = homeScore.period2TieBreak || '';
-        const awayPeriod2TieBreak = awayScore.period2TieBreak || '';
-
-        // Format the scores
+        const homeTiebreaks = [
+            homeScore.period1TieBreak || '',
+            homeScore.period2TieBreak || '',
+            homeScore.period3TieBreak || '',
+            homeScore.period4TieBreak || '',
+            homeScore.period5TieBreak || ''
+        ];
+    
+        const awayTiebreaks = [
+            awayScore.period1TieBreak || '',
+            awayScore.period2TieBreak || '',
+            awayScore.period3TieBreak || '',
+            awayScore.period4TieBreak || '',
+            awayScore.period5TieBreak || ''
+        ];
+    
         const homeScores = [];
         const awayScores = [];
-
-        homeScores.push(`${homePeriod1}`);
-        awayScores.push(`${awayPeriod1}`);
-
-        if (homePeriod2TieBreak && awayPeriod2TieBreak) {
-            homeScores.push(
-                <span key="homePeriod2">
-                    {homePeriod2}
-                    <sup className="font-bold">{homePeriod2TieBreak}</sup>
-                </span>
-            );
-            awayScores.push(
-                <span key="awayPeriod2">
-                    {awayPeriod2}
-                    <sup className="font-bold">{awayPeriod2TieBreak}</sup>
-                </span>
-            );
-        } else {
-            homeScores.push(`${homePeriod2}`);
-            awayScores.push(`${awayPeriod2}`);
+    
+        // Add scores for the first two sets
+        for (let i = 0; i < 2; i++) {
+            if (homeTiebreaks[i] && awayTiebreaks[i]) {
+                homeScores.push(
+                    <span key={`homePeriod${i + 1}`}>
+                        {homePeriods[i]}
+                        <sup className="font-bold">{homeTiebreaks[i]}</sup>
+                    </span>
+                );
+                awayScores.push(
+                    <span key={`awayPeriod${i + 1}`}>
+                        {awayPeriods[i]}
+                        <sup className="font-bold">{awayTiebreaks[i]}</sup>
+                    </span>
+                );
+            } else {
+                homeScores.push(`${homePeriods[i]}`);
+                awayScores.push(`${awayPeriods[i]}`);
+            }
         }
-
-        if (homePeriod3 !== 0 || awayPeriod3 !== 0) {
-            homeScores.push(`${homePeriod3}`);
-            awayScores.push(`${awayPeriod3}`);
+    
+        // Add the 3rd set score if the match went to 3 sets
+        if (homePeriods[2] !== 0 || awayPeriods[2] !== 0) {
+            if (homeTiebreaks[2] && awayTiebreaks[2]) {
+                homeScores.push(
+                    <span key={`homePeriod3`}>
+                        {homePeriods[2]}
+                        <sup className="font-bold">{homeTiebreaks[2]}</sup>
+                    </span>
+                );
+                awayScores.push(
+                    <span key={`awayPeriod3`}>
+                        {awayPeriods[2]}
+                        <sup className="font-bold">{awayTiebreaks[2]}</sup>
+                    </span>
+                );
+            } else {
+                homeScores.push(`${homePeriods[2]}`);
+                awayScores.push(`${awayPeriods[2]}`);
+            }
         }
-
-        if (homePeriod4 !== 0 || awayPeriod4 !== 0) {
-            homeScores.push(`${homePeriod4}`);
-            awayScores.push(`${awayPeriod4}`);
+    
+        // Add the 4th set score if the match went to 4 sets
+        if (homePeriods[3] !== 0 || awayPeriods[3] !== 0) {
+            if (homeTiebreaks[3] && awayTiebreaks[3]) {
+                homeScores.push(
+                    <span key={`homePeriod4`}>
+                        {homePeriods[3]}
+                        <sup className="font-bold">{homeTiebreaks[3]}</sup>
+                    </span>
+                );
+                awayScores.push(
+                    <span key={`awayPeriod4`}>
+                        {awayPeriods[3]}
+                        <sup className="font-bold">{awayTiebreaks[3]}</sup>
+                    </span>
+                );
+            } else {
+                homeScores.push(`${homePeriods[3]}`);
+                awayScores.push(`${awayPeriods[3]}`);
+            }
         }
-
-        if (homePeriod5 !== 0 || awayPeriod5 !== 0) {
-            homeScores.push(`${homePeriod5}`);
-            awayScores.push(`${awayPeriod5}`);
+    
+        // Add the 5th set score if the match went to 5 sets
+        if (homePeriods[4] !== 0 || awayPeriods[4] !== 0) {
+            if (homeTiebreaks[4] && awayTiebreaks[4]) {
+                homeScores.push(
+                    <span key={`homePeriod5`}>
+                        {homePeriods[4]}
+                        <sup className="font-bold">{homeTiebreaks[4]}</sup>
+                    </span>
+                );
+                awayScores.push(
+                    <span key={`awayPeriod5`}>
+                        {awayPeriods[4]}
+                        <sup className="font-bold">{awayTiebreaks[4]}</sup>
+                    </span>
+                );
+            } else {
+                homeScores.push(`${homePeriods[4]}`);
+                awayScores.push(`${awayPeriods[4]}`);
+            }
         }
-
+    
         return (
-            <div className="flex flex-col h-full w-full items-center  justify-center">
-                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm border-b-2 border-slate-200">
+            <div className="flex flex-col h-full w-full items-center justify-center">
+                <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm border-b-2 border-slate-200">
                     {homeScores.map((score, index) => (
                         <div className="w-[20%] p-1" key={index}>{score}</div>
                     ))}
                     {currentStatus === 'inprogress' && <span className="border text-green-800 p-1 font-bold">{homeScore?.point}</span>}
                 </div>
-                <div className="flex flex-row space-x-2 w-full h-[1/2]  text-sm">
+                <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm">
                     {awayScores.map((score, index) => (
                         <div className="w-[20%] p-1" key={index}>{score}</div>
                     ))}
@@ -325,6 +464,7 @@ const FixtureResultsAll = () => {
             </div>
         );
     }
+    
 
 
 
@@ -387,7 +527,7 @@ const FixtureResultsAll = () => {
         return '';
     }
 
-   
+
     function capitalize(str) {
         return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
@@ -406,7 +546,7 @@ const FixtureResultsAll = () => {
     function getFullName(name, slug) {
         // Split the input name to get last name and initial
         try {
-         
+
             const nameParts = name.split(' ');
             const lastName = removeLastTwoCharacters(name).toLowerCase();
             // Split the slug to get potential names
@@ -749,7 +889,7 @@ const FixtureResultsAll = () => {
             return <NotFound msg="No Results Found" />
         }
         else {
-            let objDom= filteredRankingsData.map((tournament, index) => (
+            let objDom = filteredRankingsData.map((tournament, index) => (
                 <div key={tournament + index} className="border m-1 bg-slate-300">
                     <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
                     <ul>
@@ -764,7 +904,7 @@ const FixtureResultsAll = () => {
             return objDom
         }
 
-        
+
     }
 
     let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"

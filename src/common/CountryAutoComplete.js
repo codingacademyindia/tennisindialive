@@ -12,15 +12,29 @@ const excludedCountries = [
   'ATA' // Add other countries you want to exclude here
 ];
 
-function mapCountryName(alpha3, label){
-  if(alpha3.toLowerCase()==='usa'){
+function mapCountryName(alpha3, label) {
+  if (alpha3.toLowerCase() === 'usa') {
     return "usa"
   }
-  else if(alpha3.toLowerCase()==='rus'){
+  else if (alpha3.toLowerCase() === 'rus') {
     return "russia"
   }
-  else{
+  else {
     return label.toLowerCase()
+  }
+
+}
+
+
+function mapCountryLabel(alpha3, label) {
+  if (alpha3.toLowerCase() === 'usa') {
+    return "USA (America)"
+  }
+  else if (alpha3.toLowerCase() === 'rus') {
+    return "Russia"
+  }
+  else {
+    return label
   }
 
 }
@@ -34,7 +48,7 @@ const countryArray = Object.keys(countryList)
     const alpha3 = alpha2ToAlpha3[key];
     return {
       code: key,
-      label,
+      label: mapCountryLabel(alpha3, label),
       abbreviatedLabel: key, // ISO 3166-1 alpha-2 country code
       name: mapCountryName(alpha3, label),
       alpha3,
@@ -59,7 +73,7 @@ const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
     (country) => (country.name.toLowerCase() === selectedCountry.toLowerCase() || country.alpha3.toLowerCase() === selectedCountry.toLowerCase())
   );
 
-  const fontSizeCSS = "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center text-left p-1";
+  const fontSizeCSS = "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center text-left p-1 capitalize";
 
   return (
     <Autocomplete

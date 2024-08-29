@@ -22,9 +22,9 @@ const App = () => {
           <ResponsiveAppBar />
           <div className="flex-grow">
             <Routes>
-            <Route path="/" element={<FixtureResults />} />
+            <Route path="/" element={<FixtureResultsAll />} />
             <Route path="/all" element={<FixtureResultsAll />} />
-              <Route path="/results/:year/:month/:day" element={<FixtureResults />} />
+              <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/rankings/live/atp" element={<ATPLiveRankings />} />
               <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
