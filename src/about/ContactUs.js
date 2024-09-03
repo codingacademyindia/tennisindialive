@@ -9,7 +9,7 @@ const ContactUs = () => {
         We would love to hear from you! If you have any questions, feedback, or concerns, please reach out to us using the following contact information:
       </p>
       <p className="mb-2">
-        <strong>Email:</strong> tennisofindia@gmail.com
+        <strong>Email:</strong> info@tennisindialive.com
       </p>
      
     </div>
