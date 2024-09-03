@@ -86,7 +86,7 @@ const FixtureResultsAll = () => {
     const [refreshScore, setRefreshScore] = useState(false);
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
-    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished"]);
+    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished","interrupted"]);
     const [selectedCountry, setSelectedCountry] = useState('india');
     const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
     const [indianCount, setIndianCount] = useState(0);
@@ -230,7 +230,7 @@ const FixtureResultsAll = () => {
 
     useEffect(() => {
         if (matchStatus.includes("all")) {
-            setMatchStatusList(["notstarted", "inprogress", "cancelled", "finished"])
+            setMatchStatusList(["notstarted", "inprogress", "canceled", "finished"])
         }
         else {
             setMatchStatusList([matchStatus])
@@ -483,9 +483,10 @@ const FixtureResultsAll = () => {
             </div>)
         }
         else {
-            return (<div className='flex flex-col w-full justify-center'>
+            return (<div className='flex flex-row w-full justify-center text-xs space-x-1'>
 
-                {readableDate(item.startTimestamp)}
+                <span className='text-xs'>{readableDate(item.startTimestamp)}</span>
+                <span className='text-xs'>({item?.status?.description})</span>
             </div>)
         }
 
