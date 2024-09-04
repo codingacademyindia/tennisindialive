@@ -25,85 +25,93 @@ import CountryIcon from '../Country';
 import CheckIcon from '@mui/icons-material/Check';
 import Loader from '../stateHandlers/LoaderState';
 import NotFound from '../stateHandlers/NotFound';
+import useApiCall from '../apiCalls/useApiCall';
+import { CgUnavailable } from "react-icons/cg";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(1), // Reduced padding
+    overflowX: 'hidden'
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
   '& .MuiPaper-root': {
-    maxWidth: '60 0px', // Increase the maxWidth of the dialog
+    maxWidth: '600px', // Increase the maxWidth of the dialog
     width: '100%', // Ensure the dialog takes the full width of the parent
   },
 }));
-export default function PlayerInfo(props) {
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [h2hData, setH2hData] = useState(props.data ? props.data.teamDuel : null);
 
-  const handleChange = (event, newValue) => {
-    setSelectedTab(newValue);
-    let filteredData = props.data.statistics[newValue];
-  };
+const HEADERS = {
+  'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
+  'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
+}
+export default function PlayerInfo(props) {
+  const [p1Image, setP1Image] = useState(null);
+  const { data: p1Data, loading: loadingP1, error: errorP1, setRequest: fetchP1Data } = useApiCall({ method: 'get', payload: [], url: '' });
+  // const { data: p1Image, loading: loadingP1image, error: errorP1image, setRequest: fetchP1Image } = useApiCall({ method: 'get', payload: [], url: '' });
+  // const { data: p2Image, loading: loadingP2image, error: errorP2image, setRequest: fetchP2Image } = useApiCall({ method: 'get', payload: [], url: '' });
+  const { data: p1ranking, loading: loadingP1ranking, error: errorP1ranking, setRequest: fetchP1Ranking } = useApiCall({ method: 'get', payload: [], url: '' });
+
 
   useEffect(() => {
-    setH2hData(null)
-    if (props.data) {
-      if (props.data.teamDuel) {
-        setH2hData(props.data.teamDuel)
+
+  }, [props.playerId, props.loading]);
+
+  // function convertToPNG(stringData){
+  //   let base64ImageString = Buffer.from(stringData, 'binary').toString('base64')
+  //   return base64ImageString
+  // }
+
+  useEffect(() => {
+    fetchP1Data({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.id}`, payload: [], headers: HEADERS })
+    fetchP1Ranking({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.id}/rankings`, payload: [], headers: HEADERS })
+
+  }, [props.id]);
+
+  useEffect(() => {
+    const fetchData = async (team) => {
+      try {
+        let reqUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.id}/image`
+        let IMAGE_HEADERS = JSON.parse(JSON.stringify(HEADERS))
+        IMAGE_HEADERS['Accept'] = 'image/png'
+        const res = await fetch(reqUrl, {
+          method: 'GET',
+          headers: IMAGE_HEADERS
+        });
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob)
+        setP1Image(url);
+      } catch (e) {
+        console.log(`Error: ${e}`)
       }
     }
+    fetchData()
+  }, [props.id])
 
-  }, [props.data, props.loading]);
 
 
-  function getPlayerDom1(p1, item) {
 
+
+
+
+  function getPlayerDom1(p1, pImage) {
     try {
-      // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
-      const uniqueTournament = item.tournament.uniqueTournament;
-      if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
-        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
-          <div className="flex space-x-2 w-full h-full flex-row items-center font-bold ">
-            <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-            <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
+      return (<div key={`${p1.id}`} className='flex flex-col w-full h-full border text-xs md:text-sm'>
+        <div className="flex flex-col space-x-2 w-full h-full  items-center font-bold ">
+          <img src={pImage} alt={getFullName(p1.name, p1.slug)} id="player1" width={"100px"} height={"100px"} />
 
-
-          </div>
-
-        </div>
-        )
-
-
-      } else {
-        const p1a = p1.subTeams[0];
-        const p1b = p1.subTeams[1];
-
-        return (<div key={`${item.id}-${uniqueTournament}`}>
-          <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
-            <div className='w-full flex flex-col'>
-              <div className='w-full flex flex-row space-x-2 items-center'>
-                <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                <span>{getFullName(p1a.name, p1a.slug)}</span>
-              </div>
-              <div className='w-full flex flex-row space-x-2'>
-                <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                <span>{getFullName(p1b.name, p1b.slug)}</span>
-
-
-              </div>
-
+          <div className='flex flex-row items center m-1 space-x-1 items-center'>
+            <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
+            <div className="h-full w-full  flex items-center text-xs md:text-sm">
+              {getFullName(p1.name, p1.slug)}
             </div>
-          </div>
-          <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
 
           </div>
         </div>
-        )
+      </div>
+      )
 
-
-      }
 
       // }
     }
@@ -126,7 +134,7 @@ export default function PlayerInfo(props) {
   function getFullName(name, slug) {
     // Split the input name to get last name and initial
     try {
-   
+
       const nameParts = name.split(' ');
       const lastName = removeLastTwoCharacters(name).toLowerCase();
       // Split the slug to get potential names
@@ -152,18 +160,111 @@ export default function PlayerInfo(props) {
     return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
   }
 
+  const notAvailableDom = <div className='bg-slate-300 space-x-2 flex flex-row items-center text-xs'><CgUnavailable /> Not Available</div>
+
+  function getPrizeMoney(prizeMoneyDict) {
+    if (prizeMoneyDict) {
+      return `${prizeMoneyDict.value} ${prizeMoneyDict.currency}`
+    }
+    else {
+      return notAvailableDom
+    }
+  }
+
+  function h2hFieldDom(playerInfo, field) {
+    if (playerInfo) {
+      if (playerInfo[field]) {
+        return playerInfo[field]
+      }
+      else {
+        return notAvailableDom
+      }
+    }
+    else {
+      return notAvailableDom
+    }
+  }
+
+  function CircleWithNumber(number) {
+    return (
+      <div className="flex items-center justify-center w-8 h-8 lg:w-12 lg:h-12 bg-indigo-800 text-white font-bold text-lg sm:text-xl rounded-full">
+        {number}
+      </div>
+    );
+  }
+  let h2hFieldCss = "bg-blue-200 w-[30%] text-xm font-bold h-full"
+  let h2hValueCss = "w-[30%] text-center flex flex-row justify-center bg-slate-100 font-bold"
   function h2hDom() {
-    return (<div className='flex-col w-full h-[20h]'>
-      <div>
+    let liveRanking1 = p1ranking ? p1ranking.rankings[1] : null
+    let currentRanking1 = p1ranking ? p1ranking.rankings[0] : null
+
+
+    return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden text-sm'>
+      <div className='w-full'>
         <div className='flex flex-row w-full bg-slate-200 items-center text-sm'>
-          <span className='text-center w-[45%] flex justify-center'>{getPlayerDom1(props.scoreRecord['homeTeam'], props.scoreRecord)}</span>
-          <span className='text-center w-[45%] flex justify-center'>{getPlayerDom1(props.scoreRecord['awayTeam'], props.scoreRecord)}</span>
+          <span className='text-left w-[40%] flex justify-center '>{getPlayerDom1(p1Data['team'], p1Image)}</span>
+
         </div>
+        {window.location.href.includes("localhost") && <>   <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+          {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+          <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "bestRanking") : notAvailableDom)}</div>
+          <span className={h2hFieldCss}>Career Best Ranking</span>
+
+        </div>
+
+          <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+            {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+            <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
+            <span className={h2hFieldCss}>Actual Ranking</span>
+
+          </div>
+          <div className='flex flex-row w-full border m-1 justify-center'>
+            <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
+            <span className={h2hFieldCss}>Live Ranking</span>
+
+          </div>
+          {p1Data?.team?.type == 1 && <>
+            <div className='flex flex-row w-full border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
+              <span className={h2hFieldCss}>Height</span>
+
+            </div>
+            <div className='flex flex-row w-full  border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
+              <span className={h2hFieldCss}>Residence</span>
+
+            </div>
+            <div className='flex flex-row w-full border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
+              <span className={h2hFieldCss}>Weight</span>
+
+            </div>
+            <div className='flex flex-row w-full  border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
+              <span className={h2hFieldCss}>Plays</span>
+
+            </div>
+
+            <div className='flex flex-row w-full border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
+              <span className={h2hFieldCss}>Turned Pro</span>
+
+            </div>
+            <div className='flex flex-row w-full border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
+              <span className={h2hFieldCss}>Total Prize Money </span>
+
+            </div>
+
+            <div className='flex flex-row w-full  border m-1 justify-center'>
+              <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
+              <span className={h2hFieldCss}>YTD Price Money</span>
+
+            </div>
+          </>}</>}
       </div>
-      <div className='flex flex-row w-full p-4 font-bold bg-blue-300'>
-        <div className='w-[50%] text-center'>{h2hData.homeWins}</div>
-        <div className='w-[50%] text-center'>{h2hData.awayWins}</div>
-      </div>
+
+
     </div>
     )
   }
@@ -176,7 +277,7 @@ export default function PlayerInfo(props) {
         open={props.open}
       >
         <DialogTitle sx={{ m: 0, p: 1 }} id="customized-dialog-title"> {/* Reduced padding */}
-          Head to Head
+          Player Details
           <IconButton
             aria-label="close"
             onClick={props.handleClose}
@@ -190,8 +291,8 @@ export default function PlayerInfo(props) {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <div className='w-full'>
-          {props.loading ? <Loader /> : (h2hData ? h2hDom() : <NotFound />)}
+        <div className="w-full overflow-x-hidden">
+          {(props.loading || loadingP1 || loadingP1ranking) ? <Loader /> : h2hDom()}
         </div>
       </BootstrapDialog>
     </React.Fragment>

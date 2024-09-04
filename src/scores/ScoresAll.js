@@ -32,6 +32,7 @@ import { setItem, getItem } from '../indexDb/indexedDB';
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { FlagIcon } from 'react-flag-kit';
 import { FaGlobe } from "react-icons/fa";
+import PlayerInfo from '../common/dialogs/PlayerInfo';
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -86,7 +87,7 @@ const FixtureResultsAll = () => {
     const [refreshScore, setRefreshScore] = useState(false);
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
-    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished","interrupted"]);
+    const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished", "interrupted"]);
     const [selectedCountry, setSelectedCountry] = useState('india');
     const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
     const [indianCount, setIndianCount] = useState(0);
@@ -100,6 +101,8 @@ const FixtureResultsAll = () => {
     const [eventId, setEventId] = React.useState(0);
     const [scoreRecord, setScoreRecord] = React.useState(null);
     const [dialogOpenCountry, setDialogOpenCountry] = useState(false);
+    const [playerId, setPlayerId] = React.useState(0);
+    const [openPlayerInfo, setOpenPlayerInfo] = React.useState(false);
 
     const handleClickOpenCountry = () => {
         setDialogOpenCountry(true);
@@ -136,6 +139,18 @@ const FixtureResultsAll = () => {
         fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
 
 
+
+    };
+
+    const handleClickPlayerName = (item) => {
+        setPlayerId(item.id)
+        setOpenPlayerInfo(true);
+
+    };
+
+    
+    const handleClosePlayerInfo = (item) => {
+        setOpenPlayerInfo(false);
 
     };
 
@@ -334,7 +349,7 @@ const FixtureResultsAll = () => {
             homeScore.period4 || 0,
             homeScore.period5 || 0
         ];
-    
+
         const awayPeriods = [
             awayScore.period1 || 0,
             awayScore.period2 || 0,
@@ -342,7 +357,7 @@ const FixtureResultsAll = () => {
             awayScore.period4 || 0,
             awayScore.period5 || 0
         ];
-    
+
         // Handle tiebreak scores if present
         const homeTiebreaks = [
             homeScore.period1TieBreak || '',
@@ -351,7 +366,7 @@ const FixtureResultsAll = () => {
             homeScore.period4TieBreak || '',
             homeScore.period5TieBreak || ''
         ];
-    
+
         const awayTiebreaks = [
             awayScore.period1TieBreak || '',
             awayScore.period2TieBreak || '',
@@ -359,10 +374,10 @@ const FixtureResultsAll = () => {
             awayScore.period4TieBreak || '',
             awayScore.period5TieBreak || ''
         ];
-    
+
         const homeScores = [];
         const awayScores = [];
-    
+
         // Add scores for the first two sets
         for (let i = 0; i < 2; i++) {
             if (homeTiebreaks[i] && awayTiebreaks[i]) {
@@ -383,7 +398,7 @@ const FixtureResultsAll = () => {
                 awayScores.push(`${awayPeriods[i]}`);
             }
         }
-    
+
         // Add the 3rd set score if the match went to 3 sets
         if (homePeriods[2] !== 0 || awayPeriods[2] !== 0) {
             if (homeTiebreaks[2] && awayTiebreaks[2]) {
@@ -404,7 +419,7 @@ const FixtureResultsAll = () => {
                 awayScores.push(`${awayPeriods[2]}`);
             }
         }
-    
+
         // Add the 4th set score if the match went to 4 sets
         if (homePeriods[3] !== 0 || awayPeriods[3] !== 0) {
             if (homeTiebreaks[3] && awayTiebreaks[3]) {
@@ -425,7 +440,7 @@ const FixtureResultsAll = () => {
                 awayScores.push(`${awayPeriods[3]}`);
             }
         }
-    
+
         // Add the 5th set score if the match went to 5 sets
         if (homePeriods[4] !== 0 || awayPeriods[4] !== 0) {
             if (homeTiebreaks[4] && awayTiebreaks[4]) {
@@ -446,7 +461,7 @@ const FixtureResultsAll = () => {
                 awayScores.push(`${awayPeriods[4]}`);
             }
         }
-    
+
         return (
             <div className="flex flex-col h-full w-full items-center justify-center">
                 <div className="flex flex-row space-x-2 w-full h-[1/2] text-sm border-b-2 border-slate-200">
@@ -464,7 +479,7 @@ const FixtureResultsAll = () => {
             </div>
         );
     }
-    
+
 
 
 
@@ -584,7 +599,7 @@ const FixtureResultsAll = () => {
                         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
                             <div className="flex space-x-2 w-full h-full flex-row items-center  ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-                                <div className="h-full flex items-center ">{getFullName(p1.name, p1.slug)}</div>
+                                <div className="h-full flex items-center "><button onClick={()=>handleClickPlayerName(p1)}>{getFullName(p1.name, p1.slug)}</button></div>
                                 {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -592,7 +607,7 @@ const FixtureResultsAll = () => {
                             {/* {fetchH2HStatsDom(item)} */}
                             <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2.country?.name} size={15} /></div>
-                                <div className="h-full flex items-center">{getFullName(p2.name, p2.slug)}</div>
+                                <div className="h-full flex items-center"><button onClick={()=>handleClickPlayerName(p1)}>{getFullName(p2.name, p2.slug)}</button></div>
                                 {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                             </div>
@@ -939,6 +954,11 @@ const FixtureResultsAll = () => {
                 data={h2hData}
                 scoreRecord={scoreRecord}
                 eventId={eventId}
+            />
+
+            <PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo}
+                loading={false}
+                id={playerId}
             />
 
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
