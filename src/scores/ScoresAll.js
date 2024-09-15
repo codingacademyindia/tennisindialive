@@ -588,10 +588,13 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
+            if(p1.name.includes("Balaji") || p2.name.includes("Balaji") ){
+                console.log("")
+            }
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
-            const uniqueTournament = item.tournament.uniqueTournament;
+            const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
-                if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
+                if (!uniqueTournament.name.toLowerCase().includes('double')) {
                     if ((selectedCountry === '' ||
                         ((p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
                             (p2.country && p2.country.name.toLowerCase() === selectedCountry))
@@ -755,14 +758,14 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if (p1.slug.includes("rublev")) {
-                let a = 1
+            if(p1.name.includes("Balaji") || p2.name.includes("Balaji") ){
+                console.log("")
             }
 
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
-            const uniqueTournament = item.tournament.uniqueTournament;
+            const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
-                if (!uniqueTournament.name.toLowerCase().includes('doubles')) {
+                if (!uniqueTournament.name.toLowerCase().includes('double')) {
                     if ((selectedCountry === '' ||
                         ((p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
                             (p2.country && p2.country.name.toLowerCase() === selectedCountry))
@@ -956,10 +959,10 @@ const FixtureResultsAll = () => {
                 eventId={eventId}
             />
 
-            <PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo}
+            {/*<PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo}
                 loading={false}
                 id={playerId}
-            />
+            />*/}
 
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}
