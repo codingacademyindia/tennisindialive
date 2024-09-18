@@ -730,7 +730,7 @@ const FixtureResults = () => {
         <div>
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}
-                <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
+                {/* <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} /> */}
                 {/* {getStatusControl()} */}
 
                 {/* {getStatusButtons()} */}
