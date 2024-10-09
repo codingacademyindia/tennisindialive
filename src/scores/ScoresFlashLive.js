@@ -115,8 +115,40 @@ const FixtureResults = () => {
     // const [selectedDate, setSelectedDate] = useState(new Date());
 
 
+    function getFullName(name, slug) {
+        // Split the input name to get last name and initial
+        try {
+
+            const nameParts = name.split(' ');
+            const lastName = removeLastTwoCharacters(name).toLowerCase();
+            // Split the slug to get potential names
+            // const slugParts = slug.replaceAll("-"," ")
+            const normalizedLastName = lastName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            const normalizedSlug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 
+            let firstName = normalizedSlug.replaceAll(normalizedLastName.replaceAll(" ", "-"), "").replaceAll("-", " ").trim()
+            const fullName = `${firstName} ${lastName}`;
+            return capitalize(fullName)
+
+            // Check if last_name is part of the slug_parts
+
+        } catch (err) {
+
+            return name
+        }
+    }
+    function capitalize(str) {
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    }
+    function removeLastTwoCharacters(str) {
+        let textToReplace = getTextAfterLastSpace(str)
+        return str.replace(textToReplace, "").trim()
+    }
+    function getTextAfterLastSpace(str) {
+        const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
+        return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
+    }
     const parseDateString = (dateString) => {
         const currentYear = dayjs().year(); // Get the current year
         const formattedDateString = `${dateString}-${currentYear}`; // Append the current year to the input string
@@ -553,14 +585,14 @@ const FixtureResults = () => {
                     <div className='flex flex-col w-full h-full border'>
                         <div key={item.id} className="flex space-x-2 w-full h-full flex-row items-center">
                             <div className="h-full flex items-center"><CountryIcon countryName={item['HOME_PARTICIPANT_COUNTRY_NAME_ONE']} name={p1.country?.name} size={15} /></div>
-                            <div className="h-full flex items-center">{p1}</div>
+                            <div className="h-full flex items-center">{getFullName(p1,item['HOME_SLUG'])}</div>
                             {/* <img src={item.HOME_IMAGES[0]} height="20px" width="20px"/> */}
                             {item.SERVICE === 1 && item.STAGE_TYPE.toLowerCase() === 'live' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                             {item.WINNER === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                         </div>
                         <div key={item.id} className="space-x-2 h-full flex flex-row items-center">
                             <div className="h-full flex items-center"><CountryIcon countryName={item['AWAY_PARTICIPANT_COUNTRY_NAME_ONE']} name={p2.country?.name} size={15} /></div>
-                            <div className="h-full flex items-center">{p2}</div>
+                            <div className="h-full flex items-center">{getFullName(p2,item['AWAY_SLUG'])}</div>
                             {/* <img src={item.AWAY_IMAGES[0]} height="20px" width="20px"/> */}
                             {item.SERVICE === 2 && item.STAGE_TYPE.toLowerCase() === 'live' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                             {item.WINNER === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}

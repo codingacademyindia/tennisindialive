@@ -22,7 +22,7 @@ const App = () => {
           <ResponsiveAppBar />
           <div className="flex-grow">
             <Routes>
-            <Route path="/" element={<FixtureResults />} />
+            <Route path="/" element={<FixtureResultsFlash />} />
               <Route path="/results/:year/:month/:day" element={<FixtureResultsFlash />} />
               <Route path="/rankings/live/atp" element={<ATPLiveRankings />} />
               <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
