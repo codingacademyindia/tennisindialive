@@ -245,7 +245,7 @@ const FixtureResultsAll = () => {
 
     useEffect(() => {
         if (matchStatus.includes("all")) {
-            setMatchStatusList(["notstarted", "inprogress", "canceled", "finished"])
+            setMatchStatusList(["notstarted", "inprogress", "canceled", "finished",'interrupted'])
         }
         else {
             setMatchStatusList([matchStatus])
@@ -610,7 +610,7 @@ const FixtureResultsAll = () => {
                             {/* {fetchH2HStatsDom(item)} */}
                             <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2.country?.name} size={15} /></div>
-                                <div className="h-full flex items-center"><button onClick={()=>handleClickPlayerName(p1)}>{getFullName(p2.name, p2.slug)}</button></div>
+                                <div className="h-full flex items-center"><button onClick={()=>handleClickPlayerName(p2)}>{getFullName(p2.name, p2.slug)}</button></div>
                                 {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                             </div>
@@ -635,11 +635,11 @@ const FixtureResultsAll = () => {
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                                        <span>{getFullName(p1a.name, p1a.slug)}</span>
+                                        <span><button onClick={()=>handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2'>
                                         <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                                        <span>{getFullName(p1b.name, p1b.slug)}</span>
+                                        <span><button onClick={()=>handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
                                         {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                         {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -651,11 +651,11 @@ const FixtureResultsAll = () => {
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
-                                        <span>{getFullName(p2a.name, p2a.slug)}</span>
+                                        <span><button onClick={()=>handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
-                                        <span>{getFullName(p2b.name, p2b.slug)}</span>
+                                        <span><button onClick={()=>handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
                                         {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                         {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -732,7 +732,7 @@ const FixtureResultsAll = () => {
                             {/* <div className='w-[10%] sm:w-[10%] flex flex-col justify-center text-center items-center font-bold'>
                                 <span className="text-xs w-full flex justify-center">{getStatusOnlyDom(item)}</span>
                             </div> */}
-                            <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[30%]">
+                            <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[40%]">
                                 {getPlayerDom1(item)}
                             </div>
 
@@ -854,17 +854,19 @@ const FixtureResultsAll = () => {
     function getScoreHeader(tournament) {
         let seasonName = rankingsData[tournament][0]?.season?.name
         let name = rankingsData[tournament][0]?.tournament?.name
-        if (seasonName) {
-            if (seasonName.includes("Men")) {
+        let category = rankingsData[tournament][0]?.tournament?.category?.name
+        let uniqueTournament = rankingsData[tournament][0]?.tournament?.uniqueTournament?.name
+        if (name) {
+            if (category.includes("Men")) {
                 return (<div className="flex flex-row bg-blue-300  items-center p-1">
-                    <span>{seasonName} </span>
+                    <span>{uniqueTournament} </span>
                     {/* <FcBusinessman /> */}
                 </div>
                 )
             }
             else {
                 return (<div className="flex flex-row bg-pink-300 items-center p-1">
-                    <span>{seasonName} </span>
+                    <span>{uniqueTournament} </span>
                     {/* <FcBusinesswoman /> */}
                 </div>
                 )
@@ -873,7 +875,7 @@ const FixtureResultsAll = () => {
         }
         else {
             return (<div className="flex flex-row bg-gray-300 text-lg items-center p-1">
-                <span>{tournament} </span>
+                <span>{uniqueTournament} </span>
                 <FcBusinessman />
             </div>)
         }
@@ -959,10 +961,10 @@ const FixtureResultsAll = () => {
                 eventId={eventId}
             />
 
-            {/*<PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo}
+            <PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo}
                 loading={false}
                 id={playerId}
-            />*/}
+            />
 
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
                 {/* <div className="bg-slate-500 text-white">Scores</div> */}

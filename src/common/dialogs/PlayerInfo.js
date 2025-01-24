@@ -1,32 +1,14 @@
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Grid, Paper,
-  Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tabs,
-  Typography
-} from "@mui/material";
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import React, { useState, useEffect } from "react";
-import { SiTicktick } from "react-icons/si";
-import { FaCheckCircle } from "react-icons/fa";
-import CountryIcon from '../Country';
-import CheckIcon from '@mui/icons-material/Check';
-import Loader from '../stateHandlers/LoaderState';
-import NotFound from '../stateHandlers/NotFound';
-import useApiCall from '../apiCalls/useApiCall';
+import React, { useEffect, useState } from "react";
 import { CgUnavailable } from "react-icons/cg";
+import { TbRuler3 } from 'react-icons/tb';
+import useApiCall from '../apiCalls/useApiCall';
+import CountryIcon from '../Country';
+import Loader from '../stateHandlers/LoaderState';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -97,19 +79,15 @@ export default function PlayerInfo(props) {
 
   function getPlayerDom1(p1, pImage) {
     try {
-      return (<div key={`${p1.id}`} className='flex flex-col w-full h-full border text-xs md:text-sm'>
-        <div className="flex flex-col space-x-2 w-full h-full  items-center font-bold ">
+      return (<div key={`${p1.id}`} className="flex flex-col space-x-2 w-full h-full  items-center font-bold">
           <img src={pImage} alt={getFullName(p1.name, p1.slug)} id="player1" width={"100px"} height={"100px"} />
-
           <div className='flex flex-row items center m-1 space-x-1 items-center'>
             <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
             <div className="h-full w-full  flex items-center text-xs md:text-sm">
               {getFullName(p1.name, p1.slug)}
             </div>
-
           </div>
         </div>
-      </div>
       )
 
 
@@ -184,7 +162,67 @@ export default function PlayerInfo(props) {
       return notAvailableDom
     }
   }
+  function isAvailable(playerInfo, field) {
+    if (playerInfo) {
+      if (playerInfo[field]) {
+        return TbRuler3
+      }
+      else {
+        return false
+      }
+    }
+    else {
+      return false
+    }
+  }
 
+  function calculateAge(dobTimestamp) {
+    // Convert the timestamp to a Date object
+    const dob = new Date(dobTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
+    
+    // Get today's date
+    const today = new Date();
+    
+    // Calculate the difference in years
+    let age = today.getFullYear() - dob.getFullYear();
+    
+    // Check if the birthday has occurred yet this year
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const dayDiff = today.getDate() - dob.getDate();
+    
+    // Adjust the age if the birthday hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+    }
+    
+    return age;
+}
+
+
+
+  function readableTimeStamp(timestamp) {
+    // Convert to milliseconds (JavaScript timestamps are in milliseconds)
+    const date = new Date(timestamp * 1000);
+
+    // Get date components
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' }); // 'default' locale, short month format
+    const year = date.getFullYear();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+
+    // Pad minutes with leading zero if needed
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+    // Format date string
+    const formattedDate = `${day}-${month}-${year}`;
+    return formattedDate;
+}
   function CircleWithNumber(number) {
     return (
       <div className="flex items-center justify-center w-8 h-8 lg:w-12 lg:h-12 bg-indigo-800 text-white font-bold text-lg sm:text-xl rounded-full">
@@ -194,74 +232,98 @@ export default function PlayerInfo(props) {
   }
   let h2hFieldCss = "bg-blue-200 w-[30%] text-xm font-bold h-full"
   let h2hValueCss = "w-[30%] text-center flex flex-row justify-center bg-slate-100 font-bold"
+
+  
+
   function h2hDom() {
     let liveRanking1 = p1ranking ? p1ranking.rankings[1] : null
     let currentRanking1 = p1ranking ? p1ranking.rankings[0] : null
-
+    if (!p1Data) {
+      return ""
+    }
 
     return (<div className='flex-col w-full h-[20h] flex mx-auto text-center overflow-x-hidden text-sm'>
       <div className='w-full'>
         <div className='flex flex-row w-full bg-slate-200 items-center text-sm'>
-          <span className='text-left w-[40%] flex justify-center '>{getPlayerDom1(p1Data['team'], p1Image)}</span>
+          <span className='text-left w-full flex justify-center '>{getPlayerDom1(p1Data['team'], p1Image)}</span>
 
         </div>
-        {window.location.href.includes("localhost") && <>   <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+        {isAvailable(p1Data.team.playerTeamInfo, "birthDateTimestamp") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+            {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+            <span className={h2hFieldCss}>Birthday</span>
+
+            <div className={h2hValueCss}>{(p1Data ? readableTimeStamp(h2hFieldDom(p1Data.team.playerTeamInfo, "birthDateTimestamp")) : notAvailableDom)}</div>
+
+          </div>}
+          {isAvailable(p1Data.team.playerTeamInfo, "birthDateTimestamp") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+            {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+            <span className={h2hFieldCss}>Age</span>
+
+            <div className={h2hValueCss}>{(p1Data ? calculateAge(h2hFieldDom(p1Data.team.playerTeamInfo, "birthDateTimestamp")) : notAvailableDom)}</div>
+
+          </div>}
+          {isAvailable(currentRanking1, "bestRanking") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
           {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
-          <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "bestRanking") : notAvailableDom)}</div>
           <span className={h2hFieldCss}>Career Best Ranking</span>
 
-        </div>
+          <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "bestRanking") : notAvailableDom)}</div>
 
-          <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+        </div>}
+
+          {isAvailable(currentRanking1, "ranking") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
             {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
-            <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
             <span className={h2hFieldCss}>Actual Ranking</span>
 
-          </div>
-          <div className='flex flex-row w-full border m-1 justify-center'>
-            <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
+            <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
+
+          </div>}
+          {isAvailable(liveRanking1, "ranking") && <div className='flex flex-row w-full border m-1 justify-center'>
             <span className={h2hFieldCss}>Live Ranking</span>
 
-          </div>
+            <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
+
+          </div>}
           {p1Data?.team?.type == 1 && <>
-            <div className='flex flex-row w-full border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
+            {isAvailable(p1Data.team.playerTeamInfo, "height") && <div className='flex flex-row w-full border m-1 justify-center'>
               <span className={h2hFieldCss}>Height</span>
 
-            </div>
-            <div className='flex flex-row w-full  border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
+
+            </div>}
+            {isAvailable(p1Data.team.playerTeamInfo, "residence") && <div className='flex flex-row w-full  border m-1 justify-center'>
               <span className={h2hFieldCss}>Residence</span>
 
-            </div>
-            <div className='flex flex-row w-full border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
+
+            </div>}
+            {isAvailable(p1Data.team.playerTeamInfo, "weight") && <div className='flex flex-row w-full border m-1 justify-center'>
               <span className={h2hFieldCss}>Weight</span>
 
-            </div>
-            <div className='flex flex-row w-full  border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
+
+            </div>}
+            {isAvailable(p1Data.team.playerTeamInfo, "plays") && <div className='flex flex-row w-full  border m-1 justify-center'>
               <span className={h2hFieldCss}>Plays</span>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
 
-            </div>
+            </div>}
 
-            <div className='flex flex-row w-full border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
+            {isAvailable(p1Data.team.playerTeamInfo, "turnedPro") && <div className='flex flex-row w-full border m-1 justify-center'>
               <span className={h2hFieldCss}>Turned Pro</span>
+              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
 
-            </div>
-            <div className='flex flex-row w-full border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
+            </div>}
+            {isAvailable(p1Data.team.playerTeamInfo, "prizeTotalRaw") && <div className='flex flex-row w-full border m-1 justify-center'>
               <span className={h2hFieldCss}>Total Prize Money </span>
+              <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
 
-            </div>
+            </div>}
 
-            <div className='flex flex-row w-full  border m-1 justify-center'>
-              <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
+            {isAvailable(p1Data.team.playerTeamInfo, "prizeCurrentRaw") && <div className='flex flex-row w-full  border m-1 justify-center'>
               <span className={h2hFieldCss}>YTD Price Money</span>
-
-            </div>
-          </>}</>}
+              <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
+            </div>}
+          </>}
       </div>
 
 
@@ -292,7 +354,7 @@ export default function PlayerInfo(props) {
           </IconButton>
         </DialogTitle>
         <div className="w-full overflow-x-hidden">
-          {(props.loading || loadingP1 || loadingP1ranking) ? <Loader /> : h2hDom()}
+          {(!loadingP1 && !loadingP1ranking) ? h2hDom(): <Loader />  }
         </div>
       </BootstrapDialog>
     </React.Fragment>
