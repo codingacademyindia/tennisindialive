@@ -152,7 +152,7 @@ export default function PlayerInfo(props) {
   function h2hFieldDom(playerInfo, field) {
     if (playerInfo) {
       if (playerInfo[field]) {
-        return playerInfo[field]
+        return field==="height"? metersToFeetInches(playerInfo[field]) : playerInfo[field]
       }
       else {
         return notAvailableDom
@@ -233,7 +233,22 @@ export default function PlayerInfo(props) {
   let h2hFieldCss = "bg-blue-200 w-[30%] text-xm font-bold h-full"
   let h2hValueCss = "w-[30%] text-center flex flex-row justify-center bg-slate-100 font-bold"
 
-  
+  function metersToFeetInches(metersStr) {
+    let meters = parseFloat(metersStr); // Convert string to number
+    if (isNaN(meters)) {
+        return "";
+    }
+
+    let totalInches = meters * 39.3701; // Convert meters to inches
+    let feet = Math.floor(totalInches / 12); // Get whole feet
+    let inches = Math.round(totalInches % 12); // Get remaining inches, rounded
+
+    if (inches === 0) {
+        return `${feet} ft`; // Only return feet if inches are 0
+    }
+    return `${feet} ft ${inches} in`;
+}
+
 
   function h2hDom() {
     let liveRanking1 = p1ranking ? p1ranking.rankings[1] : null
@@ -313,7 +328,7 @@ export default function PlayerInfo(props) {
               <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
 
             </div>}
-            {isAvailable(p1Data.team.playerTeamInfo, "prizeTotalRaw") && <div className='flex flex-row w-full border m-1 justify-center'>
+            {/* {isAvailable(p1Data.team.playerTeamInfo, "prizeTotalRaw") && <div className='flex flex-row w-full border m-1 justify-center'>
               <span className={h2hFieldCss}>Total Prize Money </span>
               <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
 
@@ -322,7 +337,7 @@ export default function PlayerInfo(props) {
             {isAvailable(p1Data.team.playerTeamInfo, "prizeCurrentRaw") && <div className='flex flex-row w-full  border m-1 justify-center'>
               <span className={h2hFieldCss}>YTD Price Money</span>
               <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
-            </div>}
+            </div>} */}
           </>}
       </div>
 

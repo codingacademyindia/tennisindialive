@@ -148,7 +148,7 @@ const FixtureResultsAll = () => {
 
     };
 
-    
+
     const handleClosePlayerInfo = (item) => {
         setOpenPlayerInfo(false);
 
@@ -245,7 +245,7 @@ const FixtureResultsAll = () => {
 
     useEffect(() => {
         if (matchStatus.includes("all")) {
-            setMatchStatusList(["notstarted", "inprogress", "canceled", "finished",'interrupted'])
+            setMatchStatusList(["notstarted", "inprogress", "canceled", "finished", 'interrupted'])
         }
         else {
             setMatchStatusList([matchStatus])
@@ -588,7 +588,7 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if(p1.name.includes("Balaji") || p2.name.includes("Balaji") ){
+            if (p1.name.includes("Balaji") || p2.name.includes("Balaji")) {
                 console.log("")
             }
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
@@ -602,15 +602,19 @@ const FixtureResultsAll = () => {
                         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
                             <div className="flex space-x-2 w-full h-full flex-row items-center  ">
                                 <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
-                                <div className="h-full flex items-center "><button onClick={()=>handleClickPlayerName(p1)}>{getFullName(p1.name, p1.slug)}</button></div>
+                                <div className="h-full flex items-center p-1">
+                                    <button
+                                        className="transition hover:bg-blue-500  hover:text-white hover:p-1"
+                                        onClick={() => handleClickPlayerName(p1)}
+                                    >{getFullName(p1.name, p1.slug)}</button></div>
                                 {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                             </div>
                             {/* {fetchH2HStatsDom(item)} */}
                             <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
-                                <div className="h-full flex items-center"><CountryIcon countryCode={p2?.country.alpha2} name={p2.country?.name} size={15} /></div>
-                                <div className="h-full flex items-center"><button onClick={()=>handleClickPlayerName(p2)}>{getFullName(p2.name, p2.slug)}</button></div>
+                                <div className="h-full flex items-center "><CountryIcon countryCode={p2?.country.alpha2} name={p2.country?.name} size={15} /></div>
+                                <div className="h-full flex items-center p-1"><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2)}>{getFullName(p2.name, p2.slug)}</button></div>
                                 {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                 {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
                             </div>
@@ -635,11 +639,11 @@ const FixtureResultsAll = () => {
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                                        <span><button onClick={()=>handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
+                                        <span><button className="transition hover:bg-blue-500 hover:p-1 hover:text-white" onClick={() => handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2'>
                                         <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                                        <span><button onClick={()=>handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
+                                        <span><button  className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
                                         {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                         {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -651,11 +655,11 @@ const FixtureResultsAll = () => {
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
-                                        <span><button onClick={()=>handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
+                                        <span><button  className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
-                                        <span><button onClick={()=>handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
+                                        <span><button  className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
                                         {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                         {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -758,7 +762,7 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if(p1.name.includes("Balaji") || p2.name.includes("Balaji") ){
+            if (p1.name.includes("Balaji") || p2.name.includes("Balaji")) {
                 console.log("")
             }
 
@@ -859,14 +863,14 @@ const FixtureResultsAll = () => {
         if (name) {
             if (category.toLowerCase().includes("atp") || category.toLowerCase().includes("men") || category.toLowerCase().includes("challenger")) {
                 return (<div className="flex flex-row bg-blue-300  items-center p-1">
-                    <span>{category.toLowerCase().includes("itf")?uniqueTournament:seasonName} </span>
+                    <span>{category.toLowerCase().includes("itf") ? uniqueTournament : seasonName} </span>
                     {/* <FcBusinessman /> */}
                 </div>
                 )
             }
             else {
                 return (<div className="flex flex-row bg-pink-300 items-center p-1">
-                    <span>{category.toLowerCase().includes("itf")?uniqueTournament:seasonName} </span>
+                    <span>{category.toLowerCase().includes("itf") ? uniqueTournament : seasonName} </span>
                     {/* <FcBusinesswoman /> */}
                 </div>
                 )
