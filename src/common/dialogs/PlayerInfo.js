@@ -80,14 +80,14 @@ export default function PlayerInfo(props) {
   function getPlayerDom1(p1, pImage) {
     try {
       return (<div key={`${p1.id}`} className="flex flex-col space-x-2 w-full h-full  items-center font-bold">
-          <img src={pImage} alt={getFullName(p1.name, p1.slug)} id="player1" width={"100px"} height={"100px"} />
-          <div className='flex flex-row items center m-1 space-x-1 items-center'>
-            <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
-            <div className="h-full w-full  flex items-center text-xs md:text-sm">
-              {getFullName(p1.name, p1.slug)}
-            </div>
+        <img src={pImage} alt={getFullName(p1.name, p1.slug)} id="player1" width={"100px"} height={"100px"} />
+        <div className='flex flex-row items center m-1 space-x-1 items-center'>
+          <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={18} /></div>
+          <div className="h-full w-full  flex items-center text-xs md:text-sm">
+            {getFullName(p1.name, p1.slug)}
           </div>
         </div>
+      </div>
       )
 
 
@@ -152,7 +152,7 @@ export default function PlayerInfo(props) {
   function h2hFieldDom(playerInfo, field) {
     if (playerInfo) {
       if (playerInfo[field]) {
-        return field==="height"? metersToFeetInches(playerInfo[field]) : playerInfo[field]
+        return field === "height" ? metersToFeetInches(playerInfo[field]) : playerInfo[field]
       }
       else {
         return notAvailableDom
@@ -179,24 +179,24 @@ export default function PlayerInfo(props) {
   function calculateAge(dobTimestamp) {
     // Convert the timestamp to a Date object
     const dob = new Date(dobTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
-    
+
     // Get today's date
     const today = new Date();
-    
+
     // Calculate the difference in years
     let age = today.getFullYear() - dob.getFullYear();
-    
+
     // Check if the birthday has occurred yet this year
     const monthDiff = today.getMonth() - dob.getMonth();
     const dayDiff = today.getDate() - dob.getDate();
-    
+
     // Adjust the age if the birthday hasn't occurred yet this year
     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-        age--;
+      age--;
     }
-    
+
     return age;
-}
+  }
 
 
 
@@ -222,7 +222,7 @@ export default function PlayerInfo(props) {
     // Format date string
     const formattedDate = `${day}-${month}-${year}`;
     return formattedDate;
-}
+  }
   function CircleWithNumber(number) {
     return (
       <div className="flex items-center justify-center w-8 h-8 lg:w-12 lg:h-12 bg-indigo-800 text-white font-bold text-lg sm:text-xl rounded-full">
@@ -236,7 +236,7 @@ export default function PlayerInfo(props) {
   function metersToFeetInches(metersStr) {
     let meters = parseFloat(metersStr); // Convert string to number
     if (isNaN(meters)) {
-        return "";
+      return "";
     }
 
     let totalInches = meters * 39.3701; // Convert meters to inches
@@ -244,10 +244,10 @@ export default function PlayerInfo(props) {
     let inches = Math.round(totalInches % 12); // Get remaining inches, rounded
 
     if (inches === 0) {
-        return `${feet} ft`; // Only return feet if inches are 0
+      return `${feet} ft`; // Only return feet if inches are 0
     }
     return `${feet} ft ${inches} in`;
-}
+  }
 
 
   function h2hDom() {
@@ -264,20 +264,20 @@ export default function PlayerInfo(props) {
 
         </div>
         {isAvailable(p1Data.team.playerTeamInfo, "birthDateTimestamp") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
-            {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
-            <span className={h2hFieldCss}>Birthday</span>
+          {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+          <span className={h2hFieldCss}>Birthday</span>
 
-            <div className={h2hValueCss}>{(p1Data ? readableTimeStamp(h2hFieldDom(p1Data.team.playerTeamInfo, "birthDateTimestamp")) : notAvailableDom)}</div>
+          <div className={h2hValueCss}>{(p1Data ? readableTimeStamp(h2hFieldDom(p1Data.team.playerTeamInfo, "birthDateTimestamp")) : notAvailableDom)}</div>
 
-          </div>}
-          {isAvailable(p1Data.team.playerTeamInfo, "birthDateTimestamp") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
-            {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
-            <span className={h2hFieldCss}>Age</span>
+        </div>}
+        {isAvailable(p1Data.team.playerTeamInfo, "birthDateTimestamp") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+          {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+          <span className={h2hFieldCss}>Age</span>
 
-            <div className={h2hValueCss}>{(p1Data ? calculateAge(h2hFieldDom(p1Data.team.playerTeamInfo, "birthDateTimestamp")) : notAvailableDom)}</div>
+          <div className={h2hValueCss}>{(p1Data ? calculateAge(h2hFieldDom(p1Data.team.playerTeamInfo, "birthDateTimestamp")) : notAvailableDom)}</div>
 
-          </div>}
-          {isAvailable(currentRanking1, "bestRanking") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+        </div>}
+        {isAvailable(currentRanking1, "bestRanking") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
           {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
           <span className={h2hFieldCss}>Career Best Ranking</span>
 
@@ -285,50 +285,52 @@ export default function PlayerInfo(props) {
 
         </div>}
 
-          {isAvailable(currentRanking1, "ranking") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
-            {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
-            <span className={h2hFieldCss}>Actual Ranking</span>
+        {isAvailable(currentRanking1, "ranking") && <div className='flex flex-row w-full  border m-1 justify-center text-center'>
+          {/* <div className={h2hValueCss}>{p1ranking ? p1ranking.rankings && p1ranking.rankings[0]?.ranking : "N/A"}</div> */}
+          <span className={h2hFieldCss}>Actual Ranking</span>
 
-            <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
+          <div className={h2hValueCss}>{(currentRanking1 ? h2hFieldDom(currentRanking1, "ranking") : notAvailableDom)}</div>
+
+        </div>}
+        {isAvailable(liveRanking1, "ranking") && <div className='flex flex-row w-full border m-1 justify-center'>
+          <span className={h2hFieldCss}>Live Ranking</span>
+
+          <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
+
+        </div>}
+        {p1Data?.team?.type == 1 && <>
+          {isAvailable(p1Data.team.playerTeamInfo, "height") && <div className='flex flex-row w-full border m-1 justify-center'>
+            <span className={h2hFieldCss}>Height</span>
+
+            <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
 
           </div>}
-          {isAvailable(liveRanking1, "ranking") && <div className='flex flex-row w-full border m-1 justify-center'>
-            <span className={h2hFieldCss}>Live Ranking</span>
+          {isAvailable(p1Data.team.playerTeamInfo, "residence") && <div className='flex flex-row w-full  border m-1 justify-center'>
+            <span className={h2hFieldCss}>Residence</span>
 
-            <div className={h2hValueCss}>{(liveRanking1 ? h2hFieldDom(liveRanking1, "ranking") : notAvailableDom)}</div>
+            <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
 
           </div>}
-          {p1Data?.team?.type == 1 && <>
-            {isAvailable(p1Data.team.playerTeamInfo, "height") && <div className='flex flex-row w-full border m-1 justify-center'>
-              <span className={h2hFieldCss}>Height</span>
+          {isAvailable(p1Data.team.playerTeamInfo, "weight") && <div className='flex flex-row w-full border m-1 justify-center'>
+            <span className={h2hFieldCss}>Weight</span>
 
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "height") : notAvailableDom}</div>
+            <div className={h2hValueCss}>
+              {p1Data ? `${h2hFieldDom(p1Data.team.playerTeamInfo, "weight")} Kg` : notAvailableDom}
+            </div>
 
-            </div>}
-            {isAvailable(p1Data.team.playerTeamInfo, "residence") && <div className='flex flex-row w-full  border m-1 justify-center'>
-              <span className={h2hFieldCss}>Residence</span>
+          </div>}
+          {isAvailable(p1Data.team.playerTeamInfo, "plays") && <div className='flex flex-row w-full  border m-1 justify-center'>
+            <span className={h2hFieldCss}>Plays</span>
+            <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
 
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "residence") : notAvailableDom}</div>
+          </div>}
 
-            </div>}
-            {isAvailable(p1Data.team.playerTeamInfo, "weight") && <div className='flex flex-row w-full border m-1 justify-center'>
-              <span className={h2hFieldCss}>Weight</span>
+          {isAvailable(p1Data.team.playerTeamInfo, "turnedPro") && <div className='flex flex-row w-full border m-1 justify-center'>
+            <span className={h2hFieldCss}>Turned Pro</span>
+            <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
 
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "weight") : notAvailableDom}</div>
-
-            </div>}
-            {isAvailable(p1Data.team.playerTeamInfo, "plays") && <div className='flex flex-row w-full  border m-1 justify-center'>
-              <span className={h2hFieldCss}>Plays</span>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "plays") : "N/A"}</div>
-
-            </div>}
-
-            {isAvailable(p1Data.team.playerTeamInfo, "turnedPro") && <div className='flex flex-row w-full border m-1 justify-center'>
-              <span className={h2hFieldCss}>Turned Pro</span>
-              <div className={h2hValueCss}>{p1Data ? h2hFieldDom(p1Data.team.playerTeamInfo, "turnedPro") : "N/A"}</div>
-
-            </div>}
-            {/* {isAvailable(p1Data.team.playerTeamInfo, "prizeTotalRaw") && <div className='flex flex-row w-full border m-1 justify-center'>
+          </div>}
+          {/* {isAvailable(p1Data.team.playerTeamInfo, "prizeTotalRaw") && <div className='flex flex-row w-full border m-1 justify-center'>
               <span className={h2hFieldCss}>Total Prize Money </span>
               <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeTotalRaw")) : "N/A"}</div>
 
@@ -338,7 +340,7 @@ export default function PlayerInfo(props) {
               <span className={h2hFieldCss}>YTD Price Money</span>
               <div className={h2hValueCss}>{p1Data ? getPrizeMoney(h2hFieldDom(p1Data.team.playerTeamInfo, "prizeCurrentRaw")) : "N/A"}</div>
             </div>} */}
-          </>}
+        </>}
       </div>
 
 
@@ -369,7 +371,7 @@ export default function PlayerInfo(props) {
           </IconButton>
         </DialogTitle>
         <div className="w-full overflow-x-hidden">
-          {(!loadingP1 && !loadingP1ranking) ? h2hDom(): <Loader />  }
+          {(!loadingP1 && !loadingP1ranking) ? h2hDom() : <Loader />}
         </div>
       </BootstrapDialog>
     </React.Fragment>
