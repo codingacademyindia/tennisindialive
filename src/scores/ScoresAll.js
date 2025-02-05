@@ -562,7 +562,7 @@ const FixtureResultsAll = () => {
     function getFullName(name, slug) {
         // Split the input name to get last name and initial
         try {
-
+            return name
             const nameParts = name.split(' ');
             const lastName = removeLastTwoCharacters(name).toLowerCase();
             // Split the slug to get potential names
@@ -857,16 +857,16 @@ const FixtureResultsAll = () => {
         let category = rankingsData[tournament][0]?.tournament?.category?.name
         let uniqueTournament = rankingsData[tournament][0]?.tournament?.uniqueTournament?.name
         if (name) {
-            if (category.includes("Men")) {
+            if (category.toLowerCase().includes("atp") || category.toLowerCase().includes("men") || category.toLowerCase().includes("challenger")) {
                 return (<div className="flex flex-row bg-blue-300  items-center p-1">
-                    <span>{uniqueTournament} </span>
+                    <span>{category.toLowerCase().includes("itf")?uniqueTournament:seasonName} </span>
                     {/* <FcBusinessman /> */}
                 </div>
                 )
             }
             else {
                 return (<div className="flex flex-row bg-pink-300 items-center p-1">
-                    <span>{uniqueTournament} </span>
+                    <span>{category.toLowerCase().includes("itf")?uniqueTournament:seasonName} </span>
                     {/* <FcBusinesswoman /> */}
                 </div>
                 )
@@ -875,7 +875,7 @@ const FixtureResultsAll = () => {
         }
         else {
             return (<div className="flex flex-row bg-gray-300 text-lg items-center p-1">
-                <span>{uniqueTournament} </span>
+                <span>{seasonName} </span>
                 <FcBusinessman />
             </div>)
         }
