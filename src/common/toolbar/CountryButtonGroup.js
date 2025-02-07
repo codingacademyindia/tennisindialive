@@ -109,7 +109,7 @@ function CountryButtonGroup({ countryName, handleCountryClick }) {
                     All
                 </Button>
                 <Button
-                    variant={countryName === "india" ? "contained" : "outlined"}
+                    variant={countryName === "ind" ? "contained" : "outlined"}
                     color="primary"
                     onClick={(e) => handleCountryClick(e)}
                 >

@@ -4,6 +4,7 @@ import FixtureResults from './scores/Scores';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ATPLiveRankings from './rankings/ATP/LiveRankings';
+import ATPLiveRankingsJSON from './rankings/ATP/LiveRankingsJSON';
 import ATPCurrentRankings from './rankings/ATP/CurrentRanking';
 import WtaCurrentRankings from './rankings/WTA/CurrentRanking';
 import WtaLiveRankings from './rankings/WTA/LiveRankings';
@@ -29,7 +30,7 @@ const App = () => {
             <Route path="/all" element={<FixtureResultsAll />} />
               <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
-              <Route path="/rankings/live/atp" element={<ATPLiveRankings />} />
+              <Route path="/rankings/live/atp" element={<ATPLiveRankingsJSON />} />
               <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
               <Route path="/rankings/live/wta" element={<WtaLiveRankings />} />
               <Route path="/rankings/current/wta" element={<WtaCurrentRankings />} />
