@@ -16,6 +16,8 @@ import PrivacyPolicy from './about/PrivacyPolicy';
 import AboutUs from './about/AboutUs';
 import ContactUs from './about/ContactUs';
 import TermsOfService from './about/TermsOfService';
+import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
+
 const App = () => {
   const date = new Date();
 
@@ -31,7 +33,7 @@ const App = () => {
               <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
-              <Route path="/rankings/official/:type" element={<ATPLiveRankingsJSON />} />
+              <Route path="/rankings/official/:type" element={<OfficialRankings />} />
               {/* <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
               <Route path="/rankings/live/wta" element={<WtaLiveRankings />} />
               <Route path="/rankings/current/wta" element={<WtaCurrentRankings />} /> */}

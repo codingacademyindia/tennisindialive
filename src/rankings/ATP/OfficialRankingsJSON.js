@@ -22,7 +22,7 @@ const CustomFormControl = styled(FormControl)({
     },
 });
 
-const ATPCurrentRankings = () => {
+const OfficialRankings = () => {
     document.title = "Tennis India Live - ATP Live Rankings";
     const { type } = useParams();
     const [rankingsData, setRankingsData] = useState(null);
@@ -66,16 +66,16 @@ const ATPCurrentRankings = () => {
         const fetchRankings = async () => {
             setLoading(true);
             try {
-                if (window.href.location.includes("live") && type === 'atp-singles') {
+                if (type === 'atp-singles') {
                     const response = await fetch('/ranking/atp/official-atp-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
                     setLoading(false);
-                    setPageHeader("ATP Live Ranking - Singles")
+                    setPageHeader("Official ATP Ranking - Singles")
 
                 }
-                else if (window.href.location.includes("live") && type === 'atp-doubles') {
+                else if (type === 'atp-doubles') {
                     console.log('inside atp-doubles')
                     const response = await fetch('/ranking/atp/official-atp-doubles-ranking.json'); // Load local JSON file
                     const data = await response.json();
@@ -83,27 +83,27 @@ const ATPCurrentRankings = () => {
                     setRankingsData(data);
                     getFilteredData(data);
                     setLoading(false);
-                    setPageHeader("ATP Live Ranking - Doubles")
+                    setPageHeader("Official ATP Ranking - Doubles")
 
                 }
-                else if (window.href.location.includes("live") && type === 'wta-singles') {
+                else if (type === 'wta-singles') {
                     const response = await fetch('/ranking/wta/official-wta-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
                     setLoading(false);
-                    setPageHeader("WTA Live Ranking - Singles")
+                    setPageHeader("Official WTA Ranking - Singles")
 
                 }
 
-                else if (window.href.location.includes("live") && type === 'wta-doubles') {
+                else if (type === 'wta-doubles') {
                     console.log('inside wta-doubles')
                     const response = await fetch('/ranking/wta/official-wta-doubles-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
                     setLoading(false);
-                    setPageHeader("WTA Live Ranking - Doubles")
+                    setPageHeader("Official WTA Ranking - Doubles")
 
 
                 }
@@ -150,4 +150,4 @@ const ATPCurrentRankings = () => {
     );
 };
 
-export default ATPCurrentRankings;
+export default OfficialRankings;
