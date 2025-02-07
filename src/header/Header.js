@@ -18,24 +18,24 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
     color: theme.palette.common.white,
 }));
 
-
 const pages = ['Live Scores', 'ATP Ranking', 'WTA Ranking'];
+const atpSubPages = ['Singles Live', 'Doubles Live', 'Singles Official', 'Doubles Official'];
+const wtaSubPages = ['Singles Live', 'Doubles Live', 'Singles Official', 'Doubles Official'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElATP, setAnchorElATP] = React.useState(null);
+    const [anchorElWTA, setAnchorElWTA] = React.useState(null);
 
     function getActivePage() {
-        let href = window.location.href
+        let href = window.location.href;
         if (href.includes("results")) {
-            return "live scores"
+            return "live scores";
+        } else if (href.includes("live/atp")) {
+            return "atp ranking";
+        } else if (href.includes("live/wta")) {
+            return "wta ranking";
         }
-        else if (href.includes("live/atp")) {
-            return "atp ranking"
-        }
-        else if (href.includes("live/wta")) {
-            return "wta ranking"
-        }
-
     }
 
     const handleOpenNavMenu = (event) => {
@@ -53,6 +53,64 @@ function ResponsiveAppBar() {
         setAnchorElNav(null);
     };
 
+    const handleOpenATPMenu = (event) => {
+        setAnchorElATP(event.currentTarget);
+    };
+    const handleCloseATPMenu = (event) => {
+        let text = event.target.innerText.toLowerCase()
+        if (text==='singles live'){
+            text="atp-singles"
+            window.location.href = `/rankings/live/${text}`;
+
+        }
+        else if (text==='doubles live'){
+            text="atp-doubles"
+            window.location.href = `/rankings/live/${text}`;
+
+        }
+        else if (text==='singles official'){
+            text="atp-singles"
+            window.location.href = `/rankings/official/${text}`;
+
+        }
+        else if (text==='doubles official'){
+            text="atp-doubles"
+            window.location.href = `/rankings/official/${text}`;
+
+        }
+
+        setAnchorElATP(null);
+    };
+
+    const handleOpenWTAMenu = (event) => {
+        setAnchorElWTA(event.currentTarget);
+    };
+    const handleCloseWTAMenu = (event) => {
+        let text = event.target.innerText.toLowerCase()
+        if (text==='singles live'){
+            text="wta-singles"
+            window.location.href = `/rankings/live/${text}`;
+
+        }
+        else if (text==='doubles live'){
+            text="wta-doubles"
+            window.location.href = `/rankings/live/${text}`;
+
+        }
+        else if (text==='singles official'){
+            text="wta-singles"
+            window.location.href = `/rankings/official/${text}`;
+
+        }
+        else if (text==='doubles official'){
+            text="wta-doubles"
+            window.location.href = `/rankings/official/${text}`;
+
+        }
+
+        setAnchorElWTA(null);
+    };
+
     const date = new Date();
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
@@ -62,6 +120,7 @@ function ResponsiveAppBar() {
         <StyledAppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
+                    {/* Mobile Menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -85,52 +144,72 @@ function ResponsiveAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography
-                                        textAlign="center"
-                                        sx={{
-                                            whiteSpace: 'nowrap',
-                                            fontSize: {
-                                                xs: '0.875rem',  // 14px for extra-small screens
-                                                sm: '1rem',      // 16px for small screens
-                                                md: '1.25rem',   // 20px for medium screens
-                                                lg: '1.5rem',    // 24px for large screens
-                                                xl: '2rem'       // 32px for extra-large screens
-                                            },
-                                        }}
-                                    >
-                                        {page}
-                                    </Typography>
-
+                                    <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
 
+                    {/* Logo */}
                     <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: { xs: 'center', md: 'left' } }}>
-                        {/* <div className="text-3xl font-bold bg-gradient-to-r from-green-600 via-blue-500 to-orange-600 text-white text-center flex items-center rounded-xl p-1"> */}
                         <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1">
-                            <a href="/" rel="noopener noreferrer" className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1 no-underline">
+                            <a href="/" rel="noopener noreferrer" className="no-underline flex items-center">
                                 <GiTennisBall className="h-5 w-5 sm:h-8 sm:w-8 mr-2 text-green-300" />
-                                <div className="text-lg   whitespace-nowrap">TENNIS INDIA</div>
+                                <div className="text-lg whitespace-nowrap">TENNIS INDIA</div>
                                 <div className="text-lg animate-pulse ml-2">LIVE</div>
                             </a>
                         </div>
                     </Box>
 
+                    {/* Desktop Menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ color: 'white', ml: 2, 
-                                    whiteSpace: 'nowrap',
-                                    fontSize: ['0.6rem', '0.65rem', '0.75rem', '0.9rem', '1.1rem'],
-                                    backgroundColor: getActivePage() === page.toLowerCase() ? 'rgba(255, 255, 255, 0.2)' : 'transparent' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            onClick={() => (window.location.href = "/results")}
+                            sx={{ color: 'white', ml: 2 }}
+                        >
+                            Live Scores
+                        </Button>
+
+                        {/* ATP Ranking Dropdown */}
+                        <Button
+                            onClick={handleOpenATPMenu}
+                            sx={{ color: 'white', ml: 2 }}
+                        >
+                            ATP Ranking
+                        </Button>
+                        <Menu
+                            anchorEl={anchorElATP}
+                            open={Boolean(anchorElATP)}
+                            onClose={handleCloseATPMenu}
+                        >
+                            {atpSubPages.map((page) => (
+                                <MenuItem key={page} onClick={handleCloseATPMenu}>
+                                    {page}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+
+                        {/* WTA Ranking Dropdown */}
+                        <Button
+                            onClick={handleOpenWTAMenu}
+                            sx={{ color: 'white', ml: 2 }}
+                        >
+                            WTA Ranking
+                        </Button>
+                        <Menu
+                            anchorEl={anchorElWTA}
+                            open={Boolean(anchorElWTA)}
+                            onClose={handleCloseWTAMenu}
+                        >
+                            {wtaSubPages.map((page) => (
+                                <MenuItem key={page} onClick={handleCloseWTAMenu}>
+                                    {page}
+                                </MenuItem>
+                            ))}
+                        </Menu>
                     </Box>
+
+                    {/* Social Media Links */}
                     <SocialMedia />
                 </Toolbar>
             </Container>

@@ -1,0 +1,101 @@
+[
+    {
+        "rank": "1",
+        "player": "Kateřina Siniaková",
+        "age": "28",
+        "country": "CZE",
+        "points": "10750",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "2",
+        "player": "Erin Routliffe",
+        "age": "29",
+        "country": "NZL",
+        "points": "8165",
+        "career_high": "1",
+        "change": ""
+    },
+    {
+        "rank": "3",
+        "player": "Taylor Townsend",
+        "age": "28",
+        "country": "USA",
+        "points": "7378",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "4",
+        "player": "Gabriela Dabrowski",
+        "age": "32",
+        "country": "CAN",
+        "points": "6805",
+        "career_high": "3",
+        "change": ""
+    },
+    {
+        "rank": "5",
+        "player": "Jeļena Ostapenko",
+        "age": "27",
+        "country": "LAT",
+        "points": "5545",
+        "career_high": "4",
+        "change": ""
+    },
+    {
+        "rank": "6",
+        "player": "Lyudmyla Kichenok",
+        "age": "32",
+        "country": "UKR",
+        "points": "4930",
+        "career_high": "3",
+        "change": ""
+    },
+    {
+        "rank": "7",
+        "player": "Desirae Krawczyk",
+        "age": "31",
+        "country": "USA",
+        "points": "4868",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "8",
+        "player": "Su-wei Hsieh",
+        "age": "39",
+        "country": "TWN",
+        "points": "4806",
+        "career_high": "1",
+        "change": ""
+    },
+    {
+        "rank": "9",
+        "player": "Sara Errani",
+        "age": "37",
+        "country": "ITA",
+        "points": "4706",
+        "career_high": "1",
+        "change": ""
+    },
+    {
+        "rank": "10",
+        "player": "Jasmine Paolini",
+        "age": "29",
+        "country": "ITA",
+        "points": "4635",
+        "career_high": "7",
+        "change": ""
+    },
+    {
+        "rank": "11",
+        "player": "Nicole Melichar",
+        "age": "31",
+        "country": "USA",
+        "points": "4585",
+        "career_high": "6",
+        "change": ""
+    }
+]

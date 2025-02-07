@@ -1,0 +1,101 @@
+[
+    {
+        "rank": "1",
+        "player": "Marcelo Arévalo",
+        "age": "34",
+        "country": "ESA",
+        "points": "7530",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "1",
+        "player": "Mate Pavić",
+        "age": "31",
+        "country": "CRO",
+        "points": "7530",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "3",
+        "player": "Henry Patten",
+        "age": "28",
+        "country": "GBR",
+        "points": "7075",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "4",
+        "player": "Harri Heliövaara",
+        "age": "35",
+        "country": "FIN",
+        "points": "7055",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "5",
+        "player": "Kevin Krawietz",
+        "age": "33",
+        "country": "GER",
+        "points": "6330",
+        "career_high": "NCH \n  (6)",
+        "change": "+1"
+    },
+    {
+        "rank": "6",
+        "player": "Tim Pütz",
+        "age": "37",
+        "country": "GER",
+        "points": "6240",
+        "career_high": "NCH \n  (7)",
+        "change": "+3"
+    },
+    {
+        "rank": "7",
+        "player": "Jordan Thompson",
+        "age": "30",
+        "country": "AUS",
+        "points": "6225",
+        "career_high": "3",
+        "change": "-2"
+    },
+    {
+        "rank": "8",
+        "player": "Marcel Granollers",
+        "age": "38",
+        "country": "ESP",
+        "points": "6170",
+        "career_high": "1",
+        "change": "-1"
+    },
+    {
+        "rank": "9",
+        "player": "Horacio Zeballos",
+        "age": "39",
+        "country": "ARG",
+        "points": "6170",
+        "career_high": "1",
+        "change": "-2"
+    },
+    {
+        "rank": "10",
+        "player": "Simone Bolelli",
+        "age": "39",
+        "country": "ITA",
+        "points": "5990",
+        "career_high": "6",
+        "change": ""
+    },
+    {
+        "rank": "11",
+        "player": "Andrea Vavassori",
+        "age": "29",
+        "country": "ITA",
+        "points": "5990",
+        "career_high": "6",
+        "change": ""
+    }
+]

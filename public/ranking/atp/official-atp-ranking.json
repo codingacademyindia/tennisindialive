@@ -1,0 +1,101 @@
+[
+    {
+        "rank": "1",
+        "player": "Jannik Sinner",
+        "age": "23",
+        "country": "ITA",
+        "points": "11830",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "2",
+        "player": "Alexander Zverev",
+        "age": "27",
+        "country": "GER",
+        "points": "8135",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "3",
+        "player": "Carlos Alcaraz",
+        "age": "21",
+        "country": "ESP",
+        "points": "7010",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "4",
+        "player": "Taylor Fritz",
+        "age": "27",
+        "country": "USA",
+        "points": "5050",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "5",
+        "player": "Casper Ruud",
+        "age": "26",
+        "country": "NOR",
+        "points": "4160",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "6",
+        "player": "Novak Djoković",
+        "age": "37",
+        "country": "SRB",
+        "points": "3900",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "7",
+        "player": "Daniil Medvedev",
+        "age": "28",
+        "country": "RUS",
+        "points": "3780",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "8",
+        "player": "Alex de Minaur",
+        "age": "25",
+        "country": "AUS",
+        "points": "3735",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "9",
+        "player": "Tommy Paul",
+        "age": "27",
+        "country": "USA",
+        "points": "3495",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "10",
+        "player": "Andrey Rublev",
+        "age": "27",
+        "country": "RUS",
+        "points": "3220",
+        "career_high": "",
+        "change": ""
+    },
+    {
+        "rank": "11",
+        "player": "Grigor Dimitrov",
+        "age": "33",
+        "country": "BUL",
+        "points": "3110",
+        "career_high": "",
+        "change": ""
+    }
+]

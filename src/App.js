@@ -30,10 +30,11 @@ const App = () => {
             <Route path="/all" element={<FixtureResultsAll />} />
               <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
-              <Route path="/rankings/live/atp" element={<ATPLiveRankingsJSON />} />
-              <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
+              <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
+              <Route path="/rankings/official/:type" element={<ATPLiveRankingsJSON />} />
+              {/* <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
               <Route path="/rankings/live/wta" element={<WtaLiveRankings />} />
-              <Route path="/rankings/current/wta" element={<WtaCurrentRankings />} />
+              <Route path="/rankings/current/wta" element={<WtaCurrentRankings />} /> */}
               <Route path="/privacypolicy" element={<PrivacyPolicy />} />
               <Route path="/aboutus" element={<AboutUs />} />
               <Route path="/contactus" element={<ContactUs />} />

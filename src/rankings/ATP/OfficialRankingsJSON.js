@@ -66,8 +66,8 @@ const ATPCurrentRankings = () => {
         const fetchRankings = async () => {
             setLoading(true);
             try {
-                if (  type === 'atp-singles') {
-                    const response = await fetch('/ranking/atp/atp-live-ranking.json'); // Load local JSON file
+                if (window.href.location.includes("live") && type === 'atp-singles') {
+                    const response = await fetch('/ranking/atp/official-atp-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
@@ -75,9 +75,9 @@ const ATPCurrentRankings = () => {
                     setPageHeader("ATP Live Ranking - Singles")
 
                 }
-                else if (  type === 'atp-doubles') {
+                else if (window.href.location.includes("live") && type === 'atp-doubles') {
                     console.log('inside atp-doubles')
-                    const response = await fetch('/ranking/atp/atp-doubles-live-ranking.json'); // Load local JSON file
+                    const response = await fetch('/ranking/atp/official-atp-doubles-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     console.log(data)
                     setRankingsData(data);
@@ -86,8 +86,8 @@ const ATPCurrentRankings = () => {
                     setPageHeader("ATP Live Ranking - Doubles")
 
                 }
-                else if (  type === 'wta-singles') {
-                    const response = await fetch('/ranking/wta/wta-live-ranking.json'); // Load local JSON file
+                else if (window.href.location.includes("live") && type === 'wta-singles') {
+                    const response = await fetch('/ranking/wta/official-wta-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
@@ -96,9 +96,9 @@ const ATPCurrentRankings = () => {
 
                 }
 
-                else if (  type === 'wta-doubles') {
+                else if (window.href.location.includes("live") && type === 'wta-doubles') {
                     console.log('inside wta-doubles')
-                    const response = await fetch('/ranking/wta/wta-doubles-live-ranking.json'); // Load local JSON file
+                    const response = await fetch('/ranking/wta/official-wta-doubles-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
