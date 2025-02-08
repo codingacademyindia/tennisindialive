@@ -32,7 +32,7 @@ const ATPCurrentRankings = () => {
     const [refreshScore, setRefreshScore] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState('all');
     const [excludeUnchanged, setExcludeUnchanged] = useState(false);
-    const [pageHeader, setPageHeader] = useState("ATP Live Ranking");
+    const [pageHeader, setPageHeader] = useState("Live Ranking");
 
     // Function to filter data based on country selection
     function getFilteredData(data) {

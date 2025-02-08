@@ -58,23 +58,23 @@ function ResponsiveAppBar() {
     };
     const handleCloseATPMenu = (event) => {
         let text = event.target.innerText.toLowerCase()
-        if (text==='singles live'){
-            text="atp-singles"
+        if (text === 'singles live') {
+            text = "atp-singles"
             window.location.href = `/rankings/live/${text}`;
 
         }
-        else if (text==='doubles live'){
-            text="atp-doubles"
+        else if (text === 'doubles live') {
+            text = "atp-doubles"
             window.location.href = `/rankings/live/${text}`;
 
         }
-        else if (text==='singles official'){
-            text="atp-singles"
+        else if (text === 'singles official') {
+            text = "atp-singles"
             window.location.href = `/rankings/official/${text}`;
 
         }
-        else if (text==='doubles official'){
-            text="atp-doubles"
+        else if (text === 'doubles official') {
+            text = "atp-doubles"
             window.location.href = `/rankings/official/${text}`;
 
         }
@@ -87,23 +87,23 @@ function ResponsiveAppBar() {
     };
     const handleCloseWTAMenu = (event) => {
         let text = event.target.innerText.toLowerCase()
-        if (text==='singles live'){
-            text="wta-singles"
+        if (text === 'singles live') {
+            text = "wta-singles"
             window.location.href = `/rankings/live/${text}`;
 
         }
-        else if (text==='doubles live'){
-            text="wta-doubles"
+        else if (text === 'doubles live') {
+            text = "wta-doubles"
             window.location.href = `/rankings/live/${text}`;
 
         }
-        else if (text==='singles official'){
-            text="wta-singles"
+        else if (text === 'singles official') {
+            text = "wta-singles"
             window.location.href = `/rankings/official/${text}`;
 
         }
-        else if (text==='doubles official'){
-            text="wta-doubles"
+        else if (text === 'doubles official') {
+            text = "wta-doubles"
             window.location.href = `/rankings/official/${text}`;
 
         }
@@ -142,11 +142,41 @@ function ResponsiveAppBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={() => window.location.href = `/results/${year}/${month}/${day}`}>
+                                <Typography textAlign="center">Live Scores</Typography>
+                            </MenuItem>
+
+                            {/* ATP Ranking with Dropdown */}
+                            <MenuItem onClick={handleOpenATPMenu}>
+                                <Typography textAlign="center">ATP Ranking</Typography>
+                            </MenuItem>
+                            <Menu
+                                anchorEl={anchorElATP}
+                                open={Boolean(anchorElATP)}
+                                onClose={handleCloseATPMenu}
+                            >
+                                {atpSubPages.map((page) => (
+                                    <MenuItem key={page} onClick={handleCloseATPMenu}>
+                                        {page}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+
+                            {/* WTA Ranking with Dropdown */}
+                            <MenuItem onClick={handleOpenWTAMenu}>
+                                <Typography textAlign="center">WTA Ranking</Typography>
+                            </MenuItem>
+                            <Menu
+                                anchorEl={anchorElWTA}
+                                open={Boolean(anchorElWTA)}
+                                onClose={handleCloseWTAMenu}
+                            >
+                                {wtaSubPages.map((page) => (
+                                    <MenuItem key={page} onClick={handleCloseWTAMenu}>
+                                        {page}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
                         </Menu>
                     </Box>
 
@@ -164,7 +194,7 @@ function ResponsiveAppBar() {
                     {/* Desktop Menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
                         <Button
-                            onClick={() => (window.location.href = "/results")}
+                            onClick={() => (window.location.href = `/results/${year}/${month}/${day}`)}
                             sx={{ color: 'white', ml: 2 }}
                         >
                             Live Scores
