@@ -30,7 +30,7 @@ const ATPCurrentRankings = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState('all');
+    const [selectedCountry, setSelectedCountry] = useState('ind');
     const [excludeUnchanged, setExcludeUnchanged] = useState(false);
     const [pageHeader, setPageHeader] = useState("Live Ranking");
 
