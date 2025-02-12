@@ -142,7 +142,7 @@ function ResponsiveAppBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            <MenuItem onClick={() => window.location.href = `/results/${year}/${month}/${day}`}>
+                            <MenuItem onClick={() => window.location.href = `/`}>
                                 <Typography textAlign="center">Live Scores</Typography>
                             </MenuItem>
 
@@ -194,7 +194,7 @@ function ResponsiveAppBar() {
                     {/* Desktop Menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
                         <Button
-                            onClick={() => (window.location.href = `/results/${year}/${month}/${day}`)}
+                            onClick={() => (window.location.href = `/`)}
                             sx={{ color: 'white', ml: 2 }}
                         >
                             Live Scores

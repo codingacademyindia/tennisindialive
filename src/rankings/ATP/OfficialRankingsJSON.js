@@ -33,6 +33,8 @@ const OfficialRankings = () => {
     const [selectedCountry, setSelectedCountry] = useState('ind');
     const [excludeUnchanged, setExcludeUnchanged] = useState(false);
     const [pageHeader, setPageHeader] = useState("Official Ranking");
+    const [rankingTimestamp, setRankingTimestamp] = useState("")
+
 
     // Function to filter data based on country selection
     function getFilteredData(data) {
@@ -65,10 +67,16 @@ const OfficialRankings = () => {
     useEffect(() => {
         const fetchRankings = async () => {
             setLoading(true);
+            setError(null)
+            const timestamp = await fetch('/ranking/official/official_ranking_timestamp.json'); // Load local JSON file
+            const timeStampData = await timestamp.json()
+            console.log(timeStampData)
+
             try {
                 if (type === 'atp-singles') {
-                    const response = await fetch('/ranking/atp/official-atp-ranking.json'); // Load local JSON file
+                    const response = await fetch('/ranking/official/atp/official-atp-ranking.json'); // Load local JSON file
                     const data = await response.json();
+                    setRankingTimestamp(timeStampData['official-atp-ranking'])
                     setRankingsData(data);
                     getFilteredData(data);
                     setLoading(false);
@@ -77,8 +85,10 @@ const OfficialRankings = () => {
                 }
                 else if (type === 'atp-doubles') {
                     console.log('inside atp-doubles')
-                    const response = await fetch('/ranking/atp/official-atp-doubles-ranking.json'); // Load local JSON file
+                    const response = await fetch('/ranking/official/atp/official-atp-doubles-ranking.json'); // Load local JSON file
                     const data = await response.json();
+                    setRankingTimestamp(timeStampData['official-atp-doubles-ranking'])
+
                     console.log(data)
                     setRankingsData(data);
                     getFilteredData(data);
@@ -87,8 +97,10 @@ const OfficialRankings = () => {
 
                 }
                 else if (type === 'wta-singles') {
-                    const response = await fetch('/ranking/wta/official-wta-ranking.json'); // Load local JSON file
+                    const response = await fetch('/ranking/official/wta/official-wta-ranking.json'); // Load local JSON file
                     const data = await response.json();
+                    setRankingTimestamp(timeStampData['official-wta-ranking'])
+
                     setRankingsData(data);
                     getFilteredData(data);
                     setLoading(false);
@@ -98,7 +110,9 @@ const OfficialRankings = () => {
 
                 else if (type === 'wta-doubles') {
                     console.log('inside wta-doubles')
-                    const response = await fetch('/ranking/wta/official-wta-doubles-ranking.json'); // Load local JSON file
+                    setRankingTimestamp(timeStampData['official-wta-doubles-ranking'])
+
+                    const response = await fetch('/ranking/official/wta/official-wta-doubles-ranking.json'); // Load local JSON file
                     const data = await response.json();
                     setRankingsData(data);
                     getFilteredData(data);
@@ -109,7 +123,7 @@ const OfficialRankings = () => {
                 }
 
             } catch (error) {
-                setError("Failed to load rankings data.");
+                setError("Failed to load rankings data: " + error.message);
                 setLoading(false);
             }
         };
@@ -132,11 +146,12 @@ const OfficialRankings = () => {
         <div>
             <div className='flex flex-row space-x-4 w-[90%] bg-slate-200 items-center p-2'>
                 <div className='text-xl font-bold'>{pageHeader}</div>
-                <IconButton onClick={handleRefresh} variant="contained">
-                    <SyncIcon />
-                </IconButton>
-
+               
                 <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} />
+                <div className='flex flex-row space-x-1 text-xs'>
+                    <span className='font-bold'>Updated At:</span>
+                    <span>{rankingTimestamp}</span>
+                </div>
             </div>
 
             {error && <p className="text-red-500">{error}</p>}
