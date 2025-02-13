@@ -145,12 +145,8 @@ const ATPCurrentRankings = () => {
 
     return (
         <div>
-            <div className='flex flex-row space-x-4 w-[90%] bg-slate-200 items-center p-2'>
+            <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-2'>
                 <div className='text-xl font-bold'>{pageHeader}</div>
-                {/* <IconButton onClick={handleRefresh} variant="contained">
-                    <SyncIcon />
-                </IconButton> */}
-
                 <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} />
                 <div className='flex flex-row space-x-1 text-xs'>
                     <span className='font-bold'>Updated At:</span>

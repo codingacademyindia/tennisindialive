@@ -144,7 +144,7 @@ const OfficialRankings = () => {
 
     return (
         <div>
-            <div className='flex flex-row space-x-4 w-[90%] bg-slate-200 items-center p-2'>
+            <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-2'>
                 <div className='text-xl font-bold'>{pageHeader}</div>
                
                 <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} />
