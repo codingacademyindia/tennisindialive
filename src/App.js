@@ -17,6 +17,7 @@ import AboutUs from './about/AboutUs';
 import ContactUs from './about/ContactUs';
 import TermsOfService from './about/TermsOfService';
 import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
+import RSSFeed from './news/RSSFeed';
 
 const App = () => {
   const date = new Date();
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/aboutus" element={<AboutUs />} />
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/termsofservice" element={<TermsOfService />} />
+              <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />
               <Route path="*" element={<NotFound msg="Page Not Found" />}/>
             </Routes>
           </div>
