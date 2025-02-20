@@ -4,7 +4,7 @@
         "player": "Kateřina Siniaková",
         "age": "28",
         "country": "CZE",
-        "points": "9945",
+        "points": "9965",
         "career_high": "CH",
         "change": ""
     },
@@ -22,7 +22,7 @@
         "player": "Taylor Townsend",
         "age": "28",
         "country": "USA",
-        "points": "7378",
+        "points": "7583",
         "career_high": "CH",
         "change": ""
     },
@@ -37,21 +37,21 @@
     },
     {
         "rank": "5",
+        "player": "Jeļena Ostapenko",
+        "age": "27",
+        "country": "LAT",
+        "points": "5850",
+        "career_high": "4",
+        "change": ""
+    },
+    {
+        "rank": "6",
         "player": "Sara Errani",
         "age": "37",
         "country": "ITA",
         "points": "5696",
         "career_high": "1",
-        "change": "+1"
-    },
-    {
-        "rank": "6",
-        "player": "Jeļena Ostapenko",
-        "age": "27",
-        "country": "LAT",
-        "points": "5645",
-        "career_high": "4",
-        "change": "-1"
+        "change": ""
     },
     {
         "rank": "7",
@@ -64,21 +64,21 @@
     },
     {
         "rank": "8",
+        "player": "Su-wei Hsieh",
+        "age": "39",
+        "country": "TWN",
+        "points": "4901",
+        "career_high": "1",
+        "change": "+2"
+    },
+    {
+        "rank": "9",
         "player": "Lyudmyla Kichenok",
         "age": "32",
         "country": "UKR",
         "points": "4835",
         "career_high": "3",
-        "change": ""
-    },
-    {
-        "rank": "9",
-        "player": "Su-wei Hsieh",
-        "age": "39",
-        "country": "TWN",
-        "points": "4696",
-        "career_high": "1",
-        "change": "+1"
+        "change": "-1"
     },
     {
         "rank": "10",
@@ -148,7 +148,7 @@
         "player": "Shuai Zhang",
         "age": "36",
         "country": "CHN",
-        "points": "3768",
+        "points": "3863",
         "career_high": "2",
         "change": "+1"
     },
@@ -163,30 +163,30 @@
     },
     {
         "rank": "19",
+        "player": "Laura Siegemund",
+        "age": "36",
+        "country": "GER",
+        "points": "3715",
+        "career_high": "4",
+        "change": "-2"
+    },
+    {
+        "rank": "20",
         "player": "Elise Mertens",
         "age": "29",
         "country": "BEL",
         "points": "3655",
         "career_high": "1",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "20",
+        "rank": "21",
         "player": "Caroline Dolehide",
         "age": "26",
         "country": "USA",
         "points": "3625",
         "career_high": "9",
-        "change": "+1"
-    },
-    {
-        "rank": "21",
-        "player": "Laura Siegemund",
-        "age": "36",
-        "country": "GER",
-        "points": "3620",
-        "career_high": "4",
-        "change": "-4"
+        "change": ""
     },
     {
         "rank": "22",
@@ -208,30 +208,30 @@
     },
     {
         "rank": "24",
+        "player": "Kristina Mladenovic",
+        "age": "31",
+        "country": "FRA",
+        "points": "3210",
+        "career_high": "1",
+        "change": ""
+    },
+    {
+        "rank": "25",
         "player": "Cristina Bucșa",
         "age": "27",
         "country": "ESP",
         "points": "3174",
         "career_high": "19",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "25",
+        "rank": "26",
         "player": "Diana Shnaider",
         "age": "20",
         "country": "RUS",
         "points": "3160",
-        "career_high": "NCH \n (26)",
-        "change": "+1"
-    },
-    {
-        "rank": "26",
-        "player": "Kristina Mladenovic",
-        "age": "31",
-        "country": "FRA",
-        "points": "3115",
-        "career_high": "1",
-        "change": "-2"
+        "career_high": "CH",
+        "change": ""
     },
     {
         "rank": "27",
@@ -469,30 +469,30 @@
     },
     {
         "rank": "53",
+        "player": "Beatriz Haddad Maia",
+        "age": "28",
+        "country": "BRA",
+        "points": "1881",
+        "career_high": "10",
+        "change": "+6"
+    },
+    {
+        "rank": "54",
         "player": "Yifan Xu",
         "age": "36",
         "country": "CHN",
         "points": "1878",
         "career_high": "7",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "54",
+        "rank": "55",
         "player": "Fanny Stollár",
         "age": "26",
         "country": "HUN",
         "points": "1835",
         "career_high": "NCH \n (56)",
-        "change": "+2"
-    },
-    {
-        "rank": "55",
-        "player": "Beatriz Haddad Maia",
-        "age": "28",
-        "country": "BRA",
-        "points": "1786",
-        "career_high": "10",
-        "change": "+4"
+        "change": "+1"
     },
     {
         "rank": "56",
@@ -658,30 +658,30 @@
     },
     {
         "rank": "74",
+        "player": "Linda Nosková",
+        "age": "20",
+        "country": "CZE",
+        "points": "1120",
+        "career_high": "60",
+        "change": "+17"
+    },
+    {
+        "rank": "75",
         "player": "Magda Linette",
         "age": "33",
         "country": "POL",
         "points": "1040",
         "career_high": "26",
-        "change": "+2"
+        "change": "+1"
     },
     {
-        "rank": "75",
+        "rank": "76",
         "player": "Olivia Gadecki",
         "age": "22",
         "country": "AUS",
         "points": "1027",
         "career_high": "64",
-        "change": "+2"
-    },
-    {
-        "rank": "76",
-        "player": "Linda Nosková",
-        "age": "20",
-        "country": "CZE",
-        "points": "1025",
-        "career_high": "60",
-        "change": "+15"
+        "change": "+1"
     },
     {
         "rank": "77",
@@ -721,93 +721,93 @@
     },
     {
         "rank": "81",
+        "player": "Yulia Putintseva",
+        "age": "30",
+        "country": "KAZ",
+        "points": "981",
+        "career_high": "NCH \n (90)",
+        "change": "+24"
+    },
+    {
+        "rank": "82",
         "player": "Aleksandra Krunić",
         "age": "31",
         "country": "SRB",
         "points": "977",
         "career_high": "35",
-        "change": "-8"
+        "change": "-9"
     },
     {
-        "rank": "82",
+        "rank": "83",
         "player": "Quinn Gleason",
         "age": "30",
         "country": "USA",
         "points": "975",
         "career_high": "NCH \n (84)",
-        "change": "+2"
+        "change": "+1"
     },
     {
-        "rank": "83",
+        "rank": "84",
         "player": "Ekaterina Alexandrova",
         "age": "30",
         "country": "RUS",
         "points": "967",
         "career_high": "58",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "84",
+        "rank": "85",
         "player": "Anastasia Potapova",
         "age": "23",
         "country": "RUS",
         "points": "958",
         "career_high": "40",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "85",
+        "rank": "86",
         "player": "Peyton Stearns",
         "age": "23",
         "country": "USA",
         "points": "936",
         "career_high": "71",
-        "change": "+14"
+        "change": "+13"
     },
     {
-        "rank": "86",
+        "rank": "87",
         "player": "Kimberley Zimmermann",
         "age": "29",
         "country": "BEL",
         "points": "934",
         "career_high": "37",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "87",
+        "rank": "88",
         "player": "Yafan Wang",
         "age": "30",
         "country": "CHN",
         "points": "924",
         "career_high": "49",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "88",
+        "rank": "89",
         "player": "Amina Anshba",
         "age": "25",
         "country": "RUS",
         "points": "914",
         "career_high": "71",
-        "change": "+2"
+        "change": "+1"
     },
     {
-        "rank": "89",
+        "rank": "90",
         "player": "Miriam Kolodziejová",
         "age": "27",
         "country": "CZE",
         "points": "904",
         "career_high": "41",
-        "change": "+3"
-    },
-    {
-        "rank": "90",
-        "player": "Yulia Putintseva",
-        "age": "30",
-        "country": "KAZ",
-        "points": "886",
-        "career_high": "CH",
-        "change": "+15"
+        "change": "+2"
     },
     {
         "rank": "91",
@@ -1504,48 +1504,48 @@
     },
     {
         "rank": "168",
+        "player": "Priscilla Hon",
+        "age": "26",
+        "country": "AUS",
+        "points": "457",
+        "career_high": "91",
+        "change": "+7"
+    },
+    {
+        "rank": "169",
         "player": "Alicia Herrero Liñana",
         "age": "26",
         "country": "ESP",
         "points": "457",
         "career_high": "NCH \n(171)",
-        "change": "+3"
+        "change": "+2"
     },
     {
-        "rank": "169",
+        "rank": "170",
         "player": "Weronika Falkowska",
         "age": "24",
         "country": "POL",
         "points": "456",
         "career_high": "83",
-        "change": "+3"
+        "change": "+2"
     },
     {
-        "rank": "170",
+        "rank": "171",
         "player": "Bianca Fernandez",
         "age": "20",
         "country": "CAN",
         "points": "451",
-        "career_high": "CH",
-        "change": "+3"
+        "career_high": "170",
+        "change": "+2"
     },
     {
-        "rank": "171",
+        "rank": "172",
         "player": "Shuo Feng",
         "age": "27",
         "country": "CHN",
         "points": "448",
         "career_high": "155",
-        "change": "+3"
-    },
-    {
-        "rank": "172",
-        "player": "Priscilla Hon",
-        "age": "26",
-        "country": "AUS",
-        "points": "442",
-        "career_high": "91",
-        "change": "+3"
+        "change": "+2"
     },
     {
         "rank": "173",
@@ -2945,7 +2945,7 @@
     {
         "rank": "328",
         "player": "Tereza Valentová",
-        "age": "17",
+        "age": "18",
         "country": "CZE",
         "points": "222",
         "career_high": "241",
@@ -3908,7 +3908,7 @@
     {
         "rank": "435",
         "player": "Loes Ebeling Koning",
-        "age": "18",
+        "age": "19",
         "country": "NED",
         "points": "149",
         "career_high": "433",
@@ -4340,7 +4340,7 @@
     {
         "rank": "483",
         "player": "Valeria Savinykh",
-        "age": "33",
+        "age": "34",
         "country": "RUS",
         "points": "126",
         "career_high": "98",
@@ -4466,7 +4466,7 @@
     {
         "rank": "497",
         "player": "Weronika Ewald",
-        "age": "18",
+        "age": "19",
         "country": "POL",
         "points": "123",
         "career_high": "NCH \n(498)",

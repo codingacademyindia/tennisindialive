@@ -7,27 +7,11 @@ const RSSFeed = () => {
   const [error, setError] = useState("");
 
   const sources = [
-    // Indian news sources
-    // { name: "Sportstar", url: "https://indiantennisdaily.com/feed/" },
-    { name: "TheHindu", url: "https://www.thehindu.com/sport/feeder/default.rss" },
-    // { name: "Sportstar", url: "https://sportstar.thehindu.com/rssfeeds/10667/rssfeeds.xml" },
-    // { name: "The Bridge", url: "https://thebridge.in/tennis/rss/" },
-
     { name: "ESPN", url: "https://www.espn.com/espn/rss/tennis/news" },
-    // { name: "BBC", url: "https://feeds.bbci.co.uk/sport/tennis/rss.xml" },
+    { name: "BBC", url: "https://feeds.bbci.co.uk/sport/tennis/rss.xml" },
     { name: "ATP Tour", url: "https://www.atptour.com/en/media/rss-feed/xml-feed" },
     { name: "WTA", url: "https://www.wtatennis.com/rss/news" },
-    { name: "Tennis.com", url: "https://www.tennis.com/rss-feed/" },
-    // { name: "TennisworldUSA", url: "https://www.tennisworldusa.org/rss/news.php" },
-    // { name: "TennisworldUSA", url: "https://www.tennisworldusa.org/rss/news.php" },
-    // { name: "GuardianTennis", url: "https://www.theguardian.com/sport/tennis/rss" },
-    // { name: "YahooSportsTennis", url: "https://www.theguardian.com/sport/tennis/rss" },
-    // { name: "SkySportsTennis", url: "https://www.theguardian.com/sport/tennis/rss" },
-    { name: "LiveRankingNews", url: "https://live-tennis.eu/en/news/rss" },
-    // { name: "USTA News", url: "https://www.usta.com/en/home/rss/news.html" },
-    // { name: "Tennis Now", url: "https://www.tennisnow.com/rss.aspx" },
-
-
+    { name: "Tennis.com", url: "https://www.tennis.com/rss-feed/" }
   ];
 
   useEffect(() => {
@@ -51,21 +35,15 @@ const RSSFeed = () => {
               const data = await response.json();
               const parser = new DOMParser();
               const xml = parser.parseFromString(data.contents, "application/xml");
-              
-              let items = Array.from(xml.querySelectorAll("item"))
-                .map((item) => ({
-                  title: item.querySelector("title")?.textContent || "No title",
-                  link: item.querySelector("link")?.textContent || "#",
-                  description: item.querySelector("description")?.textContent || "No description",
-                  pubDate: item.querySelector("pubDate")?.textContent || "No date",
-                  source: source.name
-                }));
-              
-              // Filter "The Hindu" articles to include only those with "tennis" in the link
-              if (source.url.includes("thehindu")) {
-                items = items.filter((item) => item.link.toLowerCase().includes("tennis"));
-              }
-              
+
+              const items = Array.from(xml.querySelectorAll("item")).map((item) => ({
+                title: item.querySelector("title")?.textContent || "No title",
+                link: item.querySelector("link")?.textContent || "#",
+                description: item.querySelector("description")?.textContent || "No description",
+                pubDate: item.querySelector("pubDate")?.textContent || "No date",
+                source: source.name
+              }));
+
               console.log(`Fetched ${items.length} articles from ${source.name}`);
               return items;
             } catch (err) {
