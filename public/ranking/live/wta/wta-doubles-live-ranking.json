@@ -136,21 +136,21 @@
     },
     {
         "rank": "16",
+        "player": "Shuai Zhang",
+        "age": "36",
+        "country": "CHN",
+        "points": "4038",
+        "career_high": "2",
+        "change": "+2"
+    },
+    {
+        "rank": "17",
         "player": "Irina Khromacheva",
         "age": "29",
         "country": "RUS",
         "points": "3945",
-        "career_high": "CH",
-        "change": ""
-    },
-    {
-        "rank": "17",
-        "player": "Shuai Zhang",
-        "age": "36",
-        "country": "CHN",
-        "points": "3863",
-        "career_high": "2",
-        "change": "+1"
+        "career_high": "16",
+        "change": "-1"
     },
     {
         "rank": "18",
@@ -211,7 +211,7 @@
         "player": "Kristina Mladenovic",
         "age": "31",
         "country": "FRA",
-        "points": "3210",
+        "points": "3385",
         "career_high": "1",
         "change": ""
     },

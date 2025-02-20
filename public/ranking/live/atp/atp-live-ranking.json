@@ -973,21 +973,21 @@
     },
     {
         "rank": "109",
+        "player": "Billy Harris",
+        "age": "30",
+        "country": "GBR",
+        "points": "534",
+        "career_high": "101",
+        "change": "+1"
+    },
+    {
+        "rank": "110",
         "player": "Otto Virtanen",
         "age": "23",
         "country": "FIN",
         "points": "527",
         "career_high": "91",
-        "change": "-17"
-    },
-    {
-        "rank": "110",
-        "player": "Billy Harris",
-        "age": "30",
-        "country": "GBR",
-        "points": "527",
-        "career_high": "101",
-        "change": ""
+        "change": "-18"
     },
     {
         "rank": "111",
@@ -1369,30 +1369,30 @@
     },
     {
         "rank": "153",
+        "player": "Brandon Holt",
+        "age": "26",
+        "country": "USA",
+        "points": "373",
+        "career_high": "CH",
+        "change": ""
+    },
+    {
+        "rank": "154",
         "player": "Luca Van Assche",
         "age": "20",
         "country": "FRA",
         "points": "372",
         "career_high": "63",
-        "change": "-1"
+        "change": "-2"
     },
     {
-        "rank": "154",
+        "rank": "155",
         "player": "Elmer Møller",
         "age": "21",
         "country": "DEN",
         "points": "372",
         "career_high": "149",
-        "change": ""
-    },
-    {
-        "rank": "155",
-        "player": "Brandon Holt",
-        "age": "26",
-        "country": "USA",
-        "points": "366",
-        "career_high": "153",
-        "change": "-2"
+        "change": "-1"
     },
     {
         "rank": "156",
@@ -1414,30 +1414,30 @@
     },
     {
         "rank": "158",
+        "player": "Ugo Blanchet",
+        "age": "26",
+        "country": "FRA",
+        "points": "360",
+        "career_high": "139",
+        "change": "+6"
+    },
+    {
+        "rank": "159",
         "player": "Henrique Rocha",
         "age": "20",
         "country": "POR",
         "points": "360",
         "career_high": "155",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "159",
+        "rank": "160",
         "player": "Gustavo Heide",
         "age": "22",
         "country": "BRA",
         "points": "359",
         "career_high": "142",
-        "change": "+3"
-    },
-    {
-        "rank": "160",
-        "player": "Ugo Blanchet",
-        "age": "26",
-        "country": "FRA",
-        "points": "353",
-        "career_high": "139",
-        "change": "+4"
+        "change": "+2"
     },
     {
         "rank": "161",
@@ -2026,48 +2026,48 @@
     },
     {
         "rank": "226",
+        "player": "Khumoyun Sultanov",
+        "age": "26",
+        "country": "UZB",
+        "points": "243",
+        "career_high": "215",
+        "change": "+3"
+    },
+    {
+        "rank": "227",
         "player": "Filip Jianu",
         "age": "23",
         "country": "ROU",
         "points": "242",
         "career_high": "211",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "227",
+        "rank": "228",
         "player": "Nick Hardt",
         "age": "24",
         "country": "DOM",
         "points": "240",
         "career_high": "177",
-        "change": "-2"
+        "change": "-3"
     },
     {
-        "rank": "228",
+        "rank": "229",
         "player": "Andrea Vavassori",
         "age": "29",
         "country": "ITA",
         "points": "239",
         "career_high": "128",
-        "change": "+8"
+        "change": "+7"
     },
     {
-        "rank": "229",
+        "rank": "230",
         "player": "Rio Noguchi",
         "age": "26",
         "country": "JPN",
         "points": "237",
         "career_high": "201",
-        "change": "+9"
-    },
-    {
-        "rank": "230",
-        "player": "Khumoyun Sultanov",
-        "age": "26",
-        "country": "UZB",
-        "points": "236",
-        "career_high": "215",
-        "change": "-1"
+        "change": "+8"
     },
     {
         "rank": "231",

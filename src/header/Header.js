@@ -27,17 +27,20 @@ function ResponsiveAppBar() {
     const [anchorElATP, setAnchorElATP] = React.useState(null);
     const [anchorElWTA, setAnchorElWTA] = React.useState(null);
 
+    const activePage = getActivePage();
+
     function getActivePage() {
         let href = window.location.href;
-        if (href.includes("results")) {
+        if (href.includes("results") || href.includes("live-scores")) {
             return "live scores";
-        } else if (href.includes("live/atp")) {
-            return "atp ranking";
-        } else if (href.includes("live/wta")) {
-            return "wta ranking";
+        } else if (href.includes("atp")) {
+            return "atp";
+        } else if (href.includes("wta")) {
+            return "wta";
+        } else if (href.includes("news")) {
+            return "news";
         }
     }
-
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -142,8 +145,11 @@ function ResponsiveAppBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            <MenuItem onClick={() => window.location.href = `/`}>
+                            <MenuItem onClick={() => window.location.href = `/live-scores`}>
                                 <Typography textAlign="center">Live Scores</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={() => window.location.href = `/live-scores`}>
+                                <Typography textAlign="center">News</Typography>
                             </MenuItem>
 
                             {/* ATP Ranking with Dropdown */}
@@ -183,7 +189,7 @@ function ResponsiveAppBar() {
                     {/* Logo */}
                     <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: { xs: 'center', md: 'left' } }}>
                         <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-blue-400 to-green-600 text-white text-center flex items-center rounded-xl p-1">
-                            <a href="/" rel="noopener noreferrer" className="no-underline flex items-center">
+                            <a href="/live-scores" rel="noopener noreferrer" className="no-underline flex items-center">
                                 <GiTennisBall className="h-5 w-5 sm:h-8 sm:w-8 mr-2 text-green-300" />
                                 <div className="text-lg whitespace-nowrap">TENNIS INDIA</div>
                                 <div className="text-lg animate-pulse ml-2">LIVE</div>
@@ -194,8 +200,12 @@ function ResponsiveAppBar() {
                     {/* Desktop Menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
                         <Button
-                            onClick={() => (window.location.href = `/`)}
-                            sx={{ color: 'white', ml: 2 }}
+                            onClick={() => (window.location.href = `/live-scores`)}
+                            sx={{
+                                color: 'white', ml: 2,
+                                backgroundColor: activePage === "live scores" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                fontWeight: activePage === "live scores" ? 'bold' : 'normal',
+                            }}
                         >
                             Live Scores
                         </Button>
@@ -203,8 +213,11 @@ function ResponsiveAppBar() {
                         {/* ATP Ranking Dropdown */}
                         <Button
                             onClick={handleOpenATPMenu}
-                            sx={{ color: 'white', ml: 2 }}
-                        >
+                            sx={{
+                                color: 'white', ml: 2,
+                                backgroundColor: activePage === "atp" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                fontWeight: activePage === "atp" ? 'bold' : 'normal',
+                            }}>
                             ATP Ranking
                         </Button>
                         <Menu
@@ -222,8 +235,11 @@ function ResponsiveAppBar() {
                         {/* WTA Ranking Dropdown */}
                         <Button
                             onClick={handleOpenWTAMenu}
-                            sx={{ color: 'white', ml: 2 }}
-                        >
+                            sx={{
+                                color: 'white', ml: 2,
+                                backgroundColor: activePage === "wta" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                fontWeight: activePage === "wta" ? 'bold' : 'normal',
+                            }}>
                             WTA Ranking
                         </Button>
                         <Menu
@@ -237,6 +253,16 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Menu>
+                        <Button
+                            onClick={() => (window.location.href = `/news`)}
+                            sx={{
+                                color: 'white', ml: 2,
+                                backgroundColor: activePage === "news" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                fontWeight: activePage === "news" ? 'bold' : 'normal',
+                            }}>
+                            News
+                        </Button>
+
                     </Box>
 
                     {/* Social Media Links */}

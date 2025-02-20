@@ -30,6 +30,8 @@ const App = () => {
           <div className="flex-grow">
             <Routes>
             <Route path="/" element={<FixtureResultsAll />} />
+            <Route path="/live-scores" element={<FixtureResultsAll />} />
+
             <Route path="/all" element={<FixtureResultsAll />} />
               <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
               <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
