@@ -1,0 +1,35 @@
+{
+    "name": "DEV JAVIA",
+    "nationality": "India",
+    "date_of_birth": "22 (2002/03/16)",
+    "weight": "165 lbs (75kg)",
+    "turned_pro": "",
+    "coach": "Alberto L\u00f3pez N\u00fa\u00f1ez",
+    "plays": "Left-Handed, Two-Handed Backhand",
+    "birthplace": "Ankleshwar",
+    "photo": "/images/players/dev-javia.jpg",
+    "singles": {
+        "ytd_move": "-",
+        "current_rank": "609",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$2,079",
+        "career_move": "N/A",
+        "career_high_rank": "609",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$26,618"
+    },
+    "doubles": {
+        "ytd_move": "3",
+        "current_rank": "475",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$2,560",
+        "career_move": "N/A",
+        "career_high_rank": "472",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$26,618"
+    }
+}

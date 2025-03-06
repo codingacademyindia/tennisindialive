@@ -1,0 +1,35 @@
+{
+    "name": "SIDDHARTH VISHWAKARMA",
+    "nationality": "India",
+    "date_of_birth": "30 (1994/10/07)",
+    "weight": "163 lbs (74kg)",
+    "turned_pro": "",
+    "coach": "Ratan sharma",
+    "plays": "Left-Handed, Two-Handed Backhand",
+    "birthplace": "Varanasi, India",
+    "photo": "/images/players/siddharth-vishwakarma.jpg",
+    "singles": {
+        "ytd_move": "45",
+        "current_rank": "790",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$2,383",
+        "career_move": "N/A",
+        "career_high_rank": "585",
+        "career_wins": "0 - 1",
+        "career_titles": "0",
+        "career_prize_money": "$31,173"
+    },
+    "doubles": {
+        "ytd_move": "4",
+        "current_rank": "2256",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "1519",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$31,173"
+    }
+}

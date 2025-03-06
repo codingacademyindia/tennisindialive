@@ -50,7 +50,7 @@ export default function CustomizedTablesJSON(props) {
                 {row.rank}
               </StyledTableCell>
               <StyledTableCell component="th" scope="row">
-                {row.player}
+                <a href={`/player/${row.player.replace(" ","-").toLowerCase()}`} target="_blank">{row.player}</a>
               </StyledTableCell>
 
               <StyledTableCell align="left">

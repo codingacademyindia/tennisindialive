@@ -1,0 +1,35 @@
+{
+    "name": "ARYAN SHAH",
+    "nationality": "India",
+    "date_of_birth": "19 (2005/11/21)",
+    "weight": "171 lbs (78kg)",
+    "turned_pro": "",
+    "coach": "",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "Bhuj",
+    "photo": "/images/players/aryan-shah.jpg",
+    "singles": {
+        "ytd_move": "12",
+        "current_rank": "569",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$4,424",
+        "career_move": "N/A",
+        "career_high_rank": "569",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$22,449"
+    },
+    "doubles": {
+        "ytd_move": "103",
+        "current_rank": "516",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$1,936",
+        "career_move": "N/A",
+        "career_high_rank": "516",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$22,449"
+    }
+}

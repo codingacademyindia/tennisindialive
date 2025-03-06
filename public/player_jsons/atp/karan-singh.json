@@ -1,0 +1,35 @@
+{
+    "name": "KARAN SINGH",
+    "nationality": "India",
+    "date_of_birth": "21 (2003/06/30)",
+    "weight": "178 lbs (81kg)",
+    "turned_pro": "",
+    "coach": "Aditya Sachdeva",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "Karnal,Haryana",
+    "photo": "/images/players/karan-singh.jpg",
+    "singles": {
+        "ytd_move": "13",
+        "current_rank": "488",
+        "ytd_wins": "1 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$7,445",
+        "career_move": "N/A",
+        "career_high_rank": "467",
+        "career_wins": "1 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$50,254"
+    },
+    "doubles": {
+        "ytd_move": "88",
+        "current_rank": "467",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$1,931",
+        "career_move": "N/A",
+        "career_high_rank": "467",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$50,254"
+    }
+}

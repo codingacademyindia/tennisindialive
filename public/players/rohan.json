@@ -1,0 +1,36 @@
+{
+    "name": "ROHAN BOPANNA",
+    "nationality": "India",
+    "date_of_birth": "44 (1980/03/04)",
+    "weight": "193 lbs (88kg)",
+    "turned_pro": "2003",
+    "coach": "Scott Davidoff",
+    "plays": "Right-Handed, One-Handed Backhand",
+    "birthplace": "Bangalore, India",
+    "photo": "/images/players/rohan-bopanna.jpg",
+    "singles": {
+        "ytd_move": "-",
+        "current_rank": "N/A",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "213",
+        "career_wins": "15 - 33",
+        "career_titles": "0",
+        "career_prize_money": "$7,194,340"
+    },
+    "doubles": {
+        "ytd_move": "1",
+        "current_rank": "21",
+        "ytd_wins": "1 - 4",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$31,503",
+        "career_move": "N/A",
+        "career_high_rank": "1",
+        "career_wins": "524 - 390",
+        "career_titles": "26",
+        "career_prize_money": "$7,194,340"
+    },
+    "bio": "Rohan Bopanna is a professional Indian tennis player known for his doubles performance. He has won multiple ATP titles and represented India in the Davis Cup."
+}

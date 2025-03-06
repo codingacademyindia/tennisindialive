@@ -1,0 +1,35 @@
+{
+    "name": "SIDHARTH RAWAT",
+    "nationality": "India",
+    "date_of_birth": "31 (1993/04/21)",
+    "weight": "154 lbs (70kg)",
+    "turned_pro": "",
+    "coach": "",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "New Delhi, India",
+    "photo": "/images/players/sidharth-rawat.jpg",
+    "singles": {
+        "ytd_move": "-",
+        "current_rank": "852",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$3,854",
+        "career_move": "N/A",
+        "career_high_rank": "430",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$107,191"
+    },
+    "doubles": {
+        "ytd_move": "2",
+        "current_rank": "1640",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$258",
+        "career_move": "N/A",
+        "career_high_rank": "590",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$107,191"
+    }
+}

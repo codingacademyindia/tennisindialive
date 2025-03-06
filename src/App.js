@@ -18,6 +18,8 @@ import ContactUs from './about/ContactUs';
 import TermsOfService from './about/TermsOfService';
 import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
 import RSSFeed from './news/RSSFeed';
+import PlayerInfo from './common/dialogs/PlayerInfo';
+import PlayerProfile from './players/PlayerProfile';
 
 const App = () => {
   const date = new Date();
@@ -44,6 +46,7 @@ const App = () => {
               <Route path="/aboutus" element={<AboutUs />} />
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/termsofservice" element={<TermsOfService />} />
+              <Route path="/player/:player" element={<PlayerProfile />} />
               <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />
               <Route path="*" element={<NotFound msg="Page Not Found" />}/>
             </Routes>

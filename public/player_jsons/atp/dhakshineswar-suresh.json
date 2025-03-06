@@ -1,0 +1,35 @@
+{
+    "name": "DHAKSHINESWAR SURESH",
+    "nationality": "India",
+    "date_of_birth": "24 (2000/03/29)",
+    "weight": "172 lbs (78kg)",
+    "turned_pro": "",
+    "coach": "",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "Madurai",
+    "photo": "/images/players/dhakshineswar-suresh.jpg",
+    "singles": {
+        "ytd_move": "1",
+        "current_rank": "859",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$814",
+        "career_move": "N/A",
+        "career_high_rank": "779",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$18,714"
+    },
+    "doubles": {
+        "ytd_move": "-",
+        "current_rank": "439",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$988",
+        "career_move": "N/A",
+        "career_high_rank": "439",
+        "career_wins": "2 - 1",
+        "career_titles": "0",
+        "career_prize_money": "$18,714"
+    }
+}

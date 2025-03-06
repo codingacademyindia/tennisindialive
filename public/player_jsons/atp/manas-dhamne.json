@@ -1,0 +1,35 @@
+{
+    "name": "MANAS DHAMNE",
+    "nationality": "India",
+    "date_of_birth": "17 (2007/12/29)",
+    "weight": "169 lbs (77kg)",
+    "turned_pro": "2023",
+    "coach": "Riccardo Piatti",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "Satara, India",
+    "photo": "/images/players/manas-dhamne.jpg",
+    "singles": {
+        "ytd_move": "4",
+        "current_rank": "769",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$7,307",
+        "career_move": "N/A",
+        "career_high_rank": "769",
+        "career_wins": "0 - 1",
+        "career_titles": "0",
+        "career_prize_money": "$22,452"
+    },
+    "doubles": {
+        "ytd_move": "-",
+        "current_rank": "1434",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$378",
+        "career_move": "N/A",
+        "career_high_rank": "1430",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$22,452"
+    }
+}
