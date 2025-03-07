@@ -11,9 +11,9 @@ const SocialMedia = () => {
                 <a href="https://x.com/TennisIndiaLive" target="_blank" rel="noopener noreferrer" className="text-blue-500">
                     <FaTwitter style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" />
                 </a>
-                <a href="https://www.facebook.com/TheTennisOfIndia/" target="_blank" rel="noopener noreferrer" className="text-blue-700">
+                {/* <a href="https://www.facebook.com/TheTennisOfIndia/" target="_blank" rel="noopener noreferrer" className="text-blue-700">
                     <FaFacebook style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" />
-                </a>
+                </a> */}
             </div>
 
         </header>

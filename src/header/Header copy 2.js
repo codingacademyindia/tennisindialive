@@ -21,13 +21,11 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 const pages = ['Live Scores', 'ATP Ranking', 'WTA Ranking'];
 const atpSubPages = ['Singles Live', 'Doubles Live', 'Singles Official', 'Doubles Official'];
 const wtaSubPages = ['Singles Live', 'Doubles Live', 'Singles Official', 'Doubles Official'];
-const playersSubPages = ['ATP', "WTA"];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElATP, setAnchorElATP] = React.useState(null);
     const [anchorElWTA, setAnchorElWTA] = React.useState(null);
-    const [anchorElPlayers, setAnchorElPlayers] = React.useState(null);
 
     const activePage = getActivePage();
 
@@ -35,17 +33,13 @@ function ResponsiveAppBar() {
         let href = window.location.href;
         if (href.includes("results") || href.includes("live-scores")) {
             return "live scores";
-        } else if (href.includes("player")) {
-            return "player";
-        }
-         else if (href.includes("atp")) {
+        } else if (href.includes("atp")) {
             return "atp";
         } else if (href.includes("wta")) {
             return "wta";
         } else if (href.includes("news")) {
             return "news";
         }
-
     }
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -64,24 +58,6 @@ function ResponsiveAppBar() {
 
     const handleOpenATPMenu = (event) => {
         setAnchorElATP(event.currentTarget);
-    };
-
-    const handleOpenPlayersMenu = (event) => {
-        setAnchorElPlayers(event.currentTarget);
-    };
-
-
-    const handleClosePlayersMenu = (event) => {
-        let text = event.target.innerText.toLowerCase()
-        if (text === 'atp') {
-            window.location.href = `/players/atp`;
-
-        }
-        else if (text === 'wta') {
-            window.location.href = `/players/wta`;
-
-        }
-        setAnchorElPlayers(null);
     };
     const handleCloseATPMenu = (event) => {
         let text = event.target.innerText.toLowerCase()
@@ -207,20 +183,6 @@ function ResponsiveAppBar() {
                                     </MenuItem>
                                 ))}
                             </Menu>
-                            <MenuItem onClick={handleOpenPlayersMenu}>
-                                <Typography textAlign="center">Players</Typography>
-                            </MenuItem>
-                            <Menu
-                                anchorEl={anchorElPlayers}
-                                open={Boolean(anchorElPlayers)}
-                                onClose={handleCloseWTAMenu}
-                            >
-                                {playersSubPages.map((page) => (
-                                    <MenuItem key={page} onClick={handleClosePlayersMenu}>
-                                        {page}
-                                    </MenuItem>
-                                ))}
-                            </Menu>
                         </Menu>
                     </Box>
 
@@ -247,29 +209,6 @@ function ResponsiveAppBar() {
                         >
                             Live Scores
                         </Button>
-
-                        {/* Players */}
-                        <Button
-                            onClick={handleOpenPlayersMenu}
-                            sx={{
-                                color: 'white', ml: 2,
-                                backgroundColor: activePage === "atp" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                                fontWeight: activePage === "atp" ? 'bold' : 'normal',
-                            }}>
-                            Players
-                        </Button>
-                        <Menu
-                            anchorEl={anchorElPlayers}
-                            open={Boolean(anchorElPlayers)}
-                            onClose={handleClosePlayersMenu}
-                        >
-                            {playersSubPages.map((page) => (
-                                <MenuItem key={page} onClick={handleClosePlayersMenu}>
-                                    {page}
-                                </MenuItem>
-                            ))}
-                        </Menu>
-
 
                         {/* ATP Ranking Dropdown */}
                         <Button

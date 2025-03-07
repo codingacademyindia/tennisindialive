@@ -20,7 +20,7 @@ import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
 import RSSFeed from './news/RSSFeed';
 import PlayerInfo from './common/dialogs/PlayerInfo';
 import PlayerProfile from './players/PlayerProfile';
-
+import PlayersListATP from './players/PlayerATP';
 const App = () => {
   const date = new Date();
 
@@ -47,6 +47,7 @@ const App = () => {
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/termsofservice" element={<TermsOfService />} />
               <Route path="/player/:player" element={<PlayerProfile />} />
+              <Route path="/players/atp" element={<PlayersListATP />} />
               <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />
               <Route path="*" element={<NotFound msg="Page Not Found" />}/>
             </Routes>

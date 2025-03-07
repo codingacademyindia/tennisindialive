@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from '../common/stateHandlers/LoaderState';
 import { Card, CardContent, CardMedia, Typography, Divider } from '@mui/material';
+// import parse from 'react-html-parser';
 
 const PlayerProfile = () => {
     document.title = "Tennis India Live - Player Info";
@@ -14,6 +15,7 @@ const PlayerProfile = () => {
         const fetchPlayerInfo = async () => {
             setLoading(true);
             try {
+                console.log(`/player_jsons/atp/${player}.json`)
                 const response = await fetch(`/player_jsons/atp/${player}.json`); // Adjust path as per JSON file location
                 const data = await response.json();
                 setPlayerData(data);
@@ -35,21 +37,43 @@ const PlayerProfile = () => {
             {playerData && (
                 <Card className="max-w-6xl w-full shadow-xl rounded-lg bg-white overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2 items-center">
-                        <CardMedia
-                            component="img"
-                            image={playerData.photo}
-                            alt={playerData.name}
-                            className="w-full h-full object-cover"
-                        />
+                        {/* Image Container with Absolute Positioning for Name & Source */}
+                        <div className="relative w-full">
+                            <CardMedia
+                                component="img"
+                                image={playerData.photo}
+                                alt={playerData.name}
+                                className="min-h-[250px] sm:min-h-[250px] md:min-h-[250px] lg:min-h-[300px] w-full object-cover"
+                            />
 
-                        {/* Name and Ranking Section */}
-                        <CardContent className="p-6 h-full flex flex-col justify-center bg-gray-800">
-                            <Typography variant="h4" className="font-bold text-white mb-4">
+                            {/* Name Positioned on the Left-Bottom */}
+                            <Typography
+                                className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-lg px-3 py-1 rounded-md"
+                            >
                                 {playerData.name}
                             </Typography>
 
+                            {/* Source Positioned on the Right-Bottom */}
+                            <Typography
+                                className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-md"
+                                variant="caption"
+                            >
+                                Image Source:
+                                {playerData.source}
+                            </Typography>
+                        </div>
+
+
+
+                        {/* Name and Ranking Section */}
+                        <CardContent className="p-6 h-full flex flex-col justify-center bg-gray-800">
+                            {/* <Typography variant="h6" className="font-bold text-white mb-4">
+                                {playerData.name}
+                            </Typography> */}
+                            <div className='text-xs text-white mb-2 w-full text-right'><b>Updated At: </b> {playerData.updated_at}</div>
                             {/* Table Format for Singles and Doubles */}
-                            <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+                            <div className="bg-gray-200 p-2 rounded-lg shadow-md">
+
                                 <table className="w-full border border-gray-300 text-sm text-left shadow-lg rounded-lg overflow-hidden">
                                     <thead>
                                         <tr className="bg-gray-800 text-white">
@@ -97,9 +121,10 @@ const PlayerProfile = () => {
                         <Divider className="my-4" />
 
                         {/* Bio Section */}
-                        <Typography variant="body1" className="text-gray-800 leading-relaxed">
+                        {/* <Typography variant="body1" className="text-gray-800 leading-relaxed">
                             <strong>Bio:</strong> {playerData.bio}
-                        </Typography>
+                        </Typography> */}
+                        <div className='bg-slate-100 p-4'><div dangerouslySetInnerHTML={{ __html: playerData.bio }} /></div>
                     </CardContent>
                 </Card>
             )}
