@@ -253,8 +253,8 @@ function ResponsiveAppBar() {
                             onClick={handleOpenPlayersMenu}
                             sx={{
                                 color: 'white', ml: 2,
-                                backgroundColor: activePage === "atp" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                                fontWeight: activePage === "atp" ? 'bold' : 'normal',
+                                backgroundColor: activePage === "player" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                fontWeight: activePage === "player" ? 'bold' : 'normal',
                             }}>
                             Players
                         </Button>

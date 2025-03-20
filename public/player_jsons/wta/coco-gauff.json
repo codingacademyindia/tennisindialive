@@ -1,0 +1,36 @@
+{
+    "name": "Coco Gauff",
+    "nationality": "UNITED STATES",
+    "date_of_birth": "21",
+    "height": "5' 9''",
+    "plays": "Right-Handed",
+    "birthplace": "Delray Beach, Fl. USA",
+    "photo": "/images/players/yuki-bhambri.jpg",
+    "source": "USTA",
+    "bio": "<b>Career Overview:</b> <b>Playing Style:</b> Known for his aggressive serve-and-volley style, a rare approach in modern tennis. He has a powerful serve and prefers to finish points quickly at the net.<br/><b>Career-High ATP Singles Ranking:</b> #111 (July 30, 2018), <b>Career-High ATP Doubles Ranking:</b> #58 (October 17, 2022).<br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of qualifying in multiple Grand Slam events but has yet to play in the main draw.<br/><b>Notable Achievements:</b> <b>Biggest Singles Win:</b> Stunned World No. 8 Dominic Thiem in the 2017 Antalya Open.<br/><b>ATP Finals & Challenger Titles:</b> Reached his first ATP singles final at the 2018 Hall of Fame Open (Newport, USA), finishing runner-up to Steve Johnson. Won his maiden ATP Challenger singles title at the 2022 Bahrain Ministry of Interior Tennis Challenger.<br/><b>Doubles Success:</b> Won his first ATP Tour doubles title at the 2022 Maharashtra Open with Rohan Bopanna. Secured a gold medal in Men\u00e2\u20ac\u2122s Doubles at the 2022 Asian Games alongside Saketh Myneni.<br/><b>Davis Cup & National Representation:</b> Regular member of India's Davis Cup team since 2015, played crucial matches against top players like Marin \u00c4\u0152ili\u00c4\u2021 and Borna \u00c4\u2020ori\u00c4\u2021.<br/><b>Other Highlights:</b> Frequently competes in ATP Challenger and Futures events, a key figure in Indian tennis, often playing doubles with Rohan Bopanna and Saketh Myneni. Trained in Spain at the Emilio S\u00c3\u00a1nchez Academy to enhance his performance on faster courts.<br/>Ramkumar continues to be a vital part of Indian tennis, known for his energetic play and commitment to representing India on the international stage. \u00f0\u0178\u017d\u00be\u00f0\u0178\u2021\u00ae\u00f0\u0178\u2021\u00b3",
+    "updated_at": "20-March-2025 03:32 PM",
+    "singles": {
+        "ytd_move": "N/A",
+        "current_rank": "3",
+        "ytd_wins": "N/A",
+        "ytd_titles": "1",
+        "ytd_prize_money": "$1,477,256",
+        "career_move": "N/A",
+        "career_high_rank": "2",
+        "career_wins": "N/A",
+        "career_titles": "10",
+        "career_prize_money": "$23,059,245"
+    },
+    "doubles": {
+        "ytd_move": "N/A",
+        "current_rank": "23",
+        "ytd_wins": "N/A",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$1,477,256",
+        "career_move": "N/A",
+        "career_high_rank": "1",
+        "career_wins": "N/A",
+        "career_titles": "9",
+        "career_prize_money": "$23,059,245"
+    }
+}
