@@ -1,62 +1,54 @@
-import React, { useState, useEffect } from "react";
+import { CardMedia } from "@mui/material";
+import React, { useState, useEffect, useMemo } from "react";
 
 const PlayersListWTA = () => {
     const [players, setPlayers] = useState([]);
-    const [filteredPlayers, setFilteredPlayers] = useState([]);
     const [search, setSearch] = useState("");
 
     useEffect(() => {
         fetch("/player_jsons/player_list_wta.json") // Fetching from public folder
             .then((response) => response.json())
-            .then((data) => {
-                setPlayers(data);
-                setFilteredPlayers(data); // Initialize filtered list
-            })
+            .then((data) => setPlayers(data))
             .catch((error) => console.error("Error fetching players:", error));
     }, []);
 
-    // Handle Search Input
-    const handleSearch = (event) => {
-        const query = event.target.value.toLowerCase();
-        setSearch(query);
-
-        // Filter players based on name
-        const filtered = players.filter(player =>
-            player.player_name.toLowerCase().includes(query)
+    // Memoized filtered players to prevent unnecessary re-renders
+    const filteredPlayers = useMemo(() => {
+        return players.filter(player =>
+            player.player_name.toLowerCase().includes(search.toLowerCase())
         );
-
-        setFilteredPlayers(filtered);
-    };
+    }, [players, search]);
 
     return (
-        <div className="max-w-4xl mx-auto p-4">
-            <h2 className="text-2xl font-bold text-center mb-4">ATP Players</h2>
+        <div className="max-w-4xl mx-auto p-1">
+            <div className="w-full flex flex-row  items-center border-solid border-navy border-b-[1px] m-1 bg-slate-100 ">
+                <div className="text-2xl font-bold text-left  w-[50%]">WTA Players</div>
 
-            {/* Search Input */}
-            <input
-                type="text"
-                placeholder="Search Player..."
-                value={search}
-                onChange={handleSearch}
-                className="w-full p-2 border rounded-md mb-4"
-            />
+                {/* Search Input */}
+                <input
+                    type="text"
+                    placeholder="Search Player..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-[50%] m-2 p-2 border rounded-md mb-4"
+                    aria-label="Search Players"
+                />
+            </div>
 
             {/* Players Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {filteredPlayers.length > 0 ? (
                     filteredPlayers.map((player, index) => (
-                        <div key={index} className="p-4 border rounded-lg shadow-md text-center">
-                            <img
-                                src={player.photo}
-                                alt={player.player_name}
-                                className="w-full h-40 object-cover rounded-md"
-                            />
+                        <div key={index} className="p-2 border rounded-lg shadow-md text-center hover:bg-blue-200">
                             <a
-                                href={`/player/${player.player_name.replaceAll(" ", "-").toLowerCase()}`}
+                                href={`/player/wta/${player.player_name.replaceAll(" ", "-").toLowerCase()}`}
                                 target="_blank"
-                                className="text-blue-900 underline text-lg p-1"
+                                className=" bg-slate-10"
                             >
-                                {player.player_name}
+                                <div className=" w-full mb-1 bg-green-700 text-white">{player.player_name}</div>
+                                <PlayerImage player={player} />
+
+
                             </a>
                         </div>
                     ))
@@ -65,6 +57,21 @@ const PlayersListWTA = () => {
                 )}
             </div>
         </div>
+    );
+};
+
+// **Reusable Image Component with Error Handling**
+const PlayerImage = ({ player }) => {
+    const [imgSrc, setImgSrc] = useState(player.photo);
+
+    return (
+        <CardMedia
+            component="img"
+            image={imgSrc}
+            alt={player.player_name}
+            className="w-full h-40 object-cover rounded-md"
+            onError={() => setImgSrc('/images/players/wta/default.png')}
+        />
     );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Loader from '../common/stateHandlers/LoaderState';
+// import Loader from '../common/stateHandlers/LoaderState';
+import Loader from '../../common/stateHandlers/LoaderState';
 import { Card, CardContent, CardMedia, Typography, Divider } from '@mui/material';
 // import parse from 'react-html-parser';
 
@@ -43,7 +44,8 @@ const PlayerProfile = () => {
                                 component="img"
                                 image={playerData.photo}
                                 alt={playerData.name}
-                                className="min-h-[250px] sm:min-h-[250px] md:min-h-[250px] lg:min-h-[300px] w-full object-cover"
+                                onError={(e) => { e.target.src = '/images/players/atp/default.jpg'; }}
+                                className="h-[250px] sm:min-h-[250px] md:min-h-[250px] lg:min-h-[300px] w-full object-cover"
                             />
 
                             {/* Name Positioned on the Left-Bottom */}

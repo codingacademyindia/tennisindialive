@@ -19,7 +19,8 @@ import TermsOfService from './about/TermsOfService';
 import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
 import RSSFeed from './news/RSSFeed';
 import PlayerInfo from './common/dialogs/PlayerInfo';
-import PlayerProfile from './players/wta/PlayerProfile';
+import PlayerProfileWTA from './players/wta/PlayerProfile';
+import PlayerProfileATP from './players/atp/PlayerProfile';
 import PlayersListWTA from './players/wta/PlayerWTA';
 import PlayersListATP from './players/atp/PlayerATP';
 const App = () => {
@@ -47,7 +48,8 @@ const App = () => {
               <Route path="/aboutus" element={<AboutUs />} />
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/termsofservice" element={<TermsOfService />} />
-              <Route path="/player/:player" element={<PlayerProfile />} />
+              <Route path="/player/atp/:player" element={<PlayerProfileATP />} />
+              <Route path="/player/wta/:player" element={<PlayerProfileWTA />} />
               <Route path="/players/atp" element={<PlayersListATP />} />
               <Route path="/players/wta" element={<PlayersListWTA />} />
               <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />

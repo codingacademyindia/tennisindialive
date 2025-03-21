@@ -43,7 +43,8 @@ const PlayerProfile = () => {
                                 component="img"
                                 image={playerData.photo}
                                 alt={playerData.name}
-                                className="min-h-[250px] sm:min-h-[250px] md:min-h-[250px] lg:min-h-[300px] w-full object-cover"
+                                onError={(e) => { e.target.src = '/images/players/wta/default.png'; }}
+                                className="h-[250px] sm:min-h-[250px] md:min-h-[250px] lg:min-h-[300px] w-full object-cover"
                             />
 
                             {/* Name Positioned on the Left-Bottom */}
