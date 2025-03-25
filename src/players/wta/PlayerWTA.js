@@ -62,15 +62,14 @@ const PlayersListWTA = () => {
 
 // **Reusable Image Component with Error Handling**
 const PlayerImage = ({ player }) => {
-    const [imgSrc, setImgSrc] = useState(player.photo);
 
     return (
         <CardMedia
             component="img"
-            image={imgSrc}
+            image={player.photo}
             alt={player.player_name}
             className="w-full h-40 object-cover rounded-md"
-            onError={() => setImgSrc('/images/players/wta/default.png')}
+            onError={(e) => e.target.src='/images/players/wta/default.png'}
         />
     );
 };

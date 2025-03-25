@@ -1,0 +1,38 @@
+{
+    "name": "VIJAY AMRITRAJ",
+    "nationality": "India",
+    "date_of_birth": "71 (1953/12/14)",
+    "weight": "190 lbs (86kg)",
+    "turned_pro": "1970",
+    "coach": "N/A (Retired; formerly trained by family and Indian coaches)",
+    "plays": "Right-Handed, One-Handed Backhand",
+    "birthplace": "Chennai, India",
+    "photo": "/images/players/atp/vijay-amritraj.jpg",
+    "source": "Getty",
+    "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A graceful all-court player with a strong serve-and-volley game and excellent touch, adept on grass and hard courts.<br/><b>Career-High ATP Singles Ranking:</b> #16 (July 7, 1980), <b>Career-High ATP Doubles Ranking:</b> #23 (March 24, 1980).<br/><b>Best Grand Slam Singles Performance:</b> Reached the quarterfinals of Wimbledon (1973, 1981) and the US Open (1973, 1974).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 16 singles and 13 doubles titles during the 1970s and 1980s. <b>Davis Cup & National Representation:</b> Led India to the Davis Cup finals in 1974 and 1987, one of India’s greatest Davis Cup heroes with a record of 45-18 in singles and doubles combined.<br/><b>Other Highlights:</b> A trailblazer for Indian tennis in the Open Era, defeating top players like Rod Laver and John McEnroe. Later became a successful commentator, actor (e.g., James Bond film *Octopussy*), and philanthropist.<br/>Amritraj retired in 1993, leaving a lasting legacy as one of India’s finest tennis players. 🎾🇮🇳",
+    "updated_at": "25-March-2025 12:00 PM",
+    "singles": {
+        "ytd_move": "-",
+        "current_rank": "N/A (Retired)",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "16",
+        "career_wins": "399 - 246",
+        "career_titles": "16",
+        "career_prize_money": "$1,696,779"
+    },
+    "doubles": {
+        "ytd_move": "-",
+        "current_rank": "N/A (Retired)",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "23",
+        "career_wins": "264 - 174",
+        "career_titles": "13",
+        "career_prize_money": "$1,696,779"
+    }
+}

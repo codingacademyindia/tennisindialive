@@ -94,17 +94,30 @@ const RSSFeed = () => {
   );
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Latest Tennis News</h1>
+    <div className="w-[80%] mx-auto p-1">
+     <div className="w-full flex flex-row  items-center border-solid border-navy border-b-[1px] m-1 bg-slate-100 ">
+                <div className="text-2xl font-bold text-left  w-[50%]">Latest Tennis News</div>
+
+                {/* Search Input */}
+                <input
+                    type="text"
+                    placeholder="Search News..."
+                    value={filterText}
+                    onChange={(e) => setFilterText(e.target.value)}
+                    className="w-[50%] m-2 p-2 border rounded-md mb-4"
+                    aria-label="Search Players"
+                />
+            </div>  
+      {/* <h1 className="text-2xl font-bold mb-4">Latest Tennis News</h1>
 
       {/* Search Input */}
-      <input
+      {/* <input
         type="text"
         placeholder="Search news..."
         value={filterText}
         onChange={(e) => setFilterText(e.target.value)}
         className="w-full p-2 border rounded mb-4"
-      />
+      />  */}
 
       {/* Loading & Error Handling */}
       {loading && <p>Loading news...</p>}
