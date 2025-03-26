@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import Loader from '../common/stateHandlers/LoaderState';
 import Loader from '../../common/stateHandlers/LoaderState';
 import { Card, CardContent, CardMedia, Typography, Divider } from '@mui/material';
 // import parse from 'react-html-parser';
 
 const PlayerProfile = () => {
+    document.title = "Tennis India Live - Player Info";
     const { player } = useParams();
     const [playerData, setPlayerData] = useState(null);
     const [error, setError] = useState(null);
@@ -15,12 +15,10 @@ const PlayerProfile = () => {
         const fetchPlayerInfo = async () => {
             setLoading(true);
             try {
-
-                console.log(`/player_jsons/atp/${player}.json`)
-                const response = await fetch(`/player_jsons/atp/${player}.json`); // Adjust path as per JSON file location
+                console.log(`/player_jsons/wta/${player}.json`)
+                const response = await fetch(`/player_jsons/wta/${player}.json`); // Adjust path as per JSON file location
                 const data = await response.json();
-                document.title = "Tennis India Live - "+ data.name;
-
+                document.title = "Tennis India Live - " + data.player_name;
                 setPlayerData(data);
                 setLoading(false);
             } catch (error) {
@@ -46,7 +44,7 @@ const PlayerProfile = () => {
                                 component="img"
                                 image={playerData.photo}
                                 alt={playerData.name}
-                                onError={(e) => { e.target.src = '/images/players/atp/default.jpg'; }}
+                                onError={(e) => { e.target.src = '/images/players/wta/default.png'; }}
                                 className="h-[250px] sm:min-h-[250px] md:min-h-[250px] lg:min-h-[300px] w-full object-cover"
                             />
 
@@ -58,13 +56,13 @@ const PlayerProfile = () => {
                             </Typography>
 
                             {/* Source Positioned on the Right-Bottom */}
-                            <Typography
+                            {playerData.source && <Typography
                                 className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-md"
-                                variant="caption"
-                            >
+                                variant="caption">
                                 Image Source:
                                 {playerData.source}
                             </Typography>
+                            }
                         </div>
 
 

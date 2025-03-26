@@ -22,7 +22,7 @@
         "player": "Harri Heliövaara",
         "age": "35",
         "country": "FIN",
-        "points": "7300",
+        "points": "7480",
         "career_high": "NCH \n  (4)",
         "change": "+1"
     },
@@ -31,7 +31,7 @@
         "player": "Henry Patten",
         "age": "28",
         "country": "GBR",
-        "points": "7300",
+        "points": "7480",
         "career_high": "3",
         "change": "-1"
     },
@@ -643,7 +643,7 @@
         "player": "Patrik Rikl",
         "age": "26",
         "country": "CZE",
-        "points": "1155",
+        "points": "1160",
         "career_high": "CH",
         "change": "+1"
     },
@@ -760,27 +760,27 @@
         "player": "Romain Arneodo",
         "age": "32",
         "country": "MON",
-        "points": "1046",
+        "points": "1050",
         "career_high": "50",
         "change": "-1"
     },
     {
         "rank": "86",
+        "player": "Andreas Mies",
+        "age": "34",
+        "country": "GER",
+        "points": "1040",
+        "career_high": "8",
+        "change": "+1"
+    },
+    {
+        "rank": "87",
         "player": "Matwé Middelkoop",
         "age": "41",
         "country": "NED",
         "points": "1027",
         "career_high": "18",
-        "change": ""
-    },
-    {
-        "rank": "87",
-        "player": "Andreas Mies",
-        "age": "34",
-        "country": "GER",
-        "points": "1020",
-        "career_high": "8",
-        "change": ""
+        "change": "-1"
     },
     {
         "rank": "88",
@@ -940,27 +940,27 @@
         "player": "Reese Stalder",
         "age": "28",
         "country": "USA",
-        "points": "806",
+        "points": "811",
         "career_high": "60",
         "change": "-2"
     },
     {
         "rank": "106",
+        "player": "Ray Ho",
+        "age": "25",
+        "country": "TWN",
+        "points": "810",
+        "career_high": "105",
+        "change": ""
+    },
+    {
+        "rank": "107",
         "player": "Marcus Willis",
         "age": "34",
         "country": "GBR",
         "points": "802",
         "career_high": "81",
-        "change": "-2"
-    },
-    {
-        "rank": "107",
-        "player": "Ray Ho",
-        "age": "25",
-        "country": "TWN",
-        "points": "800",
-        "career_high": "105",
-        "change": "-1"
+        "change": "-3"
     },
     {
         "rank": "108",
@@ -973,30 +973,30 @@
     },
     {
         "rank": "109",
+        "player": "Anirudh Chandrasekar",
+        "age": "26",
+        "country": "IND",
+        "points": "777",
+        "career_high": "87",
+        "change": "+1"
+    },
+    {
+        "rank": "110",
         "player": "Petros Tsitsipas",
         "age": "24",
         "country": "GRE",
         "points": "774",
         "career_high": "72",
-        "change": "-2"
+        "change": "-3"
     },
     {
-        "rank": "110",
+        "rank": "111",
         "player": "Cleeve Harper",
         "age": "24",
         "country": "CAN",
         "points": "770",
         "career_high": "109",
-        "change": "-1"
-    },
-    {
-        "rank": "111",
-        "player": "Anirudh Chandrasekar",
-        "age": "26",
-        "country": "IND",
-        "points": "757",
-        "career_high": "87",
-        "change": "-1"
+        "change": "-2"
     },
     {
         "rank": "112",
@@ -1144,84 +1144,84 @@
     },
     {
         "rank": "128",
+        "player": "Geoffrey Blancaneaux",
+        "age": "26",
+        "country": "FRA",
+        "points": "640",
+        "career_high": "NCH \n(136)",
+        "change": "+8"
+    },
+    {
+        "rank": "129",
+        "player": "Íñigo Cervantes",
+        "age": "35",
+        "country": "ESP",
+        "points": "635",
+        "career_high": "105",
+        "change": "+8"
+    },
+    {
+        "rank": "130",
         "player": "Johannes Ingildsen",
         "age": "27",
         "country": "DEN",
         "points": "632",
         "career_high": "124",
-        "change": ""
+        "change": "-2"
     },
     {
-        "rank": "129",
+        "rank": "131",
         "player": "Karen Khachanov",
         "age": "28",
         "country": "RUS",
         "points": "630",
         "career_high": "53",
-        "change": ""
+        "change": "-2"
     },
     {
-        "rank": "130",
+        "rank": "132",
         "player": "Alexander Bublik",
         "age": "27",
         "country": "KAZ",
         "points": "630",
         "career_high": "47",
-        "change": ""
+        "change": "-2"
     },
     {
-        "rank": "131",
+        "rank": "133",
         "player": "Luciano Darderi",
         "age": "23",
         "country": "ITA",
         "points": "630",
         "career_high": "104",
-        "change": ""
+        "change": "-2"
     },
     {
-        "rank": "132",
+        "rank": "134",
         "player": "Daniel Cukierman",
         "age": "29",
         "country": "ISR",
         "points": "628",
         "career_high": "124",
-        "change": "-7"
+        "change": "-9"
     },
     {
-        "rank": "133",
+        "rank": "135",
         "player": "Thomas Fancutt",
         "age": "30",
         "country": "AUS",
         "points": "617",
         "career_high": "107",
-        "change": "-10"
+        "change": "-12"
     },
     {
-        "rank": "134",
+        "rank": "136",
         "player": "Sergio Martos Gornes",
         "age": "30",
         "country": "ESP",
         "points": "617",
         "career_high": "102",
-        "change": "+1"
-    },
-    {
-        "rank": "135",
-        "player": "Geoffrey Blancaneaux",
-        "age": "26",
-        "country": "FRA",
-        "points": "615",
-        "career_high": "NCH \n(136)",
-        "change": "+1"
-    },
-    {
-        "rank": "136",
-        "player": "Íñigo Cervantes",
-        "age": "35",
-        "country": "ESP",
-        "points": "615",
-        "career_high": "105",
-        "change": "+1"
+        "change": "-1"
     },
     {
         "rank": "137",
@@ -1234,30 +1234,30 @@
     },
     {
         "rank": "138",
+        "player": "David Vega Hernández",
+        "age": "30",
+        "country": "ESP",
+        "points": "604",
+        "career_high": "28",
+        "change": "+6"
+    },
+    {
+        "rank": "139",
         "player": "Kaito Uesugi",
         "age": "29",
         "country": "JPN",
         "points": "586",
         "career_high": "128",
-        "change": "+3"
+        "change": "+2"
     },
     {
-        "rank": "139",
+        "rank": "140",
         "player": "Hans Hach Verdugo",
         "age": "35",
         "country": "MEX",
         "points": "584",
         "career_high": "60",
-        "change": ""
-    },
-    {
-        "rank": "140",
-        "player": "David Vega Hernández",
-        "age": "30",
-        "country": "ESP",
-        "points": "584",
-        "career_high": "28",
-        "change": "+4"
+        "change": "-1"
     },
     {
         "rank": "141",
@@ -1486,147 +1486,147 @@
     },
     {
         "rank": "166",
+        "player": "Miloš Karol",
+        "age": "22",
+        "country": "SVK",
+        "points": "479",
+        "career_high": "NCH \n(175)",
+        "change": "+12"
+    },
+    {
+        "rank": "167",
         "player": "Luis Britto",
         "age": "31",
         "country": "BRA",
         "points": "477",
         "career_high": "163",
-        "change": "-3"
+        "change": "-4"
     },
     {
-        "rank": "167",
+        "rank": "168",
         "player": "Federico Agustin Gomez",
         "age": "28",
         "country": "ARG",
         "points": "473",
         "career_high": "133",
-        "change": "+3"
+        "change": "+2"
     },
     {
-        "rank": "168",
+        "rank": "169",
         "player": "Luca Sanchez",
         "age": "26",
         "country": "FRA",
         "points": "472",
         "career_high": "86",
-        "change": "+3"
+        "change": "+2"
     },
     {
-        "rank": "169",
+        "rank": "170",
         "player": "Benjamin Bonzi",
         "age": "28",
         "country": "FRA",
         "points": "471",
         "career_high": "121",
-        "change": "+3"
+        "change": "+2"
     },
     {
-        "rank": "170",
+        "rank": "171",
+        "player": "Daniel Rincon",
+        "age": "22",
+        "country": "ESP",
+        "points": "464",
+        "career_high": "148",
+        "change": "+2"
+    },
+    {
+        "rank": "172",
         "player": "Seita Watanabe",
         "age": "24",
         "country": "JPN",
         "points": "460",
         "career_high": "167",
-        "change": "+6"
+        "change": "+4"
     },
     {
-        "rank": "171",
+        "rank": "173",
         "player": "Courtney John Lock",
         "age": "28",
         "country": "ZIM",
         "points": "459",
         "career_high": "NCH \n(177)",
-        "change": "+6"
+        "change": "+4"
     },
     {
-        "rank": "172",
-        "player": "Miloš Karol",
-        "age": "22",
-        "country": "SVK",
-        "points": "458",
-        "career_high": "NCH \n(175)",
-        "change": "+6"
-    },
-    {
-        "rank": "173",
+        "rank": "174",
         "player": "Alexander Merino",
         "age": "32",
         "country": "PER",
         "points": "456",
         "career_high": "158",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "174",
+        "rank": "175",
         "player": "Christoph Negritu",
         "age": "31",
         "country": "GER",
         "points": "456",
         "career_high": "159",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "175",
+        "rank": "176",
+        "player": "Giorgio Ricca",
+        "age": "30",
+        "country": "ITA",
+        "points": "454",
+        "career_high": "NCH \n(178)",
+        "change": "+10"
+    },
+    {
+        "rank": "177",
         "player": "Boris Arias",
         "age": "31",
         "country": "BOL",
         "points": "454",
         "career_high": "80",
-        "change": "-25"
+        "change": "-27"
     },
     {
-        "rank": "175",
+        "rank": "177",
         "player": "Federico Zeballos",
         "age": "36",
         "country": "BOL",
         "points": "454",
         "career_high": "79",
-        "change": "-25"
+        "change": "-27"
     },
     {
-        "rank": "177",
+        "rank": "179",
         "player": "Eliot Spizzirri",
         "age": "23",
         "country": "USA",
         "points": "449",
         "career_high": "NCH \n(181)",
-        "change": "+4"
+        "change": "+2"
     },
     {
-        "rank": "178",
+        "rank": "180",
         "player": "Pruchya Isaro",
         "age": "29",
         "country": "THA",
         "points": "449",
         "career_high": "165",
-        "change": "+4"
+        "change": "+2"
     },
     {
-        "rank": "179",
+        "rank": "181",
         "player": "Michael Vrbenský",
         "age": "25",
         "country": "CZE",
         "points": "446",
         "career_high": "173",
-        "change": "+4"
-    },
-    {
-        "rank": "180",
-        "player": "Daniel Rincon",
-        "age": "22",
-        "country": "ESP",
-        "points": "444",
-        "career_high": "148",
-        "change": "-7"
-    },
-    {
-        "rank": "181",
-        "player": "Giorgio Ricca",
-        "age": "30",
-        "country": "ITA",
-        "points": "437",
-        "career_high": "178",
-        "change": "+5"
+        "change": "+2"
     },
     {
         "rank": "182",
@@ -2738,7 +2738,7 @@
     {
         "rank": "305",
         "player": "João Lucas Reis Da Silva",
-        "age": "24",
+        "age": "25",
         "country": "BRA",
         "points": "213",
         "career_high": "204",
@@ -3170,7 +3170,7 @@
     {
         "rank": "353",
         "player": "Pedro Araújo",
-        "age": "22",
+        "age": "23",
         "country": "POR",
         "points": "178",
         "career_high": "335",
@@ -6293,7 +6293,7 @@
     {
         "rank": "700",
         "player": "Thiago Cigarran",
-        "age": "24",
+        "age": "25",
         "country": "ARG",
         "points": "65",
         "career_high": "547",
@@ -6806,7 +6806,7 @@
     {
         "rank": "757",
         "player": "Aziz Dougaz",
-        "age": "27",
+        "age": "28",
         "country": "TUN",
         "points": "55",
         "career_high": "261",
