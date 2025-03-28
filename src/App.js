@@ -14,7 +14,8 @@ import NotFound from './common/stateHandlers/NotFound';
 import FixtureResultsAll from './scores/ScoresAll';
 import PrivacyPolicy from './about/PrivacyPolicy';
 import AboutUs from './about/AboutUs';
-import ContactUs from './about/ContactUs';
+// import ContactUs from './about/ContactUs';
+import ContactUs from './contactus/ContactUs';
 import TermsOfService from './about/TermsOfService';
 import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
 import RSSFeed from './news/RSSFeed';
@@ -23,6 +24,8 @@ import PlayerProfileWTA from './players/wta/PlayerProfile';
 import PlayerProfileATP from './players/atp/PlayerProfile';
 import PlayersListWTA from './players/wta/PlayerWTA';
 import PlayersListATP from './players/atp/PlayerATP';
+import RequestPlayerInfo from './contactus/RequestPlayerInfo';
+
 const App = () => {
   const date = new Date();
 
@@ -52,6 +55,8 @@ const App = () => {
               <Route path="/player/wta/:player" element={<PlayerProfileWTA />} />
               <Route path="/players/atp" element={<PlayersListATP />} />
               <Route path="/players/wta" element={<PlayersListWTA />} />
+              <Route path="/contactus" element={<ContactUs />} />
+              <Route path="/playerinforequest" element={<RequestPlayerInfo />} />
               <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />
               <Route path="*" element={<NotFound msg="Page Not Found" />}/>
             </Routes>

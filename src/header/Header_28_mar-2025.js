@@ -3,7 +3,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import EmailIcon from '@mui/icons-material/Email';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,7 +14,6 @@ import { GiTennisBall } from "react-icons/gi";
 import SocialMedia from '../common/SocialMedia';
 import RequestModal from '../contactus/RequestModal';
 import ContactUs from '../contactus/ContactUs';
-
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
     background: 'navy',
@@ -336,8 +334,10 @@ function ResponsiveAppBar() {
                     </Box>
 
                     {/* Social Media Links */}
-                    <SocialMedia handleOpen={handleOpen}/>
-                   
+                    <SocialMedia />
+                    <button className="bg-blue-800 text-white" onClick={handleOpen}>
+                        Email
+                    </button>
                 </Toolbar>
             </Container>
         </StyledAppBar>

@@ -1,9 +1,15 @@
-import { CardMedia } from "@mui/material";
+import { Button, CardMedia } from "@mui/material";
 import React, { useState, useEffect, useMemo } from "react";
+import RequestModal from "../../contactus/RequestModal";
+import RequestPlayerInfo from "../../contactus/RequestPlayerInfo";
 
 const PlayersListWTA = () => {
     const [players, setPlayers] = useState([]);
     const [search, setSearch] = useState("");
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         fetch("/player_jsons/player_list_wta.json") // Fetching from public folder
@@ -21,9 +27,15 @@ const PlayersListWTA = () => {
 
     return (
         <div className="max-w-4xl mx-auto p-1">
+            <RequestModal open={open} handleClose={handleClose} title="Request To Add More Players" children={<RequestPlayerInfo />} />
             <div className="w-full flex flex-row  items-center border-solid border-navy border-b-[1px] m-1 bg-slate-100 ">
                 <div className="text-2xl font-bold text-left  w-[50%]">WTA Players</div>
-
+                <button
+                    className="w-full bg-blue-800 hover:bg-blue-700 text-white font-semibold py-1 px-1 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                    onClick={handleOpen}
+                >
+                    Missing a Player? Request Here! 🎾
+                </button>
                 {/* Search Input */}
                 <input
                     type="text"
@@ -62,6 +74,7 @@ const PlayersListWTA = () => {
 
 // **Reusable Image Component with Error Handling**
 const PlayerImage = ({ player }) => {
+    const [imgSrc, setImgSrc] = useState(player.photo);
 
     return (
         <CardMedia
@@ -69,7 +82,7 @@ const PlayerImage = ({ player }) => {
             image={player.photo}
             alt={player.player_name}
             className="w-full h-40 object-cover rounded-md"
-            onError={(e) => e.target.src='/images/players/wta/default.png'}
+            onError={(e) => e.target.src = '/images/players/wta/default.png'}
         />
     );
 };
