@@ -31,10 +31,10 @@ const PlayersListATP = () => {
             <div className="w-full flex flex-row  items-center border-solid border-navy border-b-[1px] m-1 bg-slate-100 ">
                 <div className="text-2xl font-bold text-left  w-[50%]">ATP Players</div>
                 <button
-                    className="w-full bg-blue-800 hover:bg-blue-700 text-white font-semibold py-1 px-1 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                    className="w-full bg-blue-800 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-1 sm:py-1 px-1 sm:px-1 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
                     onClick={handleOpen}
                 >
-                    Missing a Player? Request Here! 🎾
+                    Missing a Player? Request Here!
                 </button>
                 {/* Search Input */}
                 <input
