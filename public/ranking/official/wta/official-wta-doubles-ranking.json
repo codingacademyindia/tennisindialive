@@ -767,7 +767,7 @@
     {
         "rank": "86",
         "player": "Anastasia Potapova",
-        "age": "23",
+        "age": "24",
         "country": "RUS",
         "points": "958",
         "career_high": "",
@@ -965,7 +965,7 @@
     {
         "rank": "108",
         "player": "Xiyu Wang",
-        "age": "23",
+        "age": "24",
         "country": "CHN",
         "points": "759",
         "career_high": "",
@@ -1460,7 +1460,7 @@
     {
         "rank": "163",
         "player": "Zhibek Kulambayeva",
-        "age": "24",
+        "age": "25",
         "country": "KAZ",
         "points": "480",
         "career_high": "",
@@ -1712,7 +1712,7 @@
     {
         "rank": "191",
         "player": "Rutuja Bhosale",
-        "age": "28",
+        "age": "29",
         "country": "IND",
         "points": "419",
         "career_high": "",
@@ -2405,7 +2405,7 @@
     {
         "rank": "268",
         "player": "Sakura Hosogi",
-        "age": "24",
+        "age": "25",
         "country": "JPN",
         "points": "293",
         "career_high": "",
@@ -2675,7 +2675,7 @@
     {
         "rank": "298",
         "player": "Emina Bektas",
-        "age": "31",
+        "age": "32",
         "country": "USA",
         "points": "257",
         "career_high": "",
@@ -3656,7 +3656,7 @@
     {
         "rank": "407",
         "player": "Jenny Duerst",
-        "age": "25",
+        "age": "26",
         "country": "SUI",
         "points": "162",
         "career_high": "",
@@ -3989,7 +3989,7 @@
     {
         "rank": "444",
         "player": "Aliona Falei",
-        "age": "20",
+        "age": "21",
         "country": "BLR",
         "points": "143",
         "career_high": "",
@@ -4187,7 +4187,7 @@
     {
         "rank": "466",
         "player": "Joelle Steur",
-        "age": "20",
+        "age": "21",
         "country": "GER",
         "points": "134",
         "career_high": "",
@@ -4565,7 +4565,7 @@
     {
         "rank": "508",
         "player": "Jiaqi Wang",
-        "age": "22",
+        "age": "23",
         "country": "CHN",
         "points": "120",
         "career_high": "",
@@ -5042,7 +5042,7 @@
     {
         "rank": "561",
         "player": "Angela Kulikov",
-        "age": "26",
+        "age": "27",
         "country": "USA",
         "points": "103",
         "career_high": "",
@@ -5159,7 +5159,7 @@
     {
         "rank": "574",
         "player": "Arlinda Rushiti",
-        "age": "25",
+        "age": "26",
         "country": "KOS",
         "points": "99",
         "career_high": "",
@@ -6275,7 +6275,7 @@
     {
         "rank": "698",
         "player": "Olga Parres Azcoitia",
-        "age": "31",
+        "age": "32",
         "country": "ESP",
         "points": "73",
         "career_high": "",
@@ -6581,7 +6581,7 @@
     {
         "rank": "732",
         "player": "Valentina Ivanov",
-        "age": "23",
+        "age": "24",
         "country": "NZL",
         "points": "66",
         "career_high": "",
@@ -6599,7 +6599,7 @@
     {
         "rank": "734",
         "player": "Ema Kovacevic",
-        "age": "18",
+        "age": "19",
         "country": "BEL",
         "points": "66",
         "career_high": "",
@@ -6914,7 +6914,7 @@
     {
         "rank": "769",
         "player": "Eva Voracek",
-        "age": "25",
+        "age": "26",
         "country": "GER",
         "points": "61",
         "career_high": "",
@@ -7184,7 +7184,7 @@
     {
         "rank": "799",
         "player": "Sebastianna Scilipoti",
-        "age": "21",
+        "age": "22",
         "country": "SUI",
         "points": "56",
         "career_high": "",
@@ -7868,7 +7868,7 @@
     {
         "rank": "875",
         "player": "Yaroslava Bartashevich",
-        "age": "19",
+        "age": "20",
         "country": "FRA",
         "points": "46",
         "career_high": "",
@@ -8183,7 +8183,7 @@
     {
         "rank": "910",
         "player": "Daria Kudashova",
-        "age": "21",
+        "age": "22",
         "country": "RUS",
         "points": "42",
         "career_high": "",
@@ -8480,7 +8480,7 @@
     {
         "rank": "943",
         "player": "Klaudija Bubelytė",
-        "age": "21",
+        "age": "22",
         "country": "LTU",
         "points": "39",
         "career_high": "",
@@ -8516,7 +8516,7 @@
     {
         "rank": "947",
         "player": "Isabella Kruger",
-        "age": "19",
+        "age": "20",
         "country": "RSA",
         "points": "38",
         "career_high": "",
@@ -8938,18 +8938,18 @@
     },
     {
         "rank": "994",
-        "player": "Chiara Scholl",
-        "age": "32",
-        "country": "USA",
+        "player": "İpek Öz",
+        "age": "25",
+        "country": "TUR",
         "points": "34",
         "career_high": "",
         "change": "+3"
     },
     {
         "rank": "994",
-        "player": "İpek Öz",
-        "age": "25",
-        "country": "TUR",
+        "player": "Chiara Scholl",
+        "age": "32",
+        "country": "USA",
         "points": "34",
         "career_high": "",
         "change": "+3"

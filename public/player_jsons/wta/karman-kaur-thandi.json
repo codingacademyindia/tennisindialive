@@ -1,0 +1,36 @@
+{
+    "name": "Karman Kaur Thandi",
+    "nationality": "INDIA",
+    "date_of_birth": "16-June-1998",
+    "height": "1.83 m (6 ft 0 in)",
+    "plays": "Right-handed (two-handed backhand)",
+    "birthplace": "New Delhi, India",
+    "photo": "/images/players/wta/karman-kaur-thandi.jpg",
+    "source": "WTA",
+    "bio": "<b>Career Overview:</b> Karman Kaur Thandi is an active Indian tennis player, one of the country's brightest prospects, known for her powerful game and junior success.<br/><br/><b>Playing Style:</b> Features a big serve and aggressive baseline play, with a strong forehand suited to hard courts.<br/><br/><b>Career-High WTA Singles Ranking:</b> <span>#196 (June 17, 2019)</span><br/><b>Career-High WTA Doubles Ranking:</b> <span>#180 (January 14, 2019)</span><br/><br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of US Open qualifying in 2018.<br/><br/><b>Notable Achievements:</b><ul><li>Won 1 ITF singles title (2018 Hong Kong $25K) and 3 ITF doubles titles.</li><li>Reached the semifinals of the 2018 Taipei WTA Challenger, defeating top-100 players.</li><li><b>Biggest Singles Win:</b> Upset then-World No. 61 Sabine Lisicki at the 2018 Taipei Challenger.</li></ul><br/><b>Other Highlights:</b><ul><li>A former top-10 junior (peaked at #6 in 2016), she won the 2015 French Open junior doubles wildcard.</li><li>Represented India at the 2018 Asian Games and Billie Jean King Cup.</li></ul><br/>Karman continues to pursue a breakthrough, aiming to crack the WTA top 100. 🎾🇮🇳",
+    "updated_at": "21-March-2025 06:37 PM",
+    "singles": {
+        "ytd_move": "N/A",
+        "current_rank": "452",
+        "ytd_wins": "2",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$1,500",
+        "career_move": "N/A",
+        "career_high_rank": "196",
+        "career_wins": "147",
+        "career_titles": "0",
+        "career_prize_money": "$249,685"
+    },
+    "doubles": {
+        "ytd_move": "N/A",
+        "current_rank": "620",
+        "ytd_wins": "1",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$500",
+        "career_move": "N/A",
+        "career_high_rank": "180",
+        "career_wins": "77",
+        "career_titles": "0",
+        "career_prize_money": "$249,685"
+    }
+}
