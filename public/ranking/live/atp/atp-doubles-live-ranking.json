@@ -40,7 +40,7 @@
         "player": "Jordan Thompson",
         "age": "30",
         "country": "AUS",
-        "points": "6415",
+        "points": "6460",
         "career_high": "3",
         "change": ""
     },
@@ -328,7 +328,7 @@
         "player": "Rafael Matos",
         "age": "29",
         "country": "BRA",
-        "points": "2292",
+        "points": "2317",
         "career_high": "26",
         "change": "+1"
     },
@@ -928,30 +928,30 @@
     },
     {
         "rank": "104",
+        "player": "Marcelo Zormann",
+        "age": "28",
+        "country": "BRA",
+        "points": "808",
+        "career_high": "92",
+        "change": "-2"
+    },
+    {
+        "rank": "105",
         "player": "Marcus Willis",
         "age": "34",
         "country": "GBR",
         "points": "802",
         "career_high": "81",
-        "change": "+1"
+        "change": ""
     },
     {
-        "rank": "105",
+        "rank": "106",
         "player": "Patrik Trhac",
         "age": "26",
         "country": "USA",
         "points": "793",
         "career_high": "82",
-        "change": "-9"
-    },
-    {
-        "rank": "106",
-        "player": "Marcelo Zormann",
-        "age": "28",
-        "country": "BRA",
-        "points": "788",
-        "career_high": "92",
-        "change": "-4"
+        "change": "-10"
     },
     {
         "rank": "107",
@@ -1063,66 +1063,66 @@
     },
     {
         "rank": "119",
+        "player": "Rinky Hijikata",
+        "age": "24",
+        "country": "AUS",
+        "points": "687",
+        "career_high": "23",
+        "change": "+1"
+    },
+    {
+        "rank": "120",
         "player": "JiSung Nam",
         "age": "31",
         "country": "KOR",
         "points": "687",
         "career_high": "102",
-        "change": "+2"
+        "change": "+1"
     },
     {
-        "rank": "120",
+        "rank": "121",
         "player": "Joshua Paris",
         "age": "29",
         "country": "GBR",
         "points": "675",
-        "career_high": "CH",
-        "change": "+5"
+        "career_high": "120",
+        "change": "+4"
     },
     {
-        "rank": "121",
+        "rank": "122",
         "player": "Trey Hilderbrand",
         "age": "24",
         "country": "USA",
         "points": "659",
         "career_high": "NCH \n(126)",
-        "change": "+5"
+        "change": "+4"
     },
     {
-        "rank": "122",
+        "rank": "123",
         "player": "David Vega Hernández",
         "age": "30",
         "country": "ESP",
         "points": "654",
         "career_high": "28",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "123",
+        "rank": "124",
         "player": "Liam Draxl",
         "age": "23",
         "country": "CAN",
         "points": "650",
         "career_high": "112",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "124",
+        "rank": "125",
         "player": "Luke Saville",
         "age": "31",
         "country": "AUS",
         "points": "648",
         "career_high": "23",
-        "change": "+3"
-    },
-    {
-        "rank": "125",
-        "player": "Rinky Hijikata",
-        "age": "24",
-        "country": "AUS",
-        "points": "642",
-        "career_high": "23",
-        "change": "-5"
+        "change": "+2"
     },
     {
         "rank": "126",
@@ -3251,7 +3251,7 @@
     {
         "rank": "362",
         "player": "Aleksandr Lobanov",
-        "age": "23",
+        "age": "24",
         "country": "RUS",
         "points": "168",
         "career_high": "260",
@@ -4547,7 +4547,7 @@
     {
         "rank": "506",
         "player": "Tristan McCormick",
-        "age": "25",
+        "age": "26",
         "country": "USA",
         "points": "105",
         "career_high": "356",
@@ -4736,7 +4736,7 @@
     {
         "rank": "527",
         "player": "Matheus Pucinelli De Almeida",
-        "age": "23",
+        "age": "24",
         "country": "BRA",
         "points": "100",
         "career_high": "251",
@@ -6167,7 +6167,7 @@
     {
         "rank": "686",
         "player": "Bruno Kuzuhara",
-        "age": "20",
+        "age": "21",
         "country": "USA",
         "points": "69",
         "career_high": "643",
