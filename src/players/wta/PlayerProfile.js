@@ -111,7 +111,7 @@ const PlayerProfile = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Typography variant="body1" className="text-gray-700"><strong>Nationality:</strong> {playerData.nationality || "N/A"}</Typography>
                             <Typography variant="body1" className="text-gray-700"><strong>Age:</strong> {playerData.date_of_birth || "N/A"}</Typography>
-                            <Typography variant="body1" className="text-gray-700"><strong>Weight:</strong> {playerData.weight || "N/A"}</Typography>
+                            <Typography variant="body1" className="text-gray-700"><strong>Height:</strong> {playerData.height || "N/A"}</Typography>
                             <Typography variant="body1" className="text-gray-700"><strong>Turned Pro:</strong> {playerData.turned_pro || "N/A"}</Typography>
                             <Typography variant="body1" className="text-gray-700"><strong>Coach:</strong> {playerData.coach || "N/A"}</Typography>
                             <Typography variant="body1" className="text-gray-700"><strong>Plays:</strong> {playerData.plays || "N/A"}</Typography>

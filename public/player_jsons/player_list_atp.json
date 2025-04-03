@@ -1,229 +1,139 @@
 [
-    {
-    "player_name": "Yuki Bhambri",
-    "url": "https://www.atptour.com/en/players/yuki-bhambri/bf55/overview",
-     "photo": "/images/players/atp/yuki-bhambri.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> Known for his aggressive serve-and-volley style, a rare approach in modern tennis. He has a powerful serve and prefers to finish points quickly at the net.<br/><b>Career-High ATP Singles Ranking:</b> #111 (July 30, 2018), <b>Career-High ATP Doubles Ranking:</b> #58 (October 17, 2022).<br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of qualifying in multiple Grand Slam events but has yet to play in the main draw.<br/><b>Notable Achievements:</b> <b>Biggest Singles Win:</b> Stunned World No. 8 Dominic Thiem in the 2017 Antalya Open.<br/><b>ATP Finals & Challenger Titles:</b> Reached his first ATP singles final at the 2018 Hall of Fame Open (Newport, USA), finishing runner-up to Steve Johnson. Won his maiden ATP Challenger singles title at the 2022 Bahrain Ministry of Interior Tennis Challenger.<br/><b>Doubles Success:</b> Won his first ATP Tour doubles title at the 2022 Maharashtra Open with Rohan Bopanna. Secured a gold medal in Men’s Doubles at the 2022 Asian Games alongside Saketh Myneni.<br/><b>Davis Cup & National Representation:</b> Regular member of India's Davis Cup team since 2015, played crucial matches against top players like Marin Čilić and Borna Ćorić.<br/><b>Other Highlights:</b> Frequently competes in ATP Challenger and Futures events, a key figure in Indian tennis, often playing doubles with Rohan Bopanna and Saketh Myneni. Trained in Spain at the Emilio Sánchez Academy to enhance his performance on faster courts.<br/>Ramkumar continues to be a vital part of Indian tennis, known for his energetic play and commitment to representing India on the international stage. 🎾🇮🇳"
+	{
+		"player_name": "Yuki Bhambri",
+		"url": "https://www.atptour.com/en/players/yuki-bhambri/bf55/overview",
+		"photo": "/images/players/atp/yuki-bhambri.png",
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A versatile doubles specialist with quick movement, solid groundstrokes, and a reliable net game, complemented by a steady serve.<br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of the Australian Open (2015, 2016, 2018). <b>Best Grand Slam Doubles Performance:</b> Reached the third round of the US Open (2024) and Australian Open (2025).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 4 ATP doubles titles, including the 2025 Dubai Duty Free Tennis Championships (ATP 500) with Alexei Popyrin and the 2023 Mallorca Championships with Lloyd Harris. <b>Junior Success:</b> First Indian to win the Australian Open Junior Championship (2009) and silver medalist at the 2010 Youth Olympics. <b>Challenger Success:</b> Secured 7 Challenger singles titles and 5 doubles titles. <b>Davis Cup & National Representation:</b> Regular member of India’s Davis Cup team since 2012, with a 10-8 singles record.<br/><b>Other Highlights:</b> Overcame a 2.5-year injury hiatus (2019-2021) due to a right knee issue. Broke into the Top 50 doubles rankings in 2024 and became India’s top-ranked doubles player in March 2025, surpassing Rohan Bopanna.<br/>Yuki continues to elevate Indian tennis, aiming for deeper Grand Slam runs and Masters success. 🎾🇮🇳",
+		"source": "atlanataopentennis",
+		"is_active": true
+	},
+	{
+		"player_name": "Rohan Bopanna",
+		"url": "https://www.atptour.com/en/players/rohan-bopanna/b757/overview",
+		"photo": "/images/players/atp/rohan-bopanna.jpg",
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A powerful server with exceptional net skills, excelling in doubles with a strong forehand volley.<br/><b>Grand Slam Achievements:</b> Won the 2017 French Open Mixed Doubles title with Gabriela Dabrowski. Reached the 2023 US Open Men' Doubles final with Matthew Ebden.<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Winner of 24+ ATP doubles titles, consistently competing at the highest level.<br/><b>Davis Cup & National Representation:</b> A Davis Cup veteran, representing India since 2002. Key player in India's doubles matches.<br/><b>Other Highlights:</b> Partnered with several top doubles players, including Aisam-ul-Haq Qureshi and Matthew Ebden. Plays a crucial role in mentoring young Indian players.<br/>Bopanna continues to be India's top doubles player, making history with his longevity and success.",
+		"source": "AP Photo",
+		"is_active": true
+	},
+	{
+		"player_name": "Sumit Nagal",
+		"url": "https://www.atptour.com/en/players/sumit-nagal/n897/overview",
+		"photo": "/images/players/atp/sumit-nagal.jpg",
+		"source": "X/Twitter",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> An aggressive baseliner with a strong forehand and solid defensive skills, thriving on clay and hard courts.<br/><b><br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of the US Open (2019) and Australian Open (2024).<br/><b>Notable Achievements:</b> <b>Grand Slam Debut:</b> Faced Roger Federer in the 2019 US Open first round, winning the first set in a memorable match.<br/><b>ATP Challenger Success:</b> Multiple ATP Challenger titles, cementing his place as India\\u00e2\\u20ac\\u2122s top singles player.<br/><b>Davis Cup & National Representation:</b> A key singles player for India in Davis Cup ties, delivering strong performances.<br/><b>Other Highlights:</b> Known for his fitness and relentless playing style. A rising star in Indian tennis, consistently breaking into the ATP Top 100.<br/>Sumit remains India's top singles hope, aiming for deeper runs in ATP events and Grand Slams."
+	},
+	{
+		"player_name": "Mukund Sasikumar",
+		"url": "https://www.atptour.com/en/players/mukund-sasikumar/mp13/overview",
+		"photo": "/images/players/atp/mukund-sasikumar.jpg",
+		"source": "Facebook/Sasikumar Mukund",
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A consistent baseliner with strong movement and defensive capabilities, effective on hard and clay courts.<br/><b><br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ATP Challenger & ITF Titles:</b> Winner of multiple ITF Futures titles and finalist in ATP Challenger events.<br/><b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties, playing crucial matches for the national team.<br/><b>Other Highlights:</b> Competes regularly on the ATP Challenger circuit, aiming for a breakthrough into the ATP Tour.<br/>Mukund continues to be a strong contender in Indian tennis, working towards breaking into the ATP Top 200. ",
+		"is_active": true
+	},
+	{
+		"player_name": "Ramkumar Ramanathan",
+		"url": "https://www.atptour.com/en/players/ramkumar-ramanathan/rb56/overview",
+		"photo": "/images/players/atp/ramkumar-ramanathan.jpg",
+		"source": "AELTC/David Gray",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b><br/> <br/><b>Playing Style:</b><br/> Known for his aggressive serve-and-volley style, a rare approach in modern tennis. He has a powerful serve and prefers to finish points quickly at the net.<br/><b>Best Grand Slam Singles Performance:</b><br/> Reached the second round of qualifying in multiple Grand Slam events but has yet to play in the main draw.<br/><b>Notable Achievements:</b><br/><b>Biggest Singles Win:</b><br/> Stunned World No. 8 Dominic Thiem in the 2017 Antalya Open.<br/><b>ATP Finals & Challenger Titles:</b><br/> Reached his first ATP singles final at the 2018 Hall of Fame Open (Newport, USA), finishing runner-up to Steve Johnson. Won his maiden ATP Challenger singles title at the 2022 Bahrain Ministry of Interior Tennis Challenger.<br/><b>Doubles Success:</b><br/> Won his first ATP Tour doubles title at the 2022 Maharashtra Open with Rohan Bopanna. Secured a gold medal in Men\\u00e2\\u20ac\\u2122s Doubles at the 2022 Asian Games alongside Saketh Myneni.<br/><b>Davis Cup & National Representation:</b><br/> Regular member of India's Davis Cup team since 2015, played crucial matches against top players like Marin \\u00c4\\u0152ili\\u00c4\\u2021 and Borna \\u00c4\\u2020ori\\u00c4\\u2021.<br/><b>Other Highlights:</b><br/> Frequently competes in ATP Challenger and Futures events, a key figure in Indian tennis, often playing doubles with Rohan Bopanna and Saketh Myneni. Trained in Spain at the Emilio S\\u00c3\\u00a1nchez Academy to enhance his performance on faster courts.<br/>Ramkumar continues to be a vital part of Indian tennis, known for his energetic play and commitment to representing India on the international stage."
+	},
+	{
+		"player_name": "Karan Singh",
+		"url": "https://www.atptour.com/en/players/karan-singh/s0ri/overview",
+		"photo": "/images/players/atp/karan-singh.jpg",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> An aggressive all-court player with a powerful serve and strong baseline game, adept on clay and hard courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ATP Challenger Titles:</b> Won 1 Challenger doubles title at the 2024 Brazzaville Challenger with Florent Bax. <b>ITF Success:</b> Secured 1 ITF Futures singles title (2023 M15 Monastir) and 2 doubles titles. <b>Biggest Singles Win:</b> Defeated World No. 248 Nick Chappell at the 2024 ITF M15 Ahmedabad. <b>Davis Cup & National Representation:</b> Debuted in Davis Cup on February 2, 2025, defeating Togo’s Hod’abalo Isak Padio (6-2, 6-3), becoming the 51st Indian to win a singles rubber.<br/><b>Other Highlights:</b> Won the 2021 Fenesta U18 National Championship and the 2024 National Games gold medal in Gujarat. Trained at the National Tennis Centre in Delhi under Zeeshan Ali and now with Aditya Sachdeva. Qualified for the 2025 Bengaluru Open main draw.<br/>Karan is an emerging talent in Indian tennis, aiming to break into the ATP Top 200. 🎾🇮🇳",
+		"source": ""
+	},
+	{
+		"player_name": "Aryan Shah",
+		"url": "https://www.atptour.com/en/players/aryan-shah/s0w8/overview",
+		"photo": "/images/players/atp/aryan-shah.jpg",
+		"source": "KSLTA",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A dynamic player with a solid all-court game, featuring a reliable serve and strong baseline consistency.<br/><b>Career-High ATP Singles Ranking:</b> #569 (December 2, 2024), <b>Career-High ATP Doubles Ranking:</b> #665 (December 23, 2024).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a senior Grand Slam main draw; reached the first round of Wimbledon Juniors (2023).<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Won 2 ITF Futures singles titles (2024 M15 Kingston, 2025 M15 Ahmedabad) and 1 doubles title (2024 M15 Kingston). <b>Biggest Singles Win:</b> Defeated World No. 298 Siddharth Vishwakarma at the 2025 ITF M15 Ahmedabad QF. <b>Junior Success:</b> Achieved a career-high ITF Junior Ranking of #39 (2023) and competed in all four Junior Grand Slams. <b>Davis Cup & National Representation:</b> Represented India in the 2024 Davis Cup tie against Sweden as a reserve player.<br/><b>Other Highlights:</b> Transitioned to the senior circuit in 2024, reaching two ITF finals in Kingston (one title, one runner-up). Teamed up with Leo Borg (son of Bjorn Borg) in a 2024 ITF doubles event in Jamaica. Aims to crack the Top 200 in 2025.<br/>Aryan is a promising talent in Indian tennis, blending junior pedigree with growing pro success. 🎾🇮🇳"
+	},
+	{
+		"player_name": "Dev Javia",
+		"url": "https://www.atptour.com/en/players/dev-javia/j0cl/overview",
+		"photo": "/images/players/atp/dev-javia.jpg",
+		"source": "KSLTA",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A left-handed player with a strong serve and powerful forehand, effective on hard and clay courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a senior Grand Slam main draw; reached the second round of Wimbledon Juniors (2019).<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Won 1 ITF Futures singles title (2023 M15 Jakarta) and 1 doubles title (2024 M15 Nakhon Si Thammarat). <b>Biggest Singles Win:</b> Defeated World No. 374 Dominik Palan at the 2024 ITF M15 Nakhon Si Thammarat. <b>Junior Success:</b> Achieved a career-high ITF Junior Ranking of #54 (2019) and won the 2019 MCC National Junior U-18 Clay Court Championship. <b>Davis Cup & National Representation:</b> Yet to debut in Davis Cup but named to India’s Junior Davis Cup team (2018).<br/><b>Other Highlights:</b> Trains at the IMPACT Tennis Academy in Bangkok under Mark Gellard (former coach of Nick Kyrgios). Won gold at the 2020 Khelo India Youth Games (U-17). Aims to break into the ATP Top 200 by 2026.<br/>Dev is a promising talent in Indian tennis, steadily climbing the ranks with a focus on physical and mental growth. 🎾🇮🇳"
+	},
+	{
+		"player_name": "Manas Dhamne",
+		"url": "https://www.atptour.com/en/players/manas-dhamne/d0ji/overview",
+		"photo": "/images/players/atp/manas-dhamne.jpg",
+		"source": "X/Manas Dhamne",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> An aggressive baseliner with a strong forehand and improving serve, showing versatility in singles and potential in doubles.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a senior Grand Slam main draw; reached the second round of the 2023 Australian Open Juniors.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Won his maiden ITF singles title at the 2025 M15 Monastir as a qualifier, defeating Lorenzo Carboni (2-6, 6-0, 6-1), becoming the second-youngest Indian male to win a pro title at 17 years, 1 month. <b>Biggest Singles Win:</b> Upset World No. 378 Nicholas David Ionel (4-6, 7-6(5), 7-5) at the 2024 ITF M15 Targu Jiu. <b>Junior Success:</b> Youngest Indian to win the ITF Asian B1 Junior Championship (2022) and the first player born in 2007 to compete in an ATP main draw (2023 Tata Open Maharashtra). <b>Davis Cup & National Representation:</b> Yet to debut in Davis Cup but considered a future prospect.<br/><b>Other Highlights:</b> Trained at the Piatti Tennis Center in Italy under Riccardo Piatti (coach of Jannik Sinner). Made his ATP debut at 15 via wildcard at the 2023 Tata Open Maharashtra (lost to Michael Mmoh). Received over ₹15 lakh in scholarships from MSLTA in March 2025.<br/>Manas is a rising star in Indian tennis, eyed as a potential torchbearer for the next generation. 🎾🇮🇳 🎾🇮🇳"
+	},
+	{
+		"player_name": "S D Prajwal Dev",
+		"url": "https://www.atptour.com/en/players/s-d-prajwal-dev/dh23/overview",
+		"photo": "/images/players/atp/s-d-prajwal-dev.jpg",
+		"source": "AITA",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A versatile player with a solid serve and aggressive baseline game, effective in both singles and doubles on hard courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ATP Challenger Titles:</b> Won 1 Challenger doubles title at the 2023 Astana Challenger with Niki Poonacha. <b>ITF Success:</b> Secured 2 ITF Futures singles titles (2022 M15 Colombo, 2023 M15 Jakarta) and 7 doubles titles. <b>Biggest Singles Win:</b> Defeated World No. 551 Woobin Shin at the 2025 ITF M15 Ahmedabad SF. <b>Davis Cup & National Representation:</b> Represented India in Junior Davis Cup (2012) but yet to debut in senior Davis Cup.<br/><b>Other Highlights:</b> Reached the semifinals of the 2025 ITF M15 Ahmedabad, showcasing a strong start to the year. Karnataka’s top-ranked player in 2023, earning a wildcard into the 2023 Bengaluru Open Challenger. Aims to break into the Top 300 in singles by 2026.<br/>Prajwal is a rising talent in Indian tennis, balancing singles and doubles with consistent ITF success. 🎾🇮🇳 🎾🇮🇳"
+	},
+	{
+		"player_name": "Siddharth Vishwakarma",
+		"url": "https://www.atptour.com/en/players/siddharth-vishwakarma/va48/overview",
+		"photo": "/images/players/atp/siddharth-vishwakarma.jpg",
+		"source": "Hindustan Times/Deepak Gupta",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A resilient player with a strong forehand, reliable serve, and tactical baseline game, effective on hard courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Success:</b> Won 2 ITF Futures singles titles (2022 M15 Colombo, 2023 M15 Jakarta) and reached multiple semifinals (e.g., 2025 M15 Ahmedabad). <b>National Titles:</b> Two-time Fenesta National Champion (2018, 2022) and gold medalist at the 2023 National Games in Goa. <b>Davis Cup & National Representation:</b> Debuted for India in the Davis Cup World Group I tie against Sweden (September 2024), selected again for the February 2025 tie vs. Togo, though yet to play a live rubber.<br/><b>Other Highlights:</b> Overcame a six-year hiatus from tennis (2005-2013) due to financial constraints, resuming with coach Ratan Sharma’s support. Reached the final of the 2024 ITF M25 Addis Ababa and quarterfinals of the 2023 ITF M25 Lucknow (double bagel vs. Arthur Weber). Aims for a Top 300 ranking.<br/>Siddharth’s journey from adversity to Davis Cup selection embodies perseverance in Indian tennis.  🎾🇮🇳"
 
-    },
-    {
-     "player_name": "Rohan Bopanna",
-    "url": "https://www.atptour.com/en/players/rohan-bopanna/b757/overview",
-     "photo": "/images/players/atp/rohan-bopanna.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A powerful server with exceptional net skills, excelling in doubles with a strong forehand volley.<br/><b>Career-High ATP Singles Ranking:</b> #213 (July 23, 2007), <b>Career-High ATP Doubles Ranking:</b> #1 (September 4, 2023).<br/><b>Grand Slam Achievements:</b> Won the 2017 French Open Mixed Doubles title with Gabriela Dabrowski. Reached the 2023 US Open Men’s Doubles final with Matthew Ebden.<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Winner of 24+ ATP doubles titles, consistently competing at the highest level.<br/><b>Davis Cup & National Representation:</b> A Davis Cup veteran, representing India since 2002. Key player in India's doubles matches.<br/><b>Other Highlights:</b> Partnered with several top doubles players, including Aisam-ul-Haq Qureshi and Matthew Ebden. Plays a crucial role in mentoring young Indian players.<br/>Bopanna continues to be India's top doubles player, making history with his longevity and success. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Sumit Nagal",
-        "url": "https://www.atptour.com/en/players/sumit-nagal/n897/overview",
-        "photo": "/images/players/atp/sumit-nagal.jpg",
-        "source": "X/Twitter",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> An aggressive baseliner with a strong forehand and solid defensive skills, thriving on clay and hard courts.<br/><b>Career-High ATP Singles Ranking:</b> #71 (February 19, 2024).<br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of the US Open (2019) and Australian Open (2024).<br/><b>Notable Achievements:</b> <b>Grand Slam Debut:</b> Faced Roger Federer in the 2019 US Open first round, winning the first set in a memorable match.<br/><b>ATP Challenger Success:</b> Multiple ATP Challenger titles, cementing his place as India’s top singles player.<br/><b>Davis Cup & National Representation:</b> A key singles player for India in Davis Cup ties, delivering strong performances.<br/><b>Other Highlights:</b> Known for his fitness and relentless playing style. A rising star in Indian tennis, consistently breaking into the ATP Top 100.<br/>Sumit remains India's top singles hope, aiming for deeper runs in ATP events and Grand Slams. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Mukund Sasikumar",
-        "url": "https://www.atptour.com/en/players/mukund-sasikumar/mp13/overview",
-        "photo": "/images/players/atp/mukund-sasikumar.jpg",
-        "source": "Facebook/Sasikumar Mukund",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A consistent baseliner with strong movement and defensive capabilities, effective on hard and clay courts.<br/><b>Career-High ATP Singles Ranking:</b> #229 (October 2019).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ATP Challenger & ITF Titles:</b> Winner of multiple ITF Futures titles and finalist in ATP Challenger events.<br/><b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties, playing crucial matches for the national team.<br/><b>Other Highlights:</b> Competes regularly on the ATP Challenger circuit, aiming for a breakthrough into the ATP Tour.<br/>Mukund continues to be a strong contender in Indian tennis, working towards breaking into the ATP Top 200. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Ramkumar Ramanathan",
-        "url": "https://www.atptour.com/en/players/ramkumar-ramanathan/rb56/overview",
-        "photo": "/images/players/atp/ramkumar-ramanathan.jpg",
-        "source": "AELTC/David Gray",
-        "bio": "<b>Career Overview:</b><br/> <br/><b>Playing Style:</b><br/> Known for his aggressive serve-and-volley style, a rare approach in modern tennis. He has a powerful serve and prefers to finish points quickly at the net.<br/><b>Career-High ATP Singles Ranking:</b> #111 (July 30, 2018), <br/><b>Career-High ATP Doubles Ranking:</b>#58 (October 17, 2022).<br/><b>Best Grand Slam Singles Performance:</b><br/> Reached the second round of qualifying in multiple Grand Slam events but has yet to play in the main draw.<br/><b>Notable Achievements:</b><br/><b>Biggest Singles Win:</b><br/> Stunned World No. 8 Dominic Thiem in the 2017 Antalya Open.<br/><b>ATP Finals & Challenger Titles:</b><br/> Reached his first ATP singles final at the 2018 Hall of Fame Open (Newport, USA), finishing runner-up to Steve Johnson. Won his maiden ATP Challenger singles title at the 2022 Bahrain Ministry of Interior Tennis Challenger.<br/><b>Doubles Success:</b><br/> Won his first ATP Tour doubles title at the 2022 Maharashtra Open with Rohan Bopanna. Secured a gold medal in Men’s Doubles at the 2022 Asian Games alongside Saketh Myneni.<br/><b>Davis Cup & National Representation:</b><br/> Regular member of India's Davis Cup team since 2015, played crucial matches against top players like Marin Čilić and Borna Ćorić.<br/><b>Other Highlights:</b><br/> Frequently competes in ATP Challenger and Futures events, a key figure in Indian tennis, often playing doubles with Rohan Bopanna and Saketh Myneni. Trained in Spain at the Emilio Sánchez Academy to enhance his performance on faster courts.<br/>Ramkumar continues to be a vital part of Indian tennis, known for his energetic play and commitment to representing India on the international stage. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Karan Singh",
-        "url": "https://www.atptour.com/en/players/karan-singh/s0ri/overview",
-        "photo": "/images/players/atp/karan-singh.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A promising young talent with an aggressive baseline game and solid footwork, adapting well to different surfaces.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Emerging Player).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>National & Junior Circuit:</b> A standout performer in the Indian junior circuit, showing potential for ATP success.<br/><b>Other Highlights:</b> Training extensively to transition from juniors to the professional circuit, with an eye on ATP Challenger events.<br/>Karan is an exciting young prospect in Indian tennis, looking to make a mark on the professional tour. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Aryan Shah",
-        "url": "https://www.atptour.com/en/players/aryan-shah/s0w8/overview",
-        "photo": "/images/players/atp/aryan-shah.jpg",
-        "source": "KSLTA",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A talented young player with a solid all-court game and impressive shot-making abilities.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Emerging Player).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Circuit Success:</b> One of India’s top junior players, competing at the ITF and national levels.<br/><b>Other Highlights:</b> Training extensively to transition from juniors to the professional circuit, with a focus on ITF Futures and ATP Challenger events.<br/>Aryan is one of India’s brightest young tennis prospects, aiming for success on the pro tour. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Dev Javia",
-        "url": "https://www.atptour.com/en/players/dev-javia/j0cl/overview",
-        "photo": "/images/players/atp/dev-javia.jpg",
-        "source": "KSLTA",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A disciplined baseliner with a strong backhand and solid defensive skills.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Emerging Player).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Career:</b> One of India’s top junior players, competing in ITF events and international tournaments.<br/><b>Other Highlights:</b> Progressing through the ITF Futures circuit, working towards breaking into ATP Challenger tournaments.<br/>Dev continues to develop his game, looking to establish himself on the professional circuit. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Manas Dhamne",
-        "url": "https://www.atptour.com/en/players/manas-dhamne/d0ji/overview",
-        "photo": "/images/players/atp/manas-dhamne.jpg",
-        "source": "X/Manas Dhamne",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A highly promising young talent with an aggressive baseline game and excellent movement.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Rising Junior Star).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Grand Slam Experience:</b> Competed in junior Grand Slam events, gaining valuable exposure.<br/><b>Other Highlights:</b> Trains internationally and is considered one of India’s biggest hopes for the future.<br/>Manas is a rising star in Indian tennis, making strides in junior Grand Slam events and the ITF circuit. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "S D Prajwal Dev",
-        "url": "https://www.atptour.com/en/players/s-d-prajwal-dev/dh23/overview",
-        "photo": "/images/players/atp/s-d-prajwal-dev.jpg",
-        "source": "AITA",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A strong baseliner with a heavy forehand and good physical endurance.<br/><b>Career-High ATP Singles Ranking:</b> #927 (March 2022).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Winner of multiple ITF Futures titles, showing promise on the professional circuit.<br/><b>Other Highlights:</b> Competing consistently in ITF and Challenger events, working towards a breakthrough in ATP rankings.<br/>Prajwal continues to rise through the ranks, striving for success on the ATP Challenger Tour. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Siddharth Vishwakarma",
-        "url": "https://www.atptour.com/en/players/siddharth-vishwakarma/va48/overview",
-        "photo": "/images/players/atp/siddharth-vishwakarma.jpg",
-        "source": "Hindustan Times/Deepak Gupta",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A left-handed player known for his powerful forehand and strong clay-court game.<br/><b>Career-High ATP Singles Ranking:</b> #590 (November 2018).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>National Champion:</b> Winner of the Fenesta Open National Championship.<br/><b>ITF Success:</b> Regular competitor in ITF Futures tournaments, with notable wins against higher-ranked players.<br/><b>Other Highlights:</b> Working towards ATP Challenger success, aiming for higher rankings.<br/>Siddharth remains a strong competitor in Indian tennis, with a focus on improving his international ranking. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Sidharth Rawat",
-        "url": "https://www.atptour.com/en/players/sidharth-rawat/rb86/overview",
-        "photo": "/images/players/atp/sidharth-rawat.jpg",
-        "source": "AITA",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A versatile baseliner with good footwork and strong consistency from the back of the court.<br/><b>Career-High ATP Singles Ranking:</b> #397 (August 2019).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Winner of multiple ITF Futures events, consistently competing in ATP Challenger tournaments.<br/><b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties, contributing to national team success.<br/><b>Other Highlights:</b> Regularly competes in ITF and Challenger events, pushing towards ATP Top 300.<br/>Sidharth is one of India’s hardworking professionals, making steady progress in the international circuit. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Dhakshineswar Suresh",
-        "url": "https://www.atptour.com/en/players/dhakshineswar-suresh/s0de/overview",
-        "photo": "/images/players/atp/dhakshineswar-suresh.jpg",
-        "source": "ggcathletics.com",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A rising young talent with a solid baseline game and strong court coverage.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Emerging Player).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Circuit Success:</b> One of India's promising junior players, competing at the ITF and national levels.<br/><b>Other Highlights:</b> Training to transition to professional tournaments, focusing on ITF Futures and Challenger events.<br/>Dhakshineswar is working towards making an impact on the pro circuit. 🎾🇮🇳"
-
-
-    },
-    {
-        "player_name": "Adil Kalyanpur",
-        "url": "https://www.atptour.com/en/players/adil-kalyanpur/k0ab/overview",
-        "photo": "/images/players/atp/adil-kalyanpur.jpg",
-         "source": "X/Twitter",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A talented all-court player with an aggressive mindset and a strong serve.<br/><b>Career-High ATP Singles Ranking:</b> #1354 (August 2018).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Regular competitor in ITF Futures tournaments, with solid performances against ranked players.<br/><b>Other Highlights:</b> Training and competing internationally to gain experience on the professional tour.<br/>Adil is steadily improving his game, working towards a breakthrough in ATP rankings. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Manish Sureshkumar",
-        "url": "https://www.atptour.com/en/players/manish-sureshkumar/sy74/overview",
-        "photo": "/images/players/atp/manish-sureshkumar.jpg",
-        "source": "TheHindu/B. Jothi Ramalingam",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A powerful baseliner with a strong forehand and effective court movement.<br/><b>Career-High ATP Singles Ranking:</b> #506 (September 2019).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Winner of multiple ITF Futures tournaments, proving his potential in the pro circuit.<br/><b>Challenger Experience:</b> Regularly competes in ATP Challenger events, pushing towards the Top 400.<br/><b>Other Highlights:</b> A consistent performer on the Indian and international circuits, looking for a breakthrough at the Challenger level.<br/>Manish is one of India’s hardworking players, determined to climb the ATP rankings. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Chirag Duhan",
-        "url": "https://www.atptour.com/en/players/chirag-duhan/d0hi/overview",
-        "photo": "/images/players/atp/chirag-duhan.jpg",
-        "source": "indiantennisdaily.com",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A young and aggressive player known for his quick reflexes and attacking game.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Emerging Player).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Success:</b> One of India's top juniors, competing in ITF events and making steady progress.<br/><b>Other Highlights:</b> Training extensively to make the transition from junior to professional tournaments.<br/>Chirag is a rising star in Indian tennis, aiming to make an impact on the ATP circuit. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Yuvan Nandal",
-        "url": "https://www.atptour.com/en/players/yuvan-nandal/n0fh/overview",
-        "photo": "/images/players/atp/yuvan-nandal.jpg",
-        "source": "indiantennisdaily.com",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A young talent with a solid two-handed backhand and a well-rounded game.<br/><b>Career-High ATP Singles Ranking:</b> N/A (Rising Junior Star).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Circuit:</b> A consistent performer in ITF Junior tournaments, showcasing his potential.<br/><b>Other Highlights:</b> Working towards breaking into the professional circuit through ITF and Challenger events.<br/>Yuvan is one of India’s brightest young prospects, working hard to rise through the ranks. 🎾🇮🇳"
-
-    },
-    {
-        "player_name": "Leander Paes",
-        "url": "https://www.atptour.com/en/players/leander-paes/p329/overview",
-        "photo": "/images/players/atp/leander-paes.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A dynamic all-court player with exceptional reflexes and volleying skills, excelling in doubles.<br/><b>Career-High ATP Singles Ranking:</b> #73 (August 24, 1998), <b>Career-High ATP Doubles Ranking:</b> #1 (June 21, 1999).<br/><b>Grand Slam Achievements:</b> Winner of 18 Grand Slam titles (8 men’s doubles, 10 mixed doubles), including a career Grand Slam in doubles. Notable singles performance: Reached the third round of the 1997 US Open.<br/><b>Notable Achievements:</b> <b>Olympic Medal:</b> Bronze medal in singles at the 1996 Atlanta Olympics, India’s first individual Olympic medal in decades. <b>ATP Titles:</b> Secured 54 doubles titles and 1 singles title (1998 Newport).<br/><b>Davis Cup & National Representation:</b> India’s most successful Davis Cup player, with a record of 45-13 in doubles.<br/><b>Other Highlights:</b> Known for iconic partnerships with Mahesh Bhupathi, Radek Štěpánek, and Martina Hingis. A legend in Indian tennis history.<br/>Paes retired in 2020, leaving a legacy as one of the greatest doubles players ever. 🎾🇮🇳"
-    },
-    
-    {
-        "player_name": "Mahesh Bhupathi",
-        "url": "https://www.atptour.com/en/players/mahesh-bhupathi/b588/overview",
-        "photo": "/images/players/atp/mahesh-bhupathi.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A powerful baseline player with a dominant serve and exceptional net play, thriving in doubles.<br/><b>Career-High ATP Singles Ranking:</b> #217 (February 2, 1998), <b>Career-High ATP Doubles Ranking:</b> #1 (April 26, 1999).<br/><b>Grand Slam Achievements:</b> Winner of 12 Grand Slam titles (4 men’s doubles, 8 mixed doubles), including the 1999 French Open men’s doubles with Leander Paes, completing a career Grand Slam in mixed doubles.<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Secured 52 doubles titles. <b>First Indian Grand Slam Winner:</b> Won the 1997 French Open mixed doubles with Rika Hiraki.<br/><b>Davis Cup & National Representation:</b> Represented India in Davis Cup from 1995 to 2011, key to several victories.<br/><b>Other Highlights:</b> Known for his partnership with Paes as the 'Indian Express' duo. Founded the International Premier Tennis League (IPTL).<br/>Bhupathi retired in 2013, leaving a monumental mark on Indian tennis. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Vijay Amritraj",
-        "url": "https://www.atptour.com/en/players/vijay-amritraj/a032/overview",
-        "photo": "/images/players/atp/vijay-amritraj.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A graceful all-court player with a strong serve-and-volley game and excellent touch.<br/><b>Career-High ATP Singles Ranking:</b> #16 (July 7, 1980), <b>Career-High ATP Doubles Ranking:</b> #23 (March 24, 1980).<br/><b>Best Grand Slam Singles Performance:</b> Reached the quarterfinals of Wimbledon (1973, 1981) and the US Open (1973, 1974).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 16 singles and 13 doubles titles. <b>Davis Cup & National Representation:</b> Led India to the Davis Cup finals in 1974 and 1987, one of India’s greatest Davis Cup heroes.<br/><b>Other Highlights:</b> A trailblazer for Indian tennis in the Open Era, later became a successful commentator and actor.<br/>Amritraj’s career in the 1970s and 80s paved the way for future Indian players. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Ramesh Krishnan",
-        "url": "https://www.atptour.com/en/players/ramesh-krishnan/k050/overview",
-        "photo": "/images/players/atp/ramesh-krishnan.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A crafty baseliner with exceptional touch, finesse, and a single-handed backhand, excelling on clay and grass.<br/><b>Career-High ATP Singles Ranking:</b> #23 (January 28, 1985).<br/><b>Best Grand Slam Singles Performance:</b> Reached the quarterfinals of Wimbledon (1986), US Open (1981, 1987), and Australian Open (1987).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 7 singles titles, including back-to-back wins in 1986. <b>Davis Cup & National Representation:</b> Instrumental in India’s 1987 Davis Cup final run, defeating players like John McEnroe.<br/><b>Other Highlights:</b> Son of Ramanathan Krishnan, a pre-Open Era legend. Won the Wimbledon and French Open junior titles in 1979.<br/>Ramesh retired in 1993, remembered as one of India’s finest singles players. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Somdev Devvarman",
-        "url": "https://www.atptour.com/en/players/somdev-devvarman/d923/overview",
-        "photo": "/images/players/atp/somdev-devvarman.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A tenacious baseliner with excellent fitness, counterpunching ability, and a strong two-handed backhand.<br/><b>Career-High ATP Singles Ranking:</b> #62 (July 25, 2011).<br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of all four Grand Slams, with notable consistency in 2011.<br/><b>Notable Achievements:</b> <b>ATP Finals:</b> Reached the 2013 Chennai Open final. <b>Gold Medals:</b> Won singles and doubles gold at the 2010 Asian Games. <b>Davis Cup & National Representation:</b> A key singles player for India, famous for marathon matches.<br/><b>Other Highlights:</b> NCAA champion at the University of Virginia (2007, 2008). Retired in 2017 due to injuries.<br/>Somdev was a symbol of grit and determination in Indian tennis. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Prajnesh Gunneswaran",
-        "url": "https://www.atptour.com/en/players/prajnesh-gunneswaran/ga94/overview",
-        "photo": "/images/players/atp/prajnesh-gunneswaran.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A left-handed player with a powerful forehand and aggressive baseline game, strong on hard courts.<br/><b>Career-High ATP Singles Ranking:</b> #75 (April 22, 2019).<br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of all four Grand Slams in 2019.<br/><b>Notable Achievements:</b> <b>ATP Challenger Titles:</b> Won two Challenger titles in 2018 (Anning, Bengaluru). <b>Davis Cup & National Representation:</b> Key singles player for India, defeating top-100 opponents.<br/><b>Other Highlights:</b> Late bloomer who overcame injuries to reach the Top 100, last Indian in the Top 100 before Sumit Nagal.<br/>Prajnesh remains active, aiming to reclaim his peak form. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Saketh Myneni",
-        "url": "https://www.atptour.com/en/players/saketh-myneni/mj08/overview",
-        "photo": "/images/players/atp/saketh-myneni.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A big server with an aggressive all-court game, effective in both singles and doubles.<br/><b>Career-High ATP Singles Ranking:</b> #137 (September 12, 2016), <b>Career-High ATP Doubles Ranking:</b> #74 (January 16, 2023).<br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of the 2016 US Open.<br/><b>Notable Achievements:</b> <b>ATP Challenger Titles:</b> Won multiple Challenger singles and doubles titles. <b>Doubles Success:</b> Gold medal at the 2022 Asian Games with Ramkumar Ramanathan.<br/><b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties since 2014.<br/><b>Other Highlights:</b> Known for resilience despite injury setbacks.<br/>Saketh continues to compete, balancing singles and doubles. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Anand Amritraj",
-        "url": "https://www.atptour.com/en/players/anand-amritraj/a031/overview",
-        "photo": "/images/players/atp/anand-amritraj.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A skilled serve-and-volley player with a strong net game, effective on grass and hard courts.<br/><b>Career-High ATP Singles Ranking:</b> #74 (April 30, 1979), <b>Career-High ATP Doubles Ranking:</b> #14 (March 20, 1978).<br/><b>Best Grand Slam Singles Performance:</b> Reached the third round of Wimbledon (1974) and the US Open (1974).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 4 singles and 12 doubles titles during the 1970s and early 1980s. <b>Davis Cup & National Representation:</b> Key member of India’s Davis Cup team, helping reach the 1974 final alongside brother Vijay Amritraj.<br/><b>Other Highlights:</b> Older brother of Vijay Amritraj, part of the famous Amritraj tennis family. Later became a successful coach and commentator.<br/>Anand was a pioneer of Indian tennis in the Open Era, retiring in the mid-1980s. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Sashi Menon",
-        "url": "https://www.atptour.com/en/players/sashi-menon/m112/overview",
-        "photo": "/images/players/atp/sashi-menon.png",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A steady all-court player with a focus on consistency and tactical play.<br/><b>Career-High ATP Singles Ranking:</b> #71 (January 3, 1977).<br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of Wimbledon (1975) and the Australian Open (1976).<br/><b>Notable Achievements:</b> <b>ATP Success:</b> Competed in the 1970s, reaching a career-high ranking in the Top 100. <b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties during the 1970s, contributing to team efforts.<br/><b>Other Highlights:</b> One of the early Indian players to compete successfully on the international stage during the Open Era.<br/>Sashi Menon’s career helped lay the groundwork for future Indian players in the 1970s. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Prakash Amritraj",
-        "url": "https://www.atptour.com/en/players/prakash-amritraj/a491/overview",
-        "photo": "/images/players/atp/prakash-amritraj.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> An aggressive player with a strong serve and solid baseline game, effective on hard courts.<br/><b>Career-High ATP Singles Ranking:</b> #154 (October 15, 2007), <b>Career-High ATP Doubles Ranking:</b> #119 (October 26, 2009).<br/><b>Best Grand Slam Singles Performance:</b> Reached the second round of Wimbledon (2002, qualifying).<br/><b>Notable Achievements:</b> <b>ATP Finals:</b> Reached the 2006 Newport final, losing to Mark Philippoussis. <b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties between 2003 and 2008.<br/><b>Other Highlights:</b> Son of Vijay Amritraj, continuing the family legacy. Now a prominent tennis commentator and analyst.<br/>Prakash bridged the gap between India’s golden era and modern players, retiring in 2010. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Niki Poonacha",
-        "url": "https://www.atptour.com/en/players/niki-poonacha/pf42/overview",
-        "photo": "/images/players/atp/niki-poonacha.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A versatile player with a strong serve and aggressive baseline game, effective in both singles and doubles.<br/><b>Career-High ATP Singles Ranking:</b> #614 (August 27, 2018), <b>Career-High ATP Doubles Ranking:</b> #148 (March 20, 2023).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF & Challenger Success:</b> Multiple ITF Futures titles and consistent performer in ATP Challenger doubles events. <b>Davis Cup & National Representation:</b> Debuted for India in Davis Cup in 2023.<br/><b>Other Highlights:</b> A rising doubles specialist, often partnering with top Indian players like Rohan Bopanna.<br/>Niki is an active player carving a niche in doubles on the professional circuit. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Vishnu Vardhan",
-        "url": "https://www.atptour.com/en/players/vishnu-vardhan/v315/overview",
-        "photo": "/images/players/atp/vishnu-vardhan.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A powerful server with an aggressive all-court game, strong in doubles.<br/><b>Career-High ATP Singles Ranking:</b> #262 (September 10, 2012), <b>Career-High ATP Doubles Ranking:</b> #92 (July 23, 2012).<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Olympic Participation:</b> Competed in doubles at the 2012 London Olympics with Leander Paes. <b>Asian Games:</b> Silver medal in men’s doubles and bronze in mixed doubles at the 2010 Asian Games. <b>ATP Challenger Titles:</b> Won multiple Challenger doubles titles.<br/><b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties from 2011 to 2014.<br/><b>Other Highlights:</b> Known for his big-match performances in national and international events.<br/>Vishnu remains active on the Challenger circuit, primarily in doubles. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Divij Sharan",
-        "url": "https://www.atptour.com/en/players/divij-sharan/sj55/overview",
-        "photo": "/images/players/atp/divij-sharan.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A doubles specialist with quick reflexes, a strong serve, and excellent net play.<br/><b>Career-High ATP Singles Ranking:</b> #438 (July 23, 2012), <b>Career-High ATP Doubles Ranking:</b> #36 (April 29, 2019).<br/><b>Best Grand Slam Doubles Performance:</b> Reached the third round of Wimbledon (2018) and the US Open (2017).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 5 ATP doubles titles, including the 2018 Los Cabos Open. <b>Asian Games:</b> Gold medal in men’s doubles at the 2018 Asian Games with Rohan Bopanna. <b>Davis Cup & National Representation:</b> Regular doubles player for India since 2012.<br/><b>Other Highlights:</b> A key figure in India’s doubles resurgence, often partnering with Purav Raja and Rohan Bopanna.<br/>Divij remains active, contributing to India’s doubles legacy. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Purav Raja",
-        "url": "https://www.atptour.com/en/players/purav-raja/r948/overview",
-        "photo": "/images/players/atp/purav-raja.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A doubles specialist with a strong serve and steady net game, effective on all surfaces.<br/><b>Career-High ATP Singles Ranking:</b> #813 (August 1, 2011), <b>Career-High ATP Doubles Ranking:</b> #52 (July 17, 2017).<br/><b>Best Grand Slam Doubles Performance:</b> Reached the third round of Wimbledon (2017).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 2 ATP doubles titles, including the 2017 Knoxville Challenger (ATP 250 equivalent). <b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties since 2011.<br/><b>Other Highlights:</b> Frequently partners with Divij Sharan and other top Indian doubles players.<br/>Purav remains active on the Challenger and ATP circuits, bolstering India’s doubles tradition. 🎾🇮🇳"
-    },
-    {
-        "player_name": "Jeevan Nedunchezhiyan",
-        "url": "https://www.atptour.com/en/players/jeevan-nedunchezhiyan/n669/overview",
-        "photo": "/images/players/atp/jeevan-nedunchezhiyan.jpg",
-        "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A left-handed doubles specialist with a powerful serve and sharp volleying skills.<br/><b>Career-High ATP Singles Ranking:</b> #293 (August 25, 2014), <b>Career-High ATP Doubles Ranking:</b> #64 (March 18, 2019).<br/><b>Best Grand Slam Doubles Performance:</b> Reached the second round of the Australian Open (2017).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 2 ATP doubles titles, including the 2017 Chennai Open with Rohan Bopanna. <b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties since 2017.<br/><b>Other Highlights:</b> A consistent performer on the ATP Challenger circuit, with multiple titles.<br/>Jeevan continues to compete, adding to India’s doubles strength. 🎾🇮🇳"
-    }
-
-
-
+	},
+	{
+		"player_name": "Sidharth Rawat",
+		"url": "https://www.atptour.com/en/players/sidharth-rawat/rb86/overview",
+		"photo": "/images/players/atp/sidharth-rawat.jpg",
+		"source": "AITA",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A gritty player with a strong serve, solid baseline game, and tactical versatility, thriving on hard courts.<br/><b><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Success:</b> Won 1 ITF Futures singles title (2019 M15 Nonthaburi) and reached multiple finals (e.g., 2024 M25 Addis Ababa). <b>Biggest Singles Win:</b> Defeated World No. 248 Nick Chappell at the 2023 ITF M25 Monastir. <b>National Titles:</b> Reached the final of the 2011 Fenesta National Championship as a junior, kickstarting his pro journey. <b>Davis Cup & National Representation:</b> Yet to debut in Davis Cup but part of India’s tennis ecosystem.<br/><b>Other Highlights:</b> Overcame a six-year hiatus (2005-2011) to pursue tennis full-time after enrolling at Hansraj College (Delhi University). Balanced academics (Economics Honours) with tennis, opting for the sport after early ITF success in 2013. Reached the pre-quarterfinals of the 2023 ITF Davangere World Tennis Tour.<br/>Sidharth’s resilience and late bloom make him a unique figure in Indian tennis, aiming for a Top 300 breakthrough. 🎾🇮🇳 🎾🇮🇳"
+	},
+	{
+		"player_name": "Dhakshineswar Suresh",
+		"url": "https://www.atptour.com/en/players/dhakshineswar-suresh/s0de/overview",
+		"photo": "/images/players/atp/dhakshineswar-suresh.jpg",
+		"source": "ggcathletics.com",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A towering 6’6” player with a booming serve (15 aces in his ATP singles debut), strong net skills, and an aggressive all-court game, excelling in doubles.<br/><br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a senior Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ATP Debut:</b> Reached the semifinals in doubles at the 2024 Winston-Salem Open (ATP 250) with Luca Pow via wildcard, marking his first ATP main draw appearance. <b>College Success:</b> Named to the 2024 All-ACC Doubles First Team with Holden Koons at Wake Forest, achieving a #1 ITA doubles ranking (March 8–April 14, 2024) and a 25-5 record. <b>ITF Titles:</b> Won 1 ITF Futures singles title (2025 M25 Bhopal). <b>Junior Success:</b> Secured boys’ singles and doubles titles at the 2017 Adidas-MCC National Junior U-18 Championship.<br/><b>Other Highlights:</b> Transferred from Georgia Gwinnett College (2023 NAIA All-American) to Wake Forest. Aims to crack the Top 200 by 2026 while completing his degree.<br/>Dhakshineswar is a rising star blending college tennis dominance with pro aspirations. "
+	},
+	{
+		"player_name": "Adil Kalyanpur",
+		"url": "https://www.atptour.com/en/players/adil-kalyanpur/k0ab/overview",
+		"photo": "/images/players/atp/adil-kalyanpur.jpg",
+		"source": "X/Twitter",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A tall, wiry player with a strong serve and aggressive baseline game, showing promise in both singles and doubles.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Success:</b> Won 1 ITF Futures doubles title (2023 M15 Nakhon Si Thammarat with Nitin Kumar Sinha). <b>Biggest Singles Win:</b> Defeated World No. 512 Siddhant Banthia at the 2024 ITF M15 Chandigarh. <b>Junior Success:</b> Reached a career-high ITF Junior Ranking of #93 (2017) and led India to a 12th-place finish at the 2016 Junior Davis Cup World Finals. <b>Davis Cup & National Representation:</b> Named reserve player for India’s Davis Cup team in 2016 (aged 16), yet to debut in a live rubber.<br/><b>Other Highlights:</b> Trained at the Rafa Nadal Academy in Mallorca (2016-2018). Reached the doubles quarterfinals at the 2025 ITF M25 Chennai with S.D. Prajwal Dev. Aims to break into the Top 500 by 2026.<br/>Adil is a steady riser in Indian tennis, leveraging his junior pedigree for pro success. 🎾🇮🇳"
+	},
+	{
+		"player_name": "Manish Sureshkumar",
+		"url": "https://www.atptour.com/en/players/manish-sureshkumar/sy74/overview",
+		"photo": "/images/players/atp/manish-sureshkumar.jpg",
+		"source": "TheHindu/B. Jothi Ramalingam",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A resilient baseliner with a strong forehand, consistent serve, and mental toughness, effective on clay and hard courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Won 4 ITF Futures singles titles (2018 Sri Lanka F1, 2021 Indore M15, 2022 Colombo M15, 2025 Bhopal M25) and 1 doubles title (2022 M15 New Delhi). <b>Biggest Singles Win:</b> Defeated World No. 219 Steven Diez at the 2018 ITF M15 Hua Hin. <b>National Success:</b> Two-time Khelo India Youth Games gold medalist (2019 singles, team) and double gold at the 2019 South Asian Games (singles, team). <b>Davis Cup & National Representation:</b> Yet to debut in Davis Cup but a frequent contender in Indian pro circuits.<br/><b>Other Highlights:</b> Reached the quarterfinals of the 2025 Bengaluru Open Challenger as a wildcard. Overcame early career financial struggles to establish himself as a top-10 Indian player (2019-2020). Aims for a Top 200 ranking.<br/>Manish’s blend of grit and skill marks him as a steady presence in Indian tennis. 🎾🇮🇳"
+	},
+	{
+		"player_name": "Chirag Duhan",
+		"url": "https://www.atptour.com/en/players/chirag-duhan/d0hi/overview",
+		"photo": "/images/players/atp/chirag-duhan.jpg",
+		"source": "indiantennisdaily.com",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A tall (6’4”), aggressive player with a powerful serve, fluid groundstrokes, and a knack for clutch performances, effective on hard courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a senior Grand Slam main draw; reached R2 at 2022 Australian Open Juniors.<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Won 2 ITF Futures singles titles (2024 M15 Nakhon Si Thammarat, 2025 M15 Monastir). <b>Biggest Singles Win:</b> Defeated World No. 512 Siddhant Banthia at the 2024 ITF M15 Monastir SF. <b>Junior Success:</b> Achieved a career-high ITF Junior Ranking of #75 (2021), won three ITF J4 titles in 2021, and secured the 2021 Tennishub-MPTA National Junior U-18 title. <b>Davis Cup & National Representation:</b> Represented India at the 2018 Asian Oceania World Junior Cup.<br/><b>Other Highlights:</b> Trains at the Grow Tennis Academy in Delhi under Gaurav Sharma. Played qualifiers at the 2025 Delhi Open Challenger. Known for a 6-0, 6-0 rout of Yugraj Singh at the 2021 National Juniors. Aims for a Top 500 breakthrough by 2026.<br/>Chirag is a promising talent in Indian tennis, transitioning from a strong junior career to the pro circuit. 🎾🇮🇳"
+	},
+	{
+		"player_name": "Yuvan Nandal",
+		"url": "https://www.atptour.com/en/players/yuvan-nandal/n0fh/overview",
+		"photo": "/images/players/atp/yuvan-nandal.jpg",
+		"source": "indiantennisdaily.com",
+		"is_active": true,
+		"bio": "<b>Career Overview:</b> <b>Playing Style:</b> A young talent with a solid two-handed backhand and a well-rounded game.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a Grand Slam main draw.<br/><b>Notable Achievements:</b> <b>Junior Circuit:</b> A consistent performer in ITF Junior tournaments, showcasing his potential.<br/><b>Other Highlights:</b> Working towards breaking into the professional circuit through ITF and Challenger events.<br/>Yuvan is one of India’s brightest young prospects, working hard to rise through the ranks. 🎾🇮🇳"
+	}
 ]

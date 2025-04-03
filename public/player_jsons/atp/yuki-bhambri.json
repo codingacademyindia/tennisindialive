@@ -4,16 +4,16 @@
     "date_of_birth": "32 (1992/07/04)",
     "weight": "165 lbs (75kg)",
     "turned_pro": "2008",
-    "coach": "Stephen Koon",
+    "coach": "Ankita Bhambri",
     "plays": "Right-Handed, Two-Handed Backhand",
     "birthplace": "New Delhi, India",
-    "photo": "/images/players/atp/yuki-bhambri.jpg",
-    "source": "",
-    "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A versatile doubles specialist with quick movement, solid groundstrokes, and a reliable net game, complemented by a steady serve.<br/><b>Career-High ATP Singles Ranking:</b> #83 (April 16, 2018), <b>Career-High ATP Doubles Ranking:</b> #39 (March 3, 2025).<br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of the Australian Open (2015, 2016, 2018). <b>Best Grand Slam Doubles Performance:</b> Reached the third round of the US Open (2024) and Australian Open (2025).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 4 ATP doubles titles, including the 2025 Dubai Duty Free Tennis Championships (ATP 500) with Alexei Popyrin and the 2023 Mallorca Championships with Lloyd Harris. <b>Junior Success:</b> First Indian to win the Australian Open Junior Championship (2009) and silver medalist at the 2010 Youth Olympics. <b>Challenger Success:</b> Secured 7 Challenger singles titles and 5 doubles titles. <b>Davis Cup & National Representation:</b> Regular member of India’s Davis Cup team since 2012, with a 10-8 singles record.<br/><b>Other Highlights:</b> Overcame a 2.5-year injury hiatus (2019-2021) due to a right knee issue. Broke into the Top 50 doubles rankings in 2024 and became India’s top-ranked doubles player in March 2025, surpassing Rohan Bopanna.<br/>Yuki continues to elevate Indian tennis, aiming for deeper Grand Slam runs and Masters success. 🎾🇮🇳",
-    "updated_at": "26-March-2025 12:31 PM",
+    "photo": "/images/players/atp/yuki-bhambri.png",
+    "source": "atlanataopentennis",
+    "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A versatile doubles specialist with quick movement, solid groundstrokes, and a reliable net game, complemented by a steady serve.<br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of the Australian Open (2015, 2016, 2018). <b>Best Grand Slam Doubles Performance:</b> Reached the third round of the US Open (2024) and Australian Open (2025).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 4 ATP doubles titles, including the 2025 Dubai Duty Free Tennis Championships (ATP 500) with Alexei Popyrin and the 2023 Mallorca Championships with Lloyd Harris. <b>Junior Success:</b> First Indian to win the Australian Open Junior Championship (2009) and silver medalist at the 2010 Youth Olympics. <b>Challenger Success:</b> Secured 7 Challenger singles titles and 5 doubles titles. <b>Davis Cup & National Representation:</b> Regular member of India\u2019s Davis Cup team since 2012, with a 10-8 singles record.<br/><b>Other Highlights:</b> Overcame a 2.5-year injury hiatus (2019-2021) due to a right knee issue. Broke into the Top 50 doubles rankings in 2024 and became India\u2019s top-ranked doubles player in March 2025, surpassing Rohan Bopanna.<br/>Yuki continues to elevate Indian tennis, aiming for deeper Grand Slam runs and Masters success. \ud83c\udfbe\ud83c\uddee\ud83c\uddf3",
+    "updated_at": "03-April-2025 03:44 PM",
     "singles": {
         "ytd_move": "-",
-        "current_rank": "1185",
+        "current_rank": "N/A",
         "ytd_wins": "0 - 0",
         "ytd_titles": "0",
         "ytd_prize_money": "$0",
@@ -21,18 +21,18 @@
         "career_high_rank": "83",
         "career_wins": "28 - 33",
         "career_titles": "0",
-        "career_prize_money": "$1,610,655"
+        "career_prize_money": "$1,675,655"
     },
     "doubles": {
-        "ytd_move": "+2",
-        "current_rank": "26",
-        "ytd_wins": "11 - 6",
-        "ytd_titles": "1",
-        "ytd_prize_money": "$149,803",
+        "ytd_move": "-",
+        "current_rank": "N/A",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
         "career_move": "N/A",
-        "career_high_rank": "39",
-        "career_wins": "66 - 55",
-        "career_titles": "4",
-        "career_prize_money": "$1,610,655"
+        "career_high_rank": "83",
+        "career_wins": "28 - 33",
+        "career_titles": "0",
+        "career_prize_money": "$1,675,655"
     }
 }
