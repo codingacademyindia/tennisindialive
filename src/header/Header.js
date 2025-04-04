@@ -181,9 +181,9 @@ function ResponsiveAppBar() {
                             <MenuItem onClick={() => window.location.href = `/live-scores`}>
                                 <Typography textAlign="center">Live Scores</Typography>
                             </MenuItem>
-                            <MenuItem onClick={() => window.location.href = `/live-scores`}>
+                            {/* <MenuItem onClick={() => window.location.href = `/live-scores`}>
                                 <Typography textAlign="center">News</Typography>
-                            </MenuItem>
+                            </MenuItem> */}
 
                             {/* ATP Ranking with Dropdown */}
                             <MenuItem onClick={handleOpenATPMenu}>
@@ -323,7 +323,7 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Menu>
-                        <Button
+                        {/* <Button
                             onClick={() => (window.location.href = `/news`)}
                             sx={{
                                 color: 'white', ml: 2,
@@ -331,7 +331,7 @@ function ResponsiveAppBar() {
                                 fontWeight: activePage === "news" ? 'bold' : 'normal',
                             }}>
                             News
-                        </Button>
+                        </Button> */}
 
                     </Box>
 
