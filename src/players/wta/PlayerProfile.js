@@ -72,6 +72,12 @@ const PlayerProfile = () => {
                     </div>
 
                     <CardContent className="p-6 h-full flex flex-col justify-center bg-gray-800">
+                        <a
+                            href="/players/wta"
+                            className="text-blue-600 hover:underline text-sm sm:text-base mx-2"
+                        >
+                            ← Back to WTA Players
+                        </a>
                         <div className="text-xs text-white mb-2 w-full text-right">
                             <b>Updated At: </b> {playerData.updated_at || "N/A"}
                         </div>

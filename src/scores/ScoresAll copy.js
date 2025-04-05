@@ -238,7 +238,7 @@ const FixtureResultsAll = () => {
         };
 
         fetchRankings();
-        const intervalId = setInterval(fetchRankings, 120000); // 
+        const intervalId = setInterval(fetchRankings, 300000); // 
 
         return () => clearInterval(intervalId); // 
     }, [day, month, year, refreshScore]);
@@ -643,7 +643,7 @@ const FixtureResultsAll = () => {
                                     </div>
                                     <div className='w-full flex flex-row space-x-2'>
                                         <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                                        <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
+                                        <span><button  className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
                                         {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                         {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -655,11 +655,11 @@ const FixtureResultsAll = () => {
                                 <div className='w-full flex flex-col'>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
-                                        <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
+                                        <span><button  className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
                                     </div>
                                     <div className='w-full flex flex-row space-x-2 items-center'>
                                         <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
-                                        <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
+                                        <span><button  className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
                                         {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
                                         {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
@@ -951,112 +951,63 @@ const FixtureResultsAll = () => {
     return (
         <div>
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
-            <MatchStats
-                open={openMatchStat}
-                handleClose={handleCloseMatchStat}
+            <MatchStats open={openMatchStat} handleClose={handleCloseMatchStat}
                 loadingStats={loadingStats}
                 data={matchStatsData}
                 scoreRecord={scoreRecord}
                 eventId={eventId}
                 selectedMatchStatus={selectedMatchStatus}
             />
-            <Head2Head
-                open={openH2H}
-                handleClose={handleCloseMatchStat}
+            <Head2Head open={openH2H} handleClose={handleCloseMatchStat}
                 loading={loadingH2H}
                 data={h2hData}
                 scoreRecord={scoreRecord}
                 eventId={eventId}
             />
-            <PlayerInfo
-                open={openPlayerInfo}
-                handleClose={handleClosePlayerInfo}
+
+            <PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo}
                 loading={false}
                 id={playerId}
             />
 
-            {/* Informational Header to Increase Content Value for AdSense */}
-            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md mt-4 text-sm">
-                <h2 className="text-lg font-semibold mb-1">Live Indian Tennis Scores</h2>
-                <p>
-                    This page provides real-time tennis scores for Indian players participating in ATP, WTA,
-                    and ITF events. Along with the score updates, you can explore Head-to-Head records and
-                    detailed Match Stats to dive deeper into the game.
-                </p>
-            </div>
-
-            <div className="flex flex-row space-x-4 w-full bg-slate-200 items-center p-1 border mt-4">
+            <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-1  border'>
+                {/* <div className="bg-slate-500 text-white">Scores</div> */}
                 <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
-                <StatusButtonGroup
-                    matchStatus={matchStatus}
-                    handleStatusButtonClick={handleStatusButtonClick}
-                />
+                {/* {getStatusControl()} */}
+
+                {/* {getStatusButtons()} */}
+                <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
                 <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}
                 />
-                <IconButton onClick={handleRefresh} sx={{ color: 'black' }}>
-                    <SyncIcon />
-                </IconButton>
+                {/* <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                    <Tooltip title="Country Details">
+                        <IconButton variant="contained" onClick={handleClickOpenCountry}>
+                            <FaFlag />
+                        </IconButton>
+                    </Tooltip>
+                </Box> */}
+                <IconButton onClick={handleRefresh} sx={{ color: 'black' }}><SyncIcon /></IconButton>
             </div>
-
             <div className="sm:hidden text-xs w-full bg-slate-700 text-white text-center flex flex-row justify-center space-x-1 items-center">
                 <span className="mr-2">Showing Results for</span>
-                <span>
-                    {selectedCountryCode ? (
-                        <CountryIcon countryCode={selectedCountryCode} size={15} />
-                    ) : (
-                        <FaGlobe className="text-green-100" />
-                    )}
-                </span>
-                <span className="uppercase font-bold">
-                    {selectedCountryCode ? selectedCountry : "All Countries"}
-                </span>
+                <span>{selectedCountryCode ? <CountryIcon countryCode={selectedCountryCode} size={15} /> : <FaGlobe className='text-green-100' />}</span>
+                <span className="uppercase  font-bold">{selectedCountryCode ? selectedCountry : "All Countries"}</span>
+                {/* <div className='flex flex-row space-x-1 items-center ml-2'>
+                    <AiOutlineClockCircle  />
+                    <span className="capitalize">{formatDate(selectedDate)}</span>
+                </div> */}
             </div>
-
-            {error && (
-                <p className="text-red-600 mt-2 text-sm">
-                    Error loading data. Please refresh or try again later.
-                </p>
-            )}
-
-            {loading ? (
-                <Loader />
-            ) : (
-                rankingsData && (
-                    <div className="w-full mx-auto">
-                        {recordDom()}
-
-                        {/* 👇 Move FAQ section below live scores */}
-                        <div className="bg-slate-100 border border-slate-300 rounded-md p-4 mt-8">
-                            <h3 className="font-semibold text-md mb-2">Frequently Asked Questions</h3>
-                            <ul className="list-disc list-inside text-sm text-gray-700 space-y-2">
-                                <li>
-                                    <strong>How often are live scores updated?</strong> Live tennis scores are refreshed every 30 seconds using data from official sources. You can follow real-time progress for Indian players across various global events.
-                                </li>
-                                <li>
-                                    <strong>What match filters are available?</strong> You can filter matches by <em>status</em> (Live, Completed, Not Started) and by <em>country</em>, helping you focus on matches that matter to you — including those featuring Indian athletes.
-                                </li>
-                                <li>
-                                    <strong>Can I see Head-to-Head and Match Stats?</strong> Yes. For each match, you can view detailed <em>Head-to-Head</em> comparisons and <em>Match Stats</em>, offering deeper insights into player performance and history.
-                                </li>
-                                <li>
-                                    <strong>Do you provide ATP and WTA rankings?</strong> Absolutely. We showcase up-to-date, official ATP and WTA rankings. Our ranking pages highlight global standings as well as Indian player positions.
-                                </li>
-                                <li>
-                                    <strong>Are there profiles for Indian players?</strong> Yes. We feature detailed profiles for many Indian players, including rankings, recent match results, and career highlights — making it easier to track their journey on the professional circuit.
-                                </li>
-                                <li>
-                                    <strong>How can I suggest a feature or report a missing player?</strong> We’d love your feedback! You can reach out via the Players section or our contact form to suggest improvements or request player additions.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                )
+            {error && <p></p>}
+            {loading ? <Loader /> : rankingsData && (
+                <div className="w-[100%] mx-auto">
+                    {/* <pre>{JSON.stringify(rankingsData, null, 2)}</pre> */}
+                    {recordDom()}
+                </div>
             )}
         </div>
     );
-
 };
 
 export default FixtureResultsAll;

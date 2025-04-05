@@ -19,7 +19,7 @@ const PlayerProfile = () => {
                 console.log(`/player_jsons/atp/${player}.json`)
                 const response = await fetch(`/player_jsons/atp/${player}.json`); // Adjust path as per JSON file location
                 const data = await response.json();
-                document.title = "Tennis India Live - "+ data.name;
+                document.title = "Tennis India Live - " + data.name;
 
                 setPlayerData(data);
                 setLoading(false);
@@ -74,6 +74,12 @@ const PlayerProfile = () => {
                             {/* <Typography variant="h6" className="font-bold text-white mb-4">
                                 {playerData.name}
                             </Typography> */}
+                            <a
+                                href="/players/atp"
+                                className="text-blue-600 hover:underline text-sm sm:text-base mx-2"
+                            >
+                                ← Back to ATP Players
+                            </a>
                             <div className='text-xs text-white mb-2 w-full text-right'><b>Updated At: </b> {playerData.updated_at}</div>
                             {/* Table Format for Singles and Doubles */}
                             <div className="bg-gray-200 p-2 rounded-lg shadow-md">
