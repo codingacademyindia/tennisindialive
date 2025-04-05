@@ -1,38 +1,32 @@
-import { Refresh } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
-import { FormControl, InputLabel, MenuItem, Select, Button, Tooltip } from '@mui/material';
-import Box from '@mui/material/Box';
+import SyncIcon from '@mui/icons-material/Sync';
+import { Accordion, AccordionDetails, AccordionSummary, FormControl, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { FcBusinessman, FcBusinesswoman } from "react-icons/fc";
-import { IoTennisballSharp } from "react-icons/io5";
+import { AiOutlineClockCircle } from 'react-icons/ai';
+import { FaGlobe } from "react-icons/fa";
+import { FcBusinessman } from "react-icons/fc";
+import { HiMiniTableCells } from "react-icons/hi2";
+import { IoStatsChartSharp, IoTennisballSharp } from "react-icons/io5";
 import { useParams } from 'react-router-dom';
+import useApiCall from '../common/apiCalls/useApiCall';
 import CountryIcon from '../common/Country';
+import CountryDialog from '../common/country/CountryDialog';
+import CountryAutocomplete from '../common/CountryAutoComplete';
 import DatePickerValue from '../common/DatePicker';
+import Head2Head from '../common/dialogs/HeadToHead';
+import MatchStats from '../common/dialogs/MatchStats';
+import PlayerInfo from '../common/dialogs/PlayerInfo';
 import Loader from '../common/stateHandlers/LoaderState';
-import IconButton from '@mui/material/IconButton';
-import SyncIcon from '@mui/icons-material/Sync';
 import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
-import CountryAutocomplete from '../common/CountryAutoComplete'
-import { RiCalendarScheduleFill } from "react-icons/ri";
-import { AiOutlineSchedule } from "react-icons/ai";
-import MatchStats from '../common/dialogs/MatchStats';
-import Head2Head from '../common/dialogs/HeadToHead';
-import useApiCall from '../common/apiCalls/useApiCall';
-import { IoStatsChartSharp } from "react-icons/io5";
-import CountryDialog from '../common/country/CountryDialog';
-import { FaFlag } from "react-icons/fa6";
-import { RxTable } from "react-icons/rx";
-import { HiMiniTableCells } from "react-icons/hi2";
-import { setItem, getItem } from '../indexDb/indexedDB';
-import { AiOutlineClockCircle } from 'react-icons/ai'
-import { FlagIcon } from 'react-flag-kit';
-import { FaGlobe } from "react-icons/fa";
-import PlayerInfo from '../common/dialogs/PlayerInfo';
+import { getItem, setItem } from '../indexDb/indexedDB';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -977,12 +971,16 @@ const FixtureResultsAll = () => {
 
             {/* Informational Header to Increase Content Value for AdSense */}
             <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md mt-4 text-sm">
-                <h2 className="text-lg font-semibold mb-1">Live Indian Tennis Scores</h2>
+                <div className="flex flex-row space-x-2 items-center">
+                    <h2 className="text-lg font-semibold mb-1 w-[30%]">Live Tennis Scores - Countrywise</h2>
+                    <div className="text-xs"><b>Updated At: </b>{new Date().toLocaleString()}</div>
+                </div>
                 <p>
                     This page provides real-time tennis scores for Indian players participating in ATP, WTA,
                     and ITF events. Along with the score updates, you can explore Head-to-Head records and
                     detailed Match Stats to dive deeper into the game.
                 </p>
+
             </div>
 
             <div className="flex flex-row space-x-4 w-full bg-slate-200 items-center p-1 border mt-4">
@@ -1027,29 +1025,34 @@ const FixtureResultsAll = () => {
                     <div className="w-full mx-auto">
                         {recordDom()}
 
-                        {/* 👇 Move FAQ section below live scores */}
-                        <div className="bg-slate-100 border border-slate-300 rounded-md p-4 mt-8">
-                            <h3 className="font-semibold text-md mb-2">Frequently Asked Questions</h3>
-                            <ul className="list-disc list-inside text-sm text-gray-700 space-y-2">
-                                <li>
-                                    <strong>How often are live scores updated?</strong> Live tennis scores are refreshed every 30 seconds using data from official sources. You can follow real-time progress for Indian players across various global events.
-                                </li>
-                                <li>
-                                    <strong>What match filters are available?</strong> You can filter matches by <em>status</em> (Live, Completed, Not Started) and by <em>country</em>, helping you focus on matches that matter to you — including those featuring Indian athletes.
-                                </li>
-                                <li>
-                                    <strong>Can I see Head-to-Head and Match Stats?</strong> Yes. For each match, you can view detailed <em>Head-to-Head</em> comparisons and <em>Match Stats</em>, offering deeper insights into player performance and history.
-                                </li>
-                                <li>
-                                    <strong>Do you provide ATP and WTA rankings?</strong> Absolutely. We showcase up-to-date, official ATP and WTA rankings. Our ranking pages highlight global standings as well as Indian player positions.
-                                </li>
-                                <li>
-                                    <strong>Are there profiles for Indian players?</strong> Yes. We feature detailed profiles for many Indian players, including rankings, recent match results, and career highlights — making it easier to track their journey on the professional circuit.
-                                </li>
-                                <li>
-                                    <strong>How can I suggest a feature or report a missing player?</strong> We’d love your feedback! You can reach out via the Players section or our contact form to suggest improvements or request player additions.
-                                </li>
-                            </ul>
+                        <div className="px-4 py-4">
+                            <Accordion expanded={true}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />} className="bg-slate-100">
+                                    <Typography className="font-medium">FAQs - Live Scores</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails className="text-sm">
+                                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-2">
+                                        <li>
+                                            <strong>How often are live scores updated?</strong> Live tennis scores are refreshed every 30 seconds using data from official sources. You can follow real-time progress for Indian players across various global events.
+                                        </li>
+                                        <li>
+                                            <strong>What match filters are available?</strong> You can filter matches by <em>status</em> (Live, Completed, Not Started) and by <em>country</em>, helping you focus on matches that matter to you — including those featuring Indian athletes.
+                                        </li>
+                                        <li>
+                                            <strong>Can I see Head-to-Head and Match Stats?</strong> Yes. For each match, you can view detailed <em>Head-to-Head</em> comparisons and <em>Match Stats</em>, offering deeper insights into player performance and history.
+                                        </li>
+                                        <li>
+                                            <strong>Do you provide ATP and WTA rankings?</strong> Absolutely. We showcase up-to-date, official ATP and WTA rankings. Our ranking pages highlight global standings as well as Indian player positions.
+                                        </li>
+                                        <li>
+                                            <strong>Are there profiles for Indian players?</strong> Yes. We feature detailed profiles for many Indian players, including rankings, recent match results, and career highlights — making it easier to track their journey on the professional circuit.
+                                        </li>
+                                        <li>
+                                            <strong>How can I suggest a feature or report a missing player?</strong> We’d love your feedback! You can reach out via the Players section or our contact form to suggest improvements or request player additions.
+                                        </li>
+                                    </ul>
+                                </AccordionDetails>
+                            </Accordion>
                         </div>
                     </div>
                 )
