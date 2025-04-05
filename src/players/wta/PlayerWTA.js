@@ -29,10 +29,7 @@ const PlayersListWTA = () => {
     return (
         <div className="max-w-5xl mx-auto p-4">
             {/* Informational Section for AdSense and Users */}
-            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-4 rounded-md mb-4 text-sm">
-                <h2 className="text-lg font-semibold mb-2">Indian WTA Tennis Players</h2>
-                <p>This page showcases WTA profiles of Indian tennis players, including names, photos, and profile links. You can search by name and request missing players via the button below. Player pages contain official WTA rankings and match stats, updated regularly.</p>
-            </div>
+
 
             {/* Request Button and Search Bar */}
             <RequestModal open={open} handleClose={handleClose} title="Request To Add More Players" children={<RequestPlayerInfo />} />
@@ -53,7 +50,10 @@ const PlayersListWTA = () => {
                     aria-label="Search Players"
                 />
             </div>
-
+            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-4 rounded-md mb-4 text-sm">
+                
+                <p>This page showcases WTA profiles of Indian tennis players, including names, photos, and profile links. You can search by name and request missing players via the button below. Player pages contain official WTA rankings and match stats, updated regularly.</p>
+            </div>
             {/* Player Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {filteredPlayers.length > 0 ? (
