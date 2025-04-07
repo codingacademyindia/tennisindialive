@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://www.tennisindialive.com/</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/players/wta</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/players/atp</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Dynamic pages (use wildcard or leave out actual player URLs for now) -->
+  <url>
+    <loc>https://www.tennisindialive.com/player/atp/yuki-bhambri</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/player/atp/rohan-bopanna</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/player/atp/sumit-nagal</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/player/atp/mukund-sasikumar</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/player/atp/ramkumar-ramanathan</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tennisindialive.com/player/atp/manas-dhamne</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+    <url>
+    <loc>https://www.tennisindialive.com/player/wta/ankita-raina</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+    <url>
+    <loc>https://www.tennisindialive.com/player/wta/zeel-desai</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+    <url>
+    <loc>https://www.tennisindialive.com/player/wta/vaidehi-chaudhari</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+ <url>
+    <loc>https://www.tennisindialive.com/player/wta/sania-mirza</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+ <url>
+    <loc>https://tennisindialive.com/player/wta/sahaja-yamalapalli</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+ <url>
+    <loc>https://tennisindialive.com/player/wta/shrivalli-bhamidipaty</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/live/atp-singles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/live/atp-doubles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/official/atp-singles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/official/atp-doubles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/live/wta-singles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/live/wta-doubles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/official/wta-singles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://tennisindialive.com/rankings/official/wta-doubles</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

@@ -97,6 +97,7 @@ const FixtureResultsAll = () => {
     const [dialogOpenCountry, setDialogOpenCountry] = useState(false);
     const [playerId, setPlayerId] = React.useState(0);
     const [openPlayerInfo, setOpenPlayerInfo] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(true);
 
     const handleClickOpenCountry = () => {
         setDialogOpenCountry(true);
@@ -970,20 +971,9 @@ const FixtureResultsAll = () => {
             />
 
             {/* Informational Header to Increase Content Value for AdSense */}
-            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md mt-4 text-sm">
-                <div className="flex flex-row space-x-2 items-center">
-                    <h2 className="text-lg font-semibold mb-1 w-[30%]">Live Tennis Scores - Countrywise</h2>
-                    <div className="text-xs"><b>Updated At: </b>{new Date().toLocaleString()}</div>
-                </div>
-                <p>
-                    This page provides real-time tennis scores for Indian players participating in ATP, WTA,
-                    and ITF events. Along with the score updates, you can explore Head-to-Head records and
-                    detailed Match Stats to dive deeper into the game.
-                </p>
 
-            </div>
 
-            <div className="flex flex-row space-x-4 w-full bg-slate-200 items-center p-1 border mt-4">
+            <div className="flex flex-row space-x-4 w-full bg-slate-200 items-center p-1 border m-1">
                 <DatePickerValue handleSelectDate={handleSelectDate} selectedDate={selectedDate} />
                 <StatusButtonGroup
                     matchStatus={matchStatus}
@@ -996,6 +986,21 @@ const FixtureResultsAll = () => {
                 <IconButton onClick={handleRefresh} sx={{ color: 'black' }}>
                     <SyncIcon />
                 </IconButton>
+            </div>
+            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-2 rounded-md m-2 text-sm">
+                <div className="flex flex-row justify-between items-center mb-1">
+                    <div className="text-sm sm:text-sm md:text-sm lg:text-sm font-semibold">
+                        Live Scores - Countrywise
+                    </div>
+                    <div className="text-xs text-right whitespace-nowrap">
+                        <b>Updated At:</b> {new Date().toLocaleString()}
+                    </div>
+                </div>
+                <p className="text-xs sm:text-sm md:text-sm leading-relaxed text-gray-700">
+                    This page provides real-time tennis scores for Indian players participating in ATP, WTA,
+                    and ITF events. Along with the score updates, you can explore Head-to-Head records and
+                    detailed Match Stats to dive deeper into the game.
+                </p>
             </div>
 
             <div className="sm:hidden text-xs w-full bg-slate-700 text-white text-center flex flex-row justify-center space-x-1 items-center">
@@ -1026,14 +1031,14 @@ const FixtureResultsAll = () => {
                         {recordDom()}
 
                         <div className="px-4 py-4">
-                            <Accordion expanded={true}>
+                            <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />} className="bg-slate-100">
                                     <Typography className="font-medium">FAQs - Live Scores</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails className="text-sm">
                                     <ul className="list-disc list-inside text-sm text-gray-700 space-y-2">
                                         <li>
-                                            <strong>How often are live scores updated?</strong> Live tennis scores are refreshed every 30 seconds using data from official sources. You can follow real-time progress for Indian players across various global events.
+                                            <strong>How often are live scores updated?</strong> Live tennis scores are refreshed every 2 minutes using data from official sources. You can follow real-time progress for Indian players across various global events.
                                         </li>
                                         <li>
                                             <strong>What match filters are available?</strong> You can filter matches by <em>status</em> (Live, Completed, Not Started) and by <em>country</em>, helping you focus on matches that matter to you — including those featuring Indian athletes.
@@ -1045,7 +1050,7 @@ const FixtureResultsAll = () => {
                                             <strong>Do you provide ATP and WTA rankings?</strong> Absolutely. We showcase up-to-date, official ATP and WTA rankings. Our ranking pages highlight global standings as well as Indian player positions.
                                         </li>
                                         <li>
-                                            <strong>Are there profiles for Indian players?</strong> Yes. We feature detailed profiles for many Indian players, including rankings, recent match results, and career highlights — making it easier to track their journey on the professional circuit.
+                                            <strong>Are there profiles for Indian players?</strong> Yes. We feature detailed profiles for many Indian players, including rankings and career highlights — making it easier to track their journey on the professional circuit.
                                         </li>
                                         <li>
                                             <strong>How can I suggest a feature or report a missing player?</strong> We’d love your feedback! You can reach out via the Players section or our contact form to suggest improvements or request player additions.
