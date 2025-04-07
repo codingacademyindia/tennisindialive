@@ -2,42 +2,64 @@ import React from 'react';
 
 const PrivacyPolicy = () => {
     return (
-        <div className="border bg-slate-100 p-1">
-            <h1 className='text-lg bg-indigo-800 text-white'>Privacy Policy</h1>
-            <p><strong>1. Data Collection</strong></p>
-            <p>We do not collect personal data from users of our website.</p>
-            
-            <p><strong>2. Cookies</strong></p>
-            <p>We use cookies to serve ads on our site. These cookies help us serve relevant ads based on your interests.</p>
+        <div className="privacy-policy bg-slate-50 border border-slate-200 p-1 rounded-md max-w-3xl mx-auto my-1 text-gray-800">
+            <h1 className="text-xl sm:text-2xl font-semibold bg-indigo-800 text-white p-3 rounded mb-4 text-center">
+                Privacy Policy
+            </h1>
 
-            <p><strong>3. Third-Party Ad Providers</strong></p>
-            <p>Our website uses Google AdSense to serve ads. Google AdSense may use cookies to serve ads based on your visit to our site and other sites. For more information about Google's data practices, please visit the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</p>
-            
-            <p><strong>4. Changes to This Policy</strong></p>
-            <p>We may update this policy from time to time. Any changes will be posted on this page.</p>
-            
-            <p><strong>Contact Information</strong></p>
-            <p>If you have any questions about this privacy policy, please contact us at <a href="mailto:tennisofindia@gmail.com">tennisofindia@gmail.com</a>.</p>
-            
-            <style jsx>{`
-                .privacy-policy {
-                    padding: 20px;
-                    max-width: 800px;
-                    margin: auto;
-                    line-height: 1.6;
-                }
-                h1 {
-                    text-align: center;
-                    margin-bottom: 20px;
-                }
-                a {
-                    color: #1a73e8;
-                    text-decoration: none;
-                }
-                a:hover {
-                    text-decoration: underline;
-                }
-            `}</style>
+            <div className="space-y-4 text-sm sm:text-base leading-relaxed">
+                <div>
+                    <p className="font-semibold">1. Data Collection</p>
+                    <p>We do not collect personally identifiable information from users directly on this website.</p>
+                </div>
+
+                <div>
+                    <p className="font-semibold">2. Cookies</p>
+                    <p>
+                        We use cookies to improve user experience and deliver personalized ads. These cookies
+                        may be used by third-party networks to understand your preferences.
+                    </p>
+                </div>
+
+                <div>
+                    <p className="font-semibold">3. Advertising & Third Parties</p>
+                    <p>
+                        This website may work with third-party ad providers such as <strong>Ezoic</strong>,{' '}
+                        <strong>Google AdSense</strong>, or others to serve advertisements. These providers may use cookies or other tracking technologies to serve relevant ads based on your browsing behavior.
+                    </p>
+                    <p>
+                        You can learn more about how Ezoic handles user data by visiting their{' '}
+                        <a
+                            href="https://www.ezoic.com/privacy-policy/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline"
+                        >
+                            Privacy Policy
+                        </a>.
+                    </p>
+                </div>
+
+                <div>
+                    <p className="font-semibold">4. Changes to This Policy</p>
+                    <p>
+                        We may update this policy from time to time. Any changes will be posted on this page.
+                    </p>
+                </div>
+
+                <div>
+                    <p className="font-semibold">5. Contact Us</p>
+                    <p>
+                        If you have any questions or concerns about our privacy practices, feel free to contact us at{' '}
+                        <a
+                            href="mailto:tennisofindia@gmail.com"
+                            className="text-blue-600 hover:underline"
+                        >
+                            info@tennisindialive.com
+                        </a>.
+                    </p>
+                </div>
+            </div>
         </div>
     );
 };
