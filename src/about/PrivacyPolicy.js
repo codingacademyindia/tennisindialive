@@ -10,53 +10,54 @@ const PrivacyPolicy = () => {
             <div className="space-y-4 text-sm sm:text-base leading-relaxed">
                 <div>
                     <p className="font-semibold">1. Data Collection</p>
-                    <p>We do not collect personally identifiable information from users directly on this website.</p>
+                    <p>We do not collect personally identifiable information directly from users of this website.</p>
                 </div>
 
                 <div>
                     <p className="font-semibold">2. Cookies</p>
                     <p>
-                        We use cookies to improve user experience and deliver personalized ads. These cookies
-                        may be used by third-party networks to understand your preferences.
+                        We use cookies and similar technologies to improve user experience and serve personalized ads.
+                        These may be managed by third-party services such as Ezoic, Google AdSense, or others.
                     </p>
                 </div>
 
                 <div>
-                    <p className="font-semibold">3. Advertising & Third Parties</p>
+                    <p className="font-semibold">3. Ezoic & Third-Party Advertising</p>
                     <p>
-                        This website may work with third-party ad providers such as <strong>Ezoic</strong>,{' '}
-                        <strong>Google AdSense</strong>, or others to serve advertisements. These providers may use cookies or other tracking technologies to serve relevant ads based on your browsing behavior.
-                    </p>
-                    <p>
-                        You can learn more about how Ezoic handles user data by visiting their{' '}
+                        This site uses <strong>Ezoic</strong> to manage all third-party advertising on the website. Ezoic
+                        serves content and advertisements when you visit the site, which may use cookies. You can review
+                        Ezoic’s privacy policy and how they handle data here:{" "}
                         <a
-                            href="https://www.ezoic.com/privacy-policy/"
+                            href="http://g.ezoic.net/privacy/tennisindialive.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline"
                         >
-                            Privacy Policy
+                            Ezoic Privacy Policy
                         </a>.
                     </p>
+
+                    {/* Required Ezoic Embed Snippet */}
+                    <span id="ezoic-privacy-policy-embed"></span>
                 </div>
 
                 <div>
                     <p className="font-semibold">4. Changes to This Policy</p>
                     <p>
-                        We may update this policy from time to time. Any changes will be posted on this page.
+                        We may update this policy periodically. Any major changes will be reflected here with the updated date.
                     </p>
                 </div>
 
                 <div>
-                    <p className="font-semibold">5. Contact Us</p>
+                    <p className="font-semibold">5. Contact</p>
                     <p>
-                        If you have any questions or concerns about our privacy practices, feel free to contact us at{' '}
+                        If you have any questions regarding this privacy policy, you can contact us at:{" "}
                         <a
                             href="mailto:tennisofindia@gmail.com"
                             className="text-blue-600 hover:underline"
                         >
-                            info@tennisindialive.com
-                        </a>.
+                            tennisofindia@gmail.com
+                        </a>
                     </p>
                 </div>
             </div>

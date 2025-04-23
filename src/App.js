@@ -14,7 +14,6 @@ import NotFound from './common/stateHandlers/NotFound';
 import FixtureResultsAll from './scores/ScoresAll';
 import PrivacyPolicy from './about/PrivacyPolicy';
 import AboutUs from './about/AboutUs';
-// import ContactUs from './about/ContactUs';
 import ContactUs from './contactus/ContactUs';
 import TermsOfService from './about/TermsOfService';
 import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
@@ -27,41 +26,51 @@ import PlayersListATP from './players/atp/PlayerATP';
 import RequestPlayerInfo from './contactus/RequestPlayerInfo';
 
 const App = () => {
-  const date = new Date();
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
-        <div className="flex flex-col min-h-screen w-full border sm:w-[70%] mx-auto">
-          <ResponsiveAppBar />
-          <div className="flex-grow">
-            <Routes>
-            <Route path="/" element={<FixtureResultsAll />} />
-            <Route path="/live-scores" element={<FixtureResultsAll />} />
+        <div className='flex flex-row w-full'>
+          <div className="flex flex-col min-h-screen w-full border sm:w-[70%] mx-auto">
+            <ResponsiveAppBar />
 
-            <Route path="/all" element={<FixtureResultsAll />} />
-              <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
-              <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
-              <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
-              <Route path="/rankings/official/:type" element={<OfficialRankings />} />
-              {/* <Route path="/rankings/current/atp" element={<ATPCurrentRankings />} />
-              <Route path="/rankings/live/wta" element={<WtaLiveRankings />} />
-              <Route path="/rankings/current/wta" element={<WtaCurrentRankings />} /> */}
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route path="/aboutus" element={<AboutUs />} />
-              <Route path="/contactus" element={<ContactUs />} />
-              <Route path="/termsofservice" element={<TermsOfService />} />
-              <Route path="/player/atp/:player" element={<PlayerProfileATP />} />
-              <Route path="/player/wta/:player" element={<PlayerProfileWTA />} />
-              <Route path="/players/atp" element={<PlayersListATP />} />
-              <Route path="/players/wta" element={<PlayersListWTA />} />
-              <Route path="/contactus" element={<ContactUs />} />
-              <Route path="/playerinforequest" element={<RequestPlayerInfo />} />
-              <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />
-              <Route path="*" element={<NotFound msg="Page Not Found" />}/>
-            </Routes>
+            {/* Ethical Monetag Direct Link Ad */}
+            <div className="w-full text-center py-2 bg-yellow-100 text-black text-sm">
+              <a
+                href="https://phoampor.top/4/9219647"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium hover:underline"
+              >
+                🎾 Check today's exclusive tennis partner offers!
+              </a>
+            </div>
+
+            <div className="flex-grow">
+              <Routes>
+                <Route path="/" element={<FixtureResultsAll />} />
+                <Route path="/live-scores" element={<FixtureResultsAll />} />
+                <Route path="/all" element={<FixtureResultsAll />} />
+                <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
+                <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
+                <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
+                <Route path="/rankings/official/:type" element={<OfficialRankings />} />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route path="/aboutus" element={<AboutUs />} />
+                <Route path="/contactus" element={<ContactUs />} />
+                <Route path="/termsofservice" element={<TermsOfService />} />
+                <Route path="/player/atp/:player" element={<PlayerProfileATP />} />
+                <Route path="/player/wta/:player" element={<PlayerProfileWTA />} />
+                <Route path="/players/atp" element={<PlayersListATP />} />
+                <Route path="/players/wta" element={<PlayersListWTA />} />
+                <Route path="/contactus" element={<ContactUs />} />
+                <Route path="/playerinforequest" element={<RequestPlayerInfo />} />
+                <Route path="/news" element={<RSSFeed feedUrl="https://www.espn.com/espn/rss/tennis/news" />} />
+                <Route path="*" element={<NotFound msg="Page Not Found" />} />
+              </Routes>
+            </div>
+
+            <Footer />
           </div>
-          <Footer />
         </div>
       </Router>
     </LocalizationProvider>

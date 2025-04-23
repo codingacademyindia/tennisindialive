@@ -2,12 +2,39 @@
 <html lang="en">
 
 <head>
+
   <meta charset="utf-8" />
   <link rel="icon" href="%PUBLIC_URL%/ball.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Live Updates of Tennis Players" />
+  <meta name="keywords"
+    content="Indian tennis live, Vaidehi Chaudhari, Sumit Nagal, Manas Dhamne, tennis India, ATP, WTA, scores, Rohan Bopanna, Yuki Bhambri, TennisIndia, rankings">
+  <meta property="og:title" content="Live Indian Tennis Scores">
+  <meta property="og:description"
+    content="Follow all Indian tennis players in ATP, WTA, ITF events with live scores and rankings.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tennisindialive.com">
+  <meta property="og:image" content="https://tennisindialive.com/tennis-og.jpg">
+  <!-- Add an OG image in your public folder -->
+  <meta name="robots" content="index, follow">
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/ball.png" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      "name": "Live Indian Tennis Scores",
+      "description": "Real-time scores and updates for Indian tennis players from ATP, WTA and ITF events.",
+      "url": "https://tennisindialive.com",
+      "startDate": "2025-04-07",
+      "location": {
+        "@type": "Place",
+        "name": "Online",
+        "address": "India"
+      }
+    }
+    </script>
+    
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -22,9 +49,10 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <meta name="google-adsense-account" content="ca-pub-6294891577483667">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6294891577483667"
-    crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://www.tennisindialive.com" />
+  <!-- <meta name="google-adsense-account" content="ca-pub-6294891577483667">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6294891577483667"
+    crossorigin="anonymous"></script> -->
   <title>Tennis India Live</title>
 </head>
 
@@ -40,8 +68,13 @@
 </script>
 
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div id="root">
+    <noscript>
+      <p>Track Indian tennis scores live on tennisindialive.com. 
+        Get real-time updates for Indian Tennis players - Ranking, Player Profiles, Schedule.  
+        Follow ATP, WTA, and ITF tournaments.</p>
+    </noscript>
+  </div>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
