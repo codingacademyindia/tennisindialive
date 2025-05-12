@@ -34,7 +34,7 @@ const App = () => {
             <ResponsiveAppBar />
 
             {/* Ethical Monetag Direct Link Ad */}
-            <div className="w-full text-center py-2 bg-yellow-100 text-black text-sm">
+            {/* <div className="w-full text-center py-2 bg-yellow-100 text-black text-sm">
               <a
                 href="https://phoampor.top/4/9219647"
                 target="_blank"
@@ -43,7 +43,7 @@ const App = () => {
               >
                 🎾 Check today's exclusive tennis partner offers!
               </a>
-            </div>
+            </div> */}
 
             <div className="flex-grow">
               <Routes>
