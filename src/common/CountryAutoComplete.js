@@ -38,22 +38,32 @@ function mapCountryLabel(alpha3, label) {
   }
 
 }
-
 const countryList = countries.getNames('en', { select: 'official' });
 const alpha2ToAlpha3 = countries.getAlpha2Codes();
+
+// Keep only countries that are relevant to tennis.
+// Edit the set below to add/remove alpha-3 country codes as needed.
+const tennisAlpha3 = new Set([
+  'USA','GBR','AUS','FRA','ESP','ITA','DEU','RUS','CAN','JPN',
+  'IND','ARG','BRA','NLD','CHE','BEL','CZE','SVK','POL','SWE',
+  'NZL','POR','KOR','KAZ'
+]);
+
 const countryArray = Object.keys(countryList)
-  .filter((key) => !excludedCountries.includes(alpha2ToAlpha3[key]))
-  .map((key) => {
-    let label = countryList[key];
-    const alpha3 = alpha2ToAlpha3[key];
+  .map((alpha2) => {
+    const alpha3 = alpha2ToAlpha3[alpha2];
+    if (!alpha3) return null;
+    if (!tennisAlpha3.has(alpha3.toUpperCase())) return null;
+    const label = countryList[alpha2];
     return {
-      code: key,
+      code: alpha2,
       label: mapCountryLabel(alpha3, label),
-      abbreviatedLabel: key, // ISO 3166-1 alpha-2 country code
+      abbreviatedLabel: alpha2, // ISO 3166-1 alpha-2 country code
       name: mapCountryName(alpha3, label),
       alpha3,
     };
-  });
+  })
+  .filter(Boolean);
 
 countryArray.unshift({
   "code": "",
@@ -62,7 +72,6 @@ countryArray.unshift({
   "name": "",
   "alpha3": "All"
 })
-console.log(countryArray)
 
 const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
   const theme = useTheme();
