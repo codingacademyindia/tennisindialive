@@ -44,9 +44,24 @@ const alpha2ToAlpha3 = countries.getAlpha2Codes();
 // Keep only countries that are relevant to tennis.
 // Edit the set below to add/remove alpha-3 country codes as needed.
 const tennisAlpha3 = new Set([
-  'USA','GBR','AUS','FRA','ESP','ITA','DEU','RUS','CAN','JPN',
-  'IND','ARG','BRA','NLD','CHE','BEL','CZE','SVK','POL','SWE',
-  'NZL','POR','KOR','KAZ'
+  // Broad list covering virtually every country that could "even remotely" produce tennis players.
+  // (Exclusions like 'ATA' can be handled via excludedCountries.)
+  'AFG','ALB','DZA','AND','AGO','ATG','ARG','ARM','AUS','AUT','AZE',
+  'BHS','BHR','BGD','BRB','BLR','BEL','BLZ','BEN','BTN','BOL','BIH','BWA',
+  'BRA','BRN','BGR','BFA','BDI','CPV','KHM','CMR','CAN','CAF','TCD','CHL','CHN',
+  'COL','COM','COG','COD','CRI','CIV','HRV','CUB','CYP','CZE','DNK','DJI','DMA',
+  'DOM','ECU','EGY','SLV','GNQ','ERI','EST','SWZ','ETH','FJI','FIN','FRA','GAB',
+  'GMB','GEO','DEU','GHA','GRC','GRD','GTM','GIN','GNB','GUY','HTI','HND','HKG',
+  'HUN','ISL','IND','IDN','IRN','IRQ','IRL','ISR','ITA','JAM','JPN','JOR','KAZ',
+  'KEN','KIR','KWT','KGZ','LAO','LVA','LBN','LSO','LBR','LBY','LIE','LTU','LUX',
+  'MAC','MDG','MWI','MYS','MDV','MLI','MLT','MHL','MRT','MUS','MEX','FSM','MDA',
+  'MCO','MNG','MNE','MAR','MOZ','MMR','NAM','NRU','NPL','NLD','NZL','NIC','NER',
+  'NGA','PRK','MKD','NOR','OMN','PAK','PLW','PAN','PNG','PRY','PER','PHL','POL',
+  'PRT','QAT','ROU','RUS','RWA','KNA','LCA','VCT','WSM','STP','SAU','SEN','SRB',
+  'SYC','SLE','SGP','SVK','SVN','SLB','SOM','ZAF','KOR','SSD','ESP','LKA','SDN',
+  'SUR','SWE','CHE','SYR','TJK','TZA','THA','TLS','TGO','TON','TTO','TUN','TUR',
+  'TKM','TUV','UGA','UKR','ARE','GBR','USA','URY','UZB','VUT','VAT','VEN','VNM',
+  'YEM','ZMB','ZWE','TWN','LBR','LBN' // LBR/LBN already listed above; harmless if duplicated
 ]);
 
 const countryArray = Object.keys(countryList)
