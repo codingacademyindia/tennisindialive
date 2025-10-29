@@ -65,9 +65,10 @@ const ContactUs = ({ handleClose }) => {
 
     return (
         <div className="m-1">
-            <Box className="flex flex-col md:flex-col lg:flex-row border-solid border-[0px] border-slate-400 mx-auto rounded-xl w-full">
+            <Box className="flex flex-col md:flex-col lg:flex-row border-solid border-[0px] bg-slate-100 border-slate-400 mx-auto rounded-xl w-full">
                 <Box className=" w-full p-4 md:p-8 text-center">
-                    <BiSolidMessageRoundedDetail size={70} className=" hidden md:block text-blue-800 mx-auto" />                    <div className="contact-title">Contact Us</div>
+                    <BiSolidMessageRoundedDetail size={70} className=" hidden md:block text-blue-800 mx-auto" />                 
+                    
                     <div className="contact-desc">
                         Got questions, feedback or observed any issues on this site? Hit us up—we love a good chat! 😃 If our site is useful to you, drop a few kind words and make our day even brighter! 🌟
                     </div>

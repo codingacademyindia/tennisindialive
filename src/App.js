@@ -24,13 +24,16 @@ import PlayerProfileATP from './players/atp/PlayerProfile';
 import PlayersListWTA from './players/wta/PlayerWTA';
 import PlayersListATP from './players/atp/PlayerATP';
 import RequestPlayerInfo from './contactus/RequestPlayerInfo';
+import SupportRibbon from './common/SupportUs';
 
 const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
-        <div className='flex flex-row w-full'>
+        <div className='flex flex-col w-full'>
           <div className="flex flex-col min-h-screen w-full border sm:w-[70%] mx-auto">
+            <SupportRibbon />
+
             <ResponsiveAppBar />
 
             {/* Ethical Monetag Direct Link Ad */}
@@ -70,6 +73,7 @@ const App = () => {
             </div>
 
             <Footer />
+
           </div>
         </div>
       </Router>
