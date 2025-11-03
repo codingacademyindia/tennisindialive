@@ -58,7 +58,7 @@ const HEADERS = {
 const tournamentName = ''
 
 const FixtureResultsAll = () => {
-    document.title = "Tennis India Live - Live Scores and Results"
+    document.title = "Tennis India Live | Countrywise Live Scores & Global Updates"
     let params = useParams();
     let day, month, year
     if (Object.keys(params).length === 0) {

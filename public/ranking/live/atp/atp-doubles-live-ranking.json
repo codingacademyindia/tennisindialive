@@ -37,30 +37,30 @@
     },
     {
         "rank": "5",
+        "player": "Harri Heliövaara",
+        "age": "36",
+        "country": "FIN",
+        "points": "7280",
+        "career_high": "3",
+        "change": "+2"
+    },
+    {
+        "rank": "5",
+        "player": "Henry Patten",
+        "age": "29",
+        "country": "GBR",
+        "points": "7280",
+        "career_high": "3",
+        "change": "+2"
+    },
+    {
+        "rank": "7",
         "player": "Horacio Zeballos",
         "age": "40",
         "country": "ARG",
         "points": "6915",
         "career_high": "1",
-        "change": ""
-    },
-    {
-        "rank": "6",
-        "player": "Harri Heliövaara",
-        "age": "36",
-        "country": "FIN",
-        "points": "6880",
-        "career_high": "3",
-        "change": "+1"
-    },
-    {
-        "rank": "6",
-        "player": "Henry Patten",
-        "age": "29",
-        "country": "GBR",
-        "points": "6880",
-        "career_high": "3",
-        "change": "+1"
+        "change": "-2"
     },
     {
         "rank": "8",
