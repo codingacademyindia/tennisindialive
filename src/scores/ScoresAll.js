@@ -26,7 +26,9 @@ import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import FluidAd from '../ads/FluidAd';
+import InArticleAd from '../ads/InArticleAd';
+import FluidAdImage from '../ads/FluidAdImage';
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -97,7 +99,7 @@ const FixtureResultsAll = () => {
     const [dialogOpenCountry, setDialogOpenCountry] = useState(false);
     const [playerId, setPlayerId] = React.useState(0);
     const [openPlayerInfo, setOpenPlayerInfo] = React.useState(false);
-    const [expanded, setExpanded] = React.useState(true);
+    const [expanded, setExpanded] = React.useState(false);
 
 
     const handleCloseCountry = () => {
@@ -505,9 +507,6 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if (p1.name.includes("Balaji") || p2.name.includes("Balaji")) {
-                console.log("")
-            }
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
             const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
@@ -594,7 +593,7 @@ const FixtureResultsAll = () => {
             // }
         }
         catch (err) {
-            console.error(err)
+            console.log(err)
         }
 
 
@@ -665,7 +664,7 @@ const FixtureResultsAll = () => {
                 }
             }
             catch (err) {
-                console.error(err)
+                console.log(err)
             }
 
         }
@@ -679,9 +678,6 @@ const FixtureResultsAll = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if (p1.name.includes("Balaji") || p2.name.includes("Balaji")) {
-                console.log("")
-            }
 
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
             const uniqueTournament = item.tournament;
@@ -713,7 +709,7 @@ const FixtureResultsAll = () => {
             // }
         }
         catch (err) {
-            console.error(err)
+            console.log(err)
         }
 
         return false
@@ -802,33 +798,176 @@ const FixtureResultsAll = () => {
         }
     }
 
+    // function recordDom() {
+    //     // Filter the rankingsData to only include tournaments with Indian players
+    //     let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+    //     const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
+
+    //     if (filteredRankingsData.length === 0) {
+    //         return <NotFound msg="No Results Found" />
+    //     }
+    //     else {
+    //         let objDom = filteredRankingsData.map((tournament, index) => (
+    //             <div key={tournament + index} className="border m-1 bg-slate-300">
+    //                 <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
+    //                 <ul>
+    //                     {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
+    //                         <li key={subIndex} className='m-2 border '>
+    //                             {fetchScoreRecord(item)}
+    //                         </li>
+    //                     ))}
+    //                 </ul>
+    //             </div>
+    //         ));
+    //         return objDom
+    //     }
+
+
+    // }
+
+    // function recordDom() {
+    //     // Filter the rankingsData to only include tournaments with Indian players
+    //     let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+    //     const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
+
+    //     if (filteredRankingsData.length === 0) {
+    //         return <NotFound msg="No Results Found" />
+    //     }
+    //     else {
+    //         // Build result array and insert FluidAd after every 3rd or 4th tournament index
+    //         const result = [];
+    //         filteredRankingsData.forEach((tournament, index) => {
+    //             result.push(
+    //                 <div key={tournament + index} className="border m-1 bg-slate-300">
+    //                     <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
+    //                     <ul>
+    //                         {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
+    //                             <li key={subIndex} className='m-2 border '>
+    //                                 {fetchScoreRecord(item)}
+    //                             </li>
+    //                         ))}
+    //                     </ul>
+    //                 </div>
+    //             );
+
+    //             // Insert ad after every 4th item OR after every 3rd item (but not duplicate when it's also a 4th)
+    //             const position = index + 1;
+    //             const shouldInsertAd = (position % 4 === 0);
+    //             if (shouldInsertAd) {
+    //                 result.push(
+    //                     <div key={`ad-${index}`} className="m-2">
+    //                         <FluidAd />
+    //                     </div>
+    //                 );
+    //             }
+    //         });
+
+    //         return result
+    //     }
+
+
+    // }
+
+    // function recordDom() {
+    //     let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
+    //     const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
+
+    //     if (filteredRankingsData.length === 0) {
+    //         return <NotFound msg="No Results Found" />
+    //     }
+    //     else {
+    //         const result = [];
+    //         let adCounter = 0; // Counter to rotate between 3 ad types
+
+    //         filteredRankingsData.forEach((tournament, index) => {
+    //             result.push(
+    //                 <div key={tournament + index} className="border m-1 bg-slate-300">
+    //                     <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
+    //                     <ul>
+    //                         {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
+    //                             <li key={subIndex} className='m-2 border '>
+    //                                 {fetchScoreRecord(item)}
+    //                             </li>
+    //                         ))}
+    //                     </ul>
+    //                 </div>
+    //             );
+
+    //             // Insert rotating ads after every 4th item
+    //             const position = index + 1;
+    //             if (position % 4 === 0) {
+    //                 result.push(
+    //                     <div key={`ad-${index}`} className="m-2">
+    //                         {adCounter % 3 === 0 ? <FluidAdImage /> :
+    //                             adCounter % 3 === 1 ? <FluidAd /> :
+    //                                 <InArticleAd />}
+    //                     </div>
+    //                 );
+    //                 adCounter++; // Increment counter to rotate next ad
+    //             }
+    //         });
+
+    //         return result;
+    //     }
+    // }
     function recordDom() {
-        // Filter the rankingsData to only include tournaments with Indian players
-        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData))
-        const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
+        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData));
+        const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament =>
+            hasIndianInAllScores(rankingsData[tournament], tournament)
+        );
 
         if (filteredRankingsData.length === 0) {
-            return <NotFound msg="No Results Found" />
+            return <NotFound msg="No Results Found" />;
         }
-        else {
-            let objDom = filteredRankingsData.map((tournament, index) => (
-                <div key={tournament + index} className="border m-1 bg-slate-300">
-                    <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semi-bold'>{getScoreHeader(tournament)}</div>
+
+        const result = [];
+        let adCounter = 0;
+
+        filteredRankingsData.forEach((tournament, index) => {
+            const position = index + 1;
+
+            // Push tournament block
+            result.push(
+                <div key={tournament} className="border m-1 bg-slate-300">
+                    <div className='text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg font-semibold'>
+                        {getScoreHeader(tournament)}
+                    </div>
                     <ul>
                         {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
-                            <li key={subIndex} className='m-2 border '>
+                            <li key={subIndex} className='m-2 border'>
                                 {fetchScoreRecord(item)}
                             </li>
                         ))}
                     </ul>
                 </div>
-            ));
-            return objDom
-        }
+            );
 
+            // Insert ad after every 4th tournament
+            if (position % 4 === 0) {
+                const adType = adCounter % 3;
+                const adComponent = adType === 0 ? <FluidAdImage />
+                    : adType === 1 ? <FluidAd />
+                        : <InArticleAd />;
 
+                const adName = adType === 0 ? "FluidAdImage"
+                    : adType === 1 ? "FluidAd"
+                        : "InArticleAd";
+
+                result.push(
+                    <div
+                        key={`ad-${position}-${adName}`}
+                        className="m-2 p-4 border border-dashed border-gray-400 bg-gray-50 text-center"
+                        title={`Ad Slot: ${adName} (Position: ${position})`} // Hover to debug
+                    >
+                        {adComponent}
+                    </div>
+                );
+                adCounter++;
+            }
+        });
+
+        return result;
     }
-
     let statusButtonCss = "border p-1 bg-blue-900 text-white w-[100px] rounded-xl"
     let statusButtonActive = "border p-1 bg-blue-500 border-b-4 border-blue-900 text-white w-[100px] rounded-xl"
 

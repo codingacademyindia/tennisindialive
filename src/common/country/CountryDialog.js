@@ -47,7 +47,6 @@ const CountryDialog = ({ open, onClose }) => {
     setCountryData(countryArray);
   }, []);
 
-  console.log(countryData)
   return (
     <Dialog
       open={open}

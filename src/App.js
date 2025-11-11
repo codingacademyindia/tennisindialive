@@ -25,6 +25,10 @@ import PlayersListWTA from './players/wta/PlayerWTA';
 import PlayersListATP from './players/atp/PlayerATP';
 import RequestPlayerInfo from './contactus/RequestPlayerInfo';
 import SupportRibbon from './common/SupportUs';
+import AdUnit from './ads/AdUnit';
+import AdUnitTop from './ads/AdBannerTop';
+import AdRelaxedAd from './ads/AdBannerBottom';
+import FluidAd from './ads/FluidAd';
 
 const App = () => {
   return (
@@ -32,8 +36,8 @@ const App = () => {
       <Router>
         <div className='flex flex-col w-full'>
           <div className="flex flex-col min-h-screen w-full border sm:w-[70%] mx-auto">
-            <SupportRibbon />
-
+            {/* <AdUnitTop /> */}
+            <FluidAd />
             <ResponsiveAppBar />
 
             {/* Ethical Monetag Direct Link Ad */}
@@ -71,7 +75,7 @@ const App = () => {
                 <Route path="*" element={<NotFound msg="Page Not Found" />} />
               </Routes>
             </div>
-
+            <AdUnitTop />
             <Footer />
 
           </div>
