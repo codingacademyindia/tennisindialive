@@ -29,6 +29,7 @@ import AdUnit from './ads/AdUnit';
 import AdUnitTop from './ads/AdBannerTop';
 import AdRelaxedAd from './ads/AdBannerBottom';
 import FluidAd from './ads/FluidAd';
+import FixtureResultsCountry from './scores/ScoresAllCountry';
 
 const App = () => {
   return (
@@ -54,8 +55,9 @@ const App = () => {
 
             <div className="flex-grow">
               <Routes>
-                <Route path="/" element={<FixtureResultsAll />} />
-                <Route path="/live-scores" element={<FixtureResultsAll />} />
+                <Route path="/" element={<FixtureResultsCountry />} />
+                <Route path="/live-scores" element={<FixtureResultsCountry />} />
+                <Route path="/live-scores/:country" element={<FixtureResultsCountry />} />
                 <Route path="/all" element={<FixtureResultsAll />} />
                 <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
                 <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />

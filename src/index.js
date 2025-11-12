@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ReactGA from 'react-ga4';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactGA.initialize('G-PY89LSN4V3');
 
@@ -14,6 +16,18 @@ ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.loca
 root.render(
   <React.StrictMode>
     <App />
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
   </React.StrictMode>
 );
 
