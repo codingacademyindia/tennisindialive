@@ -15,22 +15,23 @@ import CountryAutocomplete from '../../common/CountryAutoComplete';
 
 const OfficialRankings = () => {
     const { type } = useParams();
+    const { countryAlpha3 } = useParams();
     const [rankingsData, setRankingsData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [expanded, setExpanded] = useState(true);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [selectedCountryCode, setSelectedCountryCode] = useState('');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState('india');
+    const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(countryAlpha3 || 'ind');
 
     const [excludeUnchanged, setExcludeUnchanged] = useState(false);
     const [pageHeader, setPageHeader] = useState("Official Ranking");
     const [rankingTimestamp, setRankingTimestamp] = useState("");
     const [pageRefreshTime, setPageRefreshTime] = useState("");
 
-    document.title = `Tennis India Live - ${type?.toUpperCase()} Official Rankings`;
+    // document.title = `Tennis India Live - ${type?.toUpperCase()} Official Rankings`;
 
     function getFilteredData(data) {
         if (data) {
@@ -63,7 +64,7 @@ const OfficialRankings = () => {
 
         setTimeout(() => {
             toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            // window.location.href = `/live-scores/${newValue.alpha3.toLowerCase()}`;
+            window.location.href = `/rankings/official/${type}/${newValue.alpha3.toLowerCase()}`;
         }, 800);
     };
 
@@ -141,6 +142,12 @@ const OfficialRankings = () => {
     return (
         <div>
             {/* Header Section */}
+              <SEO
+                title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Rankings & Live Updates  | Tennis India Official Rankings`}
+                description={`Real-time tennis rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA`}
+                url={`https://tennisindialive.com/rankings/official/${type}/${selectedCountry}`}
+            />
             <div className='flex flex-wrap sm:flex-row sm:space-x-4 w-full bg-slate-200 items-center p-2 space-y-2 sm:space-y-0'>
                 <div className='text-xl font-bold'>{pageHeader}</div>
                 {/* <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} /> */}

@@ -257,16 +257,7 @@ function ResponsiveAppBar() {
                             Live Scores
                         </Button>
 
-                        {/* Players */}
-                        <Button
-                            onClick={handleOpenPlayersMenu}
-                            sx={{
-                                color: 'white', ml: 2,
-                                backgroundColor: activePage === "player" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                                fontWeight: activePage === "player" ? 'bold' : 'normal',
-                            }}>
-                            Players
-                        </Button>
+                      
                         <Menu
                             anchorEl={anchorElPlayers}
                             open={Boolean(anchorElPlayers)}
@@ -323,6 +314,16 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Menu>
+                          {/* Players */}
+                        <Button
+                            onClick={handleOpenPlayersMenu}
+                            sx={{
+                                color: 'white', ml: 2,
+                                backgroundColor: activePage === "player" ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                                fontWeight: activePage === "player" ? 'bold' : 'normal',
+                            }}>
+                            Players
+                        </Button>
                         {/* <Button
                             onClick={() => (window.location.href = `/news`)}
                             sx={{

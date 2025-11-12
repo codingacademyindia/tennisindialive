@@ -30,6 +30,7 @@ import AdUnitTop from './ads/AdBannerTop';
 import AdRelaxedAd from './ads/AdBannerBottom';
 import FluidAd from './ads/FluidAd';
 import FixtureResultsCountry from './scores/ScoresAllCountry';
+import WelcomeModal from './common/WelcomeModal';
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
             {/* <AdUnitTop /> */}
             <FluidAd />
             <ResponsiveAppBar />
+            <WelcomeModal />
 
             {/* Ethical Monetag Direct Link Ad */}
             {/* <div className="w-full text-center py-2 bg-yellow-100 text-black text-sm">
@@ -63,6 +65,9 @@ const App = () => {
                 <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
                 <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
                 <Route path="/rankings/official/:type" element={<OfficialRankings />} />
+
+                <Route path="/rankings/live/:type/:countryAlpha3" element={<ATPLiveRankingsJSON />} />
+                <Route path="/rankings/official/:type/:countryAlpha3" element={<OfficialRankings />} />
                 <Route path="/privacypolicy" element={<PrivacyPolicy />} />
                 <Route path="/aboutus" element={<AboutUs />} />
                 <Route path="/contactus" element={<ContactUs />} />

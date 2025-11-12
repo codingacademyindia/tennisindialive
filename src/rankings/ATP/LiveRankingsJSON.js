@@ -13,20 +13,21 @@ import CountryAutocomplete from '../../common/CountryAutoComplete';
 
 const ATPCurrentRankings = () => {
     const { type } = useParams();
+    const { countryAlpha3 } = useParams();
     const [rankingsData, setRankingsData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [selectedCountryCode, setSelectedCountryCode] = useState('');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState('india');
+    const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(countryAlpha3 || 'ind');
     const [pageHeader, setPageHeader] = useState("Live Ranking");
     const [rankingTimestamp, setRankingTimestamp] = useState("");
     const [pageDesc, setPageDesc] = useState("This page provides real-time updates of ATP and WTA live rankings across Singles and Doubles categories. Use the country filter to focus on Indian players or view all global players.");
     const [expanded, setExpanded] = useState(true);
 
-    document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
+    // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
 
     function getFilteredData(data) {
         if (data) {
@@ -59,8 +60,8 @@ const ATPCurrentRankings = () => {
         await setItem('countryAlpha3', newValue ? newValue.alpha3.toLowerCase() : null);
 
         setTimeout(() => {
-            toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            // window.location.href = `/live-scores/${newValue.alpha3.toLowerCase()}`;
+            toast.success("Saved Selected Country, Loading rankings now...", { autoClose: 2000 });
+            window.location.href = `/rankings/live/${type}/${newValue.alpha3.toLowerCase()}`;
         }, 800);
     };
 
@@ -142,6 +143,12 @@ const ATPCurrentRankings = () => {
 
     return (
         <div>
+           <SEO
+                title={`${selectedCountry.toUpperCase()} - ${type.toUpperCase()} Countrywise Tennis Rankings & Live Updates  | Tennis India Live Rankings`}
+                description={`Real-time tennis rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA`}
+                url={`https://tennisindialive.com/rankings/live/${type}/${selectedCountry}`}
+            />
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-2'>
                 <div className='text-xl font-bold'>{pageHeader}</div>
                 {/* <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} /> */}
