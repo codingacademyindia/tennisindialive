@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import ReactGA from 'react-ga4';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { HelmetProvider } from 'react-helmet-async';
 
 ReactGA.initialize('G-PY89LSN4V3');
 
@@ -15,7 +16,9 @@ ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.loca
 
 root.render(
   <React.StrictMode>
-    <App />
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
     <ToastContainer
       position="top-right"
       autoClose={3000}

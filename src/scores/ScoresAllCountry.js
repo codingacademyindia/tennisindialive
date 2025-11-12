@@ -30,6 +30,8 @@ import FluidAd from '../ads/FluidAd';
 import InArticleAd from '../ads/InArticleAd';
 import FluidAdImage from '../ads/FluidAdImage';
 import { toast } from 'react-toastify';
+import SEO from '../common/seo/SEO';
+
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -61,7 +63,6 @@ const HEADERS = {
 const tournamentName = ''
 
 const FixtureResultsCountry = () => {
-    document.title = "Tennis India Live | Countrywise Live Scores & Global Updates"
     let params = useParams();
     console.log(params)
     let day, month, year
@@ -82,8 +83,9 @@ const FixtureResultsCountry = () => {
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished", "interrupted"]);
-    const [selectedCountry, setSelectedCountry] = useState(params.country ?? 'india');
-    const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCountryCode, setSelectedCountryCode] = useState('');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country ?? '');
     const [indianCount, setIndianCount] = useState(0);
     const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
     const { data: h2hData, loading: loadingH2H, error: errorH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
@@ -155,12 +157,14 @@ const FixtureResultsCountry = () => {
         console.log("Selected country code:", newCountryCode);
         setSelectedCountry(newCountryCode);
         setSelectedCountryCode(newValue ? newValue.code : null)
+        setSelectedCountryAlpha3(newValue ? newValue.alpha3.toLowerCase() : null);
         await setItem('country', newCountryCode);
         await setItem('countryCode', newValue ? newValue.code : null);
-        
+        await setItem('countryAlpha3', newValue ? newValue.alpha3.toLowerCase() : null);
+
         setTimeout(() => {
             toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            window.location.href = `/live-scores/${newCountryCode}`;
+            window.location.href = `/live-scores/${newValue.alpha3.toLowerCase()}`;
         }, 800);
     };
 
@@ -256,8 +260,10 @@ const FixtureResultsCountry = () => {
         const fetchValue = async () => {
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
+             const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
+            setSelectedCountryAlpha3(storedCountryAlpha3 ||  'ind');
         };
 
         fetchValue();
@@ -516,9 +522,9 @@ const FixtureResultsCountry = () => {
             const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('double')) {
-                    if ((selectedCountry === '' ||
-                        ((p1.country && p1.country.name.toLowerCase() === selectedCountry) ||
-                            (p2.country && p2.country.name.toLowerCase() === selectedCountry))
+                    if ((selectedCountryAlpha3 === '' ||
+                        ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3) ||
+                            (p2.country && p2.country.alpha3.toLowerCase() ===   selectedCountryAlpha3))
                     ) && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
                             <div className="flex space-x-2 w-full h-full flex-row items-center  ">
@@ -549,12 +555,12 @@ const FixtureResultsCountry = () => {
                     const p2a = p2.subTeams[0];
                     const p2b = p2.subTeams[1];
                     const countries = [
-                        (p1a.country) ? p1a.country.name.toLowerCase() : null,
-                        (p1a.country) ? p1b.country.name.toLowerCase() : null,
-                        (p1a.country) ? p2a.country.name.toLowerCase() : null,
-                        (p1a.country) ? p2b.country.name.toLowerCase() : null
+                        (p1a.country) ? p1a.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p1b.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p2a.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p2b.country.alpha3.toLowerCase() : null
                     ];
-                    if ((countries.includes(selectedCountry) || selectedCountry === '') && matchStatusList.includes(item?.status?.type)) {
+                    if ((countries.includes(selectedCountryAlpha3) || selectedCountryAlpha3 === '') && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`}>
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
@@ -598,7 +604,7 @@ const FixtureResultsCountry = () => {
             // }
         }
         catch (err) {
-            console.log(err)
+            console.log("error in getPlayerDom1")
         }
 
 
@@ -648,7 +654,7 @@ const FixtureResultsCountry = () => {
         if (uniqueTournament.name) {
             try {
 
-                if (hasIndian(item)) {
+                if (hasCountry(item)) {
 
                     objDom = (<div className='flex flex-col bg-slate-200 border'>
                         <div className='bg-indigo-300'>{fetchH2HStatsDom(item)}</div>
@@ -669,7 +675,7 @@ const FixtureResultsCountry = () => {
                 }
             }
             catch (err) {
-                console.log(err)
+                console.log("error in fetchScoreRecord")
             }
 
         }
@@ -714,18 +720,65 @@ const FixtureResultsCountry = () => {
             // }
         }
         catch (err) {
-            console.log(err)
+            console.log("error in checking country")
+        }
+
+        return false
+    }
+
+    function hasCountry(item) {
+
+        try {
+            let p1 = item['homeTeam']
+            let p2 = item['awayTeam']
+            if (p1.name.toLowerCase().includes("smejkalova")){
+                console.log("Found smejkalova in hasCountry")
+            }
+            // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
+            const uniqueTournament = item.tournament;
+            if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
+                if (!uniqueTournament.name.toLowerCase().includes('double')) {
+                    if ((selectedCountryAlpha3 === '' ||
+                        ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()) ||
+                            (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()))
+                    ) && matchStatusList.includes(item?.status?.type)) {
+                        return true
+
+                    }
+                } else {
+                    const p1a = p1.subTeams[0];
+                    const p1b = p1.subTeams[1];
+                    const p2a = p2.subTeams[0];
+                    const p2b = p2.subTeams[1];
+                    const countries = [
+                        (p1a.country) ? p1a.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p1b.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p2a.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p2b.country.alpha3.toLowerCase() : null
+                    ];
+                    if ((selectedCountryAlpha3 === '' || countries.includes(selectedCountryAlpha3.toLowerCase())) && matchStatusList.includes(item?.status?.type)) {
+                        return true
+                    }
+                }
+            }
+            // }
+        }
+        catch (err) {
+            console.log("error in checking country")
         }
 
         return false
     }
 
 
-
     function hasIndianInAllScores(allTournamentScore, tournament) {
-        let hasIndianList = allTournamentScore.map(item => hasIndian(item))
+        let hasIndianList = allTournamentScore.map(item => hasCountry(item))
         return hasIndianList.includes(true)
     }
+
+    console.log("selectedCountryCode:", selectedCountryCode);
+    console.log("selectedCountry:", selectedCountry);
+    console.log("selectedCountryAlpha3:", selectedCountryAlpha3);
 
 
     // Example usage
@@ -938,7 +991,7 @@ const FixtureResultsCountry = () => {
                         {getScoreHeader(tournament)}
                     </div>
                     <ul>
-                        {rankingsData[tournament].filter(hasIndian).map((item, subIndex) => (
+                        {rankingsData[tournament].filter(hasCountry).map((item, subIndex) => (
                             <li key={subIndex} className='m-2 border'>
                                 {fetchScoreRecord(item)}
                             </li>
@@ -991,6 +1044,12 @@ const FixtureResultsCountry = () => {
 
     return (
         <div>
+            <SEO
+                title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Scores & Live Updates  | Tennis India Live Scores`}
+                description={`Real-time tennis scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis scores, ${selectedCountry} tennis, live scores, ATP, WTA`}
+                url={`https://tennisindialive.com/live-scores/${selectedCountry}`}
+            />
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats
                 open={openMatchStat}
