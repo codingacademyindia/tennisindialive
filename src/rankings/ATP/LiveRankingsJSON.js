@@ -5,6 +5,11 @@ import { useParams } from 'react-router-dom';
 import CustomizedTables from '../../common/grids/CustomizedTablesJSON';
 import Loader from '../../common/stateHandlers/LoaderState';
 import CountryButtonGroup from '../../common/toolbar/CountryButtonGroup'
+import { toast } from 'react-toastify';
+import SEO from '../../common/seo/SEO';
+import { setItem, getItem } from '../../indexDb/indexedDB';
+import CountryAutocomplete from '../../common/CountryAutoComplete';
+
 
 const ATPCurrentRankings = () => {
     const { type } = useParams();
@@ -13,7 +18,9 @@ const ATPCurrentRankings = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState('ind');
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCountryCode, setSelectedCountryCode] = useState('');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState('');
     const [pageHeader, setPageHeader] = useState("Live Ranking");
     const [rankingTimestamp, setRankingTimestamp] = useState("");
     const [pageDesc, setPageDesc] = useState("This page provides real-time updates of ATP and WTA live rankings across Singles and Doubles categories. Use the country filter to focus on Indian players or view all global players.");
@@ -24,9 +31,9 @@ const ATPCurrentRankings = () => {
     function getFilteredData(data) {
         if (data) {
             let rankingsDataCopy = JSON.parse(JSON.stringify(data));
-            if (selectedCountry.toLowerCase() !== 'all') {
+            if (selectedCountryAlpha3.toLowerCase() !== 'all') {
                 rankingsDataCopy = rankingsDataCopy.filter(item =>
-                    item.country.toLowerCase() === selectedCountry.toLowerCase()
+                    item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase()
                 );
             }
             setFilteredData(rankingsDataCopy);
@@ -40,6 +47,35 @@ const ATPCurrentRankings = () => {
             setSelectedCountry("all");
         }
     };
+
+    const handleCountryChange = async (newCountryCode, newValue) => {
+        toast.info("Saving your country...", { autoClose: 1000 });
+        console.log("Selected country code:", newCountryCode);
+        setSelectedCountry(newCountryCode);
+        setSelectedCountryCode(newValue ? newValue.code : null)
+        setSelectedCountryAlpha3(newValue ? newValue.alpha3.toLowerCase() : null);
+        await setItem('country', newCountryCode);
+        await setItem('countryCode', newValue ? newValue.code : null);
+        await setItem('countryAlpha3', newValue ? newValue.alpha3.toLowerCase() : null);
+
+        setTimeout(() => {
+            toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
+            // window.location.href = `/live-scores/${newValue.alpha3.toLowerCase()}`;
+        }, 800);
+    };
+
+    useEffect(() => {
+        const fetchValue = async () => {
+            const storedValue = await getItem('country');
+            const storedCountryCode = await getItem('countryCode');
+            const storedCountryAlpha3 = await getItem('countryAlpha3');
+            setSelectedCountry(storedValue || 'india');
+            setSelectedCountryCode(storedCountryCode || 'IN');
+            setSelectedCountryAlpha3(storedCountryAlpha3 || 'ind');
+        };
+
+        fetchValue();
+    }, []);
 
     const handleRefresh = () => {
         setRefreshScore(!refreshScore);
@@ -102,13 +138,17 @@ const ATPCurrentRankings = () => {
         setLoading(true);
         getFilteredData(rankingsData);
         setLoading(false);
-    }, [selectedCountry]);
+    }, [selectedCountry, selectedCountryAlpha3]);
 
     return (
         <div>
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-2'>
                 <div className='text-xl font-bold'>{pageHeader}</div>
-                <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} />
+                {/* <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} /> */}
+                <CountryAutocomplete
+                    selectedCountry={selectedCountry}
+                    handleCountryChange={handleCountryChange}
+                />
                 <div className='flex flex-row space-x-1 text-xs'>
                     <span className='font-bold'>Updated At:</span>
                     <span>{rankingTimestamp}</span>

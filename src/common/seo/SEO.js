@@ -1,15 +1,31 @@
 // src/components/SEO.js
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import countries from 'i18n-iso-countries';
+import enLocale from 'i18n-iso-countries/langs/en.json';
+
+countries.registerLocale(enLocale);
 
 const SEO = ({
   title = 'Tennis India Live | Countrywise Tennis Scores & Global Updates',
   description = 'Track live tennis scores countrywise from ATP, WTA & ITF events..',
   keywords = 'countrywise tennis scores, live tennis, ATP, WTA, ITF, tennis rankings',
-  url = window.location.href,
-  jsonLd = null, // Optional: pass custom JSON-LD
+  url = typeof window !== 'undefined' ? window.location.href : '',
+  jsonLd = null,
 }) => {
-  // Default JSON-LD (WebPage + Organization)
+  // Extract country alpha-3 code from URL (e.g., "aus" from "/live-scores/aus")
+  const path = typeof window !== 'undefined' ? window.location.pathname : '';
+  const countryAlpha3 = path.split('/').pop()?.toUpperCase();
+
+  // Convert alpha-3 → alpha-2 for flag CDN
+  const alpha2 = countries.alpha3ToAlpha2(countryAlpha3);
+
+  // Default favicon if no valid country found
+  const faviconUrl = alpha2
+    ? `https://flagcdn.com/32x24/${alpha2.toLowerCase()}.png`
+    : 'https://www.tennisindialive.com/ball.png';
+
+  // JSON-LD
   const defaultJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -36,13 +52,13 @@ const SEO = ({
     "specialFeature": "Countrywise tennis scores and player rankings — filter matches by nation..."
   };
 
-  // Merge with custom jsonLd if provided
   const structuredData = jsonLd ? { ...defaultJsonLd, ...jsonLd } : defaultJsonLd;
 
   return (
     <Helmet>
       {/* Basic */}
       <title>{title}</title>
+      <link rel="icon" type="image/png" href={faviconUrl} />
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={url} />
@@ -60,7 +76,7 @@ const SEO = ({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content="https://www.tennisindialive.com/og-default.jpg" />
 
-      {/* JSON-LD Structured Data */}
+      {/* JSON-LD */}
       <script type="application/ld+json">
         {JSON.stringify(structuredData, null, 2)}
       </script>

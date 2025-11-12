@@ -50,9 +50,9 @@ export default function CustomizedTablesJSON(props) {
                 {row.rank}
               </StyledTableCell>
               <StyledTableCell component="th" scope="row">
-                <a href={`/player/${row.player.replaceAll(" ", "-").toLowerCase()}`} target="_blank" className='hover:bg-blue-300 w-full p-2'>
+                {/* <a href={`/player/${row.player.replaceAll(" ", "-").toLowerCase()}`} target="_blank" className='hover:bg-blue-300 w-full p-2'> */}
                   {row.player}
-                </a>
+                {/* </a> */}
 
               </StyledTableCell>
 
