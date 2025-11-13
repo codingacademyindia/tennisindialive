@@ -31,6 +31,7 @@ import InArticleAd from '../ads/InArticleAd';
 import FluidAdImage from '../ads/FluidAdImage';
 import { toast } from 'react-toastify';
 import SEO from '../common/seo/SEO';
+import PushNotifier from '../common/PushNotifier';
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -77,6 +78,7 @@ const FixtureResultsCountry = () => {
     year = params.year ?? yearCurrent
 
     const [rankingsData, setRankingsData] = useState(null);
+    const [rawData, setRawData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshScore, setRefreshScore] = useState(false);
@@ -220,6 +222,23 @@ const FixtureResultsCountry = () => {
 
     }
 
+    function filterLiveMatches(matches, countryAlpha3 = null) {
+        if (matches === null) {
+            return [];
+        }
+        return matches.filter((m) => {
+            const isLive =
+                m.status?.type === "inprogress";
+
+            const byCountry =
+                !countryAlpha3 ||
+                m.homeTeam?.country?.alpha3 === countryAlpha3 ||
+                m.awayTeam?.country?.alpha3 === countryAlpha3;
+
+            return isLive && byCountry;
+        });
+    }
+
 
 
     useEffect(() => {
@@ -233,6 +252,7 @@ const FixtureResultsCountry = () => {
             };
             try {
                 const response = await axios.request(options);
+                setRawData(response.data['events']);
                 setRankingsData(groupItems(response.data['events']));
                 setLoading(false);
             } catch (error) {
@@ -245,7 +265,9 @@ const FixtureResultsCountry = () => {
 
         return () => clearInterval(intervalId); // 
     }, [day, month, year, refreshScore]);
-
+    console.log("Raw Data:", rawData);
+    console.log("Selected Country Alpha3:", selectedCountryAlpha3);
+    console.log(filterLiveMatches(rawData, selectedCountryAlpha3))
     useEffect(() => {
         if (matchStatus.includes("all")) {
             setMatchStatusList(["notstarted", "inprogress", "canceled", "finished", 'interrupted'])
@@ -260,14 +282,14 @@ const FixtureResultsCountry = () => {
         const fetchValue = async () => {
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
-             const storedCountryAlpha3 = await getItem('countryAlpha3');
+            const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(storedCountryAlpha3 ||  'ind');
+            setSelectedCountryAlpha3(params.country || storedCountryAlpha3 || 'ind');
         };
 
         fetchValue();
-    }, []);
+    }, [params.country]);
 
 
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
@@ -524,7 +546,7 @@ const FixtureResultsCountry = () => {
                 if (!uniqueTournament.name.toLowerCase().includes('double')) {
                     if ((selectedCountryAlpha3 === '' ||
                         ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3) ||
-                            (p2.country && p2.country.alpha3.toLowerCase() ===   selectedCountryAlpha3))
+                            (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3))
                     ) && matchStatusList.includes(item?.status?.type)) {
                         return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
                             <div className="flex space-x-2 w-full h-full flex-row items-center  ">
@@ -731,7 +753,7 @@ const FixtureResultsCountry = () => {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if (p1.name.toLowerCase().includes("smejkalova")){
+            if (p1.name.toLowerCase().includes("smejkalova")) {
                 console.log("Found smejkalova in hasCountry")
             }
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
@@ -1044,6 +1066,7 @@ const FixtureResultsCountry = () => {
 
     return (
         <div>
+            {/* <PushNotifier sendNow={true} /> */}
             <SEO
                 title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Scores & Live Updates  | Tennis India Live Scores`}
                 description={`Real-time tennis scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}

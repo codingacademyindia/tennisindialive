@@ -29,6 +29,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FluidAd from '../ads/FluidAd';
 import InArticleAd from '../ads/InArticleAd';
 import FluidAdImage from '../ads/FluidAdImage';
+import PushNotifier from '../common/PushNotifier';
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
         color: 'white',
@@ -233,7 +234,7 @@ const FixtureResultsAll = () => {
 
         fetchRankings();
         const intervalId = setInterval(fetchRankings, 120000); // 
-
+        
         return () => clearInterval(intervalId); // 
     }, [day, month, year, refreshScore]);
 
@@ -986,6 +987,7 @@ const FixtureResultsAll = () => {
 
     return (
         <div>
+            
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats
                 open={openMatchStat}

@@ -31,8 +31,27 @@ import AdRelaxedAd from './ads/AdBannerBottom';
 import FluidAd from './ads/FluidAd';
 import FixtureResultsCountry from './scores/ScoresAllCountry';
 import WelcomeModal from './common/WelcomeModal';
+import { useEffect } from 'react';
+import { registerPush } from './pushSubscription';
+
+
 
 const App = () => {
+  const [subscribed, setSubscribed] = React.useState(false);
+
+
+    // Step 1: Register for push once
+    useEffect(() => {
+      const setup = async () => {
+        try {
+          await registerPush();
+          setSubscribed(true);
+        } catch (err) {
+          console.error("Push registration failed:", err);
+        }
+      };
+      setup();
+    }, []);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>

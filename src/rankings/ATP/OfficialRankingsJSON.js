@@ -75,7 +75,7 @@ const OfficialRankings = () => {
             const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(storedCountryAlpha3 || 'ind');
+            setSelectedCountryAlpha3(countryAlpha3 ||storedCountryAlpha3  ||'ind');
         };
 
         fetchValue();
