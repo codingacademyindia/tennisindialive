@@ -75,12 +75,23 @@ const OfficialRankings = () => {
             const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(countryAlpha3 ||storedCountryAlpha3  ||'ind');
+            setSelectedCountryAlpha3(countryAlpha3 || storedCountryAlpha3 || 'ind');
         };
 
         fetchValue();
     }, []);
 
+    function getFilteredDataValue(data) {
+        if (data) {
+            let rankingsDataCopy = JSON.parse(JSON.stringify(data));
+            if (selectedCountryAlpha3.toLowerCase() !== 'all') {
+                rankingsDataCopy = rankingsDataCopy.filter(item =>
+                    item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase()
+                );
+            }
+            return rankingsDataCopy
+        }
+    }
 
     const handleRefresh = () => {
         setRefreshScore(!refreshScore);
@@ -142,7 +153,7 @@ const OfficialRankings = () => {
     return (
         <div>
             {/* Header Section */}
-              <SEO
+            <SEO
                 title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Rankings & Live Updates  | Tennis India Official Rankings`}
                 description={`Real-time tennis rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
                 keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA`}
@@ -184,7 +195,7 @@ const OfficialRankings = () => {
                 <Loader />
             ) : rankingsData && (
                 <div className="w-full mx-auto border mt-4">
-                    <CustomizedTables data={filteredData} countryName={selectedCountry} />
+                    <CustomizedTables data={getFilteredDataValue(rankingsData)} countryName={selectedCountry} />
                 </div>
             )}
             {/* FAQ Section */}

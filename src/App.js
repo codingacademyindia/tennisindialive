@@ -41,17 +41,17 @@ const App = () => {
 
 
     // Step 1: Register for push once
-    useEffect(() => {
-      const setup = async () => {
-        try {
-          await registerPush();
-          setSubscribed(true);
-        } catch (err) {
-          console.error("Push registration failed:", err);
-        }
-      };
-      setup();
-    }, []);
+    // useEffect(() => {
+    //   const setup = async () => {
+    //     try {
+    //       await registerPush();
+    //       setSubscribed(true);
+    //     } catch (err) {
+    //       console.error("Push registration failed:", err);
+    //     }
+    //   };
+    //   setup();
+    // }, []);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>

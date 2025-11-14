@@ -41,6 +41,18 @@ const ATPCurrentRankings = () => {
         }
     }
 
+        function getFilteredDataValue(data) {
+        if (data) {
+            let rankingsDataCopy = JSON.parse(JSON.stringify(data));
+            if (selectedCountryAlpha3.toLowerCase() !== 'all') {
+                rankingsDataCopy = rankingsDataCopy.filter(item =>
+                    item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase()
+                );
+            }
+            return rankingsDataCopy
+        }
+    }
+
     const handleCountryClick = (event) => {
         if (event.target.innerText.toLowerCase() === 'india') {
             setSelectedCountry("ind");
@@ -141,6 +153,7 @@ const ATPCurrentRankings = () => {
         setLoading(false);
     }, [selectedCountry, selectedCountryAlpha3]);
 
+    console.log(selectedCountryAlpha3);
     return (
         <div>
            <SEO
@@ -171,7 +184,7 @@ const ATPCurrentRankings = () => {
 
             {loading ? <Loader /> : rankingsData && (
                 <div className="w-full mx-auto border">
-                    <CustomizedTables data={filteredData} countryName={selectedCountry} />
+                    <CustomizedTables data={getFilteredDataValue(rankingsData)} countryName={selectedCountry} />
                 </div>
             )}
 

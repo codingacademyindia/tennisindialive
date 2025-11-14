@@ -32,6 +32,8 @@ import FluidAdImage from '../ads/FluidAdImage';
 import { toast } from 'react-toastify';
 import SEO from '../common/seo/SEO';
 import PushNotifier from '../common/PushNotifier';
+import ErrorMessage from '../common/stateHandlers/ErrorState';
+
 
 const CustomFormControl = styled(FormControl)({
     '& .MuiInputBase-root': {
@@ -87,7 +89,7 @@ const FixtureResultsCountry = () => {
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished", "interrupted"]);
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedCountryCode, setSelectedCountryCode] = useState('');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country ?? '');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country && params.country.toLowerCase() === 'all' ? null : params.country);
     const [indianCount, setIndianCount] = useState(0);
     const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
     const { data: h2hData, loading: loadingH2H, error: errorH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
@@ -265,6 +267,8 @@ const FixtureResultsCountry = () => {
 
         return () => clearInterval(intervalId); // 
     }, [day, month, year, refreshScore]);
+
+
     console.log("Raw Data:", rawData);
     console.log("Selected Country Alpha3:", selectedCountryAlpha3);
     console.log(filterLiveMatches(rawData, selectedCountryAlpha3))
@@ -283,9 +287,9 @@ const FixtureResultsCountry = () => {
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
             const storedCountryAlpha3 = await getItem('countryAlpha3');
-            setSelectedCountry(storedValue || 'india');
-            setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(params.country || storedCountryAlpha3 || 'ind');
+            setSelectedCountry(storedValue || 'all');
+            setSelectedCountryCode(storedCountryCode || 'all');
+            setSelectedCountryAlpha3(params.country || storedCountryAlpha3 || 'all');
         };
 
         fetchValue();
@@ -535,7 +539,13 @@ const FixtureResultsCountry = () => {
         }
     }
 
+    function getCountryCondition() {
+        return (selectedCountryAlpha3 === '' || selectedCountryAlpha3 === null || selectedCountryAlpha3 === 'all')
+    }
     function getPlayerDom1(item) {
+        if (item.customId === "CcejsiPej") {
+            console.log("debug...")
+        }
 
         try {
             let p1 = item['homeTeam']
@@ -544,7 +554,7 @@ const FixtureResultsCountry = () => {
             const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('double')) {
-                    if ((selectedCountryAlpha3 === '' ||
+                    if ((getCountryCondition() ||
                         ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3) ||
                             (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3))
                     ) && matchStatusList.includes(item?.status?.type)) {
@@ -576,13 +586,115 @@ const FixtureResultsCountry = () => {
                     const p1b = p1.subTeams[1];
                     const p2a = p2.subTeams[0];
                     const p2b = p2.subTeams[1];
+
                     const countries = [
-                        (p1a.country) ? p1a.country.alpha3.toLowerCase() : null,
-                        (p1a.country) ? p1b.country.alpha3.toLowerCase() : null,
-                        (p1a.country) ? p2a.country.alpha3.toLowerCase() : null,
-                        (p1a.country) ? p2b.country.alpha3.toLowerCase() : null
+                        p1a?.country?.alpha3?.toLowerCase() || null,
+                        p1b?.country?.alpha3?.toLowerCase() || null,
+                        p2a?.country?.alpha3?.toLowerCase() || null,
+                        p2b?.country?.alpha3?.toLowerCase() || null,
                     ];
-                    if ((countries.includes(selectedCountryAlpha3) || selectedCountryAlpha3 === '') && matchStatusList.includes(item?.status?.type)) {
+                    if ((countries.includes(selectedCountryAlpha3) || getCountryCondition()) && matchStatusList.includes(item?.status?.type)) {
+                        return (<div key={`${item.id}-${uniqueTournament}`}>
+                            <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
+                                <div className='w-full flex flex-col'>
+                                    <div className='w-full flex flex-row space-x-2 items-center'>
+                                        <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
+                                        <span><button className="transition hover:bg-blue-500 hover:p-1 hover:text-white" onClick={() => handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
+                                    </div>
+                                    <div className='w-full flex flex-row space-x-2'>
+                                        <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
+                                        <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
+                                        {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                        {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
+                                <div className='w-full flex flex-col'>
+                                    <div className='w-full flex flex-row space-x-2 items-center'>
+                                        <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
+                                        <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
+                                    </div>
+                                    <div className='w-full flex flex-row space-x-2 items-center'>
+                                        <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
+                                        <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
+                                        {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                        {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        )
+
+                    }
+                }
+            }
+            // }
+        }
+        catch (err) {
+            console.log("error in getPlayerDom1")
+        }
+
+
+    }
+
+    function getPlayerDom2(item) {
+        if (item.customId === "CcejsiPej") {
+            console.log("debug...")
+        }
+
+        try {
+            let p1 = item['homeTeam']
+            let p2 = item['awayTeam']
+            // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
+            const uniqueTournament = item.tournament;
+            if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
+                if (!uniqueTournament.name.toLowerCase().includes('double')) {
+                    if ((getCountryCondition() ||
+                        ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3) ||
+                            (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3))
+                    )) {
+                        return (<div key={`${item.id}-${uniqueTournament}`} className='flex flex-col w-full h-full border'>
+                            <div className="flex space-x-2 w-full h-full flex-row items-center  ">
+                                <div className="h-full flex items-center"><CountryIcon countryCode={p1.country?.alpha2} name={p1.country?.name} size={15} /></div>
+                                <div className="h-full flex items-center p-1">
+                                    <button
+                                        className="transition hover:bg-blue-500  hover:text-white hover:p-1"
+                                        onClick={() => handleClickPlayerName(p1)}
+                                    >{getFullName(p1.name, p1.slug)}</button></div>
+                                {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+                            </div>
+                            {/* {fetchH2HStatsDom(item)} */}
+                            <div key={item.id} className="space-x-2 h-full flex flex-row items-center ">
+                                <div className="h-full flex items-center "><CountryIcon countryCode={p2?.country.alpha2} name={p2.country?.name} size={15} /></div>
+                                <div className="h-full flex items-center p-1"><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2)}>{getFullName(p2.name, p2.slug)}</button></div>
+                                {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+                            </div>
+                        </div>
+                        )
+
+                    }
+                } else {
+                    const p1a = p1.subTeams[0];
+                    const p1b = p1.subTeams[1];
+                    const p2a = p2.subTeams[0];
+                    const p2b = p2.subTeams[1];
+
+                    const countries = [
+                        p1a?.country?.alpha3?.toLowerCase() || null,
+                        p1b?.country?.alpha3?.toLowerCase() || null,
+                        p2a?.country?.alpha3?.toLowerCase() || null,
+                        p2b?.country?.alpha3?.toLowerCase() || null,
+                    ];
+                    if ((countries.includes(selectedCountryAlpha3) || getCountryCondition())) {
                         return (<div key={`${item.id}-${uniqueTournament}`}>
                             <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                                 <div className='w-full flex flex-col'>
@@ -686,7 +798,7 @@ const FixtureResultsCountry = () => {
                                 <span className="text-xs w-full flex justify-center">{getStatusOnlyDom(item)}</span>
                             </div> */}
                             <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[40%]">
-                                {getPlayerDom1(item)}
+                                {getPlayerDom2(item)}
                             </div>
 
                             <div className='w-[20%]'>{item?.status?.type !== "notstarted" && formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}</div>
@@ -749,18 +861,19 @@ const FixtureResultsCountry = () => {
     }
 
     function hasCountry(item) {
+        // if (getCountryCondition()) {
+        //     return true
+        // }
 
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
-            if (p1.name.toLowerCase().includes("smejkalova")) {
-                console.log("Found smejkalova in hasCountry")
-            }
+
             // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
             const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('double')) {
-                    if ((selectedCountryAlpha3 === '' ||
+                    if ((getCountryCondition() ||
                         ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()) ||
                             (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()))
                     ) && matchStatusList.includes(item?.status?.type)) {
@@ -778,7 +891,7 @@ const FixtureResultsCountry = () => {
                         (p1a.country) ? p2a.country.alpha3.toLowerCase() : null,
                         (p1a.country) ? p2b.country.alpha3.toLowerCase() : null
                     ];
-                    if ((selectedCountryAlpha3 === '' || countries.includes(selectedCountryAlpha3.toLowerCase())) && matchStatusList.includes(item?.status?.type)) {
+                    if ((getCountryCondition() || countries.includes(selectedCountryAlpha3.toLowerCase())) && matchStatusList.includes(item?.status?.type)) {
                         return true
                     }
                 }
@@ -792,8 +905,53 @@ const FixtureResultsCountry = () => {
         return false
     }
 
+    // function hasCountryAndStatus(item) {
+    //     if (getCountryCondition()) {
+    //         return true
+    //     }
+
+    //     try {
+    //         let p1 = item['homeTeam']
+    //         let p2 = item['awayTeam']
+
+    //         const uniqueTournament = item.tournament;
+    //         if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
+    //             if (!uniqueTournament.name.toLowerCase().includes('double')) {
+    //                 if ((getCountryCondition() ||
+    //                     ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()) ||
+    //                         (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()))
+    //                 ) && matchStatusList.includes(item?.status?.type)) {
+    //                     return true
+
+    //                 }
+    //             } else {
+    //                 const p1a = p1.subTeams[0];
+    //                 const p1b = p1.subTeams[1];
+    //                 const p2a = p2.subTeams[0];
+    //                 const p2b = p2.subTeams[1];
+    //                 const countries = [
+    //                     (p1a.country) ? p1a.country.alpha3.toLowerCase() : null,
+    //                     (p1a.country) ? p1b.country.alpha3.toLowerCase() : null,
+    //                     (p1a.country) ? p2a.country.alpha3.toLowerCase() : null,
+    //                     (p1a.country) ? p2b.country.alpha3.toLowerCase() : null
+    //                 ];
+    //                 if ((getCountryCondition() || countries.includes(selectedCountryAlpha3.toLowerCase())) && matchStatusList.includes(item?.status?.type)) {
+    //                     return true
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     catch (err) {
+    //         console.log("error in checking country")
+    //     }
+
+    //     return false
+    // }
 
     function hasIndianInAllScores(allTournamentScore, tournament) {
+        // if (getCountryCondition()) {
+        //     return true
+        // }
         let hasIndianList = allTournamentScore.map(item => hasCountry(item))
         return hasIndianList.includes(true)
     }
@@ -992,7 +1150,8 @@ const FixtureResultsCountry = () => {
     // }
     function recordDom() {
         let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData));
-        const filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament =>
+        let filteredRankingsData = [];
+        filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament =>
             hasIndianInAllScores(rankingsData[tournament], tournament)
         );
 
@@ -1068,7 +1227,7 @@ const FixtureResultsCountry = () => {
         <div>
             {/* <PushNotifier sendNow={true} /> */}
             <SEO
-                title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Scores & Live Updates  | Tennis India Live Scores`}
+                title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Scores & Live Updates  | Tennis ${selectedCountry.toUpperCase()} Live Scores`}
                 description={`Real-time tennis scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
                 keywords={`tennis scores, ${selectedCountry} tennis, live scores, ATP, WTA`}
                 url={`https://tennisindialive.com/live-scores/${selectedCountry}`}
@@ -1146,9 +1305,7 @@ const FixtureResultsCountry = () => {
             </div>
 
             {error && (
-                <p className="text-red-600 mt-2 text-sm">
-                    Error loading data. Please refresh or try again later.
-                </p>
+                <ErrorMessage />
             )}
 
             {loading ? (
