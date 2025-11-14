@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Loader from '../../common/stateHandlers/LoaderState';
 import { Card, CardContent, CardMedia, Typography, Divider } from '@mui/material';
 // import parse from 'react-html-parser';
-
+import SEO from '../../common/seo/SEO';
 const PlayerProfile = () => {
     const { player } = useParams();
     const [playerData, setPlayerData] = useState(null);
@@ -35,8 +35,16 @@ const PlayerProfile = () => {
     if (loading) return <Loader />;
     if (error) return <p className="text-blue-500 text-center text-lg p-5">{error}</p>;
 
+    let playerName=player && player.toUpperCase().replace(/-/g, ' ');
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
+            <SEO
+                title={`${playerName} - Live Score, Matches & Ranking | Tennis India Live`}
+                description={`Follow ${playerName}'s live score, match results, next matches, ATP/WTA ranking updates and tournament performance.`}
+                keywords={`${playerName}, ${playerName} live, ${playerName} score, ${playerName} ranking, ${playerName} match today`}
+                url={`https://www.tennisindialive.com/players/${player}`}
+            />
+            <h1 className="text-2xl font-bold mb-4">{playerName}</h1>
             {playerData && (
                 <Card className="max-w-6xl w-full shadow-xl rounded-lg bg-white overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2 items-center">

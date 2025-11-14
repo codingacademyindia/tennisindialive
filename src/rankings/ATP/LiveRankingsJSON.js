@@ -157,9 +157,9 @@ const ATPCurrentRankings = () => {
     return (
         <div>
            <SEO
-                title={`${selectedCountry.toUpperCase()} - ${type.toUpperCase()} Countrywise Tennis Rankings & Live Updates  | Tennis India Live Rankings`}
-                description={`Real-time tennis rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
-                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA`}
+                title={`Tennis ${selectedCountry.toUpperCase()} Live - ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
+                description={`Real-time tennis rankings, live scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA, live scores, country wise rankings`}
                 url={`https://tennisindialive.com/rankings/live/${type}/${selectedCountry}`}
             />
             <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-2'>

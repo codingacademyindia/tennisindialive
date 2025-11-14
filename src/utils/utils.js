@@ -1,0 +1,211 @@
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
+import SEO from "../common/seo/SEO";
+countries.registerLocale(enLocale);
+
+export function getAlpha3(countryParam) {
+    if (!countryParam) return null;
+
+    // Normalize
+    const clean = countryParam.trim().toLowerCase();
+
+    // 1) Try if it's already an alpha-2 or alpha-3 code
+    const asAlpha3 = countries.alpha3ToAlpha2(clean.toUpperCase());
+    if (asAlpha3) return clean.toLowerCase();
+
+    // 2) Try converting from alpha-2
+    const alpha2 = countries.getAlpha2Code(clean, 'en');
+    if (alpha2) {
+        return countries.alpha2ToAlpha3(alpha2).toLowerCase();
+    }
+
+    // 3) Try converting from full name directly
+    const alpha3 = countries.getAlpha3Code(clean, 'en');
+    if (alpha3) return alpha3.toLowerCase();
+
+    return null;
+}
+
+export function getAlpha2FromName(name) {
+    if (!name) return null;
+
+    const clean = name.trim().toLowerCase();
+
+    // Get alpha-2 from name
+    const alpha2 = countries.getAlpha2Code(clean, "en");
+
+    return alpha2 ? alpha2.toLowerCase() : null;
+}
+export function getRouteKeyword() {
+    const path = window.location.pathname.toLowerCase();
+
+    if (path.includes("live-scores")) return "live-scores";
+    if (path.includes("live-tennis")) return "live-tennis";
+    if (path.includes("tennis-score-live")) return "tennis-score-live";
+    if (path.includes("scores")) return "scores";
+    if (path.includes("rankings")) return "rankings";
+    if (path.includes("players")) return "players";
+
+    return ""; // fallback
+}
+
+export function getBaseRoute() {
+    const path = window.location.pathname.toLowerCase();
+
+    if (path.includes("/live-scores")) return "/live-scores";
+    if (path.includes("/live-tennis")) return "/live-tennis";
+    if (path.includes("/tennis-score-live")) return "/tennis-score-live";
+
+    return "/live-scores"; // default fallback
+}
+
+
+export function getH1(countryFullName = "") {
+    const path = window.location.pathname;
+
+    // Normalize country name
+    const country = countryFullName
+        ? countryFullName.charAt(0).toUpperCase() + countryFullName.slice(1)
+        : null;
+
+    // ---- Country Live Scores ----
+    if (path.startsWith("/live-scores/") && country) {
+        return `Tennis ${country} - Live Scores & Results`;
+    }
+
+    if (path.startsWith("/tennis-score-live/") && country) {
+        return `Tennis Score Live - ${country} -  Scores & Results`;
+    }
+    if (path.startsWith("/tennis-live/") && country) {
+        return `Tennis Live - ${country} -  Scores & Results`;
+    }
+     if (path.startsWith("/live-tennis/") && country) {
+        return `Live Tennis - ${country} -  Scores & Results`;
+    }
+    // ---- SEO Route: /tennis-country/scores ----
+    if (path.includes("/tennis-") && path.endsWith("/scores") && country) {
+        return `Live Tennis Scores in ${country} - Results & Matches`;
+    }
+
+    // ---- All Matches ----
+    if (path.startsWith("/all")) {
+        return "All Tennis Matches - Live Scores & Results";
+    }
+
+    // ---- Rankings Live ----
+    if (path.startsWith("/rankings/live")) {
+        return "Live Tennis Rankings - ATP & WTA";
+    }
+
+    // ---- Rankings Official ----
+    if (path.startsWith("/rankings/official")) {
+        return "Official ATP & WTA Rankings";
+    }
+
+    // ---- Players List ----
+    if (path.startsWith("/players/atp")) {
+        return "ATP Tennis Players - Complete List";
+    }
+
+    if (path.startsWith("/players/wta")) {
+        return "WTA Tennis Players - Complete List";
+    }
+
+    // ---- Player Profile ----
+    if (path.startsWith("/player/atp")) {
+        return "ATP Player Profile";
+    }
+
+    if (path.startsWith("/player/wta")) {
+        return "WTA Player Profile";
+    }
+
+    // ---- Default ----
+    return "Live Tennis Scores & Results";
+}
+
+
+export function getCountryFullName(str) {
+    if (!str) return null;
+
+    const clean = str.toLowerCase().trim();
+
+    // detect alpha-3 → alpha2
+    if (clean.length === 3) {
+        const alpha2 = countries.alpha3ToAlpha2(clean.toUpperCase());
+        return countries.getName(alpha2, "en")?.toLowerCase() || null;
+    }
+
+    // detect alpha-2 → fullname
+    if (clean.length === 2) {
+        return countries.getName(clean.toUpperCase(), "en")?.toLowerCase() || null;
+    }
+
+    // detect full name → full name
+    const alpha2 = countries.getAlpha2Code(clean, "en");
+    if (alpha2) return countries.getName(alpha2, "en")?.toLowerCase();
+
+    return null;
+}
+
+export function getSeoDom() {
+    const path = window.location.pathname;
+
+    // extract last segment (country)
+    let countryParam = path.split("/").filter(Boolean).pop();
+    let countryFullName = getCountryFullName(countryParam) || "global";
+
+    // ===========================
+    // /live-scores/:country
+    // ===========================
+    if (path.startsWith("/live-scores/")) {
+        return (
+            <SEO
+                title={`Tennis ${countryFullName.toUpperCase()} Live - Countrywise Tennis Scores & Updates`}
+                description={`Real-time tennis scores, rankings and updates for ${countryFullName}. Follow ATP, WTA and all major tournaments.`}
+                keywords={`tennis scores, ${countryFullName} tennis, live scores, rankings, ATP, WTA`}
+                url={`https://tennisindialive.com/live-scores/${countryParam}`}
+            />
+        );
+    }
+
+    // ===========================
+    // /tennis/:country/scores
+    // ===========================
+    if (path.match(/^\/tennis\/[a-z-]+\/scores$/)) {
+        return (
+            <SEO
+                title={`Tennis Scores for ${countryFullName.toUpperCase()} | Live ATP & WTA`}
+                description={`Live tennis match results and rankings for ${countryFullName}. Updated instantly with ATP & WTA coverage.`}
+                keywords={`tennis ${countryFullName}, ${countryFullName} scores, tennis live ${countryFullName}`}
+                url={`https://tennisindialive.com${path}`}
+            />
+        );
+    }
+
+    // ===========================
+    // /tennis-:country/scores (legacy redirect)
+    // ===========================
+    if (path.match(/^\/tennis-[a-z-]+\/scores$/)) {
+        return (
+            <SEO
+                title={`Tennis Scores — ${countryFullName.toUpperCase()}`}
+                description={`Live tennis scores and updates for ${countryFullName}.`}
+                keywords={`tennis ${countryFullName}, live tennis ${countryFullName}`}
+                url={`https://tennisindialive.com${path}`}
+            />
+        );
+    }
+
+    // ===========================
+    // fallback SEO
+    // ===========================
+    return (
+        <SEO
+            title="Tennis Live Scores & ATP/WTA Rankings | TennisIndiaLive"
+            description="Get real-time tennis scores, match updates and player rankings across ATP & WTA."
+            keywords="tennis live scores, atp rankings, wta rankings"
+            url="https://tennisindialive.com"
+        />
+    );
+}

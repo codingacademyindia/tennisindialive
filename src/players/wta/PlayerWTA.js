@@ -2,6 +2,7 @@ import { Button, CardMedia } from "@mui/material";
 import React, { useState, useEffect, useMemo } from "react";
 import RequestModal from "../../contactus/RequestModal";
 import RequestPlayerInfo from "../../contactus/RequestPlayerInfo";
+import SEO from "../../common/seo/SEO";
 
 const PlayersListWTA = () => {
     const [players, setPlayers] = useState([]);
@@ -29,7 +30,7 @@ const PlayersListWTA = () => {
     return (
         <div className="max-w-5xl mx-auto p-4">
             {/* Informational Section for AdSense and Users */}
-
+      
 
             {/* Request Button and Search Bar */}
             <RequestModal open={open} handleClose={handleClose} title="Request To Add More Players" children={<RequestPlayerInfo />} />
@@ -51,7 +52,7 @@ const PlayersListWTA = () => {
                 />
             </div>
             <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-4 rounded-md mb-4 text-sm">
-                
+
                 <p>This page showcases WTA profiles of Indian tennis players, including names, photos, and profile links. You can search by name and request missing players via the button below. Player pages contain official WTA rankings and match stats, updated regularly.</p>
             </div>
             {/* Player Grid */}

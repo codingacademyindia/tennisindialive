@@ -32,7 +32,7 @@ import Loader from '../common/stateHandlers/LoaderState';
 import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
-
+import { getAlpha3, getAlpha2FromName, getRouteKeyword, getBaseRoute, getSeoDom, getH1 } from '../utils/utils';
 
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
@@ -53,6 +53,9 @@ const FixtureResultsCountry = () => {
     day = params.day ?? dayCurrent
     month = params.month ?? monthCurrent
     year = params.year ?? yearCurrent
+    let countryFullName = params.country ?? null
+    let country = getAlpha3(params.country) ?? null
+    console.log("Country code:", country);
 
     const [rankingsData, setRankingsData] = useState(null);
     const [rawData, setRawData] = useState(null);
@@ -62,9 +65,9 @@ const FixtureResultsCountry = () => {
     const [selectedDate, setDate] = React.useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished", "interrupted"]);
-    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState(params.country ?? '');
     const [selectedCountryCode, setSelectedCountryCode] = useState('');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country && params.country.toLowerCase() === 'all' ? null : params.country);
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(country && country.toLowerCase() === 'all' ? null : country);
     const [indianCount, setIndianCount] = useState(0);
     const { data: matchStatsData, loading: loadingStats, error: erroStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
     const { data: h2hData, loading: loadingH2H, error: errorH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
@@ -79,6 +82,7 @@ const FixtureResultsCountry = () => {
     const [playerId, setPlayerId] = React.useState(0);
     const [openPlayerInfo, setOpenPlayerInfo] = React.useState(false);
     const [expanded, setExpanded] = React.useState(false);
+
 
 
     const handleCloseCountry = () => {
@@ -143,7 +147,10 @@ const FixtureResultsCountry = () => {
 
         setTimeout(() => {
             toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            window.location.href = `/live-scores/${newValue.alpha3.toLowerCase()}`;
+            // const path = window.location.pathname.replace(/\/$/, "");  // remove trailing slash if any
+            const country = newCountryCode.toLowerCase();
+
+            window.location.href = `${getBaseRoute()}/${country}`;
         }, 800);
     };
 
@@ -153,7 +160,9 @@ const FixtureResultsCountry = () => {
         setMatchStatus(event.target.value);
 
     };
-
+    console.log(selectedCountryAlpha3)
+    console.log(selectedCountry)
+    console.log(country)
 
 
     const handleStatusButtonClick = (event) => {
@@ -256,16 +265,23 @@ const FixtureResultsCountry = () => {
 
     useEffect(() => {
         const fetchValue = async () => {
+            if (!countryFullName) {
+                toast.info("Loading selected country...", { autoClose: 1000 });
+            }
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
             const storedCountryAlpha3 = await getItem('countryAlpha3');
-            setSelectedCountry(storedValue || 'all');
-            setSelectedCountryCode(storedCountryCode || 'all');
-            setSelectedCountryAlpha3(params.country || storedCountryAlpha3 || 'all');
+           
+            setSelectedCountry(countryFullName || storedValue || 'all');
+            setSelectedCountryCode(getAlpha2FromName(countryFullName) || 'all');
+            setSelectedCountryAlpha3(country || storedCountryAlpha3 || 'all');
+            // if (storedValue) {
+            // window.location.href = `${getBaseRoute()}/${storedValue.toLowerCase()}`;
+            // }
         };
 
         fetchValue();
-    }, [params.country]);
+    }, [country]);
 
 
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
@@ -888,14 +904,23 @@ const FixtureResultsCountry = () => {
         return formattedDate
     }
 
+    // function getSeoDom() {
+    //     if (window.location.href.includes("/live-scores/")) {
+    //         return (
+    //             <SEO
+    //                 title={`Tennis ${countryFullName.toUpperCase()} Live - Countrywise Tennis Scores & Live Updates  |  Live Scores and Rankings`}
+    //                 description={`Real-time tennis scores, rankings and updates for ${countryFullName}. Follow ATP, WTA, and local tournaments.`}
+    //                 keywords={`tennis scores, ${countryFullName} tennis, live scores, rankings, country wise ATP, WTA`}
+    //                 url={`https://tennisindialive.com/live-scores/${countryFullName}`}
+    //             />)
+    //     }
+    // }
+    console.log("selectedCountry:", selectedCountry);
+    console.log("selectedCountryAlpha3:", selectedCountryAlpha3);
+    console.log("selectedCountryCode:", selectedCountryCode);
     return (
         <div>
-            <SEO
-                title={`Tennis ${selectedCountry.toUpperCase()} Live - Countrywise Tennis Scores & Live Updates  |  Live Scores and Rankings`}
-                description={`Real-time tennis scores, rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
-                keywords={`tennis scores, ${selectedCountry} tennis, live scores, rankings, country wise ATP, WTA`}
-                url={`https://tennisindialive.com/live-scores/${selectedCountry}`}
-            />
+            {getSeoDom()}
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats
                 open={openMatchStat}
@@ -941,7 +966,7 @@ const FixtureResultsCountry = () => {
             <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-2 rounded-md m-2 text-sm">
                 <div className="flex flex-row justify-between items-center mb-1">
                     <h1 className="text-sm sm:text-sm md:text-sm lg:text-sm font-semibold">
-                        Tennis {selectedCountry.toUpperCase()} - Live Scores & Results
+                        {getH1(countryFullName)}
                     </h1>
                     <div className="text-xs text-right whitespace-nowrap">
                         <b>Updated At:</b> {new Date().toLocaleString()}

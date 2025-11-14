@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from '../../common/stateHandlers/LoaderState';
 import { Card, CardContent, CardMedia, Typography, Divider } from '@mui/material';
-
+import SEO from '../../common/seo/SEO';
 // Utility function to decode escaped Unicode (optional fallback)
 const decodeUnicode = (str) => {
     return str.replace(/\\u[\dA-F]{4}/gi, (match) => {
@@ -11,7 +11,6 @@ const decodeUnicode = (str) => {
 };
 
 const PlayerProfile = () => {
-    document.title = "Tennis India Live - Player Info";
     const { player } = useParams();
     const [playerData, setPlayerData] = useState(null);
     const [error, setError] = useState(null);
@@ -24,7 +23,6 @@ const PlayerProfile = () => {
                 const response = await fetch(`/player_jsons/wta/${player}.json`);
                 if (!response.ok) throw new Error("Player data not found");
                 const data = await response.json();
-                document.title = `Tennis India Live - ${data.name || "Player Info"}`;
                 // Decode bio to handle any escaped Unicode (optional)
                 if (data.bio) {
                     data.bio = decodeUnicode(data.bio);
@@ -46,6 +44,12 @@ const PlayerProfile = () => {
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
+            <SEO
+                title={`${playerData.name} Live Score, Matches & Ranking | Tennis India Live`}
+                description={`Follow ${playerData.name}'s live score, match results, next matches, ATP/WTA ranking updates and tournament performance.`}
+                keywords={`${playerData.name}, ${playerData.name} live, ${playerData.name} score, ${playerData.name} ranking, ${playerData.name} match today`}
+                url={`https://www.tennisindialive.com/players/${player}`}
+            />
             <Card className="max-w-6xl w-full shadow-xl rounded-lg bg-white overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center">
                     <div className="relative w-full">

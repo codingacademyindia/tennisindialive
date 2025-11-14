@@ -154,9 +154,9 @@ const OfficialRankings = () => {
         <div>
             {/* Header Section */}
             <SEO
-                title={`${selectedCountry.toUpperCase()} - Countrywise Tennis Rankings & Live Updates  | Tennis India Official Rankings`}
-                description={`Real-time tennis rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
-                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA`}
+                title={`Tennis ${selectedCountry.toUpperCase()} Live - Official ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
+                description={`Real-time tennis rankings, live scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA, live scores, country wise rankings`}
                 url={`https://tennisindialive.com/rankings/official/${type}/${selectedCountry}`}
             />
             <div className='flex flex-wrap sm:flex-row sm:space-x-4 w-full bg-slate-200 items-center p-2 space-y-2 sm:space-y-0'>
