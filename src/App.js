@@ -76,6 +76,8 @@ const App = () => {
                 <Route path="/tennis-score-live" element={<FixtureResultsCountrySEO />} />
                 <Route path="/tennis-score-live/:country" element={<FixtureResultsCountrySEO />} />
                 <Route path="/live-tennis" element={<FixtureResultsCountrySEO />} />
+                <Route path="/tennis-live" element={<FixtureResultsCountrySEO />} />
+                 <Route path="/tennis-live/:country" element={<FixtureResultsCountrySEO />} />
                 <Route path="/live-tennis/:country" element={<FixtureResultsCountrySEO />} />
 
                 {/* All matches & date-based */}

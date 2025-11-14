@@ -966,7 +966,7 @@ const FixtureResultsCountry = () => {
             <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-2 rounded-md m-2 text-sm">
                 <div className="flex flex-row justify-between items-center mb-1">
                     <h1 className="text-sm sm:text-sm md:text-sm lg:text-sm font-semibold">
-                        {getH1(countryFullName)}
+                        {getH1(selectedCountry)} 
                     </h1>
                     <div className="text-xs text-right whitespace-nowrap">
                         <b>Updated At:</b> {new Date().toLocaleString()}

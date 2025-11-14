@@ -61,7 +61,7 @@ export function getBaseRoute() {
 
 
 export function getH1(countryFullName = "") {
-    const path = window.location.pathname;
+    const href = window.location.href;
 
     // Normalize country name
     const country = countryFullName
@@ -69,54 +69,54 @@ export function getH1(countryFullName = "") {
         : null;
 
     // ---- Country Live Scores ----
-    if (path.startsWith("/live-scores/") && country) {
+    if (href.includes("/live-scores") && country) {
         return `Tennis ${country} - Live Scores & Results`;
     }
 
-    if (path.startsWith("/tennis-score-live/") && country) {
+    if (href.includes("/tennis-score-live") && country) {
         return `Tennis Score Live - ${country} -  Scores & Results`;
     }
-    if (path.startsWith("/tennis-live/") && country) {
+    if (href.includes("/tennis-live") && country) {
         return `Tennis Live - ${country} -  Scores & Results`;
     }
-     if (path.startsWith("/live-tennis/") && country) {
+     if (href.includes("/live-tennis") && country) {
         return `Live Tennis - ${country} -  Scores & Results`;
     }
     // ---- SEO Route: /tennis-country/scores ----
-    if (path.includes("/tennis-") && path.endsWith("/scores") && country) {
+    if (href.includes("/tennis-") && href.endsWith("/scores") && country) {
         return `Live Tennis Scores in ${country} - Results & Matches`;
     }
 
     // ---- All Matches ----
-    if (path.startsWith("/all")) {
+    if (href.includes("/all")) {
         return "All Tennis Matches - Live Scores & Results";
     }
 
     // ---- Rankings Live ----
-    if (path.startsWith("/rankings/live")) {
+    if (href.includes("/rankings/live")) {
         return "Live Tennis Rankings - ATP & WTA";
     }
 
     // ---- Rankings Official ----
-    if (path.startsWith("/rankings/official")) {
+    if (href.includes("/rankings/official")) {
         return "Official ATP & WTA Rankings";
     }
 
     // ---- Players List ----
-    if (path.startsWith("/players/atp")) {
+    if (href.includes("/players/atp")) {
         return "ATP Tennis Players - Complete List";
     }
 
-    if (path.startsWith("/players/wta")) {
+    if (href.includes("/players/wta")) {
         return "WTA Tennis Players - Complete List";
     }
 
     // ---- Player Profile ----
-    if (path.startsWith("/player/atp")) {
+    if (href.includes("/player/atp")) {
         return "ATP Player Profile";
     }
 
-    if (path.startsWith("/player/wta")) {
+    if (href.includes("/player/wta")) {
         return "WTA Player Profile";
     }
 
