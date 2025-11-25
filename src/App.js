@@ -89,9 +89,9 @@ const App = () => {
                 {/* RANKINGS ROUTES */}
                 {/* ================================ */}
                 <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
-                <Route path="/rankings/live/:type/:countryAlpha3" element={<ATPLiveRankingsJSON />} />
+                <Route path="/rankings/live/:type/:country" element={<ATPLiveRankingsJSON />} />
                 <Route path="/rankings/official/:type" element={<OfficialRankings />} />
-                <Route path="/rankings/official/:type/:countryAlpha3" element={<OfficialRankings />} />
+                <Route path="/rankings/official/:type/:country" element={<OfficialRankings />} />
 
                 {/* ================================ */}
                 {/* PLAYER ROUTES */}

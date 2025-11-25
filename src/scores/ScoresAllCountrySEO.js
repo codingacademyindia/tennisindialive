@@ -136,7 +136,7 @@ const FixtureResultsCountry = () => {
         setOpenH2H(false)
     };
     const handleCountryChange = async (newCountryCode, newValue) => {
-        toast.info("Saving your country...", { autoClose: 1000 });
+        // toast.info("Saving your country...", { autoClose: 1000 });
         console.log("Selected country code:", newCountryCode);
         setSelectedCountry(newCountryCode);
         setSelectedCountryCode(newValue ? newValue.code : null)
@@ -146,7 +146,7 @@ const FixtureResultsCountry = () => {
         await setItem('countryAlpha3', newValue ? newValue.alpha3.toLowerCase() : null);
 
         setTimeout(() => {
-            toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
+            toast.success("Loading scores...", { autoClose: 2000 });
             // const path = window.location.pathname.replace(/\/$/, "");  // remove trailing slash if any
             const country = newCountryCode.toLowerCase();
 
@@ -265,9 +265,9 @@ const FixtureResultsCountry = () => {
 
     useEffect(() => {
         const fetchValue = async () => {
-            if (!countryFullName) {
-                toast.info("Loading selected country...", { autoClose: 1000 });
-            }
+            // if (!countryFullName) {
+            //     toast.info("Loading selected country...", { autoClose: 1000 });
+            // }
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
             const storedCountryAlpha3 = await getItem('countryAlpha3');
@@ -914,10 +914,7 @@ const FixtureResultsCountry = () => {
     //                 url={`https://tennisindialive.com/live-scores/${countryFullName}`}
     //             />)
     //     }
-    // }
-    console.log("selectedCountry:", selectedCountry);
-    console.log("selectedCountryAlpha3:", selectedCountryAlpha3);
-    console.log("selectedCountryCode:", selectedCountryCode);
+
     return (
         <div>
             {getSeoDom()}
@@ -983,7 +980,7 @@ const FixtureResultsCountry = () => {
                 <span className="mr-2">Showing Results for</span>
                 <span>
                     {selectedCountryCode ? (
-                        <CountryIcon countryCode={selectedCountryCode} size={15} />
+                        <CountryIcon countryCode={getAlpha2FromName(selectedCountry)?.toUpperCase()} size={15} />
                     ) : (
                         <FaGlobe className="text-green-100" />
                     )}

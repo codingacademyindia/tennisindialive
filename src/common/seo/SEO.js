@@ -36,7 +36,7 @@ const SEO = ({
     "inLanguage": "en",
     "publisher": {
       "@type": "Organization",
-      "name": "Tennis India Live",
+      "name": "Tennis Live",
       "logo": {
         "@type": "ImageObject",
         "url": "https://www.tennisindialive.com/ball.png"

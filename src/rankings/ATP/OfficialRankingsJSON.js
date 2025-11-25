@@ -12,19 +12,20 @@ import { toast } from 'react-toastify';
 import SEO from '../../common/seo/SEO';
 import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
+import { getAlpha2FromName, getAlpha3 } from '../../utils/utils';
 
 const OfficialRankings = () => {
     const { type } = useParams();
-    const { countryAlpha3 } = useParams();
+    const { country } = useParams();
     const [rankingsData, setRankingsData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [expanded, setExpanded] = useState(true);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState('india');
-    const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(countryAlpha3 || 'ind');
+    const [selectedCountry, setSelectedCountry] = useState(country || 'india');
+    const [selectedCountryCode, setSelectedCountryCode] = useState(getAlpha2FromName(country) || 'IN');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(getAlpha3(country) || 'ind');
 
     const [excludeUnchanged, setExcludeUnchanged] = useState(false);
     const [pageHeader, setPageHeader] = useState("Official Ranking");
@@ -53,8 +54,6 @@ const OfficialRankings = () => {
         }
     };
     const handleCountryChange = async (newCountryCode, newValue) => {
-        toast.info("Saving your country...", { autoClose: 1000 });
-        console.log("Selected country code:", newCountryCode);
         setSelectedCountry(newCountryCode);
         setSelectedCountryCode(newValue ? newValue.code : null)
         setSelectedCountryAlpha3(newValue ? newValue.alpha3.toLowerCase() : null);
@@ -63,8 +62,8 @@ const OfficialRankings = () => {
         await setItem('countryAlpha3', newValue ? newValue.alpha3.toLowerCase() : null);
 
         setTimeout(() => {
-            toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            window.location.href = `/rankings/official/${type}/${newValue.alpha3.toLowerCase()}`;
+            toast.success("Loading scores now...", { autoClose: 2000 });
+            window.location.href = `/rankings/official/${type}/${newCountryCode.toLowerCase()}`;
         }, 800);
     };
 
@@ -75,7 +74,7 @@ const OfficialRankings = () => {
             const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(countryAlpha3 || storedCountryAlpha3 || 'ind');
+            setSelectedCountryAlpha3(getAlpha3(storedValue) || storedCountryAlpha3 || 'ind');
         };
 
         fetchValue();

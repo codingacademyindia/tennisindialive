@@ -9,19 +9,20 @@ import { toast } from 'react-toastify';
 import SEO from '../../common/seo/SEO';
 import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
+import { getAlpha3 } from '../../utils/utils';
 
 
 const ATPCurrentRankings = () => {
     const { type } = useParams();
-    const { countryAlpha3 } = useParams();
+    const { country } = useParams();
     const [rankingsData, setRankingsData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [refreshScore, setRefreshScore] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState('india');
+    const [selectedCountry, setSelectedCountry] = useState(country || 'india');
     const [selectedCountryCode, setSelectedCountryCode] = useState('IN');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(countryAlpha3 || 'ind');
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(getAlpha3(country) || 'ind');
     const [pageHeader, setPageHeader] = useState("Live Ranking");
     const [rankingTimestamp, setRankingTimestamp] = useState("");
     const [pageDesc, setPageDesc] = useState("This page provides real-time updates of ATP and WTA live rankings across Singles and Doubles categories. Use the country filter to focus on Indian players or view all global players.");
@@ -62,7 +63,7 @@ const ATPCurrentRankings = () => {
     };
 
     const handleCountryChange = async (newCountryCode, newValue) => {
-        toast.info("Saving your country...", { autoClose: 1000 });
+        // toast.info("Saving your country...", { autoClose: 1000 });
         console.log("Selected country code:", newCountryCode);
         setSelectedCountry(newCountryCode);
         setSelectedCountryCode(newValue ? newValue.code : null)
@@ -72,8 +73,8 @@ const ATPCurrentRankings = () => {
         await setItem('countryAlpha3', newValue ? newValue.alpha3.toLowerCase() : null);
 
         setTimeout(() => {
-            toast.success("Saved Selected Country, Loading rankings now...", { autoClose: 2000 });
-            window.location.href = `/rankings/live/${type}/${newValue.alpha3.toLowerCase()}`;
+            toast.success(" Loading rankings...", { autoClose: 2000 });
+            window.location.href = `/rankings/live/${type}/${newCountryCode.toLowerCase()}`;
         }, 800);
     };
 
@@ -84,7 +85,7 @@ const ATPCurrentRankings = () => {
             const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(countryAlpha3 || storedCountryAlpha3  || 'ind');
+            setSelectedCountryAlpha3(getAlpha3(storedValue) || storedCountryAlpha3  || 'ind');
         };
 
         fetchValue();
