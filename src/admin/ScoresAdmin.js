@@ -690,7 +690,7 @@ const FixtureResultsAdmin = () => {
         );
     }
 
-    function formatLiveScoreTweet(data) {
+    function formatLiveScoreTweet1(data) {
         if (!data) return "";
 
         const tournament = data?.tournament?.name || "";
@@ -733,6 +733,109 @@ const FixtureResultsAdmin = () => {
 
         return tweet;
     }
+
+    function formatLiveScoreTweet(match = {}) {
+        const p1 = match?.homeTeam?.name || "Player 1";
+        const p2 = match?.awayTeam?.name || "Player 2";
+
+        // --------------------------
+        // STATUS NORMALIZATION (SAFE)
+        // --------------------------
+        let rawStatus = match?.status;
+
+        let statusValue = "";
+
+        if (typeof rawStatus === "string") {
+            statusValue = rawStatus;
+        } else if (typeof rawStatus === "number") {
+            statusValue = String(rawStatus);
+        } else if (Array.isArray(rawStatus)) {
+            statusValue = rawStatus.join(" ");
+        } else if (typeof rawStatus === "object" && rawStatus !== null) {
+            statusValue =
+                rawStatus.code ??
+                rawStatus.name ??
+                rawStatus.state ??
+                rawStatus.description ??
+                "";
+        }
+
+        // ultimately convert to lowercase safely
+        const status = String(statusValue).toLowerCase();
+
+        // SCORE
+        const hs = match?.homeScore || {};
+        const as = match?.awayScore || {};
+
+        const scoreLine = `${hs.period1 || ""}-${as.period1 || ""} ${hs.period2 || ""}-${as.period2 || ""}`
+            .replace(/undefined/g, "")
+            .trim();
+
+        // ----------------------------------
+        // FINISHED / COMPLETE
+        // ----------------------------------
+        if (status.includes("finished") || status.includes("final") || status.includes("complete")) {
+            const winner =
+                hs.current > as.current ? p1 : as.current > hs.current ? p2 : null;
+
+            return winner
+                ? `Final result: ${winner} defeats ${winner === p1 ? p2 : p1}.\nScore: ${scoreLine}`
+                : `Match finished between ${p1} and ${p2}. Final score: ${scoreLine}`;
+        }
+
+        // ----------------------------------
+        // CANCELLED
+        // ----------------------------------
+        if (status.includes("cancel") || status.includes("abandon")) {
+            return `Match between ${p1} and ${p2} has been cancelled.`;
+        }
+
+        // ----------------------------------
+        // INTERRUPTED / SUSPENDED
+        // ----------------------------------
+        if (status.includes("interrupt") || status.includes("suspend")) {
+            return `Play suspended in ${p1} vs ${p2}.\nCurrent score: ${scoreLine}`;
+        }
+
+        // ----------------------------------
+        // WALKOVER
+        // ----------------------------------
+        if (status.includes("walk") || status === "w/o") {
+            return `${p1} vs ${p2}: match ended in a walkover.`;
+        }
+
+        // ----------------------------------
+        // UPCOMING
+        // ----------------------------------
+        if (
+            status.includes("not started") ||
+            status.includes("scheduled") ||
+            status.includes("upcoming")
+        ) {
+            return `Upcoming match: ${p1} vs ${p2}.`;
+        }
+
+        // ----------------------------------
+        // LIVE
+        // ----------------------------------
+        if (
+            status.includes("live") ||
+            status.includes("inprogress") ||
+            status.includes("progress") ||
+            status.includes("playing")
+        ) {
+            const leader =
+                hs.current > as.current ? p1 : as.current > hs.current ? p2 : "Both players";
+
+            return `Live now: ${p1} vs ${p2}.\n${leader} leading.\nScore: ${scoreLine}`;
+        }
+
+        // ----------------------------------
+        // FALLBACK
+        // ----------------------------------
+        return `Match update: ${p1} vs ${p2}.\nStatus: ${status}.\nScore: ${scoreLine}`;
+    }
+
 
 
     function fetchScoreRecord(item) {
