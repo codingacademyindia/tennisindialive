@@ -4,7 +4,7 @@ import { Route, BrowserRouter as Router, Routes, Navigate, useParams } from 'rea
 import FixtureResultsAll from './scores/ScoresAll';
 import FixtureResultsCountry from './scores/ScoresAllCountry';
 import FixtureResultsCountrySEO from './scores/ScoresAllCountrySEO';
-
+import FixtureResultsAdmin from './admin/ScoresAdmin';
 import ATPLiveRankingsJSON from './rankings/ATP/LiveRankingsJSON';
 import OfficialRankings from './rankings/ATP/OfficialRankingsJSON';
 
@@ -71,6 +71,8 @@ const App = () => {
                 {/* PRIMARY ROUTES */}
                 {/* ================================ */}
                 <Route path="/" element={<FixtureResultsCountrySEO />} />
+                <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
+
                 <Route path="/live-scores" element={<FixtureResultsCountrySEO />} />
                 <Route path="/live-scores/:country" element={<FixtureResultsCountrySEO />} />
                 <Route path="/tennis-score-live" element={<FixtureResultsCountrySEO />} />
