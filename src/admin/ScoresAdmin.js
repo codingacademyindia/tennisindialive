@@ -33,6 +33,7 @@ import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
 import { getAlpha3, getAlpha2FromName, getRouteKeyword, getBaseRoute, getSeoDom, getH1 } from '../utils/utils';
+import TweetPreviewDialog from './TweetPreview';
 
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
@@ -82,8 +83,19 @@ const FixtureResultsAdmin = () => {
     const [playerId, setPlayerId] = React.useState(0);
     const [openPlayerInfo, setOpenPlayerInfo] = React.useState(false);
     const [expanded, setExpanded] = React.useState(false);
+    const [openTweetDialog, setOpenTweetDialog] = useState(false);
+    const [tweetText, setTweetText] = useState("");
 
+    const handleOpen = (text) => {
+        setTweetText(text);
+        setOpenTweetDialog(true);
+    };
 
+    const handleOk = () => {
+        // call your tweet API here
+        console.log("Tweet confirmed");
+        setOpenTweetDialog(false);
+    };
 
     const handleCloseCountry = () => {
         setDialogOpenCountry(false);
@@ -104,21 +116,46 @@ const FixtureResultsAdmin = () => {
 
     };
 
-    const handleClickOpenH2H = (item) => {
-        setEventId(item.id)
-        setScoreRecord(item)
-        setOpenH2H(true);
-        const options = {
-            method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`,
-            headers: HEADERS
-        };
-        fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+    const handleTweet = async (item) => {
+        console.log(item)
+        console.log(formatLiveScoreTweet(item))
+        setTweetText(formatLiveScoreTweet(item))
+        setEventId(item.id);
+        setScoreRecord(item);
+        setOpenTweetDialog(true);
 
 
 
     };
 
+    const sendTweet = async (msg) => {
+        // ⭐ Now call tweet API
+        try {
+            const res = await fetch("/api/tweet", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    msg: msg,
+                    env: "test"   // or "prod"
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                // SUCCESS
+                console.log("Tweet Success:", data);
+            } else {
+                // SERVER FAILED
+                console.log("Tweet Failed:", data.error);
+            }
+        } catch (err) {
+            // NETWORK ERROR
+            console.log("Tweet API Error:", err);
+        }
+    }
     const handleClickPlayerName = (item) => {
         setPlayerId(item.id)
         setOpenPlayerInfo(true);
@@ -271,7 +308,7 @@ const FixtureResultsAdmin = () => {
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
             const storedCountryAlpha3 = await getItem('countryAlpha3');
-           
+
             setSelectedCountry(countryFullName || storedValue || 'all');
             setSelectedCountryCode(getAlpha2FromName(countryFullName) || 'all');
             setSelectedCountryAlpha3(country || storedCountryAlpha3 || 'all');
@@ -644,13 +681,57 @@ const FixtureResultsAdmin = () => {
 
                 <button
                     className="space-x-2 flex flex-row items-center justify-center font-bold bg-yellow-600 hover:bg-yellow-700 text-white p-1 rounded-sm w-[20%] md:w-[20%]"
-                    onClick={(e) => handleClickOpenH2H(item)}
+                    onClick={(e) => handleTweet(item)}
                 >
-                    <span><HiMiniTableCells /> </span>
+
                     <span>Tweet</span>
                 </button>
             </div>
         );
+    }
+
+    function formatLiveScoreTweet(data) {
+        if (!data) return "";
+
+        const tournament = data?.tournament?.name || "";
+        const round = data?.roundInfo?.name || "";
+        const status = data?.status?.description || "";
+
+        const home = data?.homeTeam;
+        const away = data?.awayTeam;
+
+        const p1 = home?.shortName || home?.name || "";
+        const p2 = away?.shortName || away?.name || "";
+
+        const s1 = data?.homeScore;
+        const s2 = data?.awayScore;
+
+        // Set scores
+        const set1 = `${s1?.period1 ?? "-"}-${s2?.period1 ?? "-"}`;
+        const set2 = `${s1?.period2 ?? "-"}-${s2?.period2 ?? "-"}`;
+
+        // Display game score as "0-0" or "-" if unavailable
+        const gameScore = `${s1?.point ?? "-"}-${s2?.point ?? "-"}`;
+
+        // Build tweet
+        let tweet = `🎾 ${tournament}\n`;
+        tweet += `${round}\n\n`;
+        tweet += `${p1} vs ${p2}\n\n`;
+        tweet += `Set scores:\n`;
+
+        if (s1?.period1 != null) tweet += `1st set: ${set1}\n`;
+        if (s1?.period2 != null) tweet += `2nd set: ${set2}\n`;
+
+        tweet += `Current Game: ${gameScore}\n`;
+        tweet += `Status: ${status}\n\n`;
+        tweet += `#Tennis #LiveScores`;
+
+        // Ensure tweet fits 280 chars
+        if (tweet.length > 280) {
+            tweet = tweet.substring(0, 276) + "...";
+        }
+
+        return tweet;
     }
 
 
@@ -906,6 +987,12 @@ const FixtureResultsAdmin = () => {
     return (
         <div>
             {getSeoDom()}
+            <TweetPreviewDialog
+                open={openTweetDialog}
+                onClose={() => setOpenTweetDialog(false)}
+                onOk={handleOk}
+                tweet={tweetText}
+            />
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats
                 open={openMatchStat}
@@ -951,7 +1038,7 @@ const FixtureResultsAdmin = () => {
             <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-2 rounded-md m-2 text-sm">
                 <div className="flex flex-row justify-between items-center mb-1">
                     <h1 className="text-sm sm:text-sm md:text-sm lg:text-sm font-semibold">
-                        {getH1(selectedCountry)} 
+                        {getH1(selectedCountry)}
                     </h1>
                     <div className="text-xs text-right whitespace-nowrap">
                         <b>Updated At:</b> {new Date().toLocaleString()}
