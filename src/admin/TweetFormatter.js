@@ -177,7 +177,7 @@ export function tweetInProgress(match) {
     } else if (awaySets > homeSets) {
         leadText = match.awayTeam?.subTeams?.length ? `${getLastNames(a)} leading` : `${a} is leading`;
     } else if (awaySets === 0 && homeSets === 0) {
-        leadText = "Match has started";
+        leadText = "";
     } else {
         leadText = "The match is evenly balanced";
     }
