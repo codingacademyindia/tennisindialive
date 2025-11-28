@@ -13,7 +13,7 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
 
-const TweetPreviewDialog = ({ open, onClose, onOk, tweet, tweetStatus }) => {
+const TweetPreviewDialog = ({ open, onClose, onOk, tweet, tweetStatus, setTweetText }) => {
     const handleCopy = () => {
         navigator.clipboard.writeText(tweet || "");
     };
@@ -46,6 +46,7 @@ const TweetPreviewDialog = ({ open, onClose, onOk, tweet, tweetStatus }) => {
                     minRows={6}
                     maxRows={12}
                     value={tweet}
+                    onChange={(e) => setTweetText(e.target.value)}
                     sx={{ background: "#f8f8f8", borderRadius: 2 }}
                 />
 

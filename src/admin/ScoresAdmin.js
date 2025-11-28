@@ -1118,6 +1118,7 @@ const FixtureResultsAdmin = () => {
                 onOk={sendTweet}
                 tweet={tweetText}
                 tweetStatus={tweetStatus}
+                setTweetText={setTweetText}
             />
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats

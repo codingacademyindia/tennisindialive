@@ -165,23 +165,31 @@ export function tweetInProgress(match) {
     const link = getLink(match);
     const icon = getStatusIcon("inprogress");
 
-    let leadText =
-        homeSets > awaySets
-            ? `${h} is leading`
-            : awaySets > homeSets
-                ? `${a} is leading`
-                : awaySets==0 && homeSets==0
-                    ? "Match has started"
-                    :
-                "The match is evenly balanced";
+    // Function to get last names for doubles
+    const getLastNames = (teamName) => {
+        // Split by " / " for doubles, then take last word from each
+        return teamName.split(" / ").map(p => p.trim().split(" ").pop()).join(" / ");
+    };
+
+    let leadText;
+    if (homeSets > awaySets) {
+        leadText = match.homeTeam?.subTeams?.length ? `${getLastNames(h)} leading` : `${h} is leading`;
+    } else if (awaySets > homeSets) {
+        leadText = match.awayTeam?.subTeams?.length ? `${getLastNames(a)} leading` : `${a} is leading`;
+    } else if (awaySets === 0 && homeSets === 0) {
+        leadText = "Match has started";
+    } else {
+        leadText = "The match is evenly balanced";
+    }
 
     return (
-        `${icon} Live from ${tournament} - ${round} 🎾\n\n` +
+        `${icon} Live from ${tournament}${round ? " - " + round : ""} 🎾\n\n` +
         `${h} vs ${a}\n` +
         `${leadText} • Score: ${scoreString}\n\n` +
         `Follow live action 👇\n${link}`
     );
 }
+
 
 function tweetFinished(match) {
     const { h, a, tournament, round } = getPlayers(match);
@@ -255,7 +263,7 @@ ${link}
 
 
 export function tweetInterrupted(match) {
-    const { h, a, tournament , round} = getPlayers(match);
+    const { h, a, tournament, round } = getPlayers(match);
     const { scoreString } = extractScore(match);
     const link = getLink(match);
     const icon = getStatusIcon("interrupted");
