@@ -146,7 +146,7 @@ const FixtureResultsAdmin = () => {
                 },
                 body: JSON.stringify({
                     msg: tweetText,
-                    env: "test"   // or "prod"
+                    env: "prod"   // or "prod"
                 })
             });
 
