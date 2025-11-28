@@ -34,6 +34,10 @@ import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
 import { getAlpha3, getAlpha2FromName, getRouteKeyword, getBaseRoute, getSeoDom, getH1 } from '../utils/utils';
 import TweetPreviewDialog from './TweetPreview';
+import { formatLiveScoreTweet } from "./TweetFormatter";
+
+
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
@@ -85,7 +89,7 @@ const FixtureResultsAdmin = () => {
     const [expanded, setExpanded] = React.useState(false);
     const [openTweetDialog, setOpenTweetDialog] = useState(false);
     const [tweetText, setTweetText] = useState("");
-
+    const [tweetStatus, setTweetStatus] = useState(""); // "idle" | "sending" | "success" | "error"
     const handleOpen = (text) => {
         setTweetText(text);
         setOpenTweetDialog(true);
@@ -117,9 +121,12 @@ const FixtureResultsAdmin = () => {
     };
 
     const handleTweet = async (item) => {
+        setTweetStatus("")
         console.log(item)
-        console.log(formatLiveScoreTweet(item))
-        setTweetText(formatLiveScoreTweet(item))
+        const tweet = formatLiveScoreTweet(item);
+        console.log(tweet)
+
+        setTweetText(tweet)
         setEventId(item.id);
         setScoreRecord(item);
         setOpenTweetDialog(true);
@@ -130,14 +137,15 @@ const FixtureResultsAdmin = () => {
 
     const sendTweet = async (msg) => {
         // ⭐ Now call tweet API
+        setTweetStatus("sending")
         try {
-            const res = await fetch("/api/tweet", {
+            const res = await fetch(`${REACT_APP_API_URL}/tweet/live`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    msg: msg,
+                    msg: tweetText,
                     env: "test"   // or "prod"
                 })
             });
@@ -146,14 +154,17 @@ const FixtureResultsAdmin = () => {
 
             if (data.success) {
                 // SUCCESS
+                setTweetStatus("pass")
                 console.log("Tweet Success:", data);
             } else {
                 // SERVER FAILED
+                setTweetStatus("fail:" + data.error)
                 console.log("Tweet Failed:", data.error);
             }
         } catch (err) {
             // NETWORK ERROR
             console.log("Tweet API Error:", err);
+            setTweetStatus("error:" + err.message)
         }
     }
     const handleClickPlayerName = (item) => {
@@ -187,7 +198,7 @@ const FixtureResultsAdmin = () => {
             // const path = window.location.pathname.replace(/\/$/, "");  // remove trailing slash if any
             const country = newCountryCode.toLowerCase();
 
-            window.location.href = `${getBaseRoute()}/${country}`;
+            // window.location.href = `${getBaseRoute()}/${country}`;
         }, 800);
     };
 
@@ -464,30 +475,50 @@ const FixtureResultsAdmin = () => {
 
 
 
-    function getStatusDom(item) {
-        if (item?.status?.type === 'inprogress') {
-            return (<div className='flex flex-row w-full text-center space-x-1 items-center justify-center'>
-                <span className='capitalize text-xs'>{item?.status?.description}</span>
-                <span className='w-8'><LinearProgress color="success" /></span>
-            </div>)
+    function getStatusIcon(type) {
+        switch (type) {
+            case "inprogress": return "🔴";
+            case "notstarted": return "⏳";
+            case "finished": return "🏆";
+            case "interrupted": return "⏸️";
+            case "postponed": return "📅";
+            case "cancelled":
+            case "canceled":
+            case "retired":
+            case "walkover":
+            case "wo": return "❌";
+            default: return "🎾";
         }
-        else if (item?.status?.type === 'notstarted') {
-            return (<div className='flex flex-row items-center text-xs justify-center space-x-1 w-full'>
-                <AiOutlineClockCircle />
-                <span>{readableTimeStamp(item.startTimestamp)}</span>
-
-            </div>)
-        }
-        else {
-            return (<div className='flex flex-row w-full justify-center text-xs space-x-1'>
-
-                <span className='text-xs'>{readableDate(item.startTimestamp)}</span>
-                <span className='text-xs'>({item?.status?.description})</span>
-            </div>)
-        }
-
     }
 
+    function getStatusDom(item) {
+        if (item?.status?.type === 'inprogress') {
+            return (
+                <div className='flex flex-row w-full text-center space-x-1 items-center justify-center'>
+                   
+                    <span className="text-white font-bold px-2 py-1 rounded bg-green-600 inline-block animate-[blink_1s_infinite]">
+                        Live
+                    </span>
+                     <span className='capitalize text-xs'>{item?.status?.description}</span>
+                </div>
+            );
+        } else if (item?.status?.type === 'notstarted') {
+            return (
+                <div className='flex flex-row items-center text-xs justify-center space-x-1 w-full'>
+                    <AiOutlineClockCircle />
+                    <span>{readableTimeStamp(item.startTimestamp)}</span>
+                </div>
+            );
+        } else {
+            return (
+                <div className='flex flex-row w-full justify-center text-xs space-x-1 items-center'>
+                    <span>{getStatusIcon(item?.status?.type)}</span>
+                    <span>{readableDate(item.startTimestamp)}</span>
+                    <span className='capitalize'>({item?.status?.description})</span>
+                </div>
+            );
+        }
+    }
 
 
 
@@ -734,107 +765,98 @@ const FixtureResultsAdmin = () => {
         return tweet;
     }
 
-    function formatLiveScoreTweet(match = {}) {
-        const p1 = match?.homeTeam?.name || "Player 1";
-        const p2 = match?.awayTeam?.name || "Player 2";
+    // function formatLiveScoreTweet(match) {
+    //     const h = match.homeTeam?.name || "Player 1";
+    //     const a = match.awayTeam?.name || "Player 2";
+    //     const tournament = match.tournament?.name || "";
+    //     const status = match.status?.type || "";
+    //     const link = `https://tennisindialive.com/live-scores`;
 
-        // --------------------------
-        // STATUS NORMALIZATION (SAFE)
-        // --------------------------
-        let rawStatus = match?.status;
+    //     // Extract sets
+    //     const hs = match.homeScore || {};
+    //     const as = match.awayScore || {};
 
-        let statusValue = "";
+    //     const sets = [
+    //         [hs.period1, as.period1],
+    //         [hs.period2, as.period2],
+    //         [hs.period3, as.period3],
+    //         [hs.period4, as.period4],
+    //         [hs.period5, as.period5],
+    //     ].filter(s => s[0] !== undefined);
 
-        if (typeof rawStatus === "string") {
-            statusValue = rawStatus;
-        } else if (typeof rawStatus === "number") {
-            statusValue = String(rawStatus);
-        } else if (Array.isArray(rawStatus)) {
-            statusValue = rawStatus.join(" ");
-        } else if (typeof rawStatus === "object" && rawStatus !== null) {
-            statusValue =
-                rawStatus.code ??
-                rawStatus.name ??
-                rawStatus.state ??
-                rawStatus.description ??
-                "";
-        }
+    //     const scoreString = sets.map(([hS, aS]) => `${hS}-${aS}`).join(", ");
 
-        // ultimately convert to lowercase safely
-        const status = String(statusValue).toLowerCase();
+    //     // Count sets
+    //     let homeSets = 0;
+    //     let awaySets = 0;
+    //     sets.forEach(([hS, aS]) => {
+    //         if (hS > aS) homeSets++;
+    //         else if (aS > hS) awaySets++;
+    //     });
 
-        // SCORE
-        const hs = match?.homeScore || {};
-        const as = match?.awayScore || {};
+    //     const leadText =
+    //         homeSets > awaySets
+    //             ? `${h} is leading`
+    //             : awaySets > homeSets
+    //                 ? `${a} is leading`
+    //                 : `The match is finely poised`;
 
-        const scoreLine = `${hs.period1 || ""}-${as.period1 || ""} ${hs.period2 || ""}-${as.period2 || ""}`
-            .replace(/undefined/g, "")
-            .trim();
+    //     // ------------------------------------------------------------
+    //     //                        STATUS LOGIC
+    //     // ------------------------------------------------------------
 
-        // ----------------------------------
-        // FINISHED / COMPLETE
-        // ----------------------------------
-        if (status.includes("finished") || status.includes("final") || status.includes("complete")) {
-            const winner =
-                hs.current > as.current ? p1 : as.current > hs.current ? p2 : null;
+    //     // 1️⃣ NOT STARTED
+    //     if (status === "notstarted") {
+    //         const startTime = match.startTimestamp
+    //             ? new Date(match.startTimestamp * 1000).toLocaleString()
+    //             : "soon";
 
-            return winner
-                ? `Final result: ${winner} defeats ${winner === p1 ? p2 : p1}.\nScore: ${scoreLine}`
-                : `Match finished between ${p1} and ${p2}. Final score: ${scoreLine}`;
-        }
+    //         return (
+    //             `Upcoming match at ${tournament} 🎾\n\n` +
+    //             `${h} vs ${a}\nStarts: ${startTime}\n\n` +
+    //             `Match page 👇\n${link}`
+    //         );
+    //     }
 
-        // ----------------------------------
-        // CANCELLED
-        // ----------------------------------
-        if (status.includes("cancel") || status.includes("abandon")) {
-            return `Match between ${p1} and ${p2} has been cancelled.`;
-        }
+    //     // 2️⃣ IN PROGRESS
+    //     if (status === "inprogress") {
+    //         return (
+    //             `Live action from ${tournament} 🎾\n\n` +
+    //             `${h} vs ${a}\n` +
+    //             `${leadText} at ${scoreString}.\n\n` +
+    //             `Watch live score 👇\n${link}`
+    //         );
+    //     }
 
-        // ----------------------------------
-        // INTERRUPTED / SUSPENDED
-        // ----------------------------------
-        if (status.includes("interrupt") || status.includes("suspend")) {
-            return `Play suspended in ${p1} vs ${p2}.\nCurrent score: ${scoreLine}`;
-        }
+    //     // 3️⃣ FINISHED
+    //     if (status === "finished") {
+    //         const winner = homeSets > awaySets ? h : a;
+    //         return (
+    //             `${tournament} — Final Result 🎾\n\n` +
+    //             `${h} vs ${a}\n` +
+    //             `${winner} wins!\nFinal score: ${scoreString}\n\n` +
+    //             `More details 👇\n${link}`
+    //         );
+    //     }
 
-        // ----------------------------------
-        // WALKOVER
-        // ----------------------------------
-        if (status.includes("walk") || status === "w/o") {
-            return `${p1} vs ${p2}: match ended in a walkover.`;
-        }
+    //     // 4️⃣ Interrupted / Postponed
+    //     if (status === "postponed" || status === "interrupted") {
+    //         return (
+    //             `${tournament} — Match ${status} ⏸️\n\n` +
+    //             `${h} vs ${a}\n` +
+    //             `Current score: ${scoreString}\n\n` +
+    //             `Updates 👇\n${link}`
+    //         );
+    //     }
 
-        // ----------------------------------
-        // UPCOMING
-        // ----------------------------------
-        if (
-            status.includes("not started") ||
-            status.includes("scheduled") ||
-            status.includes("upcoming")
-        ) {
-            return `Upcoming match: ${p1} vs ${p2}.`;
-        }
+    //     // 5️⃣ fallback
+    //     return (
+    //         `${tournament}\n\n` +
+    //         `${h} vs ${a}\nMore details 👇\n${link}`
+    //     );
+    // }
 
-        // ----------------------------------
-        // LIVE
-        // ----------------------------------
-        if (
-            status.includes("live") ||
-            status.includes("inprogress") ||
-            status.includes("progress") ||
-            status.includes("playing")
-        ) {
-            const leader =
-                hs.current > as.current ? p1 : as.current > hs.current ? p2 : "Both players";
 
-            return `Live now: ${p1} vs ${p2}.\n${leader} leading.\nScore: ${scoreLine}`;
-        }
-
-        // ----------------------------------
-        // FALLBACK
-        // ----------------------------------
-        return `Match update: ${p1} vs ${p2}.\nStatus: ${status}.\nScore: ${scoreLine}`;
-    }
 
 
 
@@ -1093,8 +1115,9 @@ const FixtureResultsAdmin = () => {
             <TweetPreviewDialog
                 open={openTweetDialog}
                 onClose={() => setOpenTweetDialog(false)}
-                onOk={handleOk}
+                onOk={sendTweet}
                 tweet={tweetText}
+                tweetStatus={tweetStatus}
             />
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
             <MatchStats

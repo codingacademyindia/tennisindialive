@@ -271,7 +271,7 @@ const FixtureResultsCountry = () => {
             const storedValue = await getItem('country');
             const storedCountryCode = await getItem('countryCode');
             const storedCountryAlpha3 = await getItem('countryAlpha3');
-           
+
             setSelectedCountry(countryFullName || storedValue || 'all');
             setSelectedCountryCode(getAlpha2FromName(countryFullName) || 'all');
             setSelectedCountryAlpha3(country || storedCountryAlpha3 || 'all');
@@ -427,30 +427,51 @@ const FixtureResultsCountry = () => {
 
 
 
-    function getStatusDom(item) {
-        if (item?.status?.type === 'inprogress') {
-            return (<div className='flex flex-row w-full text-center space-x-1 items-center justify-center'>
-                <span className='capitalize text-xs'>{item?.status?.description}</span>
-                <span className='w-8'><LinearProgress color="success" /></span>
-            </div>)
-        }
-        else if (item?.status?.type === 'notstarted') {
-            return (<div className='flex flex-row items-center text-xs justify-center space-x-1 w-full'>
-                <AiOutlineClockCircle />
-                <span>{readableTimeStamp(item.startTimestamp)}</span>
 
-            </div>)
+    function getStatusIcon(type) {
+        switch (type) {
+            case "inprogress": return "🔴";
+            case "notstarted": return "⏳";
+            case "finished": return "🏆";
+            case "interrupted": return "⏸️";
+            case "postponed": return "📅";
+            case "cancelled":
+            case "canceled":
+            case "retired":
+            case "walkover":
+            case "wo": return "❌";
+            default: return "🎾";
         }
-        else {
-            return (<div className='flex flex-row w-full justify-center text-xs space-x-1'>
-
-                <span className='text-xs'>{readableDate(item.startTimestamp)}</span>
-                <span className='text-xs'>({item?.status?.description})</span>
-            </div>)
-        }
-
     }
 
+    function getStatusDom(item) {
+        if (item?.status?.type === 'inprogress') {
+            return (
+                <div className='flex flex-row w-full text-center space-x-1 items-center justify-center'>
+
+                    <span className="text-white font-bold px-2 py-1 rounded bg-green-600 inline-block animate-[blink_1s_infinite]">
+                        Live
+                    </span>
+                    <span className='capitalize text-xs'>{item?.status?.description}</span>
+                </div>
+            );
+        } else if (item?.status?.type === 'notstarted') {
+            return (
+                <div className='flex flex-row items-center text-xs justify-center space-x-1 w-full'>
+                    <AiOutlineClockCircle />
+                    <span>{readableTimeStamp(item.startTimestamp)}</span>
+                </div>
+            );
+        } else {
+            return (
+                <div className='flex flex-row w-full justify-center text-xs space-x-1 items-center'>
+                    <span>{getStatusIcon(item?.status?.type)}</span>
+                    <span>{readableDate(item.startTimestamp)}</span>
+                    <span className='capitalize'>({item?.status?.description})</span>
+                </div>
+            );
+        }
+    }
 
 
 
@@ -963,7 +984,7 @@ const FixtureResultsCountry = () => {
             <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-2 rounded-md m-2 text-sm">
                 <div className="flex flex-row justify-between items-center mb-1">
                     <h1 className="text-sm sm:text-sm md:text-sm lg:text-sm font-semibold">
-                        {getH1(selectedCountry)} 
+                        {getH1(selectedCountry)}
                     </h1>
                     <div className="text-xs text-right whitespace-nowrap">
                         <b>Updated At:</b> {new Date().toLocaleString()}

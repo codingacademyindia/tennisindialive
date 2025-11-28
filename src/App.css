@@ -25,6 +25,16 @@ html, body, #root {
 .content-wrap {
   flex: 1;
 }
+.blink-live {
+  display: inline-block!important;
+  animation: blink 1s infinite!important;
+  color: green!important; /* or red if you prefer 🔴 */
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
 
 
 @media (prefers-reduced-motion: no-preference) {
@@ -47,7 +57,16 @@ html, body, #root {
 .App-link {
   color: #61dafb;
 }
+.blink-live {
+  display: inline-block!important;
+  animation: blink 1s infinite!important;
+  color: green!important; /* or red if you prefer 🔴 */
+}
 
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
