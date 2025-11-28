@@ -11,6 +11,7 @@ const SEO = ({
   description = 'Track live tennis scores countrywise from ATP, WTA & ITF events..',
   keywords = 'countrywise tennis scores, live tennis, ATP, WTA, ITF, tennis rankings',
   url = typeof window !== 'undefined' ? window.location.href : '',
+  image="https://www.tennisindialive.com/livescores.png",
   jsonLd = null,
 }) => {
   // Extract country alpha-3 code from URL (e.g., "aus" from "/live-scores/aus")
@@ -68,13 +69,13 @@ const SEO = ({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
-      <meta property="og:image" content="https://www.tennisindialive.com/og-default.jpg" />
+      <meta property="og:image" content={image} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content="https://www.tennisindialive.com/og-default.jpg" />
+      <meta name="twitter:image" content={image} />
 
       {/* JSON-LD */}
       <script type="application/ld+json">
