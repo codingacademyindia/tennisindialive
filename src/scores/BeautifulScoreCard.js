@@ -14,17 +14,52 @@ function getRoundAbbreviation(name) {
 
 function getFullName(name, slug) { return name; }
 
+// function formatTennisScoreDom(homeScore, awayScore, status) {
+//   // Display scores or blanks (use your own logic here!)
+//   if (!homeScore || !awayScore) return "—";
+//   const render = score =>
+//     [score.period1, score.period2, score.period3, score.period4, score.period5]
+//       .filter(Boolean)
+//       .map((s, i) => <span key={i}>{s}{i < 4 ? " " : ""}</span>);
+//   return (
+//     <Box display="flex" flexDirection="column" alignItems="center">
+//       <Box display="flex" gap={0.8}>{render(homeScore)}</Box>
+//       <Box display="flex" gap={0.8}>{render(awayScore)}</Box>
+//     </Box>
+//   );
+// }
 function formatTennisScoreDom(homeScore, awayScore, status) {
-  // Display scores or blanks (use your own logic here!)
   if (!homeScore || !awayScore) return "—";
-  const render = score =>
-    [score.period1, score.period2, score.period3, score.period4, score.period5]
-      .filter(Boolean)
-      .map((s, i) => <span key={i}>{s}{i < 4 ? " " : ""}</span>);
+  const showPoints = status === "inprogress";
+  
+  const getSetScoresWithPoints = (score) => {
+    const sets = [score.period1, score.period2, score.period3, score.period4, score.period5]
+      .filter(x => x !== undefined && x !== null && x !== "");
+    // Only show point if in progress
+    if (showPoints) {
+      sets.push(
+        <span
+          key="point"
+          style={{
+            fontWeight: "bold",
+            color: "#009688",
+            padding: "2px 8px",
+            borderRadius: "8px",
+            background: "#e0f2f1",
+            marginLeft: 6
+          }}
+        >
+          {score.point ?? "0"}
+        </span>
+      );
+    }
+    return sets.map((s, i) => <span key={i}>{s}{i < sets.length - 1 ? " " : ""}</span>);
+  };
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Box display="flex" gap={0.8}>{render(homeScore)}</Box>
-      <Box display="flex" gap={0.8}>{render(awayScore)}</Box>
+      <Box display="flex" gap={0.8}>{getSetScoresWithPoints(homeScore)}</Box>
+      <Box display="flex" gap={0.8}>{getSetScoresWithPoints(awayScore)}</Box>
     </Box>
   );
 }
@@ -85,7 +120,7 @@ function BeautifulScoreCard({
   const p2 = { ...item.awayTeam, onClick: handleClickPlayerName };
   const statusType = item?.status?.type;
   const round = getRoundAbbreviation(item?.roundInfo?.name);
-
+  console.log(statusType);
   // Responsive card
   return (
     <Box sx={{

@@ -171,6 +171,7 @@ const FixtureResultsCountry = () => {
     // --- BUSINESS HANDLERS (from original file) ---
     const handleCloseCountry = () => setDialogOpenCountry(false);
     const handleClickOpenMatchStat = (item) => {
+        console.log(item)
         setEventId(item.id);
         setScoreRecord(item);
         setOpenMatchStat(true);
@@ -188,6 +189,7 @@ const FixtureResultsCountry = () => {
         });
     };
     const handleClickPlayerName = (item) => {
+        console.log(item)
         setPlayerId(item.id);
         setOpenPlayerInfo(true);
     };
@@ -690,7 +692,8 @@ const FixtureResultsCountry = () => {
                     <Grid container spacing={2}>
                         {rankingsData[tournament].filter(hasCountry).map((item, subIdx) =>
                             <Grid item xs={12} md={6} key={subIdx}>
-                                <BeautifulScoreCard item={item} />
+                                <BeautifulScoreCard item={item} handleClickOpenH2H={handleClickOpenH2H} handleClickOpenMatchStat={handleClickOpenMatchStat}
+                                handleClickPlayerName={handleClickPlayerName} />
                             </Grid>
                         )}
                     </Grid>
