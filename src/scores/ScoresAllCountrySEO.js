@@ -549,10 +549,12 @@ const FixtureResultsCountry = () => {
         }
         return objDom;
     }
-    function hasCountry(item) {
+   function hasCountry(item) {
         try {
-            let p1 = item['homeTeam'];
-            let p2 = item['awayTeam'];
+            let p1 = item['homeTeam']
+            let p2 = item['awayTeam']
+
+            // if (!item.tournament.name.toLowerCase().includes('davis cup') && !item.tournament.name.toLowerCase().includes('billie jean king cup')) {
             const uniqueTournament = item.tournament;
             if (uniqueTournament.name && uniqueTournament.name.includes(tournamentName)) {
                 if (!uniqueTournament.name.toLowerCase().includes('double')) {
@@ -560,12 +562,32 @@ const FixtureResultsCountry = () => {
                         ((p1.country && p1.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()) ||
                             (p2.country && p2.country.alpha3.toLowerCase() === selectedCountryAlpha3.toLowerCase()))
                     ) && matchStatusList.includes(item?.status?.type)) {
-                        return true;
+                        return true
+
+                    }
+                } else {
+                    const p1a = p1.subTeams[0];
+                    const p1b = p1.subTeams[1];
+                    const p2a = p2.subTeams[0];
+                    const p2b = p2.subTeams[1];
+                    const countries = [
+                        (p1a.country) ? p1a.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p1b.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p2a.country.alpha3.toLowerCase() : null,
+                        (p1a.country) ? p2b.country.alpha3.toLowerCase() : null
+                    ];
+                    if ((getCountryCondition() || countries.includes(selectedCountryAlpha3.toLowerCase())) && matchStatusList.includes(item?.status?.type)) {
+                        return true
                     }
                 }
             }
-        } catch (err) { }
-        return false;
+            // }
+        }
+        catch (err) {
+            console.log("error in checking country")
+        }
+
+        return false
     }
     function hasIndianInAllScores(allTournamentScore, tournament) {
         let hasIndianList = allTournamentScore.map(item => hasCountry(item));
