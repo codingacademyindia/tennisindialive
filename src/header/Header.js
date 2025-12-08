@@ -52,9 +52,7 @@ function ResponsiveNavBar() {
         <nav className="bg-gradient-to-r from-blue-800 via-purple-600 to-teal-800 shadow-lg relative z-50 h-20">
             {/* <nav className="bg-teal-800 shadow-lg relative z-50 h-20"> */}
 
-            <RequestModal open={modalOpen} handleClose={() => setModalOpen(false)} title="Contact Us">
-                <ContactUs />
-            </RequestModal>
+         
             <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center">
                 {/* Logo - now fits inside navbar */}
                 <a

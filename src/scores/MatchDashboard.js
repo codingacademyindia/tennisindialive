@@ -5,7 +5,7 @@ import MatchHeader from './MatchHeader';
 import PointByPointViewer from './PointByPointViewer';
 import PowerRankingChart from './PowerRankingChart';
 import MatchStatsTable from './MatchStats';
-
+import OddsPanel from './OddsPanel';
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
     'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
@@ -103,6 +103,7 @@ export default function MatchDashboard() {
     const [pointByPointData, setPointByPointData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [tab, setTab] = useState(0);
+    const [oddsData, setOddsData] = useState(null);
     const [openAccordion, setOpenAccordion] = useState('point'); // 'point', 'power', 'stats'
 
     useEffect(() => {
@@ -145,6 +146,17 @@ export default function MatchDashboard() {
                 } catch (err) {
                     if (!cancelled) setPointByPointData([]);
                 }
+
+
+                   await sleep(delayMs);
+
+                const oddsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/odds`;
+                try {
+                    const oddsResp = await fetchWithRetry(oddsUrl, { headers: HEADERS }, 3, 500);
+                    if (!cancelled) setOddsData(oddsResp ?? []);
+                } catch (err) {
+                    if (!cancelled) setOddsData([]);
+                }
             } catch (err) {
                 if (!cancelled) {
                     setStats({ error: err.message });
@@ -183,8 +195,8 @@ export default function MatchDashboard() {
     return (
         <div className="min-h-screen bg-gray-900 py-4 px-1 sm:px-4">
             <div className="w-full mx-auto bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl shadow-2xl p-4 sm:p-8">
-                <MatchHeader event={event} />
-
+                <MatchHeader event={event} oddsData={oddsData}/>
+                {/* <OddsPanel eventId={eventId} /> */}
                 {/* Accordion: Point By Point */}
                 <AccordionItem
                     id="acc-point-by-point"

@@ -26,6 +26,7 @@ import Footer from './common/Footer';
 import NotFound from './common/stateHandlers/NotFound';
 import WelcomeModal from './common/WelcomeModal';
 import ResponsiveAppBar from './header/Header';
+import ResponsiveNavBar from './header/Header_Dashboard';
 
 import AdUnitTop from './ads/AdBannerTop';
 import FluidAd from './ads/FluidAd';
@@ -49,14 +50,32 @@ function RedirectLegacyCountry() {
 const App = () => {
   console.log('MATCHED ROUTE', window.location.pathname);
 
+function getClassName(){
+  if (window.location.pathname.toLowerCase().includes("match-dashboard")){
+    return 'w-full'
+  }
+  else{
+    return "w-[80%]"
+  }
+}
+
+function isDashboard(){
+  if (window.location.pathname.toLowerCase().includes("match-dashboard")){
+    return true
+  }
+  else{
+    return false
+  }
+}
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <div className="flex flex-col w-full">
-          <div className="flex flex-col min-h-screen w-full border sm:w-[80%] mx-auto">
+          <div className={`flex flex-col min-h-screen w-full border sm:${getClassName()} mx-auto`}  >
 
             <FluidAd />
-            <ResponsiveAppBar />
+            {isDashboard() ? <ResponsiveNavBar /> : <ResponsiveAppBar />}
             <WelcomeModal />
 
             <div className="flex-grow">
