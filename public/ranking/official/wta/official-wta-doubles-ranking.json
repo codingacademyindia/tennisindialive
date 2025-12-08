@@ -344,7 +344,7 @@
     {
         "rank": "39",
         "player": "Anna Kalinskaya",
-        "age": "26",
+        "age": "27",
         "country": "RUS",
         "points": "2120",
         "career_high": "",
@@ -1001,7 +1001,7 @@
     {
         "rank": "112",
         "player": "Ekaterine Gorgodze",
-        "age": "33",
+        "age": "34",
         "country": "GEO",
         "points": "724",
         "career_high": "",
@@ -1254,7 +1254,7 @@
         "rank": "140",
         "player": "Anastasia Potapova",
         "age": "24",
-        "country": "RUS",
+        "country": "AUT",
         "points": "580",
         "career_high": "",
         "change": ""
@@ -1928,7 +1928,7 @@
     {
         "rank": "215",
         "player": "Iva Jovic",
-        "age": "17",
+        "age": "18",
         "country": "USA",
         "points": "394",
         "career_high": "",
@@ -1955,7 +1955,7 @@
     {
         "rank": "218",
         "player": "Noma Noha Akugue",
-        "age": "21",
+        "age": "22",
         "country": "GER",
         "points": "390",
         "career_high": "",
@@ -2225,7 +2225,7 @@
     {
         "rank": "248",
         "player": "Bernarda Pera",
-        "age": "30",
+        "age": "31",
         "country": "USA",
         "points": "325",
         "career_high": "",
@@ -3800,7 +3800,7 @@
     {
         "rank": "423",
         "player": "Martina Capurro Taborda",
-        "age": "27",
+        "age": "28",
         "country": "ARG",
         "points": "175",
         "career_high": "",
@@ -4457,7 +4457,7 @@
     {
         "rank": "496",
         "player": "Petra Marčinko",
-        "age": "19",
+        "age": "20",
         "country": "CRO",
         "points": "143",
         "career_high": "",
@@ -4888,18 +4888,18 @@
     },
     {
         "rank": "544",
-        "player": "Maria Sakkari",
-        "age": "30",
-        "country": "GRE",
+        "player": "Galina Voskoboeva",
+        "age": "40",
+        "country": "KAZ",
         "points": "131",
         "career_high": "",
         "change": "-5"
     },
     {
         "rank": "544",
-        "player": "Galina Voskoboeva",
-        "age": "40",
-        "country": "KAZ",
+        "player": "Maria Sakkari",
+        "age": "30",
+        "country": "GRE",
         "points": "131",
         "career_high": "",
         "change": "-5"
@@ -5411,7 +5411,7 @@
     {
         "rank": "602",
         "player": "Kylie Collins",
-        "age": "22",
+        "age": "23",
         "country": "USA",
         "points": "111",
         "career_high": "",
@@ -5528,7 +5528,7 @@
     {
         "rank": "615",
         "player": "Justina Gonzalez Daniele",
-        "age": "19",
+        "age": "20",
         "country": "ARG",
         "points": "106",
         "career_high": "",
@@ -5600,7 +5600,7 @@
     {
         "rank": "623",
         "player": "Urszula Radwańska",
-        "age": "34",
+        "age": "35",
         "country": "POL",
         "points": "103",
         "career_high": "",
@@ -5842,7 +5842,7 @@
     },
     {
         "rank": "650",
-        "player": "Hee Rae Im",
+        "player": "Heerae Im",
         "age": "21",
         "country": "KOR",
         "points": "96",
@@ -6302,7 +6302,7 @@
     {
         "rank": "701",
         "player": "Cristiana Todoni",
-        "age": "18",
+        "age": "19",
         "country": "ROU",
         "points": "81",
         "career_high": "",
@@ -6761,7 +6761,7 @@
     {
         "rank": "752",
         "player": "Aitiyaguli Aixirefu",
-        "age": "21",
+        "age": "22",
         "country": "CHN",
         "points": "70",
         "career_high": "",
@@ -6995,7 +6995,7 @@
     {
         "rank": "777",
         "player": "Chia Yi Tsao",
-        "age": "21",
+        "age": "22",
         "country": "TWN",
         "points": "66",
         "career_high": "",
@@ -7157,7 +7157,7 @@
     {
         "rank": "796",
         "player": "Juliana Giaccio",
-        "age": "16",
+        "age": "17",
         "country": "ESP",
         "points": "64",
         "career_high": "",
@@ -7490,7 +7490,7 @@
     {
         "rank": "833",
         "player": "Sijia Wei",
-        "age": "21",
+        "age": "22",
         "country": "CHN",
         "points": "58",
         "career_high": "",
@@ -8282,7 +8282,7 @@
     {
         "rank": "921",
         "player": "Feier Hu",
-        "age": "20",
+        "age": "21",
         "country": "CHN",
         "points": "47",
         "career_high": "",
@@ -8381,7 +8381,7 @@
     {
         "rank": "932",
         "player": "Adithya Karunaratne",
-        "age": "23",
+        "age": "24",
         "country": "HKG",
         "points": "46",
         "career_high": "",
@@ -8876,7 +8876,7 @@
     {
         "rank": "987",
         "player": "Tamira Paszek",
-        "age": "34",
+        "age": "35",
         "country": "AUT",
         "points": "40",
         "career_high": "",

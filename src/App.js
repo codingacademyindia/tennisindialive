@@ -33,6 +33,8 @@ import FluidAd from './ads/FluidAd';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+import MatchDashboard from './scores/MatchDashboard';
+
 // ----------------------------
 // Redirect legacy dash URLs
 // /tennis-india/scores  → /tennis/india/scores
@@ -81,6 +83,7 @@ const App = () => {
                 <Route path="/tennis-live" element={<FixtureResultsCountrySEO />} />
                  <Route path="/tennis-live/:country" element={<FixtureResultsCountrySEO />} />
                 <Route path="/live-tennis/:country" element={<FixtureResultsCountrySEO />} />
+                <Route path="/match-dashboard/:eventId" element={<MatchDashboard />} />
 
                 {/* All matches & date-based */}
                 <Route path="/all" element={<FixtureResultsAll />} />

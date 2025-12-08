@@ -287,6 +287,7 @@ const FixtureResultsCountry = () => {
         };
         fetchValue();
     }, [country]);
+
     function formatTennisScoreDom(homeScore, awayScore, currentStatus) {
         const homePeriods = [homeScore.period1 || 0, homeScore.period2 || 0, homeScore.period3 || 0, homeScore.period4 || 0, homeScore.period5 || 0];
         const awayPeriods = [awayScore.period1 || 0, awayScore.period2 || 0, awayScore.period3 || 0, awayScore.period4 || 0, awayScore.period5 || 0];
@@ -474,82 +475,64 @@ const FixtureResultsCountry = () => {
         }
         catch (err) { }
     }
-    function fetchH2HStatsDom(item) {
-        return (
-            <div className="flex flex-row  space-x-2 w-full text-xs bg-indigo-200   rounded-md">
-                <div className='w-[40%] md:w-[25%] flex flex-row items-center font-bold space-x-1'>
-                    <span className="text-xs  text-center bg-slate-600 text-white p-1">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
-                    <span className="text-xs w-[80%] whitespace-nowrap border text-center rounded p-1">{getStatusDom(item)}</span>
-                </div>
-                <Grid item xs={2} sm={3} md={3}
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",             // <--- stack vertically!
-                        alignItems: "center",                // <--- centered
-                        justifyContent: { xs: "flex-end", sm: "center" },
-                        gap: 1,                              // more vertical spacing
-                        minWidth: 42,
-                        mt: { xs: 1, sm: 0 }
-                    }}>
-                    <Tooltip title="Match Stats">
-                        <IconButton
-                            size="small"
-                            color="primary"
-                            onClick={() => handleClickOpenMatchStat(item)}
-                            sx={{
-                                bgcolor: '#f0fcff',
-                                fontSize: "1.17rem",
-                                mb: 1,           // adds spacing between icons
-                            }}
-                        >
-                            <IoStatsChartSharp />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Head to Head">
-                        <IconButton
-                            size="small"
-                            color="secondary"
-                            onClick={() => handleClickOpenH2H(item)}
-                            sx={{
-                                bgcolor: '#fff9e6',
-                                fontSize: "1.17rem",
-                            }}
-                        >
-                            <HiMiniTableCells />
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
+  function fetchH2HStatsDom(item) {
+    return (
+        <div className="flex flex-row space-x-2 w-full text-xs bg-indigo-200 rounded-md">
+            <div className='w-[40%] md:w-[25%] flex flex-row items-center font-bold space-x-1'>
+                <span className="text-xs text-center bg-slate-600 text-white p-1">{getRoundAbbreviation(item?.roundInfo?.name)} </span>
+                <span className="text-xs w-[80%] whitespace-nowrap border text-center rounded p-1">{getStatusDom(item)}</span>
             </div>
-        );
-    }
-    function fetchScoreRecord(item) {
-        let objDom = [];
-        let p1 = item['homeTeam'];
-        let p2 = item['awayTeam'];
-        const uniqueTournament = item.tournament.uniqueTournament;
-        if (uniqueTournament.name) {
-            try {
-                if (hasCountry(item)) {
-                    objDom = (
-                        <div className='flex flex-col bg-slate-200 border'>
-                            <div className='bg-indigo-300'>{fetchH2HStatsDom(item)}</div>
-                            <div className="flex flex-row w-full h-full text-sm sm:text-xs xs:text-xs space-x-2 sm:space-x-4 border">
-                                <div className="relative flex flex-col  min-h-full justify-center w-[60%] sm:w-[40%]">
-                                    {getPlayerDom2(item)}
-                                </div>
-                                <div className='w-[20%]'>
-                                    {item?.status?.type !== "notstarted" && formatTennisScoreDom(item['homeScore'], item['awayScore'], item?.status?.type)}
-                                </div>
-                            </div>
-                        </div>
-                    );
-                    return objDom;
-                }
-            } catch (err) { }
-        }
-        return objDom;
-    }
-   function hasCountry(item) {
+            <Grid item xs={2} sm={3} md={3}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: { xs: "flex-end", sm: "center" },
+                    gap: 1,
+                    minWidth: 42,
+                    mt: { xs: 1, sm: 0 }
+                }}>
+                {/* Option 1: Raw link */}
+                <a href={`/match-dashboard/${item.id}`} target="_blank" rel="noopener noreferrer">
+                    Match Dashboard
+                </a>
+                {/* Option 2: React Router Link (uncomment if using) */}
+                {/* <Link to={`/match-dashboard/${item.id}`} target="_blank" rel="noopener noreferrer">
+                    Match Dashboard
+                </Link> */}
+                <Tooltip title="Match Stats">
+                    <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() => handleClickOpenMatchStat(item)}
+                        sx={{
+                            bgcolor: '#f0fcff',
+                            fontSize: "1.17rem",
+                            mb: 1,
+                        }}
+                    >
+                        <IoStatsChartSharp />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Head to Head">
+                    <IconButton
+                        size="small"
+                        color="secondary"
+                        onClick={() => handleClickOpenH2H(item)}
+                        sx={{
+                            bgcolor: '#fff9e6',
+                            fontSize: "1.17rem",
+                        }}
+                    >
+                        <HiMiniTableCells />
+                    </IconButton>
+                </Tooltip>
+            </Grid>
+        </div>
+    );
+}
+   
+    function hasCountry(item) {
         try {
             let p1 = item['homeTeam']
             let p2 = item['awayTeam']
@@ -658,41 +641,6 @@ const FixtureResultsCountry = () => {
         );
     }
 
-    // function recordDom() {
-    //     if (!rankingsData) return null;
-    //     let filteredTournaments = Object.keys(rankingsData)
-    //         .filter(tournament => hasIndianInAllScores(rankingsData[tournament], tournament));
-    //     if (filteredTournaments.length === 0) {
-    //         return <NotFound msg="No Results Found" />;
-    //     }
-    //     const result = [];
-    //     filteredTournaments.forEach((tournament, idx) => {
-    //         result.push(
-    //             <CardGlass key={tournament}>
-    //                 <TournamentTitle>
-    //                     {getScoreHeader(tournament)}
-    //                 </TournamentTitle>
-    //                 <Box>
-    //                     {rankingsData[tournament].filter(hasCountry).map((item, subIdx) =>
-    //                         <BeautifulScoreCard item={item} key={subIdx} />
-    //                     )}
-    //                 </Box>
-    //             </CardGlass>
-    //         );
-    //         if ((idx + 1) % 3 === 0) {
-    //             result.push(
-    //                 <Box key={`ad-${idx}`} sx={{
-    //                     m: 2, p: 3, textAlign: 'center',
-    //                     bgcolor: "#fffdee", borderRadius: 2, border: "1px dashed #f0e8c0"
-    //                 }}>
-    //                     {idx % 2 === 0 ? <FluidAd /> : <FluidAdImage />}
-    //                 </Box>
-    //             )
-    //         }
-    //     });
-    //     return result;
-    // }
-
 
     function recordDom() {
         if (!rankingsData) return null;
@@ -715,7 +663,7 @@ const FixtureResultsCountry = () => {
                         {rankingsData[tournament].filter(hasCountry).map((item, subIdx) =>
                             <Grid item xs={12} md={6} key={subIdx}>
                                 <BeautifulScoreCard item={item} handleClickOpenH2H={handleClickOpenH2H} handleClickOpenMatchStat={handleClickOpenMatchStat}
-                                handleClickPlayerName={handleClickPlayerName} />
+                                    handleClickPlayerName={handleClickPlayerName} />
                             </Grid>
                         )}
                     </Grid>
@@ -737,7 +685,7 @@ const FixtureResultsCountry = () => {
     function PageHero() {
         return (
             <>
-                <CardGlass sx={{ mx: 'auto',  width: '100%' }}>
+                <CardGlass sx={{ mx: 'auto', width: '100%' }}>
                     <Typography
                         variant="h1"
                         sx={{
@@ -747,7 +695,7 @@ const FixtureResultsCountry = () => {
                             backgroundClip: "text",
                             WebkitBackgroundClip: "text",
                             color: "transparent",
-                         
+
                         }}
                     >
                         {getH1(selectedCountry)}

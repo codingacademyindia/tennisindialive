@@ -151,6 +151,10 @@ function BeautifulScoreCard({
             gap: 1,
           
           }}>
+            <a href={`/match-dashboard/${item.id}`} target="_blank" rel="noopener noreferrer"
+              style={{ textDecoration: 'none', color: '#1976d2', fontWeight: 500, fontSize: '.85rem' }}>
+              Match Dashboard
+            </a>
           <Tooltip title="Match Stats">
             <IconButton size="small" color="primary" onClick={() => handleClickOpenMatchStat(item)}
               sx={{ bgcolor: '#f0fcff', fontSize: "1.17rem", mb: 1 }}>
