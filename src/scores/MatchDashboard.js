@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaTrophy } from 'react-icons/fa';
+import { FaTrophy, FaChevronDown } from 'react-icons/fa';
 import MatchHeader from './MatchHeader';
 import PointByPointViewer from './PointByPointViewer';
 import PowerRankingChart from './PowerRankingChart';
+import MatchStatsTable from './MatchStats';
+
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
     'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
@@ -29,7 +31,6 @@ async function fetchWithRetry(url, options = {}, retries = 3, backoffMs = 500) {
                     const text = await response.text().catch(() => '');
                     throw new Error(`Rate limit (429): ${text || 'Too Many Requests'}`);
                 }
-                // exponential backoff on 429
                 await sleep(backoffMs * Math.pow(2, attempt));
                 continue;
             }
@@ -40,11 +41,58 @@ async function fetchWithRetry(url, options = {}, retries = 3, backoffMs = 500) {
             return await response.json();
         } catch (err) {
             if (attempt === retries) throw err;
-            // backoff for network or other transient errors
             await sleep(backoffMs * Math.pow(2, attempt));
         }
     }
     throw new Error('Failed to fetch after retries');
+}
+
+/**
+ * Small presentational AccordionItem to make each section look & behave like an accordion.
+ * Uses Tailwind CSS classes (transition, rotate, max-h trick) so expansion has a smooth feel.
+ */
+function AccordionItem({ id, title, subtitle, isOpen, onToggle, children }) {
+    return (
+        <div className="mb-4">
+            <button
+                aria-controls={id}
+                aria-expanded={isOpen}
+                onClick={onToggle}
+                className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg
+                    bg-gradient-to-r from-gray-800 to-gray-700
+                    border border-gray-700
+                    text-left text-blue-100 font-semibold text-lg
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
+                    transition-shadow duration-150
+                    ${isOpen ? 'shadow-lg' : 'hover:shadow-md'}`}
+            >
+                <div className="flex items-center gap-3">
+                    <FaTrophy className="text-yellow-400 w-5 h-5" />
+                    <div>
+                        <div className="leading-tight">{title}</div>
+                        {subtitle && <div className="text-xs text-gray-300 mt-0.5">{subtitle}</div>}
+                    </div>
+                </div>
+
+                <span
+                    className={`flex items-center transform transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+                    aria-hidden="true"
+                >
+                    <FaChevronDown className="w-4 h-4" />
+                </span>
+            </button>
+
+            <div
+                id={id}
+                className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[2000px] mt-3' : 'max-h-0'}`}
+                // If you want to control accessibility more, consider adding role="region" and aria-labelledby
+            >
+                <div className="p-4 bg-gray-800 border border-t-0 border-gray-700 rounded-b-lg">
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default function MatchDashboard() {
@@ -55,15 +103,14 @@ export default function MatchDashboard() {
     const [pointByPointData, setPointByPointData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [tab, setTab] = useState(0);
+    const [openAccordion, setOpenAccordion] = useState('point'); // 'point', 'power', 'stats'
 
     useEffect(() => {
         let cancelled = false;
         async function loadAll() {
             setLoading(true);
-            // configurable delay between requests (ms)
             const delayMs = Number(process.env.REACT_APP_API_REQUEST_DELAY_MS) || 500;
             try {
-                // 1) statistics
                 const statsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`;
                 const statsData = await fetchWithRetry(statsUrl, { headers: HEADERS }, 3, 500);
                 if (cancelled) return;
@@ -71,7 +118,6 @@ export default function MatchDashboard() {
 
                 await sleep(delayMs);
 
-                // 2) event
                 const eventUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}`;
                 try {
                     const eventResp = await fetchWithRetry(eventUrl, { headers: HEADERS }, 3, 500);
@@ -82,7 +128,6 @@ export default function MatchDashboard() {
 
                 await sleep(delayMs);
 
-                // 3) power ranking graph
                 const graphUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/graph`;
                 try {
                     const graphResp = await fetchWithRetry(graphUrl, { headers: HEADERS }, 3, 500);
@@ -93,7 +138,6 @@ export default function MatchDashboard() {
 
                 await sleep(delayMs);
 
-                // 4) point-by-point
                 const pbpUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/point-by-point`;
                 try {
                     const pbpResp = await fetchWithRetry(pbpUrl, { headers: HEADERS }, 3, 500);
@@ -138,65 +182,41 @@ export default function MatchDashboard() {
 
     return (
         <div className="min-h-screen bg-gray-900 py-4 px-1 sm:px-4">
-            <div className="w-full mx-auto bg-gray-800 rounded-2xl shadow-2xl p-4 sm:p-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-blue-300 mb-4 tracking-wide text-center">Match Dashboard</h2>
+            <div className="w-full mx-auto bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl shadow-2xl p-4 sm:p-8">
                 <MatchHeader event={event} />
-                <PointByPointViewer pointByPoint={pointByPointData} />
-                {/*<PowerRankingChart tennisPowerRankings={powerRankingData} /> */}
-                <div className="flex flex-wrap gap-2 mb-4 justify-center">
-                    {periods.map((period, idx) => (
-                        <button
-                            key={period.period}
-                            className={`px-3 py-1 rounded-full text-sm font-semibold transition-all
-                                ${tab === idx
-                                    ? 'bg-blue-500 text-white shadow'
-                                    : 'bg-gray-700 text-blue-200 hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setTab(idx)}
-                        >
-                            {period.period}
-                        </button>
-                    ))}
-                </div>
-                {currentPeriod && currentPeriod.groups && currentPeriod.groups.length > 0 ? (
-                    currentPeriod.groups.map((group, idx) => (
-                        <div key={group.groupName || idx} className="mb-4 bg-gray-700 rounded-xl shadow">
-                            <div className="px-4 py-2 bg-gray-800 rounded-t-xl flex items-center">
-                                <span className="text-pink-300 font-semibold text-base">{group.groupName}</span>
-                            </div>
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full text-sm">
-                                    <thead>
-                                        <tr className="bg-gray-800 text-blue-200">
-                                            <th className="py-2 px-2 text-left font-bold">Stat</th>
-                                            <th className="py-2 px-2 text-right font-bold">Home</th>
-                                            <th className="py-2 px-2 text-right font-bold">Away</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {group.statisticsItems.map((item) => {
-                                            const winner = getWinner(item.homeValue, item.awayValue, item.compareCode);
-                                            return (
-                                                <tr key={item.key} className="border-b border-gray-600 hover:bg-gray-800 transition">
-                                                    <td className="py-1 px-2 text-gray-100">{item.name}</td>
-                                                    <td className={`py-1 px-2 text-right ${winner === 1 ? 'text-green-400 font-bold' : 'text-gray-200'}`}>
-                                                        {item.home}
-                                                        {winner === 1 && <FaTrophy className="inline text-yellow-400 ml-1" title="Winner" />}
-                                                    </td>
-                                                    <td className={`py-1 px-2 text-right ${winner === 2 ? 'text-green-400 font-bold' : 'text-gray-200'}`}>
-                                                        {item.away}
-                                                        {winner === 2 && <FaTrophy className="inline text-yellow-400 ml-1" title="Winner" />}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div className="text-gray-400 text-center py-8">No data for this period.</div>
-                )}
+
+                {/* Accordion: Point By Point */}
+                <AccordionItem
+                    id="acc-point-by-point"
+                    title="Point By Point"
+                    subtitle={`${pointByPointData.length} events`}
+                    isOpen={openAccordion === 'point'}
+                    onToggle={() => setOpenAccordion(openAccordion === 'point' ? '' : 'point')}
+                >
+                    <PointByPointViewer pointByPoint={pointByPointData} />
+                </AccordionItem>
+
+                {/* Accordion: Power Ranking */}
+                <AccordionItem
+                    id="acc-power-ranking"
+                    title="Power Ranking"
+                    subtitle={`${powerRankingData.length} points`}
+                    isOpen={openAccordion === 'power'}
+                    onToggle={() => setOpenAccordion(openAccordion === 'power' ? '' : 'power')}
+                >
+                    <PowerRankingChart tennisPowerRankings={powerRankingData} />
+                </AccordionItem>
+
+                {/* Accordion: Match Stats */}
+                <AccordionItem
+                    id="acc-match-stats"
+                    title="Match Stats"
+                    subtitle={`${periods.length} periods`}
+                    isOpen={openAccordion === 'stats'}
+                    onToggle={() => setOpenAccordion(openAccordion === 'stats' ? '' : 'stats')}
+                >
+                    <MatchStatsTable periods={periods} tab={tab} setTab={setTab} />
+                </AccordionItem>
             </div>
         </div>
     );
