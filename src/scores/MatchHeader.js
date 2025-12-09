@@ -209,7 +209,7 @@ export default function MatchHeader({ event, oddsData }) {
           {status?.type === "inprogress" && (
             <div className="flex gap-1 text-xs font-bold text-white">
               <div className={`px-2 py-0.5 rounded ${event.homeScore?.point > event.awayScore?.point
-                ? 'bg-green-700 text-white'
+                ? 'bg-orange-600 text-white'
                 : 'bg-gray-700 text-gray-200'
                 }`}>
                 {formatTennisPoint(event.homeScore?.point)}
@@ -218,7 +218,7 @@ export default function MatchHeader({ event, oddsData }) {
               <div className="text-gray-400">-</div>
 
               <div className={`px-2 py-0.5 rounded ${event.awayScore?.point > event.homeScore?.point
-                ? 'bg-green-700 text-white'
+                ? 'bg-orange-600 text-white'
                 : 'bg-gray-700 text-gray-200'
                 }`}>
                 {formatTennisPoint(event.awayScore?.point)}

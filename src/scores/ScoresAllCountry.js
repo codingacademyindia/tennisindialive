@@ -138,32 +138,32 @@ const FixtureResultsCountry = () => {
     const isFirstLoad = React.useRef(true);
 
     async function fetchWithRetry(url, options = {}, retries = 3, backoffMs = 500) {
-    for (let attempt = 0; attempt <= retries; attempt++) {
-        try {
-            const response = await fetch(url, options);
-            if (response.status === 429) {
-                if (attempt === retries) {
-                    const text = await response.text().catch(() => '');
-                    throw new Error(`Rate limit (429): ${text || 'Too Many Requests'}`);
+        for (let attempt = 0; attempt <= retries; attempt++) {
+            try {
+                const response = await fetch(url, options);
+                if (response.status === 429) {
+                    if (attempt === retries) {
+                        const text = await response.text().catch(() => '');
+                        throw new Error(`Rate limit (429): ${text || 'Too Many Requests'}`);
+                    }
+                    await sleep(backoffMs * Math.pow(2, attempt));
+                    continue;
                 }
+                if (!response.ok) {
+                    const text = await response.text().catch(() => '');
+                    throw new Error(text || response.statusText || `HTTP ${response.status}`);
+                }
+                return await response.json();
+            } catch (err) {
+                if (attempt === retries) throw err;
                 await sleep(backoffMs * Math.pow(2, attempt));
-                continue;
             }
-            if (!response.ok) {
-                const text = await response.text().catch(() => '');
-                throw new Error(text || response.statusText || `HTTP ${response.status}`);
-            }
-            return await response.json();
-        } catch (err) {
-            if (attempt === retries) throw err;
-            await sleep(backoffMs * Math.pow(2, attempt));
         }
+        throw new Error('Failed to fetch after retries');
     }
-    throw new Error('Failed to fetch after retries');
-}
 
 
-const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+    const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
     useEffect(() => {
         if (!day || !month || !year) return;
@@ -498,27 +498,59 @@ const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
         if (filteredTournaments.length === 0)
             return <NotFound msg="No Results Found" />;
 
-        return filteredTournaments.map((tournament, idx) => (
-            <div
-                key={tournament}
-                className="border border-gray-700 rounded bg-gray-900 mb-2 p-2 text-xs text-gray-200"
-            >
-                {/* Tournament Title */}
-                <div className="font-semibold mb-2 text-lg">{tournament}</div>
+        const result = [];
+        let adCounter = 0;
 
-                {/* Responsive Grid → minimum 3 per row on medium+ */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
-                    {rankingsData[tournament]
-                        .filter(hasCountry)
-                        .map((item, i) => (
-                            <div key={i}>
-                                {fetchScoreRecord(item)}
-                            </div>
-                        ))}
+        filteredTournaments.forEach((tournament, idx) => {
+            // Push tournament DOM
+            result.push(
+                <div
+                    key={tournament}
+                    className="border border-gray-700 rounded bg-gray-900 mb-2 p-2 text-xs text-gray-200"
+                >
+                    {/* Tournament Title */}
+                    <div className="font-semibold mb-2 text-lg">{tournament}</div>
+
+                    {/* Responsive Grid → minimum 2 per row on small+ */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
+                        {rankingsData[tournament]
+                            .filter(hasCountry)
+                            .map((item, i) => (
+                                <div key={i}>
+                                    {fetchScoreRecord(item)}
+                                </div>
+                            ))}
+                    </div>
                 </div>
-            </div>
-        ));
+            );
+
+            // Insert ad after every 2nd tournament
+            if ((idx + 1) % 2 === 0) {
+                const adType = adCounter % 3;
+                const adComponent = adType === 0 ? <FluidAdImage />
+                    : adType === 1 ? <FluidAd />
+                        : <InArticleAd />;
+
+                const adName = adType === 0 ? "FluidAdImage"
+                    : adType === 1 ? "FluidAd"
+                        : "InArticleAd";
+
+                result.push(
+                    <div
+                        key={`ad-${idx + 1}-${adName}`}
+                        className="m-2 p-4 border border-dashed border-gray-400 bg-gray-50 text-center"
+                        title={`Ad Slot: ${adName} (Position: ${idx + 1})`}
+                    >
+                        {adComponent}
+                    </div>
+                );
+                adCounter++;
+            }
+        });
+
+        return result;
     };
+
 
 
 

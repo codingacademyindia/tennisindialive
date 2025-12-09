@@ -6,6 +6,11 @@ import PointByPointViewer from './PointByPointViewer';
 import PowerRankingChart from './PowerRankingChart';
 import MatchStatsTable from './MatchStats';
 import OddsPanel from './OddsPanel';
+import FluidAd from '../ads/FluidAd';
+import FluidAdImage from '../ads/FluidAdImage';
+import InArticleAd from '../ads/InArticleAd';
+
+
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
     'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
@@ -212,6 +217,9 @@ export default function MatchDashboard() {
                 >
                     <MatchStatsTable periods={periods} tab={tab} setTab={setTab} />
                 </AccordionItem>
+                <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
+                    <InArticleAd />
+                </div>
                 {/* Accordion: Point By Point */}
                 <AccordionItem
                     id="acc-point-by-point"
@@ -222,6 +230,9 @@ export default function MatchDashboard() {
                 >
                     <PointByPointViewer pointByPoint={pointByPointData} />
                 </AccordionItem>
+                <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
+                    <FluidAdImage />
+                </div>
 
                 {/* Accordion: Power Ranking */}
                 <AccordionItem
@@ -233,7 +244,9 @@ export default function MatchDashboard() {
                 >
                     <PowerRankingChart tennisPowerRankings={powerRankingData} />
                 </AccordionItem>
-
+                <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
+                    <InArticleAd />
+                </div>
 
             </div>
         </div>

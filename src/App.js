@@ -95,19 +95,19 @@ function isDashboard(){
                 <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
 
                 <Route path="/live-scores" element={<FixtureResultsCountry />} />
-                <Route path="/live-scores/:country" element={<FixtureResultsCountrySEO />} />
-                <Route path="/tennis-score-live" element={<FixtureResultsCountrySEO />} />
-                <Route path="/tennis-score-live/:country" element={<FixtureResultsCountrySEO />} />
-                <Route path="/live-tennis" element={<FixtureResultsCountrySEO />} />
-                <Route path="/tennis-live" element={<FixtureResultsCountrySEO />} />
-                 <Route path="/tennis-live/:country" element={<FixtureResultsCountrySEO />} />
-                <Route path="/live-tennis/:country" element={<FixtureResultsCountrySEO />} />
+                <Route path="/live-scores/:country" element={<FixtureResultsCountry />} />
+                <Route path="/tennis-score-live" element={<FixtureResultsCountry />} />
+                <Route path="/tennis-score-live/:country" element={<FixtureResultsCountry />} />
+                <Route path="/live-tennis" element={<FixtureResultsCountry />} />
+                <Route path="/tennis-live" element={<FixtureResultsCountry />} />
+                 <Route path="/tennis-live/:country" element={<FixtureResultsCountry />} />
+                <Route path="/live-tennis/:country" element={<FixtureResultsCountry />} />
                 <Route path="/match-dashboard/:eventId" element={<MatchDashboard />} />
 
                 {/* All matches & date-based */}
-                <Route path="/all" element={<FixtureResultsAll />} />
-                <Route path="/results/:year/:month/:day" element={<FixtureResultsAll />} />
-                <Route path="/results/all/:year/:month/:day" element={<FixtureResultsAll />} />
+                <Route path="/all" element={<FixtureResultsCountry />} />
+                <Route path="/results/:year/:month/:day" element={<FixtureResultsCountry />} />
+                <Route path="/results/all/:year/:month/:day" element={<FixtureResultsCountry />} />
 
                 {/* ================================ */}
                 {/* RANKINGS ROUTES */}
