@@ -35,6 +35,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import MatchDashboard from './scores/MatchDashboard';
+import ATPRankingDashboard from './rankings/ATP/ATPRankingDashboard';
+import WTARankingDashboard from './rankings/WTA/WTARankingDashboard';
 
 // ----------------------------
 // Redirect legacy dash URLs
@@ -112,6 +114,8 @@ function isDashboard(){
                 {/* ================================ */}
                 {/* RANKINGS ROUTES */}
                 {/* ================================ */}
+                <Route path="/rankings/atp" element={<ATPRankingDashboard />} />
+                <Route path="/rankings/wta" element={<WTARankingDashboard />} />
                 <Route path="/rankings/live/:type" element={<ATPLiveRankingsJSON />} />
                 <Route path="/rankings/live/:type/:country" element={<ATPLiveRankingsJSON />} />
                 <Route path="/rankings/official/:type" element={<OfficialRankings />} />
