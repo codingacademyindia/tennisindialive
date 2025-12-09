@@ -94,7 +94,7 @@ function isDashboard(){
                 <Route path="/" element={<FixtureResultsCountrySEO />} />
                 <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
 
-                <Route path="/live-scores" element={<FixtureResultsCountrySEO />} />
+                <Route path="/live-scores" element={<FixtureResultsCountry />} />
                 <Route path="/live-scores/:country" element={<FixtureResultsCountrySEO />} />
                 <Route path="/tennis-score-live" element={<FixtureResultsCountrySEO />} />
                 <Route path="/tennis-score-live/:country" element={<FixtureResultsCountrySEO />} />

@@ -116,7 +116,7 @@ export default function MatchHeader({ event, oddsData }) {
   // build set scores
   const { homeScore, awayScore } = event;
   const setCount = Math.max(
-    ...( [1,2,3,4,5].map(i => (homeScore?.[`period${i}`] || awayScore?.[`period${i}`]) ? i : 0) )
+    ...([1, 2, 3, 4, 5].map(i => (homeScore?.[`period${i}`] || awayScore?.[`period${i}`]) ? i : 0))
   );
   const sets = [];
   for (let i = 1; i <= setCount; i++) {
@@ -132,8 +132,12 @@ export default function MatchHeader({ event, oddsData }) {
   let statusText = 'Live';
   if (status?.type === 'finished') { statusColor = 'bg-gray-600'; statusText = 'Finished'; }
   else if (status?.type === 'notstarted') { statusColor = 'bg-yellow-600'; statusText = 'Not Started'; }
-  else if (status?.type === 'inprogress') { statusColor = 'bg-green-600'; statusText = 'Live'; }
+  else if (status?.type === 'inprogress') { statusColor = 'bg-green-600'; statusText = `Live - ${status.description}`; }
   else { statusColor = 'bg-blue-600'; statusText = status?.description || 'Status'; }
+  function formatTennisPoint(p) {
+    return p || '0';
+  }
+
 
   function OddsBadge({ choice }) {
     if (!choice) return (
@@ -176,34 +180,65 @@ export default function MatchHeader({ event, oddsData }) {
                 {event.winnerCode === 1 && <FaTrophy className="text-yellow-400" />}
               </div>
               <div className="text-[11px] text-gray-400 truncate">{event.homeTeam?.country?.name || ''}</div>
+
+
+            </div>
+            <div className="ml-auto">
+              <OddsBadge choice={mapped.homeChoice} />
             </div>
           </div>
 
-          <div className="ml-auto">
-            <OddsBadge choice={mapped.homeChoice} />
-          </div>
+
         </div>
 
-        {/* CENTER: status, sets, tournament, margin */}
-        <div className="flex flex-col items-center gap-2">
-          <div className={`px-3 py-1 rounded-full text-xs font-bold text-white ${statusColor}`}>{statusText}</div>
-
-          <div className="flex gap-1 text-sm font-mono text-blue-200">
-            {sets.length ? sets.map((s, i) => (
-              <span key={i} className="px-2 py-0.5 bg-gray-900 rounded text-[13px]">{s.home}-{s.away}</span>
-            )) : <span className="text-[12px] text-gray-400">—</span>}
+        {/* CENTER: status, sets, live points */}
+        <div className="flex flex-col items-center gap-1">
+          <div className={`px-3 py-0.5 rounded-full text-[11px] font-bold text-white ${statusColor}`}>
+            {statusText}
           </div>
 
-          <div className="text-[11px] text-gray-400">
+          {/* SET SCORES */}
+          <div className="flex gap-1 text-[13px] font-mono text-blue-200">
+            {sets.length ? sets.map((s, i) => (
+              <span key={i} className="px-2 py-[1px] bg-gray-900 rounded">
+                {s.home}-{s.away}
+              </span>
+            )) : <span className="text-[11px] text-gray-400">—</span>}
+          </div>
+          {/* LIVE POINTS */}
+          {status?.type === "inprogress" && (
+            <div className="flex gap-1 text-xs font-bold text-white">
+              <div className={`px-2 py-0.5 rounded ${event.homeScore?.point > event.awayScore?.point
+                ? 'bg-green-700 text-white'
+                : 'bg-gray-700 text-gray-200'
+                }`}>
+                {formatTennisPoint(event.homeScore?.point)}
+              </div>
+
+              <div className="text-gray-400">-</div>
+
+              <div className={`px-2 py-0.5 rounded ${event.awayScore?.point > event.homeScore?.point
+                ? 'bg-green-700 text-white'
+                : 'bg-gray-700 text-gray-200'
+                }`}>
+                {formatTennisPoint(event.awayScore?.point)}
+              </div>
+            </div>
+          )}
+
+
+
+          <div className="text-[10px] text-gray-400">
             {event.tournament?.name ?? ''}{event.venue?.name ? ` • ${event.venue.name}` : ''}
           </div>
 
           {market && (
-            <div className="text-[11px] text-gray-400 pt-1">
+            <div className="text-[10px] text-gray-500">
               {market.marketName} {market.marketPeriod ? `• ${market.marketPeriod}` : ''} {margin ? `• ${margin.toFixed(1)}% book` : ''}
             </div>
           )}
         </div>
+
 
         {/* AWAY */}
         <div className="flex-1 flex items-center gap-3 justify-end min-w-0">

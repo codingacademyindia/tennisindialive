@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 export default function PowerRankingChart({ tennisPowerRankings }) {
-    // Group by set (keep provided ordering numeric)
     const sets = useMemo(() => {
         const map = {};
         if (!tennisPowerRankings) return map;
@@ -10,7 +9,6 @@ export default function PowerRankingChart({ tennisPowerRankings }) {
             if (!map[setKey]) map[setKey] = [];
             map[setKey].push(r);
         });
-        // sort by numeric set key
         Object.keys(map).forEach(k => {
             map[k].sort((a, b) => (Number(a.game) || 0) - (Number(b.game) || 0));
         });
@@ -19,7 +17,7 @@ export default function PowerRankingChart({ tennisPowerRankings }) {
 
     const setNumbers = Object.keys(sets).sort((a, b) => Number(a) - Number(b));
 
-    if (!tennisPowerRankings || tennisPowerRankings.length === 0) return null;
+    if (!tennisPowerRankings?.length) return null;
 
     return (
         <div className="mb-4">
@@ -27,56 +25,52 @@ export default function PowerRankingChart({ tennisPowerRankings }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {setNumbers.map(setNum => {
-                    const items = sets[setNum] || [];
-                    // per-set scaling: make largest magnitude about 72px tall in this compact view
+                    const items = sets[setNum];
                     const maxAbs = Math.max(...items.map(i => Math.abs(i.value || 0)), 1);
-                    const scale = 72 / maxAbs;
+                    const scale = 68 / maxAbs;
 
                     return (
-                        <div
-                            key={setNum}
-                            className="bg-gray-800 rounded-md border border-gray-700 p-2"
-                        >
-                            {/* Header row: Set title + compact legends */}
-                            <div className="flex items-center justify-between mb-2">
-                                <div className="flex items-center gap-2 min-w-0">
-                                    <div className="text-xs font-semibold text-blue-200 truncate">Set {setNum}</div>
-                                    <div className="text-[10px] text-gray-400">{items.length} games</div>
-                                </div>
+                        <div key={setNum} className="bg-gray-800 rounded-md p-2 border border-gray-700">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-xs font-semibold text-blue-200">Set {setNum}</span>
 
-                                <div className="flex items-center gap-3 ml-3">
-                                    {/* Legends inline in header */}
+                                {/* Compact Legend */}
+                                <div className="flex items-center gap-2">
                                     <div className="flex items-center gap-1">
-                                        <span className="w-3 h-3 rounded-sm bg-green-400 inline-block" />
-                                        <span className="text-[10px] text-gray-300">Server/Player A</span>
+                                        <span className="w-2.5 h-2.5 rounded-sm bg-[rgb(0,200,95)]" />
+                                        <span className="text-[9px] text-gray-300">P1</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <span className="w-3 h-3 rounded-sm bg-red-400 inline-block" />
-                                        <span className="text-[10px] text-gray-300">Opponent/Player B</span>
+                                        <span className="w-2.5 h-2.5 rounded-sm bg-[rgb(0,145,255)]" />
+                                        <span className="text-[9px] text-gray-300">P2</span>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Compact chart area */}
                             <div className="overflow-x-auto -mx-1 px-1">
-                                <div className="flex items-end gap-2 py-1">
+                                <div className="flex items-end gap-1 py-0.5">
                                     {items.map((g, idx) => {
                                         const val = Number(g.value) || 0;
-                                        const height = Math.max(6, Math.abs(val) * scale); // minimum visible
+                                        const height = Math.max(5, Math.abs(val) * scale);
                                         const isPositive = val >= 0;
+                                        const color = isPositive
+                                            ? "bg-[rgb(0,200,95)]"
+                                            : "bg-[rgb(0,145,255)]";
+
                                         return (
-                                            <div key={idx} className="flex flex-col items-center min-w-[40px]">
-                                                {/* bar */}
+                                            <div key={idx} className="flex flex-col items-center min-w-[28px]">
+                                                {/* Bar */}
                                                 <div
-                                                    className={`w-5 rounded-t ${isPositive ? 'bg-green-400' : 'bg-red-400'}`}
+                                                    className={`w-3 rounded-t ${color}`}
                                                     style={{ height: `${height}px` }}
                                                     title={`Set ${setNum} — Game ${g.game}: ${val}`}
                                                 />
-                                                {/* game label and optional break badge */}
-                                                <div className="text-[10px] text-blue-200 mt-1 flex items-center gap-1">
-                                                    <span className="font-mono">G{g.game}</span>
+
+                                                {/* Game label with break */}
+                                                <div className="text-[9px] text-gray-300 mt-0.5 flex items-center gap-0.5">
+                                                    <span>G{g.game}</span>
                                                     {g.breakOccurred && (
-                                                        <span className="text-yellow-300 text-[10px] font-semibold">B</span>
+                                                        <span className="text-yellow-300 text-[8px] font-bold">⚡</span>
                                                     )}
                                                 </div>
                                             </div>

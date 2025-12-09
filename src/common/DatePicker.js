@@ -1,76 +1,86 @@
-import * as React from 'react';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { styled } from '@mui/material/styles';
-import dayjs from 'dayjs';
-import { useTheme } from '@mui/material/styles';
+import * as React from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { styled, useTheme } from "@mui/material/styles";
+import dayjs from "dayjs";
 
 const CustomDatePicker = styled(DatePicker)(({ theme }) => ({
-  '& .MuiInputBase-root': {
-    width: '150px', // Default width
-    [theme.breakpoints.down('sm')]: {
-      width: '100px', // Smaller width on small screens
+  "& .MuiInputBase-root": {
+    width: "160px",
+    height: "38px",
+    borderRadius: "10px",
+    background: theme.palette.mode === "dark" ? "#1f2937" : "#ffffff",
+    border: `1px solid ${theme.palette.divider}`,
+    transition: "0.25s all ease-in-out",
+
+    "&:hover": {
+      borderColor:
+        theme.palette.mode === "dark" ? "#38bdf8" : theme.palette.primary.main,
+      boxShadow:
+        theme.palette.mode === "dark"
+          ? "0 0 8px rgba(56,189,248,.3)"
+          : "0 0 8px rgba(25,118,210,.25)",
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      width: "115px",
+      height: "34px",
     },
   },
-  '& .MuiInputBase-input': {
-    padding: '6px 10px',
-    [theme.breakpoints.down('sm')]: {
-      padding: '4px 8px', // Smaller padding on small screens
+
+  "& .MuiInputBase-input": {
+    padding: "8px 10px",
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    color: theme.palette.text.primary,
+    textAlign: "center",
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.7rem",
+      padding: "6px",
     },
   },
-  '& .MuiIconButton-root': {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none', // Hide calendar icon on small screens
+
+  "& .MuiIconButton-root": {
+    color: theme.palette.primary.main,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
     },
+  },
+
+  // 🎯 Text label styling
+  "& .MuiFormLabel-root": {
+    fontSize: "0.75rem",
+    color: theme.palette.text.secondary,
+  },
+  "& .MuiFormLabel-root.Mui-focused": {
+    color: theme.palette.primary.main,
   },
 }));
 
-export default function DatePickerValue(props) {
-  const theme = useTheme(); // Get the theme object
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+export default function DatePickerValue({ selectedDate, handleSelectDate }) {
+  const theme = useTheme();
 
-  React.useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const isSmallScreen = windowWidth <= 600; // Adjust the breakpoint as needed
-
-  const formatDate = (date) => {
-    return isSmallScreen ? dayjs(date).format('MM/DD') : dayjs(date).format('MM/DD/YYYY');
-  };
-
-  let styleCss = {
-    overflowY: 'hidden',
-    overflowX: 'hidden',
-    width: '100%', // Default width
-    maxWidth: '150px', // Maximum width
-    [theme.breakpoints.down('sm')]: {
-      width: '100%', // Adjusted width for small screens
-      maxWidth: '100px', // Smaller maximum width for small screens
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '90%', // Adjusted width for medium and larger screens
-    },
-  };
+  const isMobile = window.innerWidth < 600;
+  const formatValue = selectedDate
+    ? dayjs(selectedDate).format(isMobile ? "MM/DD" : "MM/DD/YYYY")
+    : "";
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker', 'DatePicker']} sx={styleCss}>
-        <CustomDatePicker
-          label="Select Date"
-          value={props.selectedDate}
-          size="small"
-          onChange={props.handleSelectDate}
-          inputFormat={formatDate(props.selectedDate)} // Apply the format based on screen size
-        />
-      </DemoContainer>
+      <CustomDatePicker
+        label="Select Date"
+        value={selectedDate}
+        size="small"
+        onChange={handleSelectDate}
+        format={formatValue}
+        slotProps={{
+          textField: {
+            variant: "outlined",
+          },
+        }}
+      />
     </LocalizationProvider>
   );
 }

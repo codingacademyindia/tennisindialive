@@ -1,99 +1,83 @@
-import React from 'react';
-import { Button, ButtonGroup, Popper, MenuItem, MenuList, Paper, Grow, ClickAwayListener, Tooltip } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import React from "react";
+import {
+  Button,
+  ButtonGroup,
+  Popper,
+  MenuItem,
+  MenuList,
+  Paper,
+  Grow,
+  ClickAwayListener,
+  Tooltip,
+} from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
-const options = ['All', 'Live', 'Finished', 'Not Started'];
+const STATUS_OPTIONS = [
+  { label: "All", key: "all" },
+  { label: "Live", key: "inprogress" },
+  { label: "Finished", key: "finished" },
+  { label: "Not Started", key: "notstarted" },
+];
 
-function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
+export default function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
+  const selectedIndex = STATUS_OPTIONS.findIndex(o => o.key === matchStatus);
+  const selectedOption = STATUS_OPTIONS[selectedIndex] ?? STATUS_OPTIONS[0];
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
+  const handleToggle = () => setOpen(prev => !prev);
+  const handleMenuItemClick = (event, option) => {
     setOpen(false);
-    handleStatusButtonClick(event);
+    handleStatusButtonClick(option.key);
   };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
   const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
+    if (anchorRef.current && anchorRef.current.contains(event.target)) return;
     setOpen(false);
   };
 
-  let fontSizeCSS={
-    xs: '0.7rem',  // 14px for extra-small screens
-    sm: '0.8rem',      // 16px for small screens
-    md: '0.9rem',   // 20px for medium screens
-    lg: '0.9rem',    // 24px for large screens
-    xl: '0.9rem'       // 32px for extra-large screens
-}
+  const fontSize = {
+    fontSize: isSmallScreen ? "0.7rem" : "0.85rem",
+    borderRadius: 8,
+    padding: isSmallScreen ? "3px 6px" : "6px 12px",
+  };
 
   if (isSmallScreen) {
+    // 📱 Mobile Dropdown
     return (
-      <React.Fragment>
+      <>
         <ButtonGroup
-          variant="contained"
           ref={anchorRef}
-          aria-label="Button group with a nested menu"
+          variant="contained"
+          size="small"
+          sx={{ borderRadius: 2 }}
         >
-          <Button
-            onClick={handleClick}
-            size="small"
-            sx={{ fontSize: fontSizeCSS ,whiteSpace: 'nowrap'}} // Adjust font size for smaller screens
-          >
-            {options[selectedIndex]}
+          <Button sx={fontSize} onClick={() => handleStatusButtonClick(selectedOption.key)}>
+            {selectedOption.label}
           </Button>
-          <Button
-            size="small"
-            aria-controls={open ? 'split-button-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-label="select match status"
-            aria-haspopup="menu"
-            onClick={handleToggle}
-          >
-            <ArrowDropDownIcon />
+          <Button onClick={handleToggle}>
+            <ArrowDropDownIcon fontSize="small" />
           </Button>
         </ButtonGroup>
-        <Popper
-          sx={{ zIndex: 1 }}
-          open={open}
-          anchorEl={anchorRef.current}
-          role={undefined}
-          transition
-          disablePortal
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-              }}
-            >
-              <Paper>
+
+        <Popper open={open} anchorEl={anchorRef.current} transition disablePortal sx={{ zIndex: 1500 }}>
+          {({ TransitionProps }) => (
+            <Grow {...TransitionProps}>
+              <Paper sx={{ borderRadius: 2 }}>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList id="split-button-menu" autoFocusItem>
-                    {options.map((option, index) => (
+                  <MenuList autoFocusItem>
+                    {STATUS_OPTIONS.map(option => (
                       <MenuItem
-                        key={option}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
-                        sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
+                        key={option.key}
+                        selected={option.key === matchStatus}
+                        onClick={() => handleMenuItemClick(null, option)}
+                        sx={{ fontSize: "0.75rem" }}
                       >
-                        {option}
+                        {option.label}
                       </MenuItem>
                     ))}
                   </MenuList>
@@ -102,50 +86,32 @@ function StatusButtonGroup({ matchStatus, handleStatusButtonClick }) {
             </Grow>
           )}
         </Popper>
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <div className="flex flex-row space-x-2">
-        <Button
-          variant={matchStatus === 'inprogress' ? 'contained' : 'outlined'}
-          color="primary"
-          onClick={(e) => handleStatusButtonClick(e)}
-          size="small"
-          sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
-        >
-          Live
-        </Button>
-        <Button
-          variant={matchStatus === 'finished' ? 'contained' : 'outlined'}
-          color="primary"
-          onClick={(e) => handleStatusButtonClick(e)}
-          size="small"
-          sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
-        >
-          Finished
-        </Button>
-        <Button
-          variant={matchStatus === 'notstarted' ? 'contained' : 'outlined'}
-          color="primary"
-          onClick={(e) => handleStatusButtonClick(e)}
-          size="small"
-          sx={{ fontSize: fontSizeCSS, whiteSpace: 'nowrap' }} // Adjust font size for smaller screens
-        >
-          Not Started
-        </Button>
-        <Button
-          variant={matchStatus === 'all' ? 'contained' : 'outlined'}
-          color="primary"
-          onClick={(e) => handleStatusButtonClick(e)}
-          size="small"
-          sx={{ fontSize: fontSizeCSS }} // Adjust font size for smaller screens
-        >
-          All
-        </Button>
-      </div>
+      </>
     );
   }
-}
 
-export default StatusButtonGroup;
+  // 🖥 Desktop Buttons
+  return (
+    <div className="flex flex-row gap-2">
+      {STATUS_OPTIONS.map(option => (
+        <Tooltip key={option.key} title={`Show ${option.label} Matches`} arrow>
+          <Button
+            variant={matchStatus === option.key ? "contained" : "outlined"}
+            onClick={() => handleStatusButtonClick(option.key)}
+            size="small"
+            sx={{
+              ...fontSize,
+              textTransform: "none",
+              transition: "0.2s",
+              "&:hover": {
+                boxShadow: theme.shadows[4],
+              },
+            }}
+          >
+            {option.label}
+          </Button>
+        </Tooltip>
+      ))}
+    </div>
+  );
+}

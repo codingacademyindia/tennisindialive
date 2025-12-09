@@ -1,5 +1,5 @@
 import React from 'react';
-import { Autocomplete, TextField, InputAdornment } from '@mui/material';
+import { Autocomplete, TextField, InputAdornment, Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import countries from 'i18n-iso-countries';
@@ -9,166 +9,153 @@ import { FaGlobe } from "react-icons/fa";
 
 countries.registerLocale(enLocale);
 
+// Map country names for display
 function mapCountryName(alpha3, label) {
-  if (alpha3.toLowerCase() === 'usa') return "usa";
-  if (alpha3.toLowerCase() === 'rus') return "russia";
-  return label.toLowerCase();
+  if (alpha3 === 'USA') return 'USA';
+  if (alpha3 === 'RUS') return 'RUSSIA';
+  return label.toUpperCase();
 }
 
 function mapCountryLabel(alpha3, label) {
-  if (alpha3.toLowerCase() === 'usa') return "USA (America)";
-  if (alpha3.toLowerCase() === 'rus') return "Russia";
+  if (alpha3 === 'USA') return "USA (America)";
+  if (alpha3 === 'RUS') return "Russia";
   return label;
 }
 
+// Country data setup
 const countryList = countries.getNames('en', { select: 'official' });
 const alpha2ToAlpha3 = countries.getAlpha2Codes();
 
-// Define top tennis-playing countries
 const topTennisCountries = [
   'ESP', 'USA', 'FRA', 'SRB', 'ITA', 'GER', 'AUS', 'ARG',
   'GBR', 'RUS', 'CRO', 'CAN', 'SUI', 'CZE', 'POL', 'JPN', 'IND'
 ];
 
-const tennisAlpha3 = new Set([
-  'AFG', 'ALB', 'DZA', 'AND', 'AGO', 'ATG', 'ARG', 'ARM', 'AUS', 'AUT', 'AZE',
-  'BHS', 'BHR', 'BGD', 'BRB', 'BLR', 'BEL', 'BLZ', 'BEN', 'BTN', 'BOL', 'BIH', 'BWA',
-  'BRA', 'BRN', 'BGR', 'BFA', 'BDI', 'CPV', 'KHM', 'CMR', 'CAN', 'CAF', 'TCD', 'CHL', 'CHN',
-  'COL', 'COM', 'COG', 'COD', 'CRI', 'CIV', 'HRV', 'CUB', 'CYP', 'CZE', 'DNK', 'DJI', 'DMA',
-  'DOM', 'ECU', 'EGY', 'SLV', 'GNQ', 'ERI', 'EST', 'SWZ', 'ETH', 'FJI', 'FIN', 'FRA', 'GAB',
-  'GMB', 'GEO', 'DEU', 'GHA', 'GRC', 'GRD', 'GTM', 'GIN', 'GNB', 'GUY', 'HTI', 'HND', 'HKG',
-  'HUN', 'ISL', 'IND', 'IDN', 'IRN', 'IRQ', 'IRL', 'ISR', 'ITA', 'JAM', 'JPN', 'JOR', 'KAZ',
-  'KEN', 'KIR', 'KWT', 'KGZ', 'LAO', 'LVA', 'LBN', 'LSO', 'LBR', 'LBY', 'LIE', 'LTU', 'LUX',
-  'MAC', 'MDG', 'MWI', 'MYS', 'MDV', 'MLI', 'MLT', 'MHL', 'MRT', 'MUS', 'MEX', 'FSM', 'MDA',
-  'MCO', 'MNG', 'MNE', 'MAR', 'MOZ', 'MMR', 'NAM', 'NRU', 'NPL', 'NLD', 'NZL', 'NIC', 'NER',
-  'NGA', 'PRK', 'MKD', 'NOR', 'OMN', 'PAK', 'PLW', 'PAN', 'PNG', 'PRY', 'PER', 'PHL', 'POL',
-  'PRT', 'QAT', 'ROU', 'RUS', 'RWA', 'KNA', 'LCA', 'VCT', 'WSM', 'STP', 'SAU', 'SEN', 'SRB',
-  'SYC', 'SLE', 'SGP', 'SVK', 'SVN', 'SLB', 'SOM', 'ZAF', 'KOR', 'SSD', 'ESP', 'LKA', 'SDN',
-  'SUR', 'SWE', 'CHE', 'SYR', 'TJK', 'TZA', 'THA', 'TLS', 'TGO', 'TON', 'TTO', 'TUN', 'TUR',
-  'TKM', 'TUV', 'UGA', 'UKR', 'ARE', 'GBR', 'USA', 'URY', 'UZB', 'VUT', 'VAT', 'VEN', 'VNM',
-  'YEM', 'ZMB', 'ZWE', 'TWN', 'LBR', 'LBN'
-]);
+const tennisAlpha3 = new Set([...Object.values(alpha2ToAlpha3).map(v => v.toUpperCase())]);
 
 const countryArray = Object.keys(countryList)
-  .map((alpha2) => {
-    const alpha3 = alpha2ToAlpha3[alpha2];
-    if (!alpha3 || !tennisAlpha3.has(alpha3.toUpperCase())) return null;
+  .map(alpha2 => {
+    const alpha3 = alpha2ToAlpha3[alpha2]?.toUpperCase();
+    if (!alpha3 || !tennisAlpha3.has(alpha3)) return null;
     const label = countryList[alpha2];
-    const alpha3Upper = alpha3.toUpperCase();
-
+    const name = mapCountryName(alpha3, label);
     return {
       code: alpha2,
-      label: mapCountryLabel(alpha3Upper, label),
-      abbreviatedLabel: alpha2,
-      name: mapCountryName(alpha3Upper, label),
-      alpha3: alpha3Upper,
-      group: topTennisCountries.includes(alpha3Upper)
-        ? 'Popular Nations'
-        : 'More Nations'
+      label: mapCountryLabel(alpha3, label),
+      name,
+      alpha3,
+      group: topTennisCountries.includes(alpha3) ? 'Popular Nations' : 'More Nations'
     };
   })
   .filter(Boolean)
-  .sort((a, b) => {
-    // Group first by category
-    if (a.group !== b.group) {
-      return a.group === 'Popular Nations' ? -1 : 1;
-    }
-    // Alphabetical within group
-    return a.label.localeCompare(b.label);
-  });
+  .sort((a, b) => a.group === b.group ? a.label.localeCompare(b.label) : a.group === 'Popular Nations' ? -1 : 1);
 
-// Add "All Countries" at the very top
+// Add "All Countries" at the top
 countryArray.unshift({
   code: '',
   label: 'All Countries',
-  abbreviatedLabel: 'All',
+  alpha3: 'ALL',
   name: '',
-  alpha3: 'All',
   group: 'All'
 });
 
 const CountryAutocomplete = ({ selectedCountry, handleCountryChange }) => {
   const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const isVerySmallScreen = useMediaQuery('(max-width:415px)');
 
-  const selectedCountryData = countryArray.find(
-    (country) =>
-      country.name.toLowerCase() === selectedCountry.toLowerCase() ||
-      country.alpha3.toLowerCase() === selectedCountry.toLowerCase()
-  );
-
-  const fontSizeCSS =
-    "w-full flex flex-row text-[0.65rem] sm:text-[0.65rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.8rem] border-b-[1px] m-1 items-center text-left p-1 capitalize";
+  const selected = countryArray.find(
+    c => c.alpha3.toLowerCase() === selectedCountry.toLowerCase()
+  ) || null;
 
   return (
     <Autocomplete
+      size="small"
       options={countryArray}
-      groupBy={(option) => option.group}
-      getOptionLabel={(option) => option.label}
-      value={selectedCountryData || null}
-      onChange={(event, newValue) => {
-        handleCountryChange(newValue ? newValue.name : '', newValue);
+      groupBy={opt => opt.group}
+      getOptionLabel={opt => opt.label}
+      value={selected}
+      isOptionEqualToValue={(opt, val) => opt.alpha3 === val.alpha3}
+      onChange={(e, val) => handleCountryChange(val?.alpha3 ?? '', val)}
+      sx={{
+        width: isSmallScreen ? 150 : 220,
+        "& .MuiOutlinedInput-root": {
+          borderRadius: 2,
+          backgroundColor: darkMode ? theme.palette.grey[900] : theme.palette.common.white
+        },
+        "& .MuiAutocomplete-paper": {
+          borderRadius: 2,
+          boxShadow: theme.shadows[4],
+          bgcolor: darkMode ? theme.palette.grey[900] : theme.palette.background.paper
+        }
       }}
-      renderOption={(props, option) => (
-        <button {...props} key={option.code} className={fontSizeCSS}>
-          {option.name !== '' ? (
-            <FlagIcon
-              code={option.code}
-              size={isVerySmallScreen ? 14 : isSmallScreen ? 16 : 20}
-              style={{ marginRight: '8px' }}
-            />
-          ) : (
-            <FaGlobe style={{ marginRight: '8px', color: 'blue' }} />
-          )}
-          {option.label}
-        </button>
-      )}
-      renderInput={(params) => (
+      renderInput={params => (
         <TextField
           {...params}
-          label="Country"
-          variant="outlined"
-          size="small"
+          label=""
+          placeholder="Select country..."
           InputProps={{
             ...params.InputProps,
-            style: { fontSize: isSmallScreen ? '12px' : '14px' },
-            startAdornment: selectedCountryData ? (
+            startAdornment: selected ? (
               <InputAdornment position="start">
-                {selectedCountryData.name !== '' ? (
+                {selected.name ? (
                   <FlagIcon
-                    code={selectedCountryData.code}
+                    code={selected.code}
                     size={isVerySmallScreen ? 14 : isSmallScreen ? 16 : 20}
                   />
-                ) : (
-                  <FaGlobe style={{ color: 'blue' }} />
-                )}
+                ) : <FaGlobe color={theme.palette.primary.main} />}
               </InputAdornment>
-            ) : null,
+            ) : null
           }}
         />
       )}
-      renderGroup={(param) => (
-        <li key={param.key}>
-          {/* Custom Group Header */}
-          <div
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#f5f5f5',
-              fontWeight: 'bold',
-              fontSize: '10px',
+      renderOption={(props, option) => (
+        <Box
+          component="li"
+          {...props}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: isVerySmallScreen ? 11 : isSmallScreen ? 12 : 13,
+            px: 1,
+            py: 0.8,
+            cursor: 'pointer',
+            "&:hover": {
+              backgroundColor: theme.palette.action.hover
+            }
+          }}
+        >
+          {option.name ? (
+            <FlagIcon
+              code={option.code}
+              size={isVerySmallScreen ? 14 : isSmallScreen ? 16 : 20}
+              style={{ marginRight: 8 }}
+            />
+          ) : <FaGlobe style={{ marginRight: 8 }} />}
+          {option.label}
+        </Box>
+      )}
+      renderGroup={params => (
+        <li key={params.key}>
+          <Box
+            sx={{
+              px: 1.5,
+              py: 0.8,
+              fontWeight: 600,
+              fontSize: 11,
+              color: theme.palette.text.primary,
+              bgcolor: darkMode ? theme.palette.grey[800] : theme.palette.grey[200],
+              borderBottom: `1px solid ${darkMode ? theme.palette.grey[700] : theme.palette.grey[300]}`,
               textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              color: '#333',
-              borderBottom: '1px solid #e0e0e0',
             }}
           >
-            {param.group}
-          </div>
-          <ul style={{ padding: 0, margin: 0 }}>{param.children}</ul>
+            {params.group}
+          </Box>
+          <ul style={{ padding: 0, margin: 0 }}>{params.children}</ul>
         </li>
       )}
-      sx={{ width: isSmallScreen ? 150 : 200 }}
     />
   );
 };

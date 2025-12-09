@@ -67,7 +67,7 @@ function AccordionItem({ id, title, subtitle, isOpen, onToggle, children }) {
                     ${isOpen ? 'shadow-lg' : 'hover:shadow-md'}`}
             >
                 <div className="flex items-center gap-3">
-                    <FaTrophy className="text-yellow-400 w-5 h-5" />
+                    {/* <FaTrophy className="text-yellow-400 w-5 h-5" /> */}
                     <div>
                         <div className="leading-tight">{title}</div>
                         {subtitle && <div className="text-xs text-gray-300 mt-0.5">{subtitle}</div>}
@@ -85,7 +85,7 @@ function AccordionItem({ id, title, subtitle, isOpen, onToggle, children }) {
             <div
                 id={id}
                 className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[2000px] mt-3' : 'max-h-0'}`}
-                // If you want to control accessibility more, consider adding role="region" and aria-labelledby
+            // If you want to control accessibility more, consider adding role="region" and aria-labelledby
             >
                 <div className="p-4 bg-gray-800 border border-t-0 border-gray-700 rounded-b-lg">
                     {children}
@@ -105,72 +105,77 @@ export default function MatchDashboard() {
     const [tab, setTab] = useState(0);
     const [oddsData, setOddsData] = useState(null);
     const [openAccordion, setOpenAccordion] = useState('point'); // 'point', 'power', 'stats'
+    const isFirstLoad = React.useRef(true);
 
     useEffect(() => {
+        if (!eventId) return;
+
         let cancelled = false;
-        async function loadAll() {
-            setLoading(true);
-            const delayMs = Number(process.env.REACT_APP_API_REQUEST_DELAY_MS) || 500;
+        let pollingTimer = null;
+
+        async function loadSequential() {
+            if (cancelled) return;
+
+            if (isFirstLoad.current) setLoading(true);
+
+            const delay = (ms) => new Promise(res => setTimeout(res, ms));
+            const delayMs = Number(process.env.REACT_APP_API_REQUEST_DELAY_MS) || 600;
+
             try {
                 const statsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`;
-                const statsData = await fetchWithRetry(statsUrl, { headers: HEADERS }, 3, 500);
-                if (cancelled) return;
-                setStats(statsData || null);
+                const statsData = await fetchWithRetry(statsUrl, { headers: HEADERS }, 3, 300);
+                if (!cancelled) setStats(statsData ?? null);
 
-                await sleep(delayMs);
+                await delay(delayMs);
 
                 const eventUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}`;
-                try {
-                    const eventResp = await fetchWithRetry(eventUrl, { headers: HEADERS }, 3, 500);
-                    if (!cancelled) setEvent(eventResp?.event ?? null);
-                } catch (err) {
-                    if (!cancelled) setEvent(null);
-                }
+                const evtResp = await fetchWithRetry(eventUrl, { headers: HEADERS }, 3, 300);
+                const evt = evtResp?.event ?? null;
+                if (!cancelled) setEvent(evt);
+                if (evt?.status?.type === "finished") return stopPolling();
 
-                await sleep(delayMs);
+                await delay(delayMs);
 
                 const graphUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/graph`;
-                try {
-                    const graphResp = await fetchWithRetry(graphUrl, { headers: HEADERS }, 3, 500);
-                    if (!cancelled) setPowerRankingData(graphResp?.tennisPowerRankings ?? []);
-                } catch (err) {
-                    if (!cancelled) setPowerRankingData([]);
-                }
+                const graphResp = await fetchWithRetry(graphUrl, { headers: HEADERS }, 3, 300);
+                if (!cancelled) setPowerRankingData(graphResp?.tennisPowerRankings ?? []);
 
-                await sleep(delayMs);
+                await delay(delayMs);
 
                 const pbpUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/point-by-point`;
-                try {
-                    const pbpResp = await fetchWithRetry(pbpUrl, { headers: HEADERS }, 3, 500);
-                    if (!cancelled) setPointByPointData(pbpResp?.pointByPoint ?? []);
-                } catch (err) {
-                    if (!cancelled) setPointByPointData([]);
-                }
+                const pbpResp = await fetchWithRetry(pbpUrl, { headers: HEADERS }, 3, 300);
+                if (!cancelled) setPointByPointData(pbpResp?.pointByPoint ?? []);
 
-
-                   await sleep(delayMs);
+                await delay(delayMs);
 
                 const oddsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/odds`;
-                try {
-                    const oddsResp = await fetchWithRetry(oddsUrl, { headers: HEADERS }, 3, 500);
-                    if (!cancelled) setOddsData(oddsResp ?? []);
-                } catch (err) {
-                    if (!cancelled) setOddsData([]);
-                }
+                const oddsResp = await fetchWithRetry(oddsUrl, { headers: HEADERS }, 3, 300);
+                if (!cancelled) setOddsData(oddsResp ?? []);
+
             } catch (err) {
-                if (!cancelled) {
-                    setStats({ error: err.message });
-                }
+                if (!cancelled) setStats({ error: err.message });
             } finally {
-                if (!cancelled) setLoading(false);
+                if (!cancelled && isFirstLoad.current) {
+                    setLoading(false);
+                    isFirstLoad.current = false;
+                }
             }
         }
 
-        loadAll();
-        return () => {
+        function stopPolling() {
             cancelled = true;
-        };
+            setLoading(false)
+            if (pollingTimer) clearInterval(pollingTimer);
+        }
+
+        loadSequential();
+        pollingTimer = setInterval(loadSequential, 12000);
+
+        return stopPolling;
     }, [eventId]);
+
+
+
 
     if (loading) {
         return (
@@ -195,13 +200,23 @@ export default function MatchDashboard() {
     return (
         <div className="min-h-screen bg-gray-900 py-4 px-1 sm:px-4">
             <div className="w-full mx-auto bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl shadow-2xl p-4 sm:p-8">
-                <MatchHeader event={event} oddsData={oddsData}/>
+                <MatchHeader event={event} oddsData={oddsData} />
                 {/* <OddsPanel eventId={eventId} /> */}
+                {/* Accordion: Match Stats */}
+                <AccordionItem
+                    id="acc-match-stats"
+                    title="Match Stats"
+                    // subtitle={`${periods.length} periods`}
+                    isOpen={openAccordion === 'stats'}
+                    onToggle={() => setOpenAccordion(openAccordion === 'stats' ? '' : 'stats')}
+                >
+                    <MatchStatsTable periods={periods} tab={tab} setTab={setTab} />
+                </AccordionItem>
                 {/* Accordion: Point By Point */}
                 <AccordionItem
                     id="acc-point-by-point"
                     title="Point By Point"
-                    subtitle={`${pointByPointData.length} events`}
+                    // subtitle={`${pointByPointData.length} events`}
                     isOpen={openAccordion === 'point'}
                     onToggle={() => setOpenAccordion(openAccordion === 'point' ? '' : 'point')}
                 >
@@ -211,24 +226,15 @@ export default function MatchDashboard() {
                 {/* Accordion: Power Ranking */}
                 <AccordionItem
                     id="acc-power-ranking"
-                    title="Power Ranking"
-                    subtitle={`${powerRankingData.length} points`}
+                    title="Momentum"
+                    // subtitle={`${powerRankingData.length} points`}
                     isOpen={openAccordion === 'power'}
                     onToggle={() => setOpenAccordion(openAccordion === 'power' ? '' : 'power')}
                 >
                     <PowerRankingChart tennisPowerRankings={powerRankingData} />
                 </AccordionItem>
 
-                {/* Accordion: Match Stats */}
-                <AccordionItem
-                    id="acc-match-stats"
-                    title="Match Stats"
-                    subtitle={`${periods.length} periods`}
-                    isOpen={openAccordion === 'stats'}
-                    onToggle={() => setOpenAccordion(openAccordion === 'stats' ? '' : 'stats')}
-                >
-                    <MatchStatsTable periods={periods} tab={tab} setTab={setTab} />
-                </AccordionItem>
+
             </div>
         </div>
     );
