@@ -160,8 +160,8 @@ export default function MatchHeader({ event, oddsData }) {
   const awayShort = event.awayTeam?.shortName ?? event.awayTeam?.name;
 
   return (
-    <div className="mb-4 bg-gray-800 rounded-2xl shadow p-3">
-      <div className="flex flex-col sm:flex-row items-center gap-3">
+    <div className="w-full mb-4 bg-gray-800 rounded-2xl shadow p-3">
+      <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
         {/* HOME */}
         <div className="flex-1 flex items-center gap-3 min-w-0">
           <div className="flex items-center gap-2 min-w-0">

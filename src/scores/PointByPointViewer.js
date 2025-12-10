@@ -48,11 +48,8 @@ export default function PointByPointViewer({ pointByPoint }) {
     if (!sets?.length) return <NotFound msg="No point-by-point data" subMsg="" />;
 
     return (
-        <div className="mb-4">
-            <h3 className="text-sm font-semibold text-blue-300 mb-2">
-                Point Timeline
-            </h3>
-
+        <div className="mb-1">
+          
             {/* Compact responsive grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {sets.map((setObj) => (

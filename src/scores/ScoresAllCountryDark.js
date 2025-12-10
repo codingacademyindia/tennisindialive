@@ -282,13 +282,51 @@ const FixtureResultsCountry = () => {
         return `${date.getDate()}-${month}`;
     };
 
+
+  function getTextAfterLastSpace(str) {
+        const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
+        return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
+    }
+    
+    function capitalize(str) {
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    }
+    function removeLastTwoCharacters(str) {
+        let textToReplace = getTextAfterLastSpace(str)
+        return str.replace(textToReplace, "").trim()
+    }
+
+    function getFullName(name, slug) {
+        // Split the input name to get last name and initial
+        try {
+            return name
+            const nameParts = name.split(' ');
+            const lastName = removeLastTwoCharacters(name).toLowerCase();
+            // Split the slug to get potential names
+            // const slugParts = slug.replaceAll("-"," ")
+            const normalizedLastName = lastName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            const normalizedSlug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+
+            let firstName = normalizedSlug.replaceAll(normalizedLastName.replaceAll(" ", "-"), "").replaceAll("-", " ").trim()
+            const fullName = `${firstName} ${lastName}`;
+            return capitalize(fullName)
+
+            // Check if last_name is part of the slug_parts
+
+        } catch (err) {
+
+            return name
+        }
+    }
     // -------------------- DOM FUNCTIONS --------------------
     const getPlayerDom2 = (item) => {
         try {
+            const uniqueTournament = item.tournament;
             const p1 = item.homeTeam;
             const p2 = item.awayTeam;
             const isSingle = !item.tournament.name.toLowerCase().includes('double');
-            if (isSingle && (getCountryCondition() || [p1?.country?.alpha3, p2?.country?.alpha3].includes(selectedCountryAlpha3))) {
+            if (isSingle && (getCountryCondition() || [p1?.country?.alpha3.toLowerCase(), p2?.country?.alpha3.toLowerCase()].includes(selectedCountryAlpha3))) {
                 return (
                     <div className="flex flex-col w-full  border-gray-700 p-1 text-xs">
                         <div className="flex items-center space-x-2">
@@ -305,6 +343,58 @@ const FixtureResultsCountry = () => {
                         </div>
                     </div>
                 );
+            }
+            else {
+                const p1a = p1.subTeams[0];
+                const p1b = p1.subTeams[1];
+                const p2a = p2.subTeams[0];
+                const p2b = p2.subTeams[1];
+
+                const countries = [
+                    p1a?.country?.alpha3?.toLowerCase() || null,
+                    p1b?.country?.alpha3?.toLowerCase() || null,
+                    p2a?.country?.alpha3?.toLowerCase() || null,
+                    p2b?.country?.alpha3?.toLowerCase() || null,
+                ];
+                if ((countries.includes(selectedCountryAlpha3) || getCountryCondition())) {
+                    return (<div key={`${item.id}-${uniqueTournament}`}>
+                        <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
+                            <div className='w-full flex flex-col'>
+                                <div className='w-full flex flex-row space-x-2 items-center'>
+                                    <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
+                                    <span><button className="transition hover:bg-blue-500 hover:p-1 hover:text-white" onClick={() => handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
+                                </div>
+                                <div className='w-full flex flex-row space-x-2'>
+                                    <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
+                                    <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
+                                    {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                    {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
+                            <div className='w-full flex flex-col'>
+                                <div className='w-full flex flex-row space-x-2 items-center'>
+                                    <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
+                                    <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
+                                </div>
+                                <div className='w-full flex flex-row space-x-2 items-center'>
+                                    <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
+                                    <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
+                                    {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                    {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    )
+
+                }
             }
             // TODO: handle doubles
             return null;
@@ -452,23 +542,34 @@ const FixtureResultsCountry = () => {
                 </div>
                 <div className='flex flex-row space-x-1'>
 
-                    <a href={`/match-dashboard/${item.id}`} className="text-xs flex items-center gap-1 bg-green-600 hover:bg-green-500 p-1 rounded-md text-white font-medium transition-all duration-200 shadow-sm" target="_blank" rel="noopener noreferrer">
-                        Match Dashboard
+                    <a
+                        href={`/match-dashboard/${item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] sm:text-xs flex items-center gap-1 
+             bg-green-700/80 hover:bg-green-600
+             px-2 py-1 rounded-full text-white font-medium
+             hover:shadow-[0_0_10px_rgba(0,255,100,0.7)]"
+                    >
+                        <span>Dashboard</span>
                     </a>
+
                     {/* Buttons Section */}
                     <button
-                        className="flex items-center gap-1 bg-yellow-600 hover:bg-yellow-500 p-1 rounded-md text-white font-medium transition-all duration-200 shadow-sm"
                         onClick={() => handleClickOpenH2H(item)}
                     >
-                        <HiMiniTableCells className="text-sm" />
-
+                        <HiMiniTableCells
+                            className="text-yellow-600 hover:text-yellow-500 p-1 rounded-md transition-all duration-200 shadow-sm"
+                            style={{ width: "28px", height: "28px" }}
+                        />
                     </button>
 
                     <button
-                        className="flex items-center gap-1 bg-blue-600 hover:bg-blue-500 p-1 rounded-md text-white font-medium transition-all duration-200 shadow-sm"
                         onClick={() => handleClickOpenMatchStat(item)}
                     >
-                        <IoStatsChartSharp className="text-sm" />
+                        <IoStatsChartSharp
+                            className="text-blue-600 hover:text-blue-500 p-1 rounded-md transition-all duration-200 shadow-sm"
+                            style={{ width: "28px", height: "28px" }} />
 
                     </button>
                 </div>
@@ -577,7 +678,10 @@ const FixtureResultsCountry = () => {
             </div>
 
             {error && <ErrorMessage />}
-            {loading ? <Loader /> : <div className="px-2">{recordDom()}</div>}
+            {loading ? <div className="min-h-[30vh] flex flex-col items-center justify-center bg-gray-900">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mb-4"></div>
+                <div className="text-blue-200 text-lg">Loading scores...</div>
+            </div> : <div className="px-2">{recordDom()}</div>}
         </div>
     );
 };

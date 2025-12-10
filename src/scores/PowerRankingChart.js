@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import NotFound from '../common/stateHandlers/NotFoundDark';
 
 export default function PowerRankingChart({ tennisPowerRankings }) {
     const sets = useMemo(() => {
@@ -17,10 +18,10 @@ export default function PowerRankingChart({ tennisPowerRankings }) {
 
     const setNumbers = Object.keys(sets).sort((a, b) => Number(a) - Number(b));
 
-    if (!tennisPowerRankings?.length) return null;
+    if (!tennisPowerRankings?.length) return <NotFound msg="No Momentum Data" subMsg="" />;
 
     return (
-        <div className="mb-4">
+        <div className="mb-1">
             <h3 className="text-sm font-semibold text-blue-300 mb-2">Momentum Chart</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

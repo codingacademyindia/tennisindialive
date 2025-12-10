@@ -729,12 +729,10 @@ const FixtureResultsCountry = () => {
             <PageHero />
             <FiltersBar />
             {loading ? (
-                <Box sx={{ my: 6, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <Loader />
-                    <Typography sx={{ mt: 2, fontWeight: 600, color: '#245' }}>
-                        Fetching latest scores...
-                    </Typography>
-                </Box>
+                <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mb-4"></div>
+                <div className="text-blue-200 text-lg">Loading match stats...</div>
+            </div>
             ) : error ? (
                 <ErrorMessage />
             ) : (

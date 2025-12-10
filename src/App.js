@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, BrowserRouter as Router, Routes, Navigate, useParams } from 'react-router-dom';
 
 import FixtureResultsAll from './scores/ScoresAll';
-import FixtureResultsCountry from './scores/ScoresAllCountry';
+import FixtureResultsCountry from './scores/ScoresAllCountryDark';
 import FixtureResultsCountrySEO from './scores/ScoresAllCountrySEO';
 import FixtureResultsAdmin from './admin/ScoresAdmin';
 import ATPLiveRankingsJSON from './rankings/ATP/LiveRankingsJSON';
@@ -97,6 +97,8 @@ function isDashboard(){
                 <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
 
                 <Route path="/live-scores" element={<FixtureResultsCountry />} />
+                <Route path="/live-scores-seo" element={<FixtureResultsCountrySEO />} />
+                
                 <Route path="/live-scores/:country" element={<FixtureResultsCountry />} />
                 <Route path="/tennis-score-live" element={<FixtureResultsCountry />} />
                 <Route path="/tennis-score-live/:country" element={<FixtureResultsCountry />} />

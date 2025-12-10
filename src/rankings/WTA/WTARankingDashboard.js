@@ -111,7 +111,7 @@ const WTARankingDashboard = () => {
             />
 
             <div className="flex flex-row space-x-4 items-center mb-4">
-                <div className="text-2xl font-bold text-white">wta Rankings Dashboard</div>
+                <div className="text-2xl font-bold text-white">WTA Rankings Dashboard</div>
                 <CountryAutocomplete
                     selectedCountry={selectedCountry}
                     handleCountryChange={handleCountryChange}

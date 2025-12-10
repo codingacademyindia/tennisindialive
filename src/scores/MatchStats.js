@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa';
+import NotFound from '../common/stateHandlers/NotFoundDark';
 
 function getWinner(home, away, compareCode) {
     const h = Number(home), a = Number(away);
@@ -13,10 +14,10 @@ function getWinner(home, away, compareCode) {
 export default function MatchStatsTable({ periods, tab, setTab }) {
     const currentPeriod = periods[tab];
 
-    if (!periods || periods.length === 0) return null;
+    if (!periods || periods.length === 0) return <NotFound msg="No Match Statistics" subMsg="" />;
 
     return (
-        <div className="mb-6 bg-gray-700 rounded-xl shadow p-4 w-[70%] mx-auto">
+        <div className="mb-6 bg-gray-700 rounded-xl shadow p-1 md:w-[70%] mx-auto">
             {/* Period Tabs */}
             <h2 className="text-2xl sm:text-3xl font-bold text-blue-300 mb-4 tracking-wide text-center">Match Stats</h2>
             <div className="flex flex-wrap gap-2 mb-4 justify-center">

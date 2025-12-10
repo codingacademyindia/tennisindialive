@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
-
+import { Dashboard } from "@mui/icons-material";
 /**
  * Navbar.jsx
  *
@@ -53,7 +53,8 @@ export default function Navbar() {
           {/* Left: Logo + Title */}
           <div className="flex items-center gap-3 min-w-0">
           
-            <div className="min-w-0 text-3xl font-semibold text-white">
+            <div className="min-w-0 text-2xl font-semibold text-white">
+              <Dashboard className="inline-block mr-2 -mt-1 text-teal-400 text-2xl" />
                 Match Dashboard
              
             </div>
@@ -64,8 +65,10 @@ export default function Navbar() {
           {/* Right: actions & mobile toggle */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3">
-              <a href="/live-scores" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">Live Scores</a>
-              <a href="/rankings" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">Rankings Page</a>
+              <a href="/live-scores" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">Live Scores</a>
+              <a href="/rankings/atp" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">ATP Rankings Dashboard</a>
+              <a href="/rankings/wta" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">WTA Rankings Dashboard</a>
+        
             </div>
 
             {/* Mobile menu button */}
