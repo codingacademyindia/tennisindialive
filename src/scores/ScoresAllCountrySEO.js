@@ -44,7 +44,7 @@ import NotFound from '../common/stateHandlers/NotFound';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
 import { getAlpha3, getAlpha2FromName, getRouteKeyword, getBaseRoute, getSeoDom, getH1 } from '../utils/utils';
-import BeautifulScoreCard from './BeautifulScoreCard';
+import BeautifulScoreCard from './widgets/BeautifulScoreCard';
 
 // --- STYLED COMPONENTS ---
 const PageWrapper = styled(Box)(({ theme }) => ({

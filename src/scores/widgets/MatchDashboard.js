@@ -7,9 +7,9 @@ import PointByPointViewer from './PointByPointViewer';
 import PowerRankingChart from './PowerRankingChart';
 import MatchStatsTable from './MatchStats';
 import OddsPanel from './OddsPanel';
-import FluidAd from '../ads/FluidAd';
-import FluidAdImage from '../ads/FluidAdImage';
-import InArticleAd from '../ads/InArticleAd';
+import FluidAd from '../../ads/FluidAd';
+import FluidAdImage from '../../ads/FluidAdImage';
+import InArticleAd from '../../ads/InArticleAd';
 
 
 const HEADERS = {

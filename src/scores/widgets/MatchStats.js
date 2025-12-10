@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa';
-import NotFound from '../common/stateHandlers/NotFoundDark';
+import NotFound from '../../common/stateHandlers/NotFoundDark';
 
 function getWinner(home, away, compareCode) {
     const h = Number(home), a = Number(away);

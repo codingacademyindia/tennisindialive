@@ -34,7 +34,7 @@ import FluidAd from './ads/FluidAd';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import MatchDashboard from './scores/MatchDashboard';
+import MatchDashboard from './scores/widgets/MatchDashboard';
 import ATPRankingDashboard from './rankings/ATP/ATPRankingDashboard';
 import WTARankingDashboard from './rankings/WTA/WTARankingDashboard';
 

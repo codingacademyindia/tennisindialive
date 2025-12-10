@@ -283,11 +283,11 @@ const FixtureResultsCountry = () => {
     };
 
 
-  function getTextAfterLastSpace(str) {
+    function getTextAfterLastSpace(str) {
         const lastSpaceIndex = str.lastIndexOf(' '); // Find the index of the last space
         return str.slice(lastSpaceIndex + 1); // Extract the text after the last space
     }
-    
+
     function capitalize(str) {
         return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     }
@@ -521,7 +521,8 @@ const FixtureResultsCountry = () => {
 
 
     const fetchH2HStatsDom = (item) => {
-        const isNotStarted = item?.status?.type === "notstarted"; // Adjust based on your API
+        const isNotStarted = item?.status?.type === "notstarted";
+        const isLive = item?.status?.type === "inprogress";
         const matchTime = readableTimeStamp(item?.startTimestamp) || "TBD";
         const round = getRoundAbbreviation(item?.roundInfo?.name) || "";
 
@@ -532,6 +533,13 @@ const FixtureResultsCountry = () => {
                     <span className="bg-gray-700 p-0.5 rounded-md font-semibold">
                         {round}
                     </span>
+                    {isLive && (
+                        <span className="text-xs px-2 py-0.5 rounded-md bg-green-500/20 text-green-300 flex items-center gap-1">
+                            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                            Live — {item?.status?.description}
+                        </span>
+                    )}
+
 
                     {/* Match Time - Only if Not Started */}
                     {isNotStarted && (
@@ -546,32 +554,45 @@ const FixtureResultsCountry = () => {
                         href={`/match-dashboard/${item.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10px] sm:text-xs flex items-center gap-1 
-             bg-green-700/80 hover:bg-green-600
-             px-2 py-1 rounded-full text-white font-medium
-             hover:shadow-[0_0_10px_rgba(0,255,100,0.7)]"
+                        className="text-[10px] sm:text-xs flex items-center gap-1
+    bg-blue-600/20 text-blue-300 
+    hover:bg-blue-600/30
+    px-2 py-1 rounded-full font-medium
+    border border-blue-500/40
+    transition-all duration-200"
                     >
-                        <span>Dashboard</span>
+                        📊
+                        Dashboard
                     </a>
 
-                    {/* Buttons Section */}
-                    <button
-                        onClick={() => handleClickOpenH2H(item)}
-                    >
-                        <HiMiniTableCells
-                            className="text-yellow-600 hover:text-yellow-500 p-1 rounded-md transition-all duration-200 shadow-sm"
-                            style={{ width: "28px", height: "28px" }}
-                        />
-                    </button>
 
-                    <button
+         <button
+  onClick={() => handleClickOpenH2H(item)}
+  className="text-[10px] sm:text-xs flex items-center gap-1
+             px-2 py-1 rounded-full font-medium
+             bg-lime-500/10 border border-lime-400/25
+             text-lime-300/90
+             hover:bg-lime-500/15 hover:border-lime-300/60
+             hover:shadow-[0_0_6px_rgba(150,255,100,0.25)]
+             transition-all duration-200"
+>
+  <HiMiniTableCells className="w-3.5 h-3.5 opacity-90" />
+  H2H
+</button>
+
+
+
+
+
+
+                    {/* <button
                         onClick={() => handleClickOpenMatchStat(item)}
                     >
                         <IoStatsChartSharp
                             className="text-blue-600 hover:text-blue-500 p-1 rounded-md transition-all duration-200 shadow-sm"
                             style={{ width: "28px", height: "28px" }} />
 
-                    </button>
+                    </button> */}
                 </div>
 
             </div>

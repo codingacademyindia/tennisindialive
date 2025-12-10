@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import NotFound from '../common/stateHandlers/NotFoundDark';
+import NotFound from '../../common/stateHandlers/NotFoundDark';
 
 const pointColors = {
     p1: 'bg-green-500',

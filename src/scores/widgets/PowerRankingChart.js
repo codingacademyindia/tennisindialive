@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import NotFound from '../common/stateHandlers/NotFoundDark';
+import NotFound from '../../common/stateHandlers/NotFoundDark';
 
 export default function PowerRankingChart({ tennisPowerRankings }) {
     const sets = useMemo(() => {
