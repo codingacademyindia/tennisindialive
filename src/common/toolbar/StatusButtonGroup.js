@@ -41,54 +41,54 @@ export default function StatusButtonGroup({ matchStatus, handleStatusButtonClick
   };
 
   const fontSize = {
-    fontSize: isSmallScreen ? "0.7rem" : "0.85rem",
+    fontSize: isSmallScreen ? "0.7rem" : "0.75rem",
     borderRadius: 8,
-    padding: isSmallScreen ? "3px 6px" : "6px 12px",
+    padding: isSmallScreen ? "3px 6px" : "3px 6px",
   };
 
-  if (isSmallScreen) {
-    // 📱 Mobile Dropdown
-    return (
-      <>
-        <ButtonGroup
-          ref={anchorRef}
-          variant="contained"
-          size="small"
-          sx={{ borderRadius: 2 }}
-        >
-          <Button sx={fontSize} onClick={() => handleStatusButtonClick(selectedOption.key)}>
-            {selectedOption.label}
-          </Button>
-          <Button onClick={handleToggle}>
-            <ArrowDropDownIcon fontSize="small" />
-          </Button>
-        </ButtonGroup>
+  // if (isSmallScreen) {
+  //   // 📱 Mobile Dropdown
+  //   return (
+  //     <>
+  //       <ButtonGroup
+  //         ref={anchorRef}
+  //         variant="contained"
+  //         size="small"
+  //         sx={{ borderRadius: 2 }}
+  //       >
+  //         <Button sx={fontSize} onClick={() => handleStatusButtonClick(selectedOption.key)}>
+  //           {selectedOption.label}
+  //         </Button>
+  //         <Button onClick={handleToggle}>
+  //           <ArrowDropDownIcon fontSize="small" />
+  //         </Button>
+  //       </ButtonGroup>
 
-        <Popper open={open} anchorEl={anchorRef.current} transition disablePortal sx={{ zIndex: 1500 }}>
-          {({ TransitionProps }) => (
-            <Grow {...TransitionProps}>
-              <Paper sx={{ borderRadius: 2 }}>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList autoFocusItem>
-                    {STATUS_OPTIONS.map(option => (
-                      <MenuItem
-                        key={option.key}
-                        selected={option.key === matchStatus}
-                        onClick={() => handleMenuItemClick(null, option)}
-                        sx={{ fontSize: "0.75rem" }}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </>
-    );
-  }
+  //       <Popper open={open} anchorEl={anchorRef.current} transition disablePortal sx={{ zIndex: 1500 }}>
+  //         {({ TransitionProps }) => (
+  //           <Grow {...TransitionProps}>
+  //             <Paper sx={{ borderRadius: 2 }}>
+  //               <ClickAwayListener onClickAway={handleClose}>
+  //                 <MenuList autoFocusItem>
+  //                   {STATUS_OPTIONS.map(option => (
+  //                     <MenuItem
+  //                       key={option.key}
+  //                       selected={option.key === matchStatus}
+  //                       onClick={() => handleMenuItemClick(null, option)}
+  //                       sx={{ fontSize: "0.75rem" }}
+  //                     >
+  //                       {option.label}
+  //                     </MenuItem>
+  //                   ))}
+  //                 </MenuList>
+  //               </ClickAwayListener>
+  //             </Paper>
+  //           </Grow>
+  //         )}
+  //       </Popper>
+  //     </>
+  //   );
+  // }
 
   // 🖥 Desktop Buttons
   return (

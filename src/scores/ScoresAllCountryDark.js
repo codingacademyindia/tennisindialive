@@ -1,38 +1,31 @@
+import CheckIcon from '@mui/icons-material/Check';
+import SyncIcon from '@mui/icons-material/Sync';
+import {
+    IconButton
+} from '@mui/material';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
+import { HiMiniChartBar, HiMiniTableCells } from "react-icons/hi2";
+import { IoTennisballSharp } from "react-icons/io5";
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
-import dayjs from 'dayjs';
-import {
-    Accordion, AccordionSummary, AccordionDetails,
-    Typography, IconButton, LinearProgress
-} from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SyncIcon from '@mui/icons-material/Sync';
-import { AiOutlineClockCircle } from 'react-icons/ai';
-import { FaGlobe } from "react-icons/fa";
-import { IoStatsChartSharp, IoTennisballSharp } from "react-icons/io5";
-import { HiMiniTableCells } from "react-icons/hi2";
-
+import FluidAd from '../ads/FluidAd';
+import FluidAdImage from '../ads/FluidAdImage';
+import InArticleAd from '../ads/InArticleAd';
+import useApiCall from '../common/apiCalls/useApiCall';
 import CountryIcon from '../common/Country';
 import CountryDialog from '../common/country/CountryDialog';
-import CountryAutocomplete from '../common/CountryAutoComplete';
+import CountryModal from '../common/CountryModal';
 import DatePickerValue from '../common/DatePicker';
 import Head2Head from '../common/dialogs/HeadToHead';
 import MatchStats from '../common/dialogs/MatchStats';
 import PlayerInfo from '../common/dialogs/PlayerInfo';
 import SEO from '../common/seo/SEO';
 import ErrorMessage from '../common/stateHandlers/ErrorState';
-import Loader from '../common/stateHandlers/LoaderState';
-import NotFound from '../common/stateHandlers/NotFound';
+import NotFound from '../common/stateHandlers/NotFoundDark';
 import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
-import useApiCall from '../common/apiCalls/useApiCall';
-import FluidAd from '../ads/FluidAd';
-import FluidAdImage from '../ads/FluidAdImage';
-import InArticleAd from '../ads/InArticleAd';
-import { HiMiniChartBar } from 'react-icons/hi2';
+import { getAlpha3, getBaseRoute, getCountryFullName } from '../utils/utils';
 
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
@@ -60,9 +53,9 @@ const FixtureResultsCountry = () => {
     const [selectedDate, setDate] = useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished", "interrupted"]);
-    const [selectedCountry, setSelectedCountry] = useState('');
+    // const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedCountryCode, setSelectedCountryCode] = useState('');
-    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country && params.country.toLowerCase() === 'all' ? null : params.country);
+    const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country && params.country.toLowerCase() === 'all' ? null : getAlpha3(params.country));
 
     const { data: matchStatsData, loading: loadingStats, setRequest: fetchMatchStats } = useApiCall({ method: 'get', payload: [], url: '' });
     const { data: h2hData, loading: loadingH2H, setRequest: fetchH2H } = useApiCall({ method: 'get', payload: [], url: '' });
@@ -76,9 +69,13 @@ const FixtureResultsCountry = () => {
     const [openPlayerInfo, setOpenPlayerInfo] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const [indianCount, setIndianCount] = useState(0);
+    const [countryModal, setCountryModal] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState("IN");
 
     // -------------------- HANDLERS --------------------
     const handleCloseCountry = () => setDialogOpenCountry(false);
+    const countryFullName = getCountryFullName(selectedCountry);
+
 
     const handleClickOpenMatchStat = (item) => {
         setEventId(item.id);
@@ -117,7 +114,7 @@ const FixtureResultsCountry = () => {
 
         setTimeout(() => {
             toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            window.location.href = `/live-scores/${newValue.alpha3.toLowerCase()}`;
+            window.location.href = `${getBaseRoute()}/${getCountryFullName(newCountryCode).toLowerCase()}`;
         }, 800);
     };
 
@@ -250,6 +247,10 @@ const FixtureResultsCountry = () => {
 
     const getCountryCondition = () => !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
 
+    console.log(selectedCountry)
+
+    console.log(selectedCountryAlpha3)
+
     const hasCountry = (item) => {
         const p1 = item.homeTeam;
         const p2 = item.awayTeam;
@@ -257,13 +258,13 @@ const FixtureResultsCountry = () => {
 
         if (!item.tournament.name.toLowerCase().includes('double')) {
             return (getCountryCondition() ||
-                p1?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3?.toLowerCase() ||
-                p2?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3?.toLowerCase()) &&
+                p1?.country?.alpha3?.toLowerCase() === selectedCountry?.toLowerCase() ||
+                p2?.country?.alpha3?.toLowerCase() === selectedCountry?.toLowerCase()) &&
                 matchStatusList.includes(item.status?.type);
         } else {
             const teams = [p1?.subTeams[0], p1?.subTeams[1], p2?.subTeams[0], p2?.subTeams[1]];
             const countries = teams.map(t => t?.country?.alpha3?.toLowerCase());
-            return (getCountryCondition() || countries.includes(selectedCountryAlpha3?.toLowerCase())) &&
+            return (getCountryCondition() || countries.includes(selectedCountry?.toLowerCase())) &&
                 matchStatusList.includes(item.status?.type);
         }
     };
@@ -327,7 +328,9 @@ const FixtureResultsCountry = () => {
             const p1 = item.homeTeam;
             const p2 = item.awayTeam;
             const isSingle = !item.tournament.name.toLowerCase().includes('double');
-            if (isSingle && (getCountryCondition() || [p1?.country?.alpha3.toLowerCase(), p2?.country?.alpha3.toLowerCase()].includes(selectedCountryAlpha3))) {
+            // if (isSingle && (getCountryCondition() || [p1?.country?.alpha3.toLowerCase(), p2?.country?.alpha3.toLowerCase()].includes(selectedCountryAlpha3))) {
+            if (isSingle) {
+
                 return (
                     <div className="flex flex-col w-full  border-gray-700 p-1 text-xs">
                         <div className="flex items-center space-x-2">
@@ -357,45 +360,45 @@ const FixtureResultsCountry = () => {
                     p2a?.country?.alpha3?.toLowerCase() || null,
                     p2b?.country?.alpha3?.toLowerCase() || null,
                 ];
-                if ((countries.includes(selectedCountryAlpha3) || getCountryCondition())) {
-                    return (<div key={`${item.id}-${uniqueTournament}`}>
-                        <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
-                            <div className='w-full flex flex-col'>
-                                <div className='w-full flex flex-row space-x-2 items-center'>
-                                    <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
-                                    <span><button className="transition hover:bg-blue-500 hover:p-1 hover:text-white" onClick={() => handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
-                                </div>
-                                <div className='w-full flex flex-row space-x-2'>
-                                    <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
-                                    <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
-                                    {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                    {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-
-                                </div>
-
+                // if ((countries.includes(selectedCountryAlpha3) || getCountryCondition())) {
+                return (<div key={`${item.id}-${uniqueTournament}`}>
+                    <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
+                        <div className='w-full flex flex-col'>
+                            <div className='w-full flex flex-row space-x-2 items-center'>
+                                <span><CountryIcon countryCode={p1a.country?.alpha2} name={p1a.country?.name} size={15} /></span>
+                                <span><button className="transition hover:bg-blue-500 hover:p-1 hover:text-white" onClick={() => handleClickPlayerName(p1a)}>{getFullName(p1a.name, p1a.slug)}</button></span>
                             </div>
-                        </div>
-                        <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
-                            <div className='w-full flex flex-col'>
-                                <div className='w-full flex flex-row space-x-2 items-center'>
-                                    <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
-                                    <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
-                                </div>
-                                <div className='w-full flex flex-row space-x-2 items-center'>
-                                    <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
-                                    <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
-                                    {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
-                                    {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
-
-                                </div>
+                            <div className='w-full flex flex-row space-x-2'>
+                                <span><CountryIcon countryCode={p1b.country?.alpha2} name={p1b.country?.name} size={15} /></span>
+                                <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p1b)}>{getFullName(p1b.name, p1b.slug)}</button></span>
+                                {item.firstToServe === 1 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 1 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
                             </div>
 
                         </div>
                     </div>
-                    )
+                    <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
+                        <div className='w-full flex flex-col'>
+                            <div className='w-full flex flex-row space-x-2 items-center'>
+                                <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
+                                <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2a)}>{getFullName(p2a.name, p2a.slug)}</button></span>
+                            </div>
+                            <div className='w-full flex flex-row space-x-2 items-center'>
+                                <span><CountryIcon countryCode={p2b.country?.alpha2} name={p2b.country?.name} size={15} /></span>
+                                <span><button className="transition hover:p-1 hover:bg-blue-500  hover:text-white" onClick={() => handleClickPlayerName(p2b)}>{getFullName(p2b.name, p2b.slug)}</button></span>
+                                {item.firstToServe === 2 && item?.status?.type === 'inprogress' ? <IoTennisballSharp size={15} className='text-green-500' /> : ""}
+                                {item.winnerCode === 2 ? <CheckIcon sx={{ color: "green", fontSize: 20 }} /> : ""}
 
-                }
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                )
+
+                // }
             }
             // TODO: handle doubles
             return null;
@@ -404,7 +407,6 @@ const FixtureResultsCountry = () => {
             return null;
         }
     };
-
     const formatTennisScoreDom = (homeScore, awayScore, currentStatus) => {
         const periods = Array.from({ length: 5 }, (_, i) => [
             homeScore[`period${i + 1}`] ?? 0,
@@ -542,7 +544,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     {isLive && (
                         <span className="text-xs px-2 py-0.5 rounded-md bg-green-500/20 text-green-300 flex items-center gap-1">
                             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                            Live - {item?.status?.description}
+                            <span className='hidden sm:inline'>Live -</span>{item?.status?.description}
                         </span>
                     )}
 
@@ -628,7 +630,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         );
 
         if (filteredTournaments.length === 0)
-            return <NotFound msg="No Results Found" />;
+            return <NotFound msg="No Results Found" subMsg='Please try with some other filter/country' />;
 
         const result = [];
         let adCounter = 0;
@@ -683,17 +685,116 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         return result;
     };
 
+    const getFlagUrl = (code) =>
+        code ? `https://flagcdn.com/w20/${code.toLowerCase()}.png` : null;
 
 
+
+    let objDomCountryButton = (<button
+        onClick={() => setCountryModal(true)}
+        className="
+        flex items-center gap-2 
+        px-3 py-2 rounded-lg 
+        bg-[#1f2937] text-gray-200 
+        border border-gray-700 
+        hover:border-teal-400 hover:text-teal-300
+        hover:shadow-[0_0_10px_rgba(34,211,238,0.25)]
+        active:scale-95 transition-all duration-200
+        text-sm font-medium
+    "
+    >
+        {/* Flag or Globe */}
+        {selectedCountryCode ? (
+            <img
+                src={getFlagUrl(selectedCountryCode)}
+                alt={selectedCountryCode}
+                className="w-5 h-4 object-cover rounded-sm shadow-sm"
+                loading="eager"     // 🚀 load instantly
+            />
+        ) : (
+            <span className="text-lg">🌍</span>
+        )}
+
+        {/* Country Name OR default */}
+        <span className="truncate capitalize">
+            {countryFullName || "Select Country"}
+        </span>
+    </button>
+
+    )
+
+    let objFilterBar = (<div className="p-1 border-b border-gray-800 mb-1">
+
+        {/* ---- MOBILE (2 rows) ---- */}
+        <div className="flex flex-col gap-2 md:hidden">
+
+            {/* Row 1 */}
+            <div className="flex items-center gap-1">
+                <div className="flex-1">
+                    <DatePickerValue
+                        selectedDate={selectedDate}
+                        handleSelectDate={handleSelectDate}
+                    />
+                </div>
+
+                <div className="flex-1">
+                    {objDomCountryButton}
+                </div>
+
+                <IconButton onClick={handleRefresh} className="text-gray-200">
+                    <SyncIcon className="text-white" />
+                </IconButton>
+            </div>
+
+            {/* Row 2 (Full width status buttons) */}
+            <div className="w-full flex justify-center">
+                <StatusButtonGroup
+                    matchStatus={matchStatus}
+                    handleStatusButtonClick={handleStatusButtonClick}
+                />
+            </div>
+        </div>
+
+        {/* ---- DESKTOP (everything in one row) ---- */}
+        <div className="hidden md:flex items-center justify-around gap-3">
+            {/* <CountryAutocomplete
+                selectedCountry={selectedCountry}
+                handleCountryChange={handleCountryChange}
+            /> */}
+            {objDomCountryButton}
+
+            <StatusButtonGroup
+                matchStatus={matchStatus}
+                handleStatusButtonClick={handleStatusButtonClick}
+            />
+
+            <DatePickerValue
+                selectedDate={selectedDate}
+                handleSelectDate={handleSelectDate}
+            />
+
+            <IconButton onClick={handleRefresh} className="text-gray-200">
+                <SyncIcon className="text-white" />
+            </IconButton>
+
+        </div>
+
+    </div>
+    )
 
     // -------------------- RENDER --------------------
     return (
         <div className="bg-gray-900 min-h-screen text-gray-200">
+            <CountryModal
+                open={countryModal}
+                onClose={() => setCountryModal(false)}
+                onSelect={handleCountryChange}
+            />
             <SEO
-                title={`Tennis ${selectedCountry.toUpperCase()} Live - Countrywise Tennis Scores & Live Updates`}
+                title={`Tennis ${countryFullName} Live - Countrywise Tennis Scores & Live Updates`}
                 description={`Real-time tennis scores, rankings and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
-                keywords={`tennis scores, ${selectedCountry} tennis, live scores, rankings, country wise ATP, WTA`}
-                url={`https://tennisindialive.com/live-scores/${selectedCountry}`}
+                keywords={`tennis scores, ${countryFullName} tennis, live scores, rankings, country wise ATP, WTA`}
+                url={`https://tennisindialive.com/live-scores/${countryFullName}`}
             />
 
             <CountryDialog open={dialogOpenCountry} onClose={handleCloseCountry} />
@@ -701,13 +802,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             <Head2Head open={openH2H} handleClose={handleCloseMatchStat} loading={loadingH2H} data={h2hData} scoreRecord={scoreRecord} eventId={eventId} />
             <PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo} loading={false} id={playerId} />
 
-            <div className="flex flex-row items-center justify-between p-2 space-y-2 md:space-y-0">
-                <DatePickerValue selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
-                <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
-                <CountryAutocomplete selectedCountry={selectedCountry} handleCountryChange={handleCountryChange} />
-                <IconButton onClick={handleRefresh} className="text-gray-200"><SyncIcon /></IconButton>
-            </div>
-
+            {objFilterBar}
             {error && <ErrorMessage />}
             {loading ? <div className="min-h-[30vh] flex flex-col items-center justify-center bg-gray-900">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mb-4"></div>

@@ -4,27 +4,56 @@ import SEO from "../common/seo/SEO";
 countries.registerLocale(enLocale);
 
 export function getAlpha3(countryParam) {
-    if (!countryParam) return null;
+  if (!countryParam) return null;
 
-    // Normalize
-    const clean = countryParam.trim().toLowerCase();
+  const clean = countryParam.trim();
 
-    // 1) Try if it's already an alpha-2 or alpha-3 code
-    const asAlpha3 = countries.alpha3ToAlpha2(clean.toUpperCase());
-    if (asAlpha3) return clean.toLowerCase();
+  // 1) If input is alpha-2
+  if (clean.length === 2) {
+    return countries.alpha2ToAlpha3(clean.toUpperCase())?.toLowerCase() || null;
+  }
 
-    // 2) Try converting from alpha-2
-    const alpha2 = countries.getAlpha2Code(clean, 'en');
-    if (alpha2) {
-        return countries.alpha2ToAlpha3(alpha2).toLowerCase();
-    }
+  // 2) If input is alpha-3
+  if (clean.length === 3) {
+    const isAlpha3 = countries.alpha3ToAlpha2(clean.toUpperCase());
+    if (isAlpha3) return clean.toLowerCase();
+  }
 
-    // 3) Try converting from full name directly
-    const alpha3 = countries.getAlpha3Code(clean, 'en');
-    if (alpha3) return alpha3.toLowerCase();
+  // 3) Try full country name → alpha-2 → alpha-3
+  const alpha2 = countries.getAlpha2Code(clean, "en");
+  if (alpha2) {
+    return countries.alpha2ToAlpha3(alpha2)?.toLowerCase() || null;
+  }
 
-    return null;
+  // 4) Try full country name → alpha-3 directly
+  const alpha3 = countries.getAlpha3Code(clean, "en");
+  if (alpha3) return alpha3.toLowerCase();
+
+  return null;
 }
+
+// export function getAlpha3(countryParam) {
+//     if (!countryParam) return null;
+
+//     // Normalize
+//     const clean = countryParam.trim().toLowerCase();
+
+//     // 1) Try if it's already an alpha-2 or alpha-3 code
+//     const asAlpha3 = countries.alpha3ToAlpha2(clean.toUpperCase());
+//     if (asAlpha3) return clean.toLowerCase();
+
+//     // 2) Try converting from alpha-2
+//     const alpha2 = countries.getAlpha2Code(clean, 'en');
+//     if (alpha2) {
+//         return countries.alpha2ToAlpha3(alpha2).toLowerCase();
+//     }
+
+//     // 3) Try converting from full name directly
+//     const alpha3 = countries.getAlpha3Code(clean, 'en');
+//     if (alpha3) return alpha3.toLowerCase();
+
+//     return null;
+// }
 
 export function getAlpha2FromName(name) {
     if (!name) return null;

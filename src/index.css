@@ -18,20 +18,17 @@ code {
     monospace;
 }
 
-.mobile-drawer {
-  z-index: 999999 !important;
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-
-/* Force all MUI popper/portal content below drawer */
-.MuiPopover-root,
-.MuiPopper-root,
-.MuiDialog-root,
-.MuiMenu-root,
-.MuiModal-root {
-  z-index: 80000 !important;
-}
-
-.MuiPaper-root {
-  z-index: 80000 !important;
+.animate-scaleIn {
+  animation: scaleIn 0.18s ease-out forwards;
 }
