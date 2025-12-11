@@ -32,6 +32,7 @@ import useApiCall from '../common/apiCalls/useApiCall';
 import FluidAd from '../ads/FluidAd';
 import FluidAdImage from '../ads/FluidAdImage';
 import InArticleAd from '../ads/InArticleAd';
+import { HiMiniChartBar } from 'react-icons/hi2';
 
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
@@ -530,13 +531,22 @@ const FixtureResultsCountry = () => {
             <div className="bg-gray-800  p-0.5 text-xs text-gray-200 flex flex-row justify-between space-x-2 shadow-md">
                 <div className="flex items-center gap-1">
                     {/* Round - Always shown */}
-                    <span className="bg-gray-700 p-0.5 rounded-md font-semibold">
-                        {round}
-                    </span>
+      <span className="px-2 py-0.5 text-xs font-semibold rounded 
+bg-[#151515] text-[#D1D5DB]
+border border-[#3F3F46]
+shadow-[0_0_6px_rgba(255,255,255,0.1)]">
+  {round}
+</span>
+
+
+
+
+
+
                     {isLive && (
                         <span className="text-xs px-2 py-0.5 rounded-md bg-green-500/20 text-green-300 flex items-center gap-1">
                             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                            Live — {item?.status?.description}
+                            Live - {item?.status?.description}
                         </span>
                     )}
 
@@ -549,36 +559,40 @@ const FixtureResultsCountry = () => {
                     )}
                 </div>
                 <div className='flex flex-row space-x-1'>
-
+                    {/* Dashboard Button */}
                     <a
                         href={`/match-dashboard/${item.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10px] sm:text-xs flex items-center gap-1
-    bg-blue-600/20 text-blue-300 
-    hover:bg-blue-600/30
-    px-2 py-1 rounded-full font-medium
-    border border-blue-500/40
-    transition-all duration-200"
+                        className="flex items-center gap-1 px-3 py-1 rounded-full font-medium
+             bg-blue-500/10 border border-blue-400/25
+             text-blue-300 text-[10px] sm:text-xs
+             hover:bg-blue-500/20 hover:border-blue-300/50
+             hover:shadow-[0_0_10px_rgba(100,150,255,0.4)]
+             transition-all duration-200
+             backdrop-blur-sm"
                     >
-                        📊
+                        <HiMiniChartBar className="w-3.5 h-3.5" />
                         Dashboard
                     </a>
-
-
-         <button
-  onClick={() => handleClickOpenH2H(item)}
-  className="text-[10px] sm:text-xs flex items-center gap-1
-             px-2 py-1 rounded-full font-medium
+                    <button
+                        onClick={() => handleClickOpenH2H(item)}
+                        className="flex items-center gap-1 px-3 py-1 rounded-full font-medium
              bg-lime-500/10 border border-lime-400/25
-             text-lime-300/90
-             hover:bg-lime-500/15 hover:border-lime-300/60
-             hover:shadow-[0_0_6px_rgba(150,255,100,0.25)]
-             transition-all duration-200"
->
-  <HiMiniTableCells className="w-3.5 h-3.5 opacity-90" />
-  H2H
-</button>
+             text-lime-300 text-[10px] sm:text-xs
+             hover:bg-lime-500/20 hover:border-lime-300/50
+             hover:shadow-[0_0_10px_rgba(150,255,100,0.4)]
+             transition-all duration-200
+             backdrop-blur-sm"
+                    >
+                        <HiMiniTableCells className="w-3.5 h-3.5" />
+                        H2H
+                    </button>
+
+
+
+
+
 
 
 

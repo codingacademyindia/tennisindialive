@@ -10,7 +10,7 @@ import OddsPanel from './OddsPanel';
 import FluidAd from '../../ads/FluidAd';
 import FluidAdImage from '../../ads/FluidAdImage';
 import InArticleAd from '../../ads/InArticleAd';
-
+import SEO from '../../common/seo/SEO';
 
 const HEADERS = {
     'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
@@ -143,7 +143,6 @@ export default function MatchDashboard() {
                 const evtResp = await fetchWithRetry(eventUrl, { headers: HEADERS }, 3, 300);
                 const evt = evtResp?.event ?? null;
                 if (!cancelled) setEvent(evt);
-                if (evt?.status?.type === "finished") return stopPolling();
 
                 await delay(delayMs);
 
@@ -164,6 +163,7 @@ export default function MatchDashboard() {
                 const oddsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/odds`;
                 const oddsResp = await fetchWithRetry(oddsUrl, { headers: HEADERS }, 3, 300);
                 if (!cancelled) setOddsData(oddsResp ?? []);
+                if (evt?.status?.type === "finished") return stopPolling();
 
             } catch (err) {
                 if (!cancelled) setStats({ error: err.message });
@@ -209,9 +209,16 @@ export default function MatchDashboard() {
 
     const periods = stats && stats.statistics || [];
     const currentPeriod = periods[tab];
-
+    const p1 = event?.homeTeam?.name || "Home";
+    const p2 = event?.awayTeam?.name || "Away";
     return (
         <div className="min-h-screen bg-gray-900 py-4 px-1 sm:px-4 overflow-y-auto">
+            <SEO
+                title={`${p1} vs ${p2} - ${event?.tournament?.name} Live - Countrywise/rmega Tennis Scores & Live Updates`}
+                description={`Live match stats, point by point data, Real-time tennis scores, rankings and updates. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis match stats, tennis scores, tennis, live scores, rankings, country wise ATP, WTA`}
+                url={`${window.location.href}`}
+            />
             <div className="w-full mx-auto bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl shadow-2xl p-4 sm:p-8">
                 <div className='flex flex-col w-full'>
                     <div className='w-full hidden md:flex'><MatchHeader event={event} oddsData={oddsData} /></div>
@@ -226,7 +233,7 @@ export default function MatchDashboard() {
                     isOpen={openAccordion === 'stats'}
                     onToggle={() => setOpenAccordion(openAccordion === 'stats' ? '' : 'stats')}
                 >
-                    <MatchStatsTable periods={periods} tab={tab} setTab={setTab} />
+                    <MatchStatsTable periods={periods} tab={tab} setTab={setTab} p1={p1} p2={p2} />
                     <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
                         <InArticleAd />
                     </div>
@@ -240,7 +247,7 @@ export default function MatchDashboard() {
                     isOpen={openAccordion === 'point'}
                     onToggle={() => setOpenAccordion(openAccordion === 'point' ? '' : 'point')}
                 >
-                    <PointByPointViewer pointByPoint={pointByPointData} />
+                    <PointByPointViewer pointByPoint={pointByPointData} p1={p1} p2={p2} />
                     <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
                         <FluidAdImage />
                     </div>
