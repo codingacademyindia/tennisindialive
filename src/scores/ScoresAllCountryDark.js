@@ -531,16 +531,12 @@ const FixtureResultsCountry = () => {
             <div className="bg-gray-800  p-0.5 text-xs text-gray-200 flex flex-row justify-between space-x-2 shadow-md">
                 <div className="flex items-center gap-1">
                     {/* Round - Always shown */}
-      <span className="px-2 py-0.5 text-xs font-semibold rounded 
+                    <span className="px-2 py-0.5 text-xs font-semibold rounded 
 bg-[#151515] text-[#D1D5DB]
 border border-[#3F3F46]
 shadow-[0_0_6px_rgba(255,255,255,0.1)]">
-  {round}
-</span>
-
-
-
-
+                        {round}
+                    </span>
 
 
                     {isLive && (
@@ -705,7 +701,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             <Head2Head open={openH2H} handleClose={handleCloseMatchStat} loading={loadingH2H} data={h2hData} scoreRecord={scoreRecord} eventId={eventId} />
             <PlayerInfo open={openPlayerInfo} handleClose={handleClosePlayerInfo} loading={false} id={playerId} />
 
-            <div className="flex flex-col md:flex-row items-center justify-between p-2 space-y-2 md:space-y-0">
+            <div className="flex flex-row items-center justify-between p-2 space-y-2 md:space-y-0">
                 <DatePickerValue selectedDate={selectedDate} handleSelectDate={handleSelectDate} />
                 <StatusButtonGroup matchStatus={matchStatus} handleStatusButtonClick={handleStatusButtonClick} />
                 <CountryAutocomplete selectedCountry={selectedCountry} handleCountryChange={handleCountryChange} />

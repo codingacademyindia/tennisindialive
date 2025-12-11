@@ -1,189 +1,271 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
-import RequestModal from "../contactus/RequestModal";
-import ContactUs from "../contactus/ContactUs";
-import SocialMedia from '../common/SocialMedia';
-import Logo from '../common/Logo';
+import SocialMedia from "../common/SocialMedia";
+import Logo from "../common/Logo";
 
 const navItems = [
-    { label: "Live Scores", url: "/live-scores" },
-    {
-        label: "ATP Ranking",
-        dropdown: [
-            { label: "Singles Live", url: "/rankings/live/atp-singles" },
-            { label: "Doubles Live", url: "/rankings/live/atp-doubles" },
-            { label: "Singles Official", url: "/rankings/official/atp-singles" },
-            { label: "Doubles Official", url: "/rankings/official/atp-doubles" },
-        ],
-    },
-    {
-        label: "WTA Ranking",
-        dropdown: [
-            { label: "Singles Live", url: "/rankings/live/wta-singles" },
-            { label: "Doubles Live", url: "/rankings/live/wta-doubles" },
-            { label: "Singles Official", url: "/rankings/official/wta-singles" },
-            { label: "Doubles Official", url: "/rankings/official/wta-doubles" },
-        ],
-    },
-    {
-        label: "Players",
-        dropdown: [
-            { label: "ATP", url: "/players/atp" },
-            { label: "WTA", url: "/players/wta" },
-        ],
-    },
+  { label: "Live Scores", url: "/live-scores" },
+  {
+    label: "ATP Ranking",
+    dropdown: [
+      { label: "Singles Live", url: "/rankings/live/atp-singles" },
+      { label: "Doubles Live", url: "/rankings/live/atp-doubles" },
+      { label: "Singles Official", url: "/rankings/official/atp-singles" },
+      { label: "Doubles Official", url: "/rankings/official/atp-doubles" },
+    ],
+  },
+  {
+    label: "WTA Ranking",
+    dropdown: [
+      { label: "Singles Live", url: "/rankings/live/wta-singles" },
+      { label: "Doubles Live", url: "/rankings/live/wta-doubles" },
+      { label: "Singles Official", url: "/rankings/official/wta-singles" },
+      { label: "Doubles Official", url: "/rankings/official/wta-doubles" },
+    ],
+  },
+  {
+    label: "Players",
+    dropdown: [
+      { label: "ATP", url: "/players/atp" },
+      { label: "WTA", url: "/players/wta" },
+    ],
+  },
 ];
 
+const DRAWER_Z = 99999999;
+
 function ResponsiveNavBar() {
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const [dropdownActive, setDropdownActive] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
-    const currentPath = window.location.pathname.toLowerCase();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-    function isActive(urlOrLabel) {
-        return currentPath.includes(urlOrLabel.toLowerCase().replace("/", ""));
+  // OPEN ALL DROPDOWNS BY DEFAULT ON MOBILE
+  const allDropdowns = navItems.filter((n) => n.dropdown).map((n) => n.label);
+  const [dropdownActive, setDropdownActive] = useState(allDropdowns);
+
+  const menuButtonRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  // FORCE ALL MUI POPUP SURFACES BELOW DRAWER
+  useEffect(() => {
+    const id = "mui-zindex-fix";
+    if (document.getElementById(id)) return;
+
+    const style = document.createElement("style");
+    style.id = id;
+    style.innerHTML = `
+      .MuiPopper-root,
+      .MuiPopover-root,
+      .MuiDialog-root,
+      .MuiMenu-root,
+      .MuiModal-root,
+      .MuiPaper-root,
+      .MuiTooltip-popper {
+        z-index: ${DRAWER_Z - 100} !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
+  // CLOSE DRAWER ON ESC
+  useEffect(() => {
+    if (!mobileOpen) return;
+    function onKey(e) {
+      if (e.key === "Escape") setMobileOpen(false);
     }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
 
-    return (
-        <nav className="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-700 shadow-lg relative z-50 h-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center">
-                {/* Logo */}
-                <a href="/live-scores" className="flex items-center rounded-xl" style={{ textDecoration: "none" }}>
-                    <Logo />
-                </a>
+  // RETURN FOCUS TO MENU BUTTON AFTER CLOSING
+  useEffect(() => {
+    if (!mobileOpen && menuButtonRef.current) {
+      menuButtonRef.current.focus();
+    }
+  }, [mobileOpen]);
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex flex-1 justify-center items-center space-x-4 lg:space-x-7 ml-4">
-                    {navItems.map(item =>
-                        !item.dropdown ? (
-                            <a
-                                key={item.label}
-                                href={item.url}
-                                className={`px-4 py-2 rounded-xl font-semibold shadow-sm transition duration-150
-                                    ${isActive(item.url)
-                                        ? "bg-gradient-to-r from-purple-600 to-teal-500 text-white"
-                                        : "text-gray-200 hover:bg-gray-700/50 focus:bg-gray-600/50"
-                                    } whitespace-nowrap`}
-                            >
-                                {item.label}
-                            </a>
-                        ) : (
-                            <div key={item.label} className="relative group">
-                                <button
-                                    className={`flex items-center px-4 py-2 rounded-xl font-semibold shadow-sm transition duration-150
-                                        ${isActive(item.label)
-                                            ? "bg-gradient-to-r from-purple-600 to-teal-500 text-white"
-                                            : "text-gray-200 hover:bg-gray-700/50 focus:bg-gray-600/50"
-                                        } whitespace-nowrap`}
-                                    onMouseEnter={() => setDropdownActive(item.label)}
-                                    onMouseLeave={() => setDropdownActive("")}
-                                >
-                                    {item.label}
-                                    <svg
-                                        className="ml-2 h-4 w-4 text-gray-300"
-                                        fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
-                                    >
-                                        <path d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </button>
-                                <div
-                                    className={`absolute left-0 mt-2 min-w-[180px] bg-gray-800 text-gray-200 rounded-xl shadow-xl border border-gray-700 transition-all duration-150
-                                        ${dropdownActive === item.label ? "opacity-100 visible" : "opacity-0 invisible"} group-hover:opacity-100 group-hover:visible`}
-                                    onMouseEnter={() => setDropdownActive(item.label)}
-                                    onMouseLeave={() => setDropdownActive("")}
-                                >
-                                    {item.dropdown.map(sub => (
-                                        <a
-                                            key={sub.label}
-                                            href={sub.url}
-                                            className="block px-5 py-2 hover:bg-gray-700 rounded transition font-medium whitespace-nowrap"
-                                        >
-                                            {sub.label}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                        )
-                    )}
-                </div>
+  const currentPath =
+    typeof window !== "undefined"
+      ? window.location.pathname.toLowerCase()
+      : "";
 
-                {/* Social icons */}
-                <SocialMedia handleOpen={() => setModalOpen(true)} />
+  function isActive(urlOrLabel) {
+    return currentPath.includes(urlOrLabel.toLowerCase().replace("/", ""));
+  }
 
-                {/* Mobile Hamburger */}
-                <div className="md:hidden flex items-center ml-auto">
-                    <button
-                        className="text-gray-200 p-2 rounded hover:bg-gray-700/50 focus:outline-none"
-                        onClick={() => setMobileOpen(true)}
-                        aria-label="Open Menu"
-                    >
-                        <HiMenu className="h-7 w-7" />
-                    </button>
-                </div>
-            </div>
+  // MOBILE DRAWER PORTAL
+  function MobileDrawerPortal({ open, onClose }) {
+    if (!mounted) return null;
 
-            {/* Mobile Drawer */}
-            <div className={`fixed inset-0 z-50 transition-all md:hidden ${mobileOpen ? "" : "pointer-events-none"}`}>
-                <div
-                    className={`fixed inset-0 bg-black/70 transition-opacity duration-200 ${mobileOpen ? "opacity-100" : "opacity-0"}`}
-                    onClick={() => setMobileOpen(false)}
-                />
-                <aside
-                    className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-gray-200 shadow-xl transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+    return createPortal(
+      <>
+        {/* BACKDROP */}
+        <div
+          style={{ zIndex: DRAWER_Z }}
+          onClick={onClose}
+          className={`fixed inset-0 bg-black/70 transition-opacity ${
+            open ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        />
+
+        {/* DRAWER PANEL */}
+        <aside
+          style={{ zIndex: DRAWER_Z + 1 }}
+          className={`fixed top-0 left-0 w-full h-full bg-[#0f1114] text-gray-200 transform transition-transform duration-300 ${
+            open ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          {/* HEADER */}
+          <div className="flex items-center justify-between h-16 px-4 border-b border-gray-800">
+            <a href="/live-scores" onClick={onClose}>
+              <Logo />
+            </a>
+
+            <button
+              aria-label="Close menu"
+              onClick={onClose}
+              className="text-gray-300 hover:text-red-400 p-2 rounded"
+            >
+              <AiOutlineClose className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* NAVIGATION */}
+          <nav className="p-4 space-y-3 overflow-auto h-[calc(100%-64px)]">
+            {navItems.map((item) =>
+              !item.dropdown ? (
+                <a
+                  key={item.label}
+                  href={item.url}
+                  onClick={onClose}
+                  className="block px-4 py-2 rounded-md text-sm bg-gray-900/40 text-gray-200 hover:bg-gray-800/60"
                 >
-                    <div className="flex items-center justify-between h-16 px-4 border-b border-gray-700">
-                        <a href="/live-scores" onClick={() => setMobileOpen(false)} className="flex items-center gap-3">
-                            <Logo />
-                        </a>
-                        <button
-                            className="text-gray-200 hover:text-red-400 p-2"
-                            onClick={() => setMobileOpen(false)}
-                            aria-label="Close Menu"
-                        >
-                            <AiOutlineClose className="h-6 w-6" />
-                        </button>
-                    </div>
+                  {item.label}
+                </a>
+              ) : (
+                <div
+                  key={item.label}
+                  className="bg-[#0c0d10] rounded-md border border-gray-800/60 p-2"
+                >
+                  <div className="text-gray-300 font-semibold text-sm px-2 py-1">
+                    {item.label}
+                  </div>
 
-                    <nav className="p-3">
-                        {navItems.map(item =>
-                            !item.dropdown ? (
-                                <a
-                                    key={item.label}
-                                    href={item.url}
-                                    className={`block px-4 py-2 rounded font-semibold mb-1 transition
-                                        ${isActive(item.url) ? "bg-purple-700 text-white" : "hover:bg-gray-700/50"}`}
-                                    onClick={() => setMobileOpen(false)}
-                                >
-                                    {item.label}
-                                </a>
-                            ) : (
-                                <div key={item.label} className="mb-2">
-                                    <div className="px-4 py-2 rounded font-bold text-gray-200 bg-gray-800 mt-2">{item.label}</div>
-                                    <div className="ml-2">
-                                        {item.dropdown.map(sub => (
-                                            <a
-                                                key={sub.label}
-                                                href={sub.url}
-                                                className="block px-4 py-2 text-gray-300 text-sm rounded hover:bg-gray-700/50"
-                                                onClick={() => setMobileOpen(false)}
-                                            >
-                                                {sub.label}
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            )
-                        )}
-                    </nav>
+                  {/* ALWAYS EXPANDED */}
+                  <div className="mt-1 space-y-1">
+                    {item.dropdown.map((sub) => (
+                      <a
+                        key={sub.label}
+                        href={sub.url}
+                        onClick={onClose}
+                        className="block px-4 py-1.5 text-xs text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-md"
+                      >
+                        {sub.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )
+            )}
 
-                    <div className="flex items-center justify-center mt-7 gap-6">
-                        <SocialMedia handleOpen={() => setModalOpen(true)} />
-                    </div>
-                </aside>
+            <div className="pt-3 border-t border-gray-800">
+              <div className="flex justify-center">
+                <SocialMedia />
+              </div>
             </div>
-        </nav>
+          </nav>
+        </aside>
+      </>,
+      document.body
     );
+  }
+
+  return (
+    <nav className="bg-[#0f0f11] backdrop-blur-xl shadow-md h-16 border-b border-gray-800/60 relative z-40">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        {/* LOGO */}
+        <a href="/live-scores" className="flex items-center">
+          <Logo />
+        </a>
+
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex items-center gap-5 ml-6">
+          {navItems.map((item) =>
+            !item.dropdown ? (
+              <a
+                key={item.label}
+                href={item.url}
+                className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${
+                  isActive(item.url)
+                    ? "bg-gradient-to-r from-purple-600 to-teal-500 text-white shadow-sm"
+                    : "text-gray-300 hover:text-white hover:bg-gray-800/50"
+                }`}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <div key={item.label} className="relative group">
+                <button
+                  onMouseEnter={() => setDropdownActive([item.label])}
+                  onMouseLeave={() => setDropdownActive([])}
+                  className={`flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition ${
+                    isActive(item.label)
+                      ? "bg-gradient-to-r from-purple-600 to-teal-500 text-white shadow-sm"
+                      : "text-gray-300 hover:text-white hover:bg-gray-800/50"
+                  }`}
+                >
+                  {item.label}
+                  <svg
+                    className="ml-1 h-4 w-4 text-gray-400"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div
+                  className={`absolute left-0 mt-2 min-w-[170px] bg-[#17171a] border border-gray-800/60 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible`}
+                >
+                  {item.dropdown.map((sub) => (
+                    <a
+                      key={sub.label}
+                      href={sub.url}
+                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 rounded-md"
+                    >
+                      {sub.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )
+          )}
+        </div>
+
+        {/* DESKTOP SOCIAL ICONS */}
+        <div className="hidden md:flex">
+          <SocialMedia />
+        </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          ref={menuButtonRef}
+          onClick={() => setMobileOpen(true)}
+          className="md:hidden p-2 text-gray-200 hover:bg-gray-800/50 rounded"
+        >
+          <HiMenu className="h-7 w-7" />
+        </button>
+      </div>
+
+      {mounted && (
+        <MobileDrawerPortal
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+        />
+      )}
+    </nav>
+  );
 }
 
 export default ResponsiveNavBar;
