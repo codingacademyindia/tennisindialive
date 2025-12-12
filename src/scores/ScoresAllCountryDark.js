@@ -549,12 +549,16 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     )}
 
 
-                    {/* Match Time - Only if Not Started */}
                     {isNotStarted && (
-                        <span className="bg-gray-700 p-0.5 rounded-md font-semibold">
+                        <span className="inline-block bg-gray-800 text-gray-100 
+                   px-3 py-1 rounded-lg text-[11px] font-semibold
+                   border border-gray-700 shadow-sm">
                             {matchTime}
                         </span>
                     )}
+
+
+
                 </div>
                 <div className='flex flex-row space-x-1'>
                     {/* Dashboard Button */}
@@ -622,6 +626,42 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         </div>
     );
 
+    function buildHeaderString(match) {
+        const info = getTournamentDetails(match);
+        if (!info) return "";
+
+        const parts = [];
+
+        if (info.category) parts.push(info.category);          // "WTA"
+        if (info.points) parts.push(info.points + "");         // "125"
+        if (info.name) parts.push(info.name);                  // "Limoges, France"
+        if (info.surface) parts.push(info.surface);            // "Hardcourt indoor"
+        // if (info.round) parts.push(info.round);                // "Quarterfinals"
+
+        return parts.join(" • ");
+    }
+
+
+    function getTournamentDetails(match) {
+        if (!match || !match.tournament) return null;
+
+        const t = match.tournament;
+        const ut = t.uniqueTournament || {};
+        const category = t.category || {};
+        const round = match.roundInfo?.name || "";
+
+        return {
+            name: t.name || ut.name || "",
+            category: category.name || "",
+            surface: ut.groundType || match.groundType || "",
+            points: ut.tennisPoints || "",
+            round: round,
+            season: match.season?.name || "",
+            country: ut.country?.name || t.country?.name || "",
+        };
+    }
+
+
     const recordDom = () => {
         if (!rankingsData) return null;
 
@@ -643,7 +683,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     className="border border-gray-700 rounded bg-gray-900 mb-2 p-2 text-xs text-gray-200"
                 >
                     {/* Tournament Title */}
-                    <div className="font-semibold mb-2 text-lg">{tournament}</div>
+                    <div className="font-semibold mb-2 text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div>
 
                     {/* Responsive Grid → minimum 2 per row on small+ */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">

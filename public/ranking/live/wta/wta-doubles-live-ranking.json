@@ -946,39 +946,39 @@
     },
     {
         "rank": "106",
+        "player": "Nika Radišić",
+        "age": "25",
+        "country": "SLO",
+        "points": "751",
+        "career_high": "NCH \n(109)",
+        "change": "+3"
+    },
+    {
+        "rank": "107",
         "player": "Yulia Putintseva",
         "age": "30",
         "country": "KAZ",
         "points": "744",
         "career_high": "57",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "107",
+        "rank": "108",
         "player": "Francisca Jorge",
         "age": "25",
         "country": "POR",
         "points": "740",
         "career_high": "97",
-        "change": ""
+        "change": "-1"
     },
     {
-        "rank": "108",
+        "rank": "109",
         "player": "Shuo Feng",
         "age": "27",
         "country": "CHN",
         "points": "732",
-        "career_high": "CH",
-        "change": ""
-    },
-    {
-        "rank": "109",
-        "player": "Nika Radišić",
-        "age": "25",
-        "country": "SLO",
-        "points": "731",
-        "career_high": "CH",
-        "change": ""
+        "career_high": "108",
+        "change": "-1"
     },
     {
         "rank": "110",
@@ -2819,7 +2819,7 @@
     {
         "rank": "314",
         "player": "Victoria Osuigwe",
-        "age": "18",
+        "age": "19",
         "country": "USA",
         "points": "249",
         "career_high": "305",
@@ -3125,7 +3125,7 @@
     {
         "rank": "348",
         "player": "Shrivalli Bhamidipaty",
-        "age": "23",
+        "age": "24",
         "country": "IND",
         "points": "219",
         "career_high": "266",
@@ -8930,7 +8930,7 @@
     {
         "rank": "993",
         "player": "Fangzhou Liu",
-        "age": "29",
+        "age": "30",
         "country": "CHN",
         "points": "40",
         "career_high": "429",

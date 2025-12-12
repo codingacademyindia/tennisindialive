@@ -105,7 +105,7 @@ export default function CountryModal({ open, onClose, onSelect }) {
                          border border-gray-700"
             >
               <span className="text-lg">🌍</span>
-              <span className="text-xs">ALL</span>
+              <span className="text-xs">All Countries</span>
             </button>
 
             {/* Actual Popular Countries */}
