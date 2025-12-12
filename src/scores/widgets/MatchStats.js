@@ -2,7 +2,7 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import NotFound from "../../common/stateHandlers/NotFoundDark";
 
-function getWinner(home, away, compareCode) {
+function getWinner(home, away, compareCode, name) {
     const h = Number(home), a = Number(away);
     if (isNaN(h) || isNaN(a)) return 0;
 
@@ -10,8 +10,8 @@ function getWinner(home, away, compareCode) {
     // 1 = Higher is better
     // 2 = Lower is better
     // 3 = Equal-only condition (rare but kept)
-    if (compareCode === 1) return h > a ? 1 : a > h ? 2 : 0;
-    if (compareCode === 2) return h < a ? 1 : a < h ? 2 : 0;
+    if (compareCode === 2) return h > a ? 1 : a > h ? 2 : 0;
+    if (compareCode === 1) return h < a ? 1 : a < h ? 2 : 0;
     if (compareCode === 3) return h === a ? 0 : 2;
 
     return 0;
@@ -75,7 +75,8 @@ export default function MatchStatsTable({ periods, tab, setTab, p1, p2 }) {
                                         const winner = getWinner(
                                             item.homeValue,
                                             item.awayValue,
-                                            item.compareCode
+                                            item.compareCode,
+                                            item.name
                                         );
 
                                         const WinnerIcon = (

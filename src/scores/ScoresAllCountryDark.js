@@ -694,7 +694,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         onClick={() => setCountryModal(true)}
         className="
         flex items-center gap-2 
-        px-3 py-2 rounded-lg 
+        px-3 py-1 rounded-lg 
         bg-[#1f2937] text-gray-200 
         border border-gray-700 
         hover:border-teal-400 hover:text-teal-300
