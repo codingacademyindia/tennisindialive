@@ -156,6 +156,7 @@ export function getH1(countryFullName = "") {
 
 export function getCountryFullName(str) {
     if (!str) return null;
+    if (str.toLowerCase() === "all") return "all";
 
     const clean = str.toLowerCase().trim();
 

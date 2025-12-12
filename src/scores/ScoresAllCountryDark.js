@@ -704,7 +704,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
     "
     >
         {/* Flag or Globe */}
-        {selectedCountryCode ? (
+        {selectedCountryCode && selectedCountryCode !== "all" ? (
             <img
                 src={getFlagUrl(selectedCountryCode)}
                 alt={selectedCountryCode}

@@ -4,12 +4,11 @@ import enLocale from "i18n-iso-countries/langs/en.json";
 
 countries.registerLocale(enLocale);
 
-const POPULAR = ["US","ES","FR","IT","DE","GB","RS","AU","AR","CA","IN"];
+const POPULAR = ["US", "ES", "FR", "IT", "DE", "GB", "RS", "AU", "AR", "CA", "IN"];
 
 // Alpha-2 → Alpha-3 mapping
 const alpha2ToAlpha3 = countries.getAlpha2Codes();
 
-// Flag component using flagcdn
 const Flag = ({ code }) => (
   <img
     src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
@@ -19,30 +18,45 @@ const Flag = ({ code }) => (
   />
 );
 
+// ALL icon
+const AllIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.8}
+    stroke="currentColor"
+    className="w-4 h-4"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+    />
+  </svg>
+);
+
 export default function CountryModal({ open, onClose, onSelect }) {
-     const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
+
   if (!open) return null;
 
-  // Get all countries
   const list = countries.getNames("en", { select: "official" });
 
-  const allCountries = Object.keys(list).map(code => ({
+  const allCountries = Object.keys(list).map((code) => ({
     code,
-    label: list[code]
+    label: list[code],
   }));
 
-  const popular = allCountries.filter(c => POPULAR.includes(c.code));
-  const others  = allCountries.filter(c => !POPULAR.includes(c.code));
+  const popular = allCountries.filter((c) => POPULAR.includes(c.code));
+  const others = allCountries.filter((c) => !POPULAR.includes(c.code));
 
- 
-
-  const filteredOthers = others.filter(c =>
+  const filteredOthers = others.filter((c) =>
     c.label.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
-
       <div className="bg-[#0f1114] w-[92%] max-w-md rounded-xl border border-gray-700 shadow-2xl animate-scaleIn overflow-hidden">
 
         {/* Header */}
@@ -74,6 +88,27 @@ export default function CountryModal({ open, onClose, onSelect }) {
           <p className="text-xs text-gray-400 mb-1">POPULAR</p>
 
           <div className="grid grid-cols-3 gap-3">
+
+            {/* ALL BUTTON INSIDE POPULAR */}
+            <button
+              onClick={() => {
+                onSelect("all", {
+                  code: "all",
+                  alpha3: "all",
+                  label: "All Countries",
+                });
+                onClose();
+              }}
+              className="flex items-center gap-2 
+                         bg-[#1f2937] hover:bg-[#243041] 
+                         text-gray-200 px-2 py-2 rounded-lg transition 
+                         border border-gray-700"
+            >
+              <span className="text-lg">🌍</span>
+              <span className="text-xs">ALL</span>
+            </button>
+
+            {/* Actual Popular Countries */}
             {popular.map((c) => {
               const alpha3 = alpha2ToAlpha3[c.code]?.toUpperCase() || "";
               return (
@@ -83,7 +118,7 @@ export default function CountryModal({ open, onClose, onSelect }) {
                     onSelect(alpha3, {
                       code: c.code,
                       alpha3,
-                      label: c.label
+                      label: c.label,
                     });
                     onClose();
                   }}
@@ -100,7 +135,6 @@ export default function CountryModal({ open, onClose, onSelect }) {
 
         {/* All Countries */}
         <div className="px-4 mt-4 max-h-64 overflow-y-auto custom-scroll">
-
           <p className="text-xs text-gray-400 mb-1">ALL COUNTRIES</p>
 
           {filteredOthers.map((c) => {
@@ -113,7 +147,7 @@ export default function CountryModal({ open, onClose, onSelect }) {
                   onSelect(alpha3, {
                     code: c.code,
                     alpha3,
-                    label: c.label
+                    label: c.label,
                   });
                   onClose();
                 }}
