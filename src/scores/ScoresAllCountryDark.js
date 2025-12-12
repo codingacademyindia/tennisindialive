@@ -33,6 +33,77 @@ const HEADERS = {
 };
 
 const tournamentName = '';
+export const TOUR_ICONS = {
+    WTA: (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#d946ef">
+            <circle cx="12" cy="12" r="10" />
+        </svg>
+    ),
+    ATP: (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#3b82f6">
+            <rect x="4" y="4" width="16" height="16" rx="4" />
+        </svg>
+    ),
+    ITF: (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e">
+            <path d="M12 2 L22 22 H2 Z" />
+        </svg>
+    ),
+    CH: (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b">
+            <path d="M12 2L20 8V16L12 22L4 16V8Z" />
+        </svg>
+    ),
+    UTR: (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#06b6d4">
+            <circle cx="12" cy="12" r="8" />
+        </svg>
+    ),
+};
+
+export const SURFACE_ICONS = {
+    Hardcourt: (
+        <svg width="14" height="14" fill="#60a5fa" viewBox="0 0 24 24">
+            <rect width="20" height="20" x="2" y="2" rx="3" />
+        </svg>
+    ),
+    Clay: (
+        <svg width="14" height="14" fill="#f87171" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+        </svg>
+    ),
+    Grass: (
+        <svg width="14" height="14" fill="#4ade80" viewBox="0 0 24 24">
+            <path d="M4 20 L8 10 L12 20 L16 10 L20 20Z" />
+        </svg>
+    ),
+    Carpet: (
+        <svg width="14" height="14" fill="#a78bfa" viewBox="0 0 24 24">
+            <rect x="4" y="4" width="16" height="16" stroke="#fff" strokeWidth="2" />
+        </svg>
+    ),
+    Indoor: (
+        <svg width="14" height="14" fill="#cbd5e1" viewBox="0 0 24 24">
+            <path d="M3 20V10L12 4L21 10V20Z" />
+        </svg>
+    ),
+};
+
+function getTourIcon(category) {
+    return TOUR_ICONS[category] || null;
+}
+
+function getSurfaceIcon(surface) {
+    if (!surface) return null;
+
+    if (surface.includes("Hard")) return SURFACE_ICONS.Hardcourt;
+    if (surface.includes("Clay")) return SURFACE_ICONS.Clay;
+    if (surface.includes("Grass")) return SURFACE_ICONS.Grass;
+    if (surface.includes("Carpet")) return SURFACE_ICONS.Carpet;
+    if (surface.includes("indoor")) return SURFACE_ICONS.Indoor;
+
+    return null;
+}
 
 const FixtureResultsCountry = () => {
     const params = useParams();
@@ -643,23 +714,76 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
 
 
     function getTournamentDetails(match) {
-        if (!match || !match.tournament) return null;
+        if (!match) return {};
 
-        const t = match.tournament;
-        const ut = t.uniqueTournament || {};
-        const category = t.category || {};
-        const round = match.roundInfo?.name || "";
+        // SAFE ACCESS using fallback empty objects
+        const t = match.tournament ?? {};
+        const ut = t.uniqueTournament ?? {};
+        const cat = t.category ?? {};
 
         return {
             name: t.name || ut.name || "",
-            category: category.name || "",
+            category: cat.name || "",
             surface: ut.groundType || match.groundType || "",
             points: ut.tennisPoints || "",
-            round: round,
-            season: match.season?.name || "",
-            country: ut.country?.name || t.country?.name || "",
+            round: match.roundInfo?.name || "",
         };
     }
+
+    function buildHeaderDOM(match) {
+        if (!match) return null;
+
+        const info = getTournamentDetails(match);
+        const noData =
+            !info.name && !info.category && !info.surface && !info.points;
+        if (noData) return null;
+
+        return (
+            <div className="mb-1">
+
+                <div
+                    className="
+          flex items-center gap-2
+          px-3 py-1.5 rounded-lg
+          bg-[#1a1d21]/70 backdrop-blur-md
+          border border-gray-700/60 shadow-md
+          text-gray-100 font-semibold
+          text-xs sm:text-sm md:text-base 
+          whitespace-nowrap overflow-hidden text-ellipsis
+        "
+                >
+
+                    {/* Category Badge */}
+                    {(info.category || info.points) && (
+                        <span
+                            className="
+              bg-gray-800 text-gray-300 
+              border border-gray-700
+              px-2 py-0.5 rounded-md 
+              text-[10px] sm:text-xs font-bold
+            "
+                        >
+                            {info.category} {info.points}
+                        </span>
+                    )}
+
+                    {/* Tournament Name */}
+                    <span className="truncate">{info.name}</span>
+
+                    {/* Surface */}
+                    {info.surface && (
+                        <>
+                            <span className="text-gray-500">•</span>
+                            <span className="text-gray-400 truncate">{info.surface}</span>
+                        </>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+
+
 
 
     const recordDom = () => {
@@ -683,8 +807,8 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     className="border border-gray-700 rounded bg-gray-900 mb-2 p-2 text-xs text-gray-200"
                 >
                     {/* Tournament Title */}
-                    <div className="font-semibold mb-2 text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div>
-
+                    {/* <div className="font-semibold mb-2 text-sm md:text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div> */}
+                    {buildHeaderDOM(rankingsData[tournament][idx])}
                     {/* Responsive Grid → minimum 2 per row on small+ */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
                         {rankingsData[tournament]
