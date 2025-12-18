@@ -10,6 +10,7 @@ const navItems = [
   {
     label: "ATP Ranking",
     dropdown: [
+      { label: "Dashboard", url: "/rankings/atp" },
       { label: "Singles Live", url: "/rankings/live/atp-singles" },
       { label: "Doubles Live", url: "/rankings/live/atp-doubles" },
       { label: "Singles Official", url: "/rankings/official/atp-singles" },
@@ -19,6 +20,7 @@ const navItems = [
   {
     label: "WTA Ranking",
     dropdown: [
+      { label: "Dashboard", url: "/rankings/wta" },
       { label: "Singles Live", url: "/rankings/live/wta-singles" },
       { label: "Doubles Live", url: "/rankings/live/wta-doubles" },
       { label: "Singles Official", url: "/rankings/official/wta-singles" },
@@ -38,11 +40,11 @@ const DRAWER_Z = 99999999;
 
 function ResponsiveNavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const closeTimeout = useRef();
   // OPEN ALL DROPDOWNS BY DEFAULT ON MOBILE
   const allDropdowns = navItems.filter((n) => n.dropdown).map((n) => n.label);
-  const [dropdownActive, setDropdownActive] = useState(allDropdowns);
-
+  // const [dropdownActive, setDropdownActive] = useState(allDropdowns);
+  const [dropdownActive, setDropdownActive] = useState([]);
   const menuButtonRef = useRef(null);
   const [mounted, setMounted] = useState(false);
 
@@ -105,17 +107,15 @@ function ResponsiveNavBar() {
         <div
           style={{ zIndex: DRAWER_Z }}
           onClick={onClose}
-          className={`fixed inset-0 bg-black/70 transition-opacity ${
-            open ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+          className={`fixed inset-0 bg-black/70 transition-opacity ${open ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
         />
 
         {/* DRAWER PANEL */}
         <aside
           style={{ zIndex: DRAWER_Z + 1 }}
-          className={`fixed top-0 left-0 w-full h-full bg-[#0f1114] text-gray-200 transform transition-transform duration-300 ${
-            open ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed top-0 left-0 w-full h-full bg-[#0f1114] text-gray-200 transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           {/* HEADER */}
           <div className="flex items-center justify-between h-16 px-4 border-b border-gray-800">
@@ -140,16 +140,16 @@ function ResponsiveNavBar() {
                   key={item.label}
                   href={item.url}
                   onClick={onClose}
-                  className="block px-4 py-2 rounded-md text-sm bg-gray-900/40 text-gray-200 hover:bg-gray-800/60"
+                  className="block px-4 py-2 text-sm bg-gray-900/40 text-gray-200 hover:bg-gray-800/60"
                 >
                   {item.label}
                 </a>
               ) : (
                 <div
                   key={item.label}
-                  className="bg-[#0c0d10] rounded-md border border-gray-800/60 p-2"
+                  className="bg-[#0c0d10]  border border-gray-800/60 p-2"
                 >
-                  <div className="text-gray-300 font-semibold text-sm px-2 py-1">
+                  <div className="text-gray-300 font-semibold text-sm px-2 py-1mb-2">
                     {item.label}
                   </div>
 
@@ -160,7 +160,7 @@ function ResponsiveNavBar() {
                         key={sub.label}
                         href={sub.url}
                         onClick={onClose}
-                        className="block px-4 py-1.5 text-xs text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-md"
+                        className="block px-4 py-1.5 text-xs text-gray-400 hover:text-white hover:bg-gray-800/60 "
                       >
                         {sub.label}
                       </a>
@@ -183,7 +183,7 @@ function ResponsiveNavBar() {
   }
 
   return (
-    <nav className="bg-[#0f0f11] backdrop-blur-xl shadow-md h-16 border-b border-gray-800/60 relative z-40">
+    <nav className="bg-[#0f0f11] backdrop-blur-xl shadow-md h-16 border-b border-gray-800 relative z-40">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* LOGO */}
         <a href="/live-scores" className="flex items-center">
@@ -197,24 +197,32 @@ function ResponsiveNavBar() {
               <a
                 key={item.label}
                 href={item.url}
-                className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${
-                  isActive(item.url)
-                    ? "bg-gradient-to-r from-purple-600 to-teal-500 text-white shadow-sm"
-                    : "text-gray-300 hover:text-white hover:bg-gray-800/50"
-                }`}
+                className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all border-b-2 ${isActive(item.url)
+                    ? "border-teal-400 text-white bg-gradient-to-r from-purple-600 to-teal-500 shadow-sm"
+                    : "border-transparent text-gray-300 hover:text-white hover:border-teal-400 hover:bg-gray-800/50"
+                  }`}
               >
                 {item.label}
               </a>
             ) : (
-              <div key={item.label} className="relative group">
+              <div
+                key={item.label}
+                className="relative"
+                onMouseOver={() => {
+                  clearTimeout(closeTimeout.current);
+                  setDropdownActive([item.label]);
+                }}
+                onMouseOut={() => {
+                  closeTimeout.current = setTimeout(() => setDropdownActive([]), 150);
+                }}
+                style={{ display: "inline-block" }}
+              >
                 <button
-                  onMouseEnter={() => setDropdownActive([item.label])}
-                  onMouseLeave={() => setDropdownActive([])}
-                  className={`flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition ${
-                    isActive(item.label)
-                      ? "bg-gradient-to-r from-purple-600 to-teal-500 text-white shadow-sm"
-                      : "text-gray-300 hover:text-white hover:bg-gray-800/50"
-                  }`}
+                  className={`flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition border-b-2 ${isActive(item.label) || dropdownActive.includes(item.label)
+                      ? "border-teal-400 text-white bg-gradient-to-r from-purple-600 to-teal-500 shadow-sm"
+                      : "border-transparent text-gray-300 hover:text-white hover:border-teal-400 hover:bg-gray-800/50"
+                    }`}
+                  type="button"
                 >
                   {item.label}
                   <svg
@@ -224,20 +232,21 @@ function ResponsiveNavBar() {
                     <path strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-
-                <div
-                  className={`absolute left-0 mt-2 min-w-[170px] bg-[#17171a] border border-gray-800/60 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible`}
-                >
-                  {item.dropdown.map((sub) => (
-                    <a
-                      key={sub.label}
-                      href={sub.url}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 rounded-md"
-                    >
-                      {sub.label}
-                    </a>
-                  ))}
-                </div>
+                {dropdownActive.includes(item.label) && (
+                  <div
+                    className="absolute left-0 mt-2 min-w-[170px] bg-[#17171a] border border-gray-800/60  shadow-xl z-50"
+                  >
+                    {item.dropdown.map((sub) => (
+                      <a
+                        key={sub.label}
+                        href={sub.url}
+                        className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-800/60   border-b-[1px] border-blue-900"
+                      >
+                        {sub.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             )
           )}

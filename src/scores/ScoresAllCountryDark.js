@@ -691,8 +691,8 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         <div className="flex flex-col border border-gray-700 mb-1 bg-gray-800">
             {fetchH2HStatsDom(item)}
             <div className="flex flex-row justify-between items-start p-1 space-x-1">
-                <div className="flex-1">{getPlayerDom2(item)}</div>
-                <div className="w-1/4">{item.status.type !== 'notstarted' && formatTennisScoreDom(item.homeScore, item.awayScore, item.status.type)}</div>
+                <div className="flex-1 ">{getPlayerDom2(item)}</div>
+                <div className="w-1/4  my-auto">{item.status.type !== 'notstarted' && formatTennisScoreDom(item.homeScore, item.awayScore, item.status.type)}</div>
             </div>
         </div>
     );

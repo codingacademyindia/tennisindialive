@@ -114,7 +114,7 @@ export default function MatchDashboard() {
     const [loading, setLoading] = useState(true);
     const [tab, setTab] = useState(0);
     const [oddsData, setOddsData] = useState(null);
-    const [openAccordion, setOpenAccordion] = useState('point'); // 'point', 'power', 'stats'
+    const [openAccordion, setOpenAccordion] = useState(''); // 'point', 'power', 'stats'
     const isFirstLoad = React.useRef(true);
 
     useEffect(() => {
