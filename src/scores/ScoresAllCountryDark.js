@@ -729,58 +729,189 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             round: match.roundInfo?.name || "",
         };
     }
+    function getCategoryColor(category = "", match = {}) {
+  const c = category.toUpperCase();
 
-    function buildHeaderDOM(match) {
-        if (!match) return null;
+  const gender =
+    match?.homeTeam?.gender ||
+    match?.awayTeam?.gender ||
+    (match?.season?.name?.toLowerCase().includes("women")
+      ? "F"
+      : match?.season?.name?.toLowerCase().includes("men")
+      ? "M"
+      : "");
 
-        const info = getTournamentDetails(match);
-        const noData =
-            !info.name && !info.category && !info.surface && !info.points;
-        if (noData) return null;
+  // ATP (Men)
+  if (c === "ATP") 
+    return "bg-[#0077C8]/30 text-[#4DB6FF] border-[#0077C8]/40";
 
-        return (
-            <div className="mb-1">
+  // WTA (Women)
+  if (c === "WTA") 
+    return "bg-[#B337FF]/30 text-[#E7B3FF] border-[#B337FF]/40";
 
-                <div
-                    className="
-          flex items-center gap-2
-          px-3 py-1.5 rounded-lg
-          bg-[#1a1d21]/70 backdrop-blur-md
-          border border-gray-700/60 shadow-md
-          text-gray-100 font-semibold
-          text-xs sm:text-sm md:text-base 
-          whitespace-nowrap overflow-hidden text-ellipsis
-        "
-                >
+  // ATP Challenger
+  if (c.includes("CH")) 
+    return "bg-[#4CAF50]/30 text-[#A5D6A7] border-[#4CAF50]/40";
 
-                    {/* Category Badge */}
-                    {(info.category || info.points) && (
-                        <span
-                            className="
-              bg-gray-800 text-gray-300 
-              border border-gray-700
-              px-2 py-0.5 rounded-md 
-              text-[10px] sm:text-xs font-bold
-            "
-                        >
-                            {info.category} {info.points}
-                        </span>
-                    )}
-
-                    {/* Tournament Name */}
-                    <span className="truncate">{info.name}</span>
-
-                    {/* Surface */}
-                    {info.surface && (
-                        <>
-                            <span className="text-gray-500">•</span>
-                            <span className="text-gray-400 truncate">{info.surface}</span>
-                        </>
-                    )}
-                </div>
-            </div>
-        );
+  // ITF — now gender-based
+  if (c.includes("ITF")) {
+    if (gender === "M") {
+      // ITF Men (Green)
+      return "bg-[#00A86B]/30 text-[#AAFFDA] border-[#00A86B]/40";
+    } else if (gender === "F") {
+      // ITF Women (Pink)
+      return "bg-[#FF6FB5]/30 text-[#FFD1E9] border-[#FF6FB5]/40";
     }
+    // fallback ITF
+    return "bg-[#1ABC9C]/30 text-[#A7FFF0] border-[#1ABC9C]/40";
+  }
+
+  // UTR
+  if (c.includes("UTR")) 
+    return "bg-[#00ADC6]/30 text-[#9AF2FF] border-[#00ADC6]/40";
+
+  return "bg-gray-900 text-gray-200 border-gray-700";
+}
+
+
+//     function buildHeaderDOM(match) {
+//         if (!match) return null;
+
+//         const info = getTournamentDetails(match);
+
+//         const noData =
+//             !info.name && !info.category && !info.surface && !info.points;
+//         if (noData) return null;
+
+//         // Detect Singles or Doubles (works for ATP/WTA/ITF)
+//         const isSingles =
+//             match.season?.name?.toLowerCase().includes("single") ?? false;
+//         const isDoubles =
+//             match.season?.name?.toLowerCase().includes("double") ?? false;
+
+//         const eventType = isSingles ? "Singles" : isDoubles ? "Doubles" : "";
+
+//         return (
+//             <div
+//                 className="
+//           flex items-center gap-2
+//           px-3 py-2 
+//           bg-gradient-to-r from-[#222733] to-[#1a1d21]
+//           border border-gray-600/70 shadow-lg
+//           text-gray-100 font-semibold
+//           text-xs sm:text-sm md:text-base
+//           whitespace-nowrap overflow-hidden text-ellipsis
+//         "
+//             >
+
+//                 {/* Category + Points Badge */}
+//                 {(info.category || info.points) && (
+//                     <span
+//                         className={`
+//     px-2 py-0.5 rounded-md 
+//     text-[10px] sm:text-xs font-bold shadow-inner
+//     border 
+//     ${getCategoryColor(info.category)}
+//   `}
+//                     >
+//                         {info.category} {info.points}
+//                     </span>
+//                 )}
+
+//                 {/* Singles/Doubles Badge */}
+//                 {eventType && (
+//                     <span
+//                         className="
+//               bg-blue-600/30 text-blue-200
+//               px-2 py-0.5 rounded-md 
+//               text-[10px] sm:text-xs font-semibold border border-blue-700/40
+//             "
+//                     >
+//                         {eventType}
+//                     </span>
+//                 )}
+
+//                 {/* Tournament Name */}
+//                 <span className="truncate text-gray-100">{info.name}</span>
+
+//                 {/* Surface */}
+//                 {info.surface && (
+//                     <>
+//                         <span className="text-gray-500">•</span>
+//                         <span className="text-gray-300 truncate">{info.surface}</span>
+//                     </>
+//                 )}
+
+//             </div>
+//         );
+//     }
+
+function buildHeaderDOM(match) {
+  if (!match) return null;
+
+  const info = getTournamentDetails(match);
+
+  const noData =
+    !info.name && !info.category && !info.surface && !info.points;
+  if (noData) return null;
+
+  const isSingles =
+    match.season?.name?.toLowerCase().includes("single") ?? false;
+  const isDoubles =
+    match.season?.name?.toLowerCase().includes("double") ?? false;
+
+  const eventType = isSingles ? "Singles" : isDoubles ? "Doubles" : "";
+
+  return (
+    <div
+      className="
+        flex items-center gap-1.5
+        px-3 py-2
+        bg-[#1e2228]
+        border border-gray-700/60
+        text-gray-200
+        text-xs sm:text-sm
+        font-medium
+        whitespace-nowrap overflow-hidden
+      "
+    >
+      {/* Category + Points */}
+      {(info.category || info.points) && (
+        <span className="font-semibold text-gray-100">
+          {info.category}
+          {info.points && <span className="text-gray-400 ml-0.5">{info.points}</span>}
+        </span>
+      )}
+
+      {(info.category || info.points) && <span className="text-gray-500">•</span>}
+
+      {/* Singles / Doubles */}
+      {eventType && (
+        <>
+          <span className="text-[10px] sm:text-xs uppercase tracking-wide text-gray-400">
+            {eventType}
+          </span>
+          <span className="text-gray-500">•</span>
+        </>
+      )}
+
+      {/* Tournament Name (Primary) */}
+      <span className="truncate font-semibold text-gray-100">
+        {info.name}
+      </span>
+
+      {/* Surface */}
+      {info.surface && (
+        <>
+          <span className="text-gray-500">•</span>
+          <span className="truncate text-gray-400 text-[10px] sm:text-xs">
+            {info.surface}
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
 
 
 
@@ -804,11 +935,11 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             result.push(
                 <div
                     key={tournament}
-                    className="border border-gray-700 rounded bg-gray-900 mb-2 p-2 text-xs text-gray-200"
+                    className="border border-gray-700 rounded bg-gray-900 mb-2 p-1 text-xs text-gray-200"
                 >
                     {/* Tournament Title */}
-                    {/* <div className="font-semibold mb-2 text-sm md:text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div> */}
-                    {buildHeaderDOM(rankingsData[tournament][idx])}
+                    {/* <div className="font-semibold mb-2 text-sm md:text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div>  */}
+                    {buildHeaderDOM(rankingsData[tournament][0])}
                     {/* Responsive Grid → minimum 2 per row on small+ */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
                         {rankingsData[tournament]

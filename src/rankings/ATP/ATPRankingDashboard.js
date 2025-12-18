@@ -89,6 +89,16 @@ const ATPRankingDashboard = () => {
         fetchAllRankings();
     }, [selectedCountryAlpha3]);
 
+    function getTopCounts(data) {
+        const result = [];
+        for (let i = 100; i <= 1000; i += 100) {
+            result.push({
+                label: `Top ${i}`,
+                count: data.filter(player => Number(player.rank) <= i).length
+            });
+        }
+        return result;
+    }
     const handleCountryChange = async (newCountryCode, newValue) => {
         setSelectedCountry(newCountryCode);
         setSelectedCountryCode(newValue ? newValue.code : null);
@@ -124,7 +134,7 @@ const ATPRankingDashboard = () => {
                 <div>
                     {rankingTypes.map((r) => (
                         <div key={r.key} className="bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-700">
-                         
+
                             {/* <CustomizedTables data={rankingsData[r.key] || []} countryName={selectedCountry} /> */}
                             <RankingAccordion
                                 rankingsData={rankingsData[r.key]}
@@ -132,6 +142,8 @@ const ATPRankingDashboard = () => {
                                 rankingHeader={r.header}
                                 rankingDesc={r.desc}
                                 selectedCountry={selectedCountry}
+                                count={rankingsData[r.key] ? rankingsData[r.key].length : 0}
+                                topCounts={rankingsData[r.key] ? getTopCounts(rankingsData[r.key]) : []}
                             />
                         </div>
                     ))}

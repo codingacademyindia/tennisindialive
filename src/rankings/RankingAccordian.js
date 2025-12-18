@@ -53,6 +53,8 @@ const RankingAccordion = ({
     selectedCountry,
     rankingHeader,
     rankingDesc,
+    count,
+    topCounts = []
 }) => {
     const [expanded, setExpanded] = useState(null);
     const [openAccordion, setOpenAccordion] = useState('point');
@@ -65,14 +67,35 @@ const RankingAccordion = ({
             <AccordionItem
                 id="acc-match-stats"
                 title={rankingHeader}
-                // subtitle={`${periods.length} periods`}
+                subtitle={
+                    <div className="flex flex-row flex-wrap gap-1 items-center mt-1">
+                        <div className="flex flex-row flex-wrap gap-1 items-center mt-1 overflow-x-auto">
+                            {topCounts.map(tc => (
+                                <span
+                                    key={tc.label}
+                                    className="inline-flex items-center px-1.5 py-0.5 bg-blue-900/40 text-blue-200 rounded text-xs"
+                                    style={{
+                                        minWidth: 48,
+                                        textAlign: 'center',
+                                        letterSpacing: '0.01em',
+                                        fontWeight: 400,
+                                        border: 'none',
+                                        boxShadow: 'none'
+                                    }}
+                                >
+                                    <span className="text-blue-300">{tc.label}</span>
+                                    <span className="mx-0.5 text-blue-400">:</span>
+                                    <span className="text-yellow-200">{tc.count}</span>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                }
                 isOpen={openAccordion === rankingType}
                 onToggle={() => setOpenAccordion(openAccordion === rankingType ? '' : rankingType)}
             >
                 <PaginatedTablesJSON data={rankingsData || []} countryName={selectedCountry} />
             </AccordionItem>
-
-
         </div>
     );
 };

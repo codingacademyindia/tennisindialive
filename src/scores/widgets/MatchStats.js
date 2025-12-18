@@ -7,8 +7,8 @@ function getWinner(home, away, compareCode, name) {
     if (isNaN(h) || isNaN(a)) return 0;
 
     // compareCode meanings:
-    // 1 = Higher is better
-    // 2 = Lower is better
+    // 2 = Higher is better
+    // 1 = Lower is better
     // 3 = Equal-only condition (rare but kept)
     if (compareCode === 2) return h > a ? 1 : a > h ? 2 : 0;
     if (compareCode === 1) return h < a ? 1 : a < h ? 2 : 0;
