@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import CountryAutocomplete from "../../common/CountryAutoComplete";
-import CustomizedTables from "../../common/grids/CustomizedTablesJSON";
-import Loader from "../../common/stateHandlers/LoaderState";
-import SEO from "../../common/seo/SEO";
-import { getAlpha3 } from "../../utils/utils";
-import { setItem, getItem } from "../../indexDb/indexedDB";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import CountryModal from "../../common/CountryModal";
+import SEO from "../../common/seo/SEO";
+import Loader from "../../common/stateHandlers/LoaderState";
+import { getItem, setItem } from "../../indexDb/indexedDB";
+import { getAlpha3, getCountryFullName } from "../../utils/utils";
 import RankingAccordion from "../RankingAccordian";
 
 const rankingTypes = [
@@ -39,6 +38,7 @@ const WTARankingDashboard = () => {
     const [selectedCountry, setSelectedCountry] = useState("india");
     const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState("ind");
     const [selectedCountryCode, setSelectedCountryCode] = useState("IN");
+   const [countryModal, setCountryModal] = useState(false);
 
     const [rankingsData, setRankingsData] = useState({});
     const [loading, setLoading] = useState(true);
@@ -56,6 +56,43 @@ const WTARankingDashboard = () => {
         };
         fetchStoredCountry();
     }, []);
+
+    const getFlagUrl = (code) =>
+        code ? `https://flagcdn.com/w20/${code.toLowerCase()}.png` : null;
+
+    const countryFullName = getCountryFullName(selectedCountry);
+    let objDomCountryButton = (<button
+        onClick={() => setCountryModal(true)}
+        className="
+            flex items-center gap-2 
+            px-3 py-1 rounded-lg 
+            bg-[#1f2937] text-gray-200 
+            border border-gray-700 
+            hover:border-teal-400 hover:text-teal-300
+            hover:shadow-[0_0_10px_rgba(34,211,238,0.25)]
+            active:scale-95 transition-all duration-200
+            text-sm font-medium
+        "
+    >
+        {/* Flag or Globe */}
+        {selectedCountryCode && selectedCountryCode !== "all" ? (
+            <img
+                src={getFlagUrl(selectedCountryCode)}
+                alt={selectedCountryCode}
+                className="w-5 h-4 object-cover rounded-sm shadow-sm"
+                loading="eager"     // 🚀 load instantly
+            />
+        ) : (
+            <span className="text-lg">🌍</span>
+        )}
+
+        {/* Country Name OR default */}
+        <span className="truncate capitalize">
+            {countryFullName || "Select Country"}
+        </span>
+    </button>
+
+    )
 
     // Fetch all rankings
     useEffect(() => {
@@ -123,9 +160,11 @@ const WTARankingDashboard = () => {
 
             <div className="flex flex-row space-x-4 items-center mb-4">
                 <div className="text-2xl font-bold text-white">WTA Rankings Dashboard</div>
-                <CountryAutocomplete
-                    selectedCountry={selectedCountry}
-                    handleCountryChange={handleCountryChange}
+                {objDomCountryButton}
+                <CountryModal
+                    open={countryModal}
+                    onClose={() => setCountryModal(false)}
+                    onSelect={handleCountryChange}
                 />
             </div>
 
@@ -144,7 +183,7 @@ const WTARankingDashboard = () => {
                                 rankingDesc={r.desc}
                                 selectedCountry={selectedCountry}
                                 count={rankingsData[r.key] ? rankingsData[r.key].length : 0}
-                                topCounts={rankingsData[r.key] ? getTopCounts(rankingsData[r.key]) : []}
+                                topCounts={selectedCountry === 'all' ? [] : rankingsData[r.key] ? getTopCounts(rankingsData[r.key]) : []}
                             />
                         </div>
                     ))}

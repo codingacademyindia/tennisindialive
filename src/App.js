@@ -37,6 +37,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import MatchDashboard from './scores/widgets/MatchDashboard';
 import ATPRankingDashboard from './rankings/ATP/ATPRankingDashboard';
 import WTARankingDashboard from './rankings/WTA/WTARankingDashboard';
+import TennisSchedule from './calender/TennisSchedule';
 
 // ----------------------------
 // Redirect legacy dash URLs
@@ -87,17 +88,17 @@ function isDashboard(){
                 {/* HIGH-PRIORITY SEO / LEGACY ROUTES */}
                 {/* ================================ */}
                 <Route path="/tennis-:legacy/scores" element={<RedirectLegacyCountry />} />
-                <Route path="/tennis/:country/scores" element={<FixtureResultsCountrySEO />} />
-                <Route path="/live-tennis-score/:country" element={<FixtureResultsCountrySEO />} />
+                <Route path="/tennis/:country/scores" element={<FixtureResultsCountry />} />
+                <Route path="/live-tennis-score/:country" element={<FixtureResultsCountry />} />
 
                 {/* ================================ */}
                 {/* PRIMARY ROUTES */}
                 {/* ================================ */}
-                <Route path="/" element={<FixtureResultsCountrySEO />} />
+                <Route path="/" element={<FixtureResultsCountry />} />
                 <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
-
+                 <Route path="/calendar" element={<TennisSchedule />} />
                 <Route path="/live-scores" element={<FixtureResultsCountry />} />
-                <Route path="/live-scores-seo" element={<FixtureResultsCountrySEO />} />
+                <Route path="/live-scores-seo" element={<FixtureResultsCountry />} />
                 
                 <Route path="/live-scores/:country" element={<FixtureResultsCountry />} />
                 <Route path="/tennis-score-live" element={<FixtureResultsCountry />} />

@@ -72,7 +72,7 @@ const RankingAccordion = ({
                     <div className="flex flex-row flex-wrap gap-1 items-center mt-1">
                         <div className="flex flex-row flex-wrap gap-1 items-center mt-1 overflow-x-auto">
                             {topCounts.map(tc => (
-                                tc.count>0 && <span
+                                tc.count > 0 && <span
                                     key={tc.label}
                                     className="inline-flex items-center px-1.5 py-0.5 bg-blue-900/40 text-blue-200 rounded text-xs"
                                     style={{
@@ -96,9 +96,9 @@ const RankingAccordion = ({
                 onToggle={() => setOpenAccordion(openAccordion === rankingType ? '' : rankingType)}
             >
                 <PaginatedTablesJSON data={rankingsData || []} countryName={selectedCountry} />
-                    <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
-                                        <InArticleAd />
-                                    </div>
+                <div className="my-4 p-4 border border-gray-700 bg-gray-800 text-center rounded-lg text-gray-300">
+                    <InArticleAd />
+                </div>
             </AccordionItem>
         </div>
     );
