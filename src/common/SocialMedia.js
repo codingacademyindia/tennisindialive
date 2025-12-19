@@ -11,7 +11,7 @@ const SocialMedia = ({ handleOpen }) => {
                     <FaYoutube style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" />
                 </a> */}
                 <a href="https://x.com/TennisIndiaLive" target="_blank" rel="noopener noreferrer" >
-                    <FaXTwitter style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" />
+                    <FaXTwitter style={{ fontSize: '1.5rem', color:'white' }} className="md:text-2xl lg:text-3xl" />
                 </a>
                 {/* <a href="https://www.facebook.com/TheTennisOfIndia/" target="_blank" rel="noopener noreferrer" className="text-blue-700">
                     <FaFacebook style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" />

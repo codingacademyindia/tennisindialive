@@ -599,6 +599,7 @@ const FixtureResultsCountry = () => {
     const fetchH2HStatsDom = (item) => {
         const isNotStarted = item?.status?.type === "notstarted";
         const isLive = item?.status?.type === "inprogress";
+        const isFinished = item?.status?.type === "finished";
         const matchTime = readableTimeStamp(item?.startTimestamp) || "TBD";
         const round = getRoundAbbreviation(item?.roundInfo?.name) || "";
 
@@ -630,6 +631,18 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                         </span>
                     )}
 
+                   {isFinished && (
+  <span className="
+    inline-flex items-center gap-1
+    bg-gray-900/70 text-gray-300
+    px-2.5 py-0.5 rounded-md
+    text-[11px] font-medium
+    border border-gray-700/60
+  ">
+    {readableDate(item.startTimestamp)}
+    <span className="text-gray-400">• Ended</span>
+  </span>
+)}
 
 
                 </div>
