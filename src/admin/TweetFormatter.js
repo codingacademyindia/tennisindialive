@@ -306,6 +306,90 @@ export function tweetCancelled(match) {
 // ──────────────────────────────────────────────────────────────
 //
 
+export function getAllLiveMatches(matches, countryAlpha3 = null) {
+    if (!Array.isArray(matches)) return [];
+    return matches.filter((m) => {
+        const isLive = m.status?.type === "inprogress";
+        const byCountry =
+            !countryAlpha3 ||
+            m.homeTeam?.country?.alpha3 === countryAlpha3 ||
+            m.awayTeam?.country?.alpha3 === countryAlpha3;
+        return isLive && byCountry;
+    });
+}
+
+export function buildGroupedLiveMatchesTweet(matches) {
+    if (!matches || matches.length === 0) return null;
+
+    const icon = getStatusIcon("inprogress");
+
+    const grouped = {};
+    let link = null;
+
+    matches.forEach(match => {
+        const { h, a, tournament } = getPlayers(match);
+
+        if (!grouped[tournament]) {
+            grouped[tournament] = [];
+        }
+
+        grouped[tournament].push(`• ${h} vs ${a}`);
+
+        // use first match link (clean & safe)
+        if (!link) {
+            link = getLink(match);
+        }
+    });
+
+    let tweet = `${icon} LIVE Tennis 🎾\n\n`;
+
+    Object.entries(grouped).forEach(([tournament, lines]) => {
+        tweet += `${tournament}\n`;
+        tweet += lines.join("\n") + "\n\n";
+    });
+
+    tweet += `Follow live 👇\n${link}`;
+
+    return tweet.trim();
+}
+
+
+export function buildLiveMatchesTweet(matches) {
+    const lines = [];
+    lines.push("🎾 LIVE TENNIS NOW\n");
+
+    matches.forEach((match) => {
+        const tournament = match.tournament?.uniqueTournament?.name
+            || match.tournament?.name
+            || "Tournament";
+
+        const category = match.tournament?.category?.name || "";
+        const home = match.homeTeam?.shortName || match.homeTeam?.name;
+        const away = match.awayTeam?.shortName || match.awayTeam?.name;
+
+        lines.push(
+            `${tournament} (${category})\n` +
+            `${home} vs ${away}\n`
+        );
+    });
+
+    return lines.join("\n");
+}
+
+
+export function getAllLiveMatchesFromFiltered(rankingsData, filteredRankingsData) {
+    const liveMatches = [];
+    filteredRankingsData.forEach(tournament => {
+        const matches = rankingsData[tournament] || [];
+        matches.forEach(match => {
+            if (match.status?.type === "inprogress") {
+                liveMatches.push(match);
+            }
+        });
+    });
+    return liveMatches;
+}
+
 export function formatLiveScoreTweet(match) {
     const status = match.status?.type?.toLowerCase() || "";
 

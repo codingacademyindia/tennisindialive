@@ -34,7 +34,7 @@ import StatusButtonGroup from '../common/toolbar/StatusButtonGroup';
 import { getItem, setItem } from '../indexDb/indexedDB';
 import { getAlpha3, getAlpha2FromName, getRouteKeyword, getBaseRoute, getSeoDom, getH1 } from '../utils/utils';
 import TweetPreviewDialog from './TweetPreview';
-import { formatLiveScoreTweet } from "./TweetFormatter";
+import { buildGroupedLiveMatchesTweet, buildLiveMatchesTweet, formatLiveScoreTweet, getAllLiveMatchesFromFiltered } from "./TweetFormatter";
 
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -135,6 +135,32 @@ const FixtureResultsAdmin = () => {
 
     };
 
+
+    const handleAllLive = async (item) => {
+        setTweetStatus("")
+        let rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData));
+        let filteredRankingsData = [];
+        filteredRankingsData = Object.keys(rankingsDataCopy).filter(tournament =>
+            hasIndianInAllScores(rankingsData[tournament], tournament)
+        );
+
+        if (filteredRankingsData.length === 0) {
+            return <NotFound msg="No Results Found" />;
+        }
+        let liveMatches = getAllLiveMatchesFromFiltered(rankingsDataCopy, filteredRankingsData);
+        console.log(liveMatches)
+        const tweet = buildGroupedLiveMatchesTweet(liveMatches);
+        console.log(tweet)
+
+        setTweetText(tweet)
+        setEventId(item.id);
+        setScoreRecord(item);
+        setOpenTweetDialog(true);
+
+
+
+    };
+
     const sendTweet = async (msg) => {
         // ⭐ Now call tweet API
         setTweetStatus("sending")
@@ -213,19 +239,20 @@ const FixtureResultsAdmin = () => {
     console.log(country)
 
 
-    const handleStatusButtonClick = (event) => {
-        if (event.target.innerText.toLowerCase() === 'live') {
-            setMatchStatus("inprogress");
-        }
-        else if (event.target.innerText.toLowerCase() === 'not started') {
-            setMatchStatus("notstarted");
-        }
-        else if (event.target.innerText.toLowerCase() === 'finished') {
-            setMatchStatus("finished");
-        }
-        else {
-            setMatchStatus("all");
-        }
+    const handleStatusButtonClick = (value) => {
+        // if (event.target.innerText.toLowerCase() === 'live') {
+        //     setMatchStatus("inprogress");
+        // }
+        // else if (event.target.innerText.toLowerCase() === 'not started') {
+        //     setMatchStatus("notstarted");
+        // }
+        // else if (event.target.innerText.toLowerCase() === 'finished') {
+        //     setMatchStatus("finished");
+        // }
+        // else {
+        //     setMatchStatus("all");
+        // }
+        setMatchStatus(value);
 
 
     };
@@ -495,11 +522,11 @@ const FixtureResultsAdmin = () => {
         if (item?.status?.type === 'inprogress') {
             return (
                 <div className='flex flex-row w-full text-center space-x-1 items-center justify-center'>
-                   
+
                     <span className="text-white font-bold px-2 py-1 rounded bg-green-600 inline-block animate-[blink_1s_infinite]">
                         Live
                     </span>
-                     <span className='capitalize text-xs'>{item?.status?.description}</span>
+                    <span className='capitalize text-xs'>{item?.status?.description}</span>
                 </div>
             );
         } else if (item?.status?.type === 'notstarted') {
@@ -716,6 +743,14 @@ const FixtureResultsAdmin = () => {
                 >
 
                     <span>Tweet</span>
+                </button>
+
+                <button
+                    className="space-x-2 flex flex-row items-center justify-center font-bold bg-yellow-600 hover:bg-yellow-700 text-white p-1 rounded-sm w-[20%] md:w-[20%]"
+                    onClick={(e) => handleAllLive(item)}
+                >
+
+                    <span>All Live</span>
                 </button>
             </div>
         );
@@ -1033,6 +1068,8 @@ const FixtureResultsAdmin = () => {
         if (filteredRankingsData.length === 0) {
             return <NotFound msg="No Results Found" />;
         }
+        let liveMatches = getAllLiveMatchesFromFiltered(rankingsDataCopy, filteredRankingsData);
+        console.log(liveMatches)
 
         const result = [];
         let adCounter = 0;
