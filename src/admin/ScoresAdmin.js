@@ -147,7 +147,7 @@ const FixtureResultsAdmin = () => {
         if (filteredRankingsData.length === 0) {
             return <NotFound msg="No Results Found" />;
         }
-        let liveMatches = getAllLiveMatchesFromFiltered(rankingsDataCopy, filteredRankingsData);
+        let liveMatches = getAllLiveMatchesFromFiltered(rankingsDataCopy, filteredRankingsData, selectedCountry);
         console.log(liveMatches)
         const tweet = buildGroupedLiveMatchesTweet(liveMatches);
         console.log(tweet)
@@ -1068,9 +1068,7 @@ const FixtureResultsAdmin = () => {
         if (filteredRankingsData.length === 0) {
             return <NotFound msg="No Results Found" />;
         }
-        let liveMatches = getAllLiveMatchesFromFiltered(rankingsDataCopy, filteredRankingsData);
-        console.log(liveMatches)
-
+    
         const result = [];
         let adCounter = 0;
 

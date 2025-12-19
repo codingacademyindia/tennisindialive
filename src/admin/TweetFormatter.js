@@ -376,13 +376,32 @@ export function buildLiveMatchesTweet(matches) {
     return lines.join("\n");
 }
 
+   function getCountryCondition(selectedCountryAlpha3) {
+        return (selectedCountryAlpha3 === '' || selectedCountryAlpha3 === null || selectedCountryAlpha3 === 'all')
+    }
+    const hasCountry = (item, selectedCountry) => {
+        const p1 = item.homeTeam;
+        const p2 = item.awayTeam;
+        // if (!item.tournament.name.includes(tournamentName)) return false;
 
-export function getAllLiveMatchesFromFiltered(rankingsData, filteredRankingsData) {
+        if (!item.tournament.name.toLowerCase().includes('double')) {
+            return (getCountryCondition(selectedCountry) ||
+                p1?.country?.alpha3?.toLowerCase() === selectedCountry?.toLowerCase() ||
+                p2?.country?.alpha3?.toLowerCase() === selectedCountry?.toLowerCase())
+                
+        } else {
+            const teams = [p1?.subTeams[0], p1?.subTeams[1], p2?.subTeams[0], p2?.subTeams[1]];
+            const countries = teams.map(t => t?.country?.alpha3?.toLowerCase());
+            return (getCountryCondition(selectedCountry) || countries.includes(selectedCountry?.toLowerCase()))
+        }
+    };
+
+export function getAllLiveMatchesFromFiltered(rankingsData, filteredRankingsData, selectedCountry = null) {
     const liveMatches = [];
     filteredRankingsData.forEach(tournament => {
         const matches = rankingsData[tournament] || [];
         matches.forEach(match => {
-            if (match.status?.type === "inprogress") {
+            if (match.status?.type === "inprogress" && (hasCountry(match, selectedCountry)  )) {
                 liveMatches.push(match);
             }
         });
