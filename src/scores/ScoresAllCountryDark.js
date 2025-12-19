@@ -501,7 +501,7 @@ const FixtureResultsCountry = () => {
                     </span>
                 )} */}
 
-                <div className="flex justify-center gap-3">
+                <div className="flex justify-center gap-1">
                     {validSets.map(([h, a], i) => {
                         const isLastSet = i === validSets.length - 1;
                         return (
@@ -694,7 +694,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             {fetchH2HStatsDom(item)}
             <div className="flex flex-row justify-between items-start p-1 space-x-1">
                 <div className="flex-1 ">{getPlayerDom2(item)}</div>
-                <div className="w-1/4  my-auto">{item.status.type !== 'notstarted' && formatTennisScoreDom(item.homeScore, item.awayScore, item.status.type)}</div>
+                <div className="w-[40%]  my-auto">{item.status.type !== 'notstarted' && formatTennisScoreDom(item.homeScore, item.awayScore, item.status.type)}</div>
             </div>
         </div>
     );
@@ -1071,9 +1071,9 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             />
 
             {/* <IconButton onClick={handleRefresh} className="text-gray-200"> */}
-            <Tooltip title="Scores will auto-refresh in real-time.">
+            {/* <Tooltip title="Scores will auto-refresh in real-time.">
                 <BiInfoCircle className="text-white" />
-            </Tooltip>
+            </Tooltip> */}
             {/* </IconButton> */}
 
         </div>
