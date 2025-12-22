@@ -14,24 +14,28 @@ const rankingTypes = [
         key: "atp-singles-live",
         url: "/ranking/live/atp/atp-live-ranking.json",
         header: "ATP Live Ranking - Singles",
+        timestampKey: "atp-live-ranking",
         desc: "Real-time ATP Singles rankings. Use the country filter to focus on India or view all global players."
     },
     {
         key: "atp-singles-official",
         url: "/ranking/official/atp/official-atp-ranking.json",
         header: "ATP Official Ranking - Singles",
+        timestampKey: "official-atp-ranking",
         desc: "Official ATP Singles rankings. Updated weekly. Use the country filter to focus on India or view all global players."
     },
     {
         key: "atp-doubles-live",
         url: "/ranking/live/atp/atp-doubles-live-ranking.json",
         header: "ATP Live Ranking - Doubles",
+        timestampKey: "atp-doubles-live-ranking",
         desc: "Real-time ATP Doubles rankings. Use the country filter to focus on India or view all global players."
     },
     {
         key: "atp-doubles-official",
         url: "/ranking/official/atp/official-atp-doubles-ranking.json",
         header: "ATP Official Ranking - Doubles",
+        timestampKey: "official-atp-doubles-ranking",
         desc: "Official ATP Doubles rankings. Updated weekly. Use the country filter to focus on India or view all global players."
     }
 ];
@@ -42,8 +46,9 @@ const ATPRankingDashboard = () => {
     const [selectedCountryCode, setSelectedCountryCode] = useState("IN");
 
     const [rankingsData, setRankingsData] = useState({});
+    const [rankingsTimeStamp, setRankingsTimeStamp] = useState({});
     const [loading, setLoading] = useState(true);
-   const [countryModal, setCountryModal] = useState(false);
+    const [countryModal, setCountryModal] = useState(false);
     // Load stored country from indexedDB
     useEffect(() => {
         const fetchStoredCountry = async () => {
@@ -62,8 +67,14 @@ const ATPRankingDashboard = () => {
     useEffect(() => {
         const fetchAllRankings = async () => {
             setLoading(true);
+
             const dataObj = {};
+            const timeStampObject = {}
             try {
+                const timestamp = await fetch('/ranking/live/live_ranking_timestamp.json');
+                const timeStampDataLive = await timestamp.json();
+                const timestampRes = await fetch('/ranking/official/official_ranking_timestamp.json');
+                const timeStampDataOfficial = await timestampRes.json();
                 for (let r of rankingTypes) {
                     try {
                         const res = await fetch(`${window.location.origin}${r.url}`);
@@ -73,12 +84,14 @@ const ATPRankingDashboard = () => {
                             ? data.filter(item => item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase())
                             : data;
                         dataObj[r.key] = filtered;
+                        timeStampObject[r.key] = r.key.includes("official") ? timeStampDataOfficial[r.timestampKey] : timeStampDataLive[r.timestampKey];
                     } catch (err) {
                         console.error(`Failed to fetch ${r.key}:`, err);
                         dataObj[r.key] = [];
                     }
                 }
                 setRankingsData(dataObj);
+                setRankingsTimeStamp(timeStampObject);
             } catch (err) {
                 console.error(err);
                 toast.error("Failed to load rankings data");
@@ -112,11 +125,11 @@ const ATPRankingDashboard = () => {
         toast.success("Loading rankings...", { autoClose: 1500 });
     };
 
-     const getFlagUrl = (code) =>
+    const getFlagUrl = (code) =>
         code ? `https://flagcdn.com/w20/${code.toLowerCase()}.png` : null;
 
-     const countryFullName = getCountryFullName(selectedCountry);
-     let objDomCountryButton = (<button
+    const countryFullName = getCountryFullName(selectedCountry);
+    let objDomCountryButton = (<button
         onClick={() => setCountryModal(true)}
         className="
         flex items-center gap-2 
@@ -146,9 +159,10 @@ const ATPRankingDashboard = () => {
             {countryFullName || "Select Country"}
         </span>
     </button>
+)
 
-    )
-    return (
+console.log("rankingsTimeStamp:", rankingsTimeStamp);
+return (
         <div className="min-h-screen bg-gray-900 py-4 px-2 sm:px-4">
             <SEO
                 title={`Tennis ${selectedCountry.toUpperCase()} ATP Rankings Dashboard | Live & Official`}
@@ -182,6 +196,7 @@ const ATPRankingDashboard = () => {
                             <RankingAccordion
                                 rankingsData={rankingsData[r.key]}
                                 rankingType={r.key}
+                                timestamp={rankingsTimeStamp[r.key]}
                                 rankingHeader={r.header}
                                 rankingDesc={r.desc}
                                 selectedCountry={selectedCountry}

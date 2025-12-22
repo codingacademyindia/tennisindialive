@@ -12,25 +12,29 @@ const rankingTypes = [
         key: "wta-singles-live",
         url: "/ranking/live/wta/wta-live-ranking.json",
         header: "WTA Live Ranking - Singles",
-        desc: "Real-time wta Singles rankings. Use the country filter to focus on India or view all global players."
+        desc: "Real-time wta Singles rankings. Use the country filter to focus on India or view all global players.",
+        timeStampKey: "wta-live-ranking"
     },
     {
         key: "wta-singles-official",
         url: "/ranking/official/wta/official-wta-ranking.json",
         header: "WTA Official Ranking - Singles",
-        desc: "Official wta Singles rankings. Updated weekly. Use the country filter to focus on India or view all global players."
+        desc: "Official wta Singles rankings. Updated weekly. Use the country filter to focus on India or view all global players.",
+        timeStampKey: "official-wta-ranking"
     },
     {
         key: "wta-doubles-live",
         url: "/ranking/live/wta/wta-doubles-live-ranking.json",
         header: "WTA Live Ranking - Doubles",
-        desc: "Real-time wta Doubles rankings. Use the country filter to focus on India or view all global players."
+        desc: "Real-time wta Doubles rankings. Use the country filter to focus on India or view all global players.",
+        timeStampKey: "wta-doubles-live-ranking"
     },
     {
         key: "wta-doubles-official",
         url: "/ranking/official/wta/official-wta-doubles-ranking.json",
         header: "WTA Official Ranking - Doubles",
-        desc: "Official wta Doubles rankings. Updated weekly. Use the country filter to focus on India or view all global players."
+        desc: "Official wta Doubles rankings. Updated weekly. Use the country filter to focus on India or view all global players.",
+        timeStampKey: "official-wta-doubles-ranking"
     }
 ];
 
@@ -38,8 +42,8 @@ const WTARankingDashboard = () => {
     const [selectedCountry, setSelectedCountry] = useState("india");
     const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState("ind");
     const [selectedCountryCode, setSelectedCountryCode] = useState("IN");
-   const [countryModal, setCountryModal] = useState(false);
-
+    const [countryModal, setCountryModal] = useState(false);
+    const [rankingsTimeStamp, setRankingsTimeStamp] = useState({});
     const [rankingsData, setRankingsData] = useState({});
     const [loading, setLoading] = useState(true);
 
@@ -99,7 +103,13 @@ const WTARankingDashboard = () => {
         const fetchAllRankings = async () => {
             setLoading(true);
             const dataObj = {};
+            const timeStampObject = {};
             try {
+                const timestamp = await fetch('/ranking/live/live_ranking_timestamp.json');
+                const timeStampDataLive = await timestamp.json();
+                const timestampRes = await fetch('/ranking/official/official_ranking_timestamp.json');
+                const timeStampDataOfficial = await timestampRes.json();
+
                 for (let r of rankingTypes) {
                     try {
                         const res = await fetch(`${window.location.origin}${r.url}`);
@@ -109,12 +119,15 @@ const WTARankingDashboard = () => {
                             ? data.filter(item => item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase())
                             : data;
                         dataObj[r.key] = filtered;
+                        timeStampObject[r.key] = r.key.includes("official") ? timeStampDataOfficial[r.timeStampKey] : timeStampDataLive[r.timeStampKey];
+
                     } catch (err) {
                         console.error(`Failed to fetch ${r.key}:`, err);
                         dataObj[r.key] = [];
                     }
                 }
                 setRankingsData(dataObj);
+                setRankingsTimeStamp(timeStampObject);
             } catch (err) {
                 console.error(err);
                 toast.error("Failed to load rankings data");
@@ -179,6 +192,7 @@ const WTARankingDashboard = () => {
                             <RankingAccordion
                                 rankingsData={rankingsData[r.key]}
                                 rankingType={r.key}
+                                timestamp={rankingsTimeStamp[r.key]}
                                 rankingHeader={r.header}
                                 rankingDesc={r.desc}
                                 selectedCountry={selectedCountry}

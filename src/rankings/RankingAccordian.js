@@ -55,7 +55,8 @@ const RankingAccordion = ({
     rankingHeader,
     rankingDesc,
     count,
-    topCounts = []
+    topCounts = [],
+    timestamp
 }) => {
     const [expanded, setExpanded] = useState(null);
     const [openAccordion, setOpenAccordion] = useState('point');
@@ -63,11 +64,15 @@ const RankingAccordion = ({
         setExpanded(isExpanded ? key : null);
     };
 
+    let objHeader = <div className='flex flex-row items-center'>
+        <span>{rankingHeader}</span>
+        <span className='text-xs ml-2 text-gray-500'>Last Updated At: {timestamp}</span></div>
+
     return (
         <div>
             <AccordionItem
                 id="acc-match-stats"
-                title={rankingHeader}
+                title={objHeader}
                 subtitle={
                     <div className="flex flex-row flex-wrap gap-1 items-center mt-1">
                         <div className="flex flex-row flex-wrap gap-1 items-center mt-1 overflow-x-auto">
@@ -89,6 +94,7 @@ const RankingAccordion = ({
                                     <span className="text-yellow-200">{tc.count}</span>
                                 </span>
                             ))}
+                            {timestamp}
                         </div>
                     </div>
                 }
