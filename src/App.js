@@ -75,7 +75,7 @@ function isDashboard(){
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <div className="flex flex-col w-full">
-          <div className={`flex flex-col min-h-screen w-[80%] border sm:${getClassName()} mx-auto`}  >
+          <div className={`flex flex-col min-h-screen w-[100%] border sm:w-[80%] mx-auto`}  >
 
             <FluidAd />
             {isDashboard() ? <ResponsiveNavBar /> : <ResponsiveAppBar />}
