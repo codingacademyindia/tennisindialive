@@ -17,7 +17,7 @@ const SocialMedia = ({ handleOpen }) => {
                     <FaFacebook style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" />
                 </a> */}
                 {/* <FaMailBulk style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl" /> */}
-                <IconButton color="inherit" onClick={handleOpen} >
+                <IconButton color="inherit" onClick={() => window.location.href="/contactus"} >
                     <EmailIcon style={{ fontSize: '1.5rem' }} className="md:text-2xl lg:text-3xl text-blue-300" />
                 </IconButton>
             </div>

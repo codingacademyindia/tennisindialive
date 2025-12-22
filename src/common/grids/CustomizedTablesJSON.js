@@ -7,66 +7,124 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
 import CountryIcon from '../Country3Icon';
 import NumberWithIcon from '../NumberWithIcon';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+/* ============================
+   Styled Components
+============================ */
+
+const StyledTableCell = styled(TableCell)(() => ({
+  padding: '8px 12px',                 // 🔥 compact
+  fontSize: 13,
+  color: '#e5e7eb',
+  borderBottom: '1px solid rgba(255,255,255,0.06)',
+
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    backgroundColor: '#020617',        // slate-950
+    color: '#94a3b8',
+    fontSize: 11,
+    fontWeight: 600,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+    borderBottom: '1px solid rgba(255,255,255,0.12)',
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
+  backgroundColor: '#020617',
+  transition: 'background 0.15s ease',
+
+  '&:hover': {
+    backgroundColor: '#0f172a',        // slate-900
+  },
+
   '&:last-child td, &:last-child th': {
-    border: 0,
+    borderBottom: 0,
   },
 }));
 
-export default function CustomizedTablesJSON(props) {
+/* ============================
+   Component
+============================ */
+
+export default function CustomizedTablesJSON({ data = [] }) {
   return (
-    <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
-      <Table aria-label="customized table">
+    <TableContainer
+      component={Paper}
+      sx={{
+        backgroundColor: '#020617',
+        border: '1px solid rgba(255,255,255,0.08)',
+        overflowX: 'auto',
+      }}
+    >
+      <Table
+        aria-label="official rankings table"
+        size="small"
+        stickyHeader
+      >
         <TableHead>
           <TableRow>
-            <StyledTableCell sx={{ width: { xs: '20%', sm: '10%' } }}>Ranking</StyledTableCell>
-            <StyledTableCell sx={{ width: { xs: '50%', sm: '40%' } }} align="left">Player</StyledTableCell>
-            <StyledTableCell sx={{ width: { xs: '30%', sm: '25%' } }} align="left">Country</StyledTableCell>
-            <StyledTableCell sx={{ width: { xs: '30%', sm: '25%' } }} align="left">Change</StyledTableCell>
-            <StyledTableCell sx={{ width: { xs: '30%', sm: '25%' } }} align="left">Points</StyledTableCell>
+            <StyledTableCell sx={{ width: { xs: '12%', sm: '8%' } }}>
+              #
+            </StyledTableCell>
+
+            <StyledTableCell sx={{ width: { xs: '45%', sm: '35%' } }}>
+              Player
+            </StyledTableCell>
+
+            <StyledTableCell sx={{ width: { xs: '20%', sm: '18%' } }}>
+              Country
+            </StyledTableCell>
+
+            <StyledTableCell sx={{ width: { xs: '10%', sm: '12%' } }}>
+              Δ
+            </StyledTableCell>
+
+            <StyledTableCell sx={{ width: { xs: '13%', sm: '15%' } }}>
+              Pts
+            </StyledTableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
-          {props.data.map((row) => (
-            <StyledTableRow
-              key={row.player}
-            >
-
-
-              <StyledTableCell component="th" scope="row">
-                {row.rank}
+          {data.map((row, idx) => (
+            <StyledTableRow key={`${row.player}-${idx}`}>
+              {/* Rank */}
+              <StyledTableCell>
+                <span className="font-semibold text-slate-200">
+                  {row.rank}
+                </span>
               </StyledTableCell>
-              <StyledTableCell component="th" scope="row">
-                {/* <a href={`/player/${row.player.replaceAll(" ", "-").toLowerCase()}`} target="_blank" className='hover:bg-blue-300 w-full p-2'> */}
+
+              {/* Player */}
+              <StyledTableCell>
+                <span className="block truncate font-medium text-slate-100">
                   {row.player}
-                {/* </a> */}
-
+                </span>
               </StyledTableCell>
 
-              <StyledTableCell align="left">
-                <div className='flex flex-row items-center space-x-2'>
-                  <CountryIcon countryCode={row.country} size={15} />
-                  <span>{row.country}</span>
+              {/* Country */}
+              <StyledTableCell>
+                <div className="flex items-center gap-2">
+                  <CountryIcon countryCode={row.country} size={14} />
+                  <span className="text-xs uppercase text-slate-300">
+                    {row.country}
+                  </span>
                 </div>
               </StyledTableCell>
-              <StyledTableCell align="left">
+
+              {/* Change */}
+              <StyledTableCell>
                 <NumberWithIcon number={row.change} />
               </StyledTableCell>
-              <StyledTableCell align="left">
-                {row.points}
+
+              {/* Points */}
+              <StyledTableCell>
+                <span className="font-semibold text-slate-200">
+                  {row.points}
+                </span>
               </StyledTableCell>
             </StyledTableRow>
           ))}

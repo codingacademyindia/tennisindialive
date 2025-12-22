@@ -64,9 +64,31 @@ const RankingAccordion = ({
         setExpanded(isExpanded ? key : null);
     };
 
-    let objHeader = <div className='flex flex-row items-center'>
-        <span>{rankingHeader}</span>
-        <span className='text-xs ml-2 text-gray-300'>Last Updated At: {timestamp}</span></div>
+  let objHeader = (
+  <div
+    className="
+      relative flex flex-col sm:flex-row
+      sm:items-center sm:justify-between
+      gap-1 sm:gap-3
+      px-3 py-2
+      bg-slate-900/80
+      border border-white/10
+      rounded-lg
+      shadow-sm
+    "
+  >
+    {/* Title */}
+    <span className="text-sm sm:text-base font-semibold text-slate-100 truncate">
+      {rankingHeader}
+    </span>
+
+    {/* Timestamp */}
+    <span className="text-[10px] sm:text-xs text-slate-400 whitespace-nowrap">
+      Updated: {timestamp}
+    </span>
+  </div>
+);
+
 
     return (
         <div>
@@ -93,9 +115,7 @@ const RankingAccordion = ({
                                     <span className="mx-0.5 text-blue-400">:</span>
                                     <span className="text-yellow-200">{tc.count}</span>
                                 </span>
-                            ))}
-                            {timestamp}
-                        </div>
+                            ))}                        </div>
                     </div>
                 }
                 isOpen={openAccordion === rankingType}

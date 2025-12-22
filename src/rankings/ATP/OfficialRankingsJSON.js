@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 import SEO from '../../common/seo/SEO';
 import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
-import { getAlpha2FromName, getAlpha3 } from '../../utils/utils';
+import { getAlpha2FromName, getAlpha3, getCountryFullName } from '../../utils/utils';
+import CountryModal from '../../common/CountryModal';
 
 const OfficialRankings = () => {
     const { type } = useParams();
@@ -32,7 +33,47 @@ const OfficialRankings = () => {
     const [rankingTimestamp, setRankingTimestamp] = useState("");
     const [pageRefreshTime, setPageRefreshTime] = useState("");
 
-    // document.title = `Tennis India Live - ${type?.toUpperCase()} Official Rankings`;
+    const [countryModal, setCountryModal] = useState(false);
+    // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
+
+
+
+    const getFlagUrl = (code) =>
+        code ? `https://flagcdn.com/w20/${code.toLowerCase()}.png` : null;
+
+    const countryFullName = getCountryFullName(selectedCountry);
+    let objDomCountryButton = (<button
+        onClick={() => setCountryModal(true)}
+        className="
+                flex items-center gap-2 
+                px-3 py-1 rounded-lg 
+                bg-[#1f2937] text-gray-200 
+                border border-gray-700 
+                hover:border-teal-400 hover:text-teal-300
+                hover:shadow-[0_0_10px_rgba(34,211,238,0.25)]
+                active:scale-95 transition-all duration-200
+                text-sm font-medium
+            "
+    >
+        {/* Flag or Globe */}
+        {selectedCountryCode && selectedCountryCode !== "all" ? (
+            <img
+                src={getFlagUrl(selectedCountryCode)}
+                alt={selectedCountryCode}
+                className="w-5 h-4 object-cover rounded-sm shadow-sm"
+                loading="eager"     // 🚀 load instantly
+            />
+        ) : (
+            <span className="text-lg">🌍</span>
+        )}
+
+        {/* Country Name OR default */}
+        <span className="truncate capitalize">
+            {countryFullName || "Select Country"}
+        </span>
+    </button>
+    )
+
 
     function getFilteredData(data) {
         if (data) {
@@ -151,32 +192,59 @@ const OfficialRankings = () => {
 
     return (
         <div>
-            {/* Header Section */}
+            <CountryModal
+                open={countryModal}
+                onClose={() => setCountryModal(false)}
+                onSelect={handleCountryChange}
+            />
             <SEO
-                title={`Tennis ${selectedCountry.toUpperCase()} Live - Official ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
+                title={`Tennis ${`countryFullName`.toUpperCase()} Live - Official ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
                 description={`Real-time tennis rankings, live scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
                 keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA, live scores, country wise rankings`}
                 url={`https://tennisindialive.com/rankings/official/${type}/${selectedCountry}`}
             />
-            <div className='flex flex-wrap sm:flex-row sm:space-x-4 w-full bg-slate-200 items-center p-2 space-y-2 sm:space-y-0'>
-                <div className='text-xl font-bold'>{pageHeader}</div>
-                {/* <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} /> */}
-                <CountryAutocomplete
-                    selectedCountry={selectedCountry}
-                    handleCountryChange={handleCountryChange}
-                />
-                <div className='flex flex-row items-center space-x-1 text-xs'>
-                    <span className='font-bold'>Updated At:</span>
-                    <span>{rankingTimestamp}</span>
+            <div
+                className="
+    sticky top-0 z-20
+    flex flex-wrap gap-2 sm:gap-4
+    items-center justify-between
+    px-3 py-2
+    bg-gradient-to-r from-[#0f172a] via-[#020617] to-black
+    border-b border-white/10
+    shadow-md
+  "
+            >
+                {/* Left */}
+                <div className="flex items-center gap-3 min-w-0">
+                    <h1 className="text-sm sm:text-base md:text-lg font-bold text-white truncate">
+                        {pageHeader}
+                    </h1>
+
+                    {objDomCountryButton}
                 </div>
 
-                <IconButton onClick={handleRefresh} size="small">
-                    <SyncIcon fontSize="small" />
-                </IconButton>
+                {/* Right */}
+                <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                    <span className="hidden sm:inline">Updated:</span>
+                    <span className="whitespace-nowrap">{rankingTimestamp}</span>
+
+                    <IconButton
+                        onClick={handleRefresh}
+                        size="small"
+                        className="
+        !text-slate-300
+        hover:!text-emerald-400
+        transition
+      "
+                    >
+                        <SyncIcon fontSize="inherit" />
+                    </IconButton>
+                </div>
             </div>
 
+
             {/* Description Section */}
-            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md mt-4 text-sm mx-2">
+            {/* <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md mt-4 text-sm mx-2">
                 <p className="mb-2">
                     {`This page shows the latest ${pageHeader} data, including Indian and international players 
                     competing in the ${type.toUpperCase()} tours.  `}
@@ -185,7 +253,7 @@ const OfficialRankings = () => {
                     Rankings are updated weekly, sourced from official ATP and WTA data feeds. Country-wise filtering helps you
                     focus on Indian talent or explore global standings.
                 </p>
-            </div>
+            </div> */}
 
 
             {/* Main Content */}

@@ -165,7 +165,7 @@ const WTARankingDashboard = () => {
     return (
         <div className="min-h-screen bg-gray-900 py-4 px-2 sm:px-4">
             <SEO
-                title={`Tennis ${selectedCountry.toUpperCase()} wta Rankings Dashboard | Live & Official`}
+                title={`WTA Ranking Dashboard - Tennis ${selectedCountry.toUpperCase()} ATP Rankings  | Live & Official`}
                 description={`All wta rankings (Singles & Doubles, Live & Official) in one page. Filter by country to view Indian players or global players.`}
                 keywords={`wta rankings, tennis ${selectedCountry}, live rankings, doubles rankings, singles rankings, official wta`}
                 url={`https://tennisindialive.com/rankings/wta/dashboard/${selectedCountry}`}

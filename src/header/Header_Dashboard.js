@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { Dashboard } from "@mui/icons-material";
+import SocialMedia from "../common/SocialMedia";
 /**
  * Navbar.jsx
  *
@@ -134,39 +135,26 @@ export default function Navbar() {
               <div className="px-3 py-2 rounded-md text-gray-200 font-semibold bg-gray-800/40">Rankings</div>
               <div className="ml-2 mt-1 space-y-1">
                 <NavLink
-                  to="/rankings/live/atp-singles"
+                  to="/rankings/atp"
                   className={({ isActive }) => `block px-3 py-2 rounded-md ${isActive ? "bg-indigo-700 text-white" : "text-gray-200 hover:bg-gray-800/60"}`}
                   onClick={() => setMobileOpen(false)}
                 >
-                  ATP — Live
+                  ATP Ranking Dashboard
                 </NavLink>
                 <NavLink
-                  to="/rankings/live/wta-singles"
+                  to="/rankings/wta"
                   className={({ isActive }) => `block px-3 py-2 rounded-md ${isActive ? "bg-indigo-700 text-white" : "text-gray-200 hover:bg-gray-800/60"}`}
                   onClick={() => setMobileOpen(false)}
                 >
-                  WTA — Live
+                  WTA Ranking Dashboard
                 </NavLink>
-                <NavLink
-                  to="/rankings"
-                  className={({ isActive }) => `block px-3 py-2 rounded-md ${isActive ? "bg-indigo-700 text-white" : "text-gray-200 hover:bg-gray-800/60"}`}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Rankings Page
-                </NavLink>
+             
               </div>
             </div>
 
-            <NavLink
-              to="/match-dashboard"
-              className={({ isActive }) => `block px-3 py-2 rounded-md ${isActive ? "bg-indigo-700 text-white" : "text-gray-200 hover:bg-gray-800/60"}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              Dashboard Home
-            </NavLink>
-
+         
             <div className="pt-4 border-t border-gray-800">
-              <a href="/contact" className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800/60" onClick={() => setMobileOpen(false)}>Contact</a>
+              <SocialMedia/>
             </div>
           </nav>
         </aside>

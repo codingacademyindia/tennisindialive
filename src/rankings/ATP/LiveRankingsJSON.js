@@ -9,7 +9,8 @@ import { toast } from 'react-toastify';
 import SEO from '../../common/seo/SEO';
 import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
-import { getAlpha3 } from '../../utils/utils';
+import { getAlpha3, getCountryFullName } from '../../utils/utils';
+import CountryModal from '../../common/CountryModal';
 
 
 const ATPCurrentRankings = () => {
@@ -27,8 +28,46 @@ const ATPCurrentRankings = () => {
     const [rankingTimestamp, setRankingTimestamp] = useState("");
     const [pageDesc, setPageDesc] = useState("This page provides real-time updates of ATP and WTA live rankings across Singles and Doubles categories. Use the country filter to focus on Indian players or view all global players.");
     const [expanded, setExpanded] = useState(true);
-
+    const [countryModal, setCountryModal] = useState(false);
     // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
+
+
+
+    const getFlagUrl = (code) =>
+        code ? `https://flagcdn.com/w20/${code.toLowerCase()}.png` : null;
+
+    const countryFullName = getCountryFullName(selectedCountry);
+    let objDomCountryButton = (<button
+        onClick={() => setCountryModal(true)}
+        className="
+            flex items-center gap-2 
+            px-3 py-1 rounded-lg 
+            bg-[#1f2937] text-gray-200 
+            border border-gray-700 
+            hover:border-teal-400 hover:text-teal-300
+            hover:shadow-[0_0_10px_rgba(34,211,238,0.25)]
+            active:scale-95 transition-all duration-200
+            text-sm font-medium
+        "
+    >
+        {/* Flag or Globe */}
+        {selectedCountryCode && selectedCountryCode !== "all" ? (
+            <img
+                src={getFlagUrl(selectedCountryCode)}
+                alt={selectedCountryCode}
+                className="w-5 h-4 object-cover rounded-sm shadow-sm"
+                loading="eager"     // 🚀 load instantly
+            />
+        ) : (
+            <span className="text-lg">🌍</span>
+        )}
+
+        {/* Country Name OR default */}
+        <span className="truncate capitalize">
+            {countryFullName || "Select Country"}
+        </span>
+    </button>
+    )
 
     function getFilteredData(data) {
         if (data) {
@@ -42,7 +81,7 @@ const ATPCurrentRankings = () => {
         }
     }
 
-        function getFilteredDataValue(data) {
+    function getFilteredDataValue(data) {
         if (data) {
             let rankingsDataCopy = JSON.parse(JSON.stringify(data));
             if (selectedCountryAlpha3.toLowerCase() !== 'all') {
@@ -85,7 +124,7 @@ const ATPCurrentRankings = () => {
             const storedCountryAlpha3 = await getItem('countryAlpha3');
             setSelectedCountry(storedValue || 'india');
             setSelectedCountryCode(storedCountryCode || 'IN');
-            setSelectedCountryAlpha3(getAlpha3(storedValue) || storedCountryAlpha3  || 'ind');
+            setSelectedCountryAlpha3(getAlpha3(storedValue) || storedCountryAlpha3 || 'ind');
         };
 
         fetchValue();
@@ -157,29 +196,48 @@ const ATPCurrentRankings = () => {
     console.log(selectedCountryAlpha3);
     return (
         <div>
-           <SEO
-                title={`Tennis ${selectedCountry.toUpperCase()} Live - ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
-                description={`Real-time tennis rankings, live scores and updates for ${selectedCountry}. Follow ATP, WTA, and local tournaments.`}
-                keywords={`tennis rankings, ${selectedCountry} tennis, live rankings, ATP, WTA, live scores, country wise rankings`}
+            <CountryModal
+                open={countryModal}
+                onClose={() => setCountryModal(false)}
+                onSelect={handleCountryChange}
+            />
+            <SEO
+                title={`Live Rankings ${countryFullName.toUpperCase()}  - ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
+                description={`Real-time tennis rankings, live scores and updates for ${countryFullName}. Follow ATP, WTA, and local tournaments.`}
+                keywords={`tennis rankings, ${countryFullName} tennis, live rankings, ATP, WTA, live scores, country wise rankings`}
                 url={`https://tennisindialive.com/rankings/live/${type}/${selectedCountry}`}
             />
-            <div className='flex flex-row space-x-4 w-full bg-slate-200 items-center p-2'>
-                <div className='text-xl font-bold'>{pageHeader}</div>
-                {/* <CountryButtonGroup countryName={selectedCountry} handleCountryClick={handleCountryClick} /> */}
-                <CountryAutocomplete
-                    selectedCountry={selectedCountry}
-                    handleCountryChange={handleCountryChange}
-                />
-                <div className='flex flex-row space-x-1 text-xs'>
-                    <span className='font-bold'>Updated At:</span>
-                    <span>{rankingTimestamp}</span>
+            <div
+                className="
+    sticky top-0 z-20
+    flex flex-wrap gap-2 sm:gap-4
+    items-center justify-between
+    px-3 py-2
+    bg-gradient-to-r from-[#0f172a] via-[#020617] to-black
+    border-b border-white/10
+    shadow-md
+  "
+            >
+                {/* Left */}
+                <div className="flex items-center gap-3 min-w-0">
+                    <h1 className="text-sm sm:text-base md:text-lg font-bold text-white truncate">
+                        {pageHeader}
+                    </h1>
+
+                    {objDomCountryButton}
+                </div>
+
+                {/* Right */}
+                <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                    <span className="hidden sm:inline">Updated:</span>
+                    <span className="whitespace-nowrap">{rankingTimestamp}</span>
                 </div>
             </div>
 
             {/* Page Description */}
-            <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md m-1 text-sm">
+            {/* <div className="bg-yellow-50 border border-yellow-200 text-gray-800 p-3 rounded-md m-1 text-sm">
                 {pageDesc}
-            </div>
+            </div> */}
 
             {error && <p className="text-red-500">{error}</p>}
 
