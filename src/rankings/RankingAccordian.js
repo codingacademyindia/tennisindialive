@@ -66,7 +66,7 @@ const RankingAccordion = ({
 
     let objHeader = <div className='flex flex-row items-center'>
         <span>{rankingHeader}</span>
-        <span className='text-xs ml-2 text-gray-500'>Last Updated At: {timestamp}</span></div>
+        <span className='text-xs ml-2 text-gray-300'>Last Updated At: {timestamp}</span></div>
 
     return (
         <div>
