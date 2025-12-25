@@ -53,29 +53,30 @@ function RedirectLegacyCountry() {
 const App = () => {
   console.log('MATCHED ROUTE', window.location.pathname);
 
-function getClassName(){
-  if (window.location.pathname.toLowerCase().includes("match-dashboard")){
-    return 'w-full'
+  function getClassName() {
+    if (window.location.pathname.toLowerCase().includes("match-dashboard")) {
+      return 'w-full'
+    }
+    else {
+      return "w-[80%]"
+    }
   }
-  else{
-    return "w-[80%]"
-  }
-}
 
-function isDashboard(){
-  if (window.location.pathname.toLowerCase().includes("match-dashboard")){
-    return true
+  function isDashboard() {
+    if (window.location.pathname.toLowerCase().includes("match-dashboard")) {
+      return true
+    }
+    else {
+      return false
+    }
   }
-  else{
-    return false
-  }
-}
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <div className="flex flex-col w-full">
-          <div className={`flex flex-col min-h-screen w-[100%] border sm:w-[80%] mx-auto`}  >
+          // ...existing code...
+          <div className="flex flex-col min-h-screen w-full md:w-full lg:w-[80%] border mx-auto">
 
             <FluidAd />
             {isDashboard() ? <ResponsiveNavBar /> : <ResponsiveAppBar />}
@@ -96,16 +97,16 @@ function isDashboard(){
                 {/* ================================ */}
                 <Route path="/" element={<FixtureResultsCountry />} />
                 <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
-                 <Route path="/calendar" element={<TennisSchedule />} />
+                <Route path="/calendar" element={<TennisSchedule />} />
                 <Route path="/live-scores" element={<FixtureResultsCountry />} />
                 <Route path="/live-scores-seo" element={<FixtureResultsCountry />} />
-                
+
                 <Route path="/live-scores/:country" element={<FixtureResultsCountry />} />
                 <Route path="/tennis-score-live" element={<FixtureResultsCountry />} />
                 <Route path="/tennis-score-live/:country" element={<FixtureResultsCountry />} />
                 <Route path="/live-tennis" element={<FixtureResultsCountry />} />
                 <Route path="/tennis-live" element={<FixtureResultsCountry />} />
-                 <Route path="/tennis-live/:country" element={<FixtureResultsCountry />} />
+                <Route path="/tennis-live/:country" element={<FixtureResultsCountry />} />
                 <Route path="/live-tennis/:country" element={<FixtureResultsCountry />} />
                 <Route path="/match-dashboard/:eventId" element={<MatchDashboard />} />
 
