@@ -75,7 +75,6 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <div className="flex flex-col w-full">
-          // ...existing code...
           <div className="flex flex-col min-h-screen w-full md:w-full lg:w-[80%] border mx-auto">
 
             <FluidAd />
