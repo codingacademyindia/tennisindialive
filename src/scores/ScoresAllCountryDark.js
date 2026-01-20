@@ -309,11 +309,25 @@ const FixtureResultsCountry = () => {
     }, [params.country]);
 
     // -------------------- HELPERS --------------------
+    // function groupItems(items) {
+    //     return items.reduce((acc, item) => {
+    //         const key = item.season.name;
+    //         if (!acc[key]) acc[key] = [];
+    //         acc[key].push(item);
+    //         return acc;
+    //     }, {});
+    // }
+
     function groupItems(items) {
         return items.reduce((acc, item) => {
-            const key = item.tournament.name;
+            const category = item?.tournament?.category?.slug || "unknown";
+            const tournamentName = item?.tournament?.uniqueTournament?.name || item?.tournament?.name || "unknown";
+
+            const key = `${category}__${tournamentName}`;
+
             if (!acc[key]) acc[key] = [];
             acc[key].push(item);
+
             return acc;
         }, {});
     }
@@ -631,18 +645,18 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                         </span>
                     )}
 
-                   {isFinished && (
-  <span className="
+                    {isFinished && (
+                        <span className="
     inline-flex items-center gap-1
     bg-gray-900/70 text-gray-300
     px-2.5 py-0.5 rounded-md
     text-[11px] font-medium
     border border-gray-700/60
   ">
-    {readableDate(item.startTimestamp)}
-    <span className="text-gray-400">• Ended</span>
-  </span>
-)}
+                            {readableDate(item.startTimestamp)}
+                            <span className="text-gray-400">• Ended</span>
+                        </span>
+                    )}
 
 
                 </div>
@@ -953,7 +967,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     className="border border-gray-700 rounded bg-gray-900 mb-2 p-1 text-xs text-gray-200"
                 >
                     {/* Tournament Title */}
-                    {/* <div className="font-semibold mb-2 text-sm md:text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div>  */}
+                    {/* <div className="font-semibold mb-2 text-sm md:text-lg">{buildHeaderString(rankingsData[tournament][idx])}</div> */}
                     {buildHeaderDOM(rankingsData[tournament][0])}
                     {/* Responsive Grid → minimum 2 per row on small+ */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
