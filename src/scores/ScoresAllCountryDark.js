@@ -334,10 +334,6 @@ const FixtureResultsCountry = () => {
 
     const getCountryCondition = () => !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
 
-    console.log(selectedCountry)
-
-    console.log(selectedCountryAlpha3)
-
     const hasCountry = (item) => {
         const p1 = item.homeTeam;
         const p2 = item.awayTeam;
@@ -448,7 +444,7 @@ const FixtureResultsCountry = () => {
                     p2b?.country?.alpha3?.toLowerCase() || null,
                 ];
                 // if ((countries.includes(selectedCountryAlpha3) || getCountryCondition())) {
-                return (<div key={`${item.id}-${uniqueTournament}`}>
+                return (<div key={`dbl-${item.id}-${uniqueTournament}`}>
                     <div key={item.id} className="space-x-2 p-1 flex flex-row items-center">
                         <div className='w-full flex flex-col'>
                             <div className='w-full flex flex-row space-x-2 items-center'>
@@ -465,7 +461,7 @@ const FixtureResultsCountry = () => {
 
                         </div>
                     </div>
-                    <div key={item.id} className="space-x-2  p-1 flex flex-row items-center">
+                    <div key={`dbl-${item.id}`} className="space-x-2  p-1 flex flex-row items-center">
                         <div className='w-full flex flex-col'>
                             <div className='w-full flex flex-row space-x-2 items-center'>
                                 <span><CountryIcon countryCode={p2a.country?.alpha2} name={p2a.country?.name} size={15} /></span>
@@ -519,7 +515,7 @@ const FixtureResultsCountry = () => {
                     {validSets.map(([h, a], i) => {
                         const isLastSet = i === validSets.length - 1;
                         return (
-                            <>
+                            <React.Fragment key={`set-${i}`}>
                                 <div key={i} className="flex flex-col items-center min-w-[24px]">
                                     {/* Set scores */}
                                     <span>
@@ -531,7 +527,7 @@ const FixtureResultsCountry = () => {
 
                                 </div>
                                 {currentStatus === "inprogress" && isLastSet && (
-                                    <div className="flex flex-col items-center min-w-[24px] ml-2">
+                                    <div key={`inprogress-${i}`} className="flex flex-col items-center min-w-[24px] ml-2">
                                         <span className="font-bold text-yellow-400">
                                             {homeScore?.point ?? ''}
                                         </span>
@@ -540,7 +536,7 @@ const FixtureResultsCountry = () => {
                                         </span>
                                     </div>
                                 )}
-                            </>
+                            </React.Fragment>
                         );
                     })}
                 </div>
@@ -974,7 +970,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                         {rankingsData[tournament]
                             .filter(hasCountry)
                             .map((item, i) => (
-                                <div key={i}>
+                                <div key={item.id}>
                                     {fetchScoreRecord(item)}
                                 </div>
                             ))}

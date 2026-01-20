@@ -51,7 +51,6 @@ function RedirectLegacyCountry() {
 }
 
 const App = () => {
-  console.log('MATCHED ROUTE', window.location.pathname);
 
   function getClassName() {
     if (window.location.pathname.toLowerCase().includes("match-dashboard")) {
