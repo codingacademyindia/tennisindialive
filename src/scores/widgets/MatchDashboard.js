@@ -214,7 +214,7 @@ export default function MatchDashboard() {
     return (
         <div className="min-h-screen bg-gray-900 py-4 px-1 sm:px-4 overflow-y-auto">
             <SEO
-                title={`${p1} vs ${p2} - ${event?.tournament?.name} Live - Countrywise/rmega Tennis Scores & Live Updates`}
+                title={`${p1} vs ${p2} - ${event?.tournament?.name} Live - Countrywise Tennis Scores & Live Updates`}
                 description={`Live match stats, point by point data, Real-time tennis scores, rankings and updates. Follow ATP, WTA, and local tournaments.`}
                 keywords={`tennis match stats, tennis scores, tennis, live scores, rankings, country wise ATP, WTA`}
                 url={`${window.location.href}`}

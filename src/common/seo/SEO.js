@@ -54,7 +54,7 @@ const SEO = ({
   };
 
   const structuredData = jsonLd ? { ...defaultJsonLd, ...jsonLd } : defaultJsonLd;
-
+  document.title=title
   return (
     <Helmet>
       {/* Basic */}
