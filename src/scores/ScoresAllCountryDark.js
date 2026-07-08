@@ -251,9 +251,30 @@ const FixtureResultsCountry = () => {
             const delayMs = 400; // smooth stagger delay
 
             try {
-                const url = `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`;
-                const resp = await fetchWithRetry(url, { headers: HEADERS }, 3, 250);
-                const events = resp?.events ?? [];
+                const calResp = await fetchWithRetry(
+                    `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
+                    { headers: HEADERS },
+                    3,
+                    250
+                );
+                const categories = calResp?.categories ?? [];
+                const seen = new Set();
+                const events = [];
+                for (const item of categories) {
+                    const catId = item.category?.id;
+                    if (!catId) continue;
+                    try {
+                        const res = await fetchWithRetry(
+                            `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
+                            { headers: HEADERS },
+                            3,
+                            250
+                        );
+                        for (const evt of res?.events ?? []) {
+                            if (!seen.has(evt.id)) { seen.add(evt.id); events.push(evt); }
+                        }
+                    } catch (e) { /* skip failed category */ }
+                }
 
                 if (!cancelled) {
                     setRawData(events);

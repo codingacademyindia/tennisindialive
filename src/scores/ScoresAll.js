@@ -218,14 +218,30 @@ const FixtureResultsAll = () => {
         const fetchRankings = async () => {
             setLoading(true);
             setError("")
-            const options = {
-                method: 'GET',
-                url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
-                headers: HEADERS
-            };
             try {
-                const response = await axios.request(options);
-                setRankingsData(groupItems(response.data['events']));
+                const calResp = await axios.request({
+                    method: 'GET',
+                    url: `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
+                    headers: HEADERS
+                });
+                const categories = calResp.data?.categories ?? [];
+                const seen = new Set();
+                const events = [];
+                for (const item of categories) {
+                    const catId = item.category?.id;
+                    if (!catId) continue;
+                    try {
+                        const res = await axios.request({
+                            method: 'GET',
+                            url: `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
+                            headers: HEADERS
+                        });
+                        for (const evt of res.data?.events ?? []) {
+                            if (!seen.has(evt.id)) { seen.add(evt.id); events.push(evt); }
+                        }
+                    } catch (e) { /* skip failed category */ }
+                }
+                setRankingsData(groupItems(events));
                 setLoading(false);
             } catch (error) {
                 setError(error.message);
