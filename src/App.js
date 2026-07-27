@@ -38,6 +38,9 @@ import MatchDashboard from './scores/widgets/MatchDashboard';
 import ATPRankingDashboard from './rankings/ATP/ATPRankingDashboard';
 import WTARankingDashboard from './rankings/WTA/WTARankingDashboard';
 import TennisSchedule from './calender/TennisSchedule';
+import ApiOverview from './pages/ApiOverview';
+import TournamentHub from './pages/TournamentHub';
+import TournamentHubList from './pages/TournamentHubList';
 
 // ----------------------------
 // Redirect legacy dash URLs
@@ -96,6 +99,11 @@ const App = () => {
                 <Route path="/" element={<FixtureResultsCountry />} />
                 <Route path="/tennisadmin" element={<FixtureResultsAdmin />} />
                 <Route path="/calendar" element={<TennisSchedule />} />
+                <Route path="/api-overview" element={<ApiOverview />} />
+                <Route path="/tournament" element={<TournamentHubList />} />
+                <Route path="/tournament/atp" element={<TournamentHubList tourType="atp" />} />
+                <Route path="/tournament/wta" element={<TournamentHubList tourType="wta" />} />
+                <Route path="/tournament/:tournamentId" element={<TournamentHub />} />
                 <Route path="/live-scores" element={<FixtureResultsCountry />} />
                 <Route path="/live-scores-seo" element={<FixtureResultsCountry />} />
 

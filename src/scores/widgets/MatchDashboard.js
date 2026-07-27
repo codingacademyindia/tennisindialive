@@ -12,11 +12,6 @@ import FluidAdImage from '../../ads/FluidAdImage';
 import InArticleAd from '../../ads/InArticleAd';
 import SEO from '../../common/seo/SEO';
 
-const HEADERS = {
-    'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-};
-
 function getWinner(home, away, compareCode) {
     const h = Number(home), a = Number(away);
     if (isNaN(h) || isNaN(a)) return 0;
@@ -133,35 +128,35 @@ export default function MatchDashboard() {
 
             try {
                 console.log("Loading match data...");
-                const statsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/statistics`;
-                const statsData = await fetchWithRetry(statsUrl, { headers: HEADERS }, 3, 300);
+                const statsUrl = `/api/tennis/event/${eventId}/statistics`;
+                const statsData = await fetchWithRetry(statsUrl, {}, 3, 300);
                 if (!cancelled) setStats(statsData ?? null);
 
                 await delay(delayMs);
                 console.log("Loading event data...");
-                const eventUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}`;
-                const evtResp = await fetchWithRetry(eventUrl, { headers: HEADERS }, 3, 300);
+                const eventUrl = `/api/tennis/event/${eventId}`;
+                const evtResp = await fetchWithRetry(eventUrl, {}, 3, 300);
                 const evt = evtResp?.event ?? null;
                 if (!cancelled) setEvent(evt);
 
                 await delay(delayMs);
 
                 console.log("Loading momentum data...");
-                const graphUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/graph`;
-                const graphResp = await fetchWithRetry(graphUrl, { headers: HEADERS }, 3, 300);
+                const graphUrl = `/api/tennis/event/${eventId}/graph`;
+                const graphResp = await fetchWithRetry(graphUrl, {}, 3, 300);
                 if (!cancelled) setPowerRankingData(graphResp?.tennisPowerRankings ?? []);
 
                 await delay(delayMs);
 
                 console.log("Loading point-by-point data...");
-                const pbpUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/point-by-point`;
-                const pbpResp = await fetchWithRetry(pbpUrl, { headers: HEADERS }, 3, 300);
+                const pbpUrl = `/api/tennis/event/${eventId}/point-by-point`;
+                const pbpResp = await fetchWithRetry(pbpUrl, {}, 3, 300);
                 if (!cancelled) setPointByPointData(pbpResp?.pointByPoint ?? []);
 
                 await delay(delayMs);
                 console.log("Loading odds data...");
-                const oddsUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/odds`;
-                const oddsResp = await fetchWithRetry(oddsUrl, { headers: HEADERS }, 3, 300);
+                const oddsUrl = `/api/tennis/event/${eventId}/odds`;
+                const oddsResp = await fetchWithRetry(oddsUrl, {}, 3, 300);
                 if (!cancelled) setOddsData(oddsResp ?? []);
                 if (evt?.status?.type === "finished") return stopPolling();
 

@@ -1,24 +1,43 @@
-Deployment notes - Single Render Web Service
+Server options
 
-This server is set up to serve the React production build and provide API proxy endpoints.
+This folder now supports two server options:
 
-Build & Start (production)
+1. Node/Express (`server.js`) for existing tweet/static flow.
+2. Python/FastAPI (`main.py`) for PostgreSQL fetch APIs and RapidAPI proxy.
 
-1. At project root, run:
+FastAPI setup (recommended for DB + proxy)
+
+1. Create/update `server/.env` using `server/.env.example`:
+- `DATABASE_URL` should be your Neon URL.
+- `REACT_APP_RAPIDAPI_KEY` should be your RapidAPI key.
+
+2. Install Python dependencies:
 
 ```bash
-npm install
-npm run build
 cd server
-npm install
-npm start
+python -m pip install -r requirements.txt
 ```
 
-2. Render setup (single Web Service):
-- Build command: `npm install && npm run build && cd server && npm install`
-- Start command: `npm start`
-- Set environment variables in Render (if needed): `PORT` (optional)
+3. Run FastAPI proxy on port 3224:
 
-Notes:
-- The client will make API calls to relative paths (e.g. `/tweet/live`). The server proxies those to the remote `cai-service.onrender.com`.
-- Ensure `build/` exists at the repo root when the server starts.
+```bash
+cd server
+python -m uvicorn main:app --host 0.0.0.0 --port 3224 --reload
+```
+
+Available FastAPI endpoints
+
+- `GET /health` - app health.
+- `GET /db/ping` - verifies DB connectivity.
+- `GET /db/tables` - lists public tables.
+- `GET /db/{table_name}?limit=50` - fetches rows from a table.
+- `ANY /proxy/{path}` - proxies requests to `https://tennisapi1.p.rapidapi.com/{path}`.
+
+Examples
+
+```bash
+curl http://localhost:3224/health
+curl http://localhost:3224/db/ping
+curl "http://localhost:3224/db/players?limit=20"
+curl "http://localhost:3224/proxy/api/tennis/match/123"
+```

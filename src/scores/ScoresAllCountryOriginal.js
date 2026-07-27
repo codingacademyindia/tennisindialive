@@ -91,7 +91,7 @@ const FixtureResultsCountry = () => {
         setOpenMatchStat(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`,
+            url: `/api/tennis/event/${item.id}/statistics`,
             headers: HEADERS
         };
         fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
@@ -106,7 +106,7 @@ const FixtureResultsCountry = () => {
         setOpenH2H(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`,
+            url: `/api/tennis/event/${item.id}/duel`,
             headers: HEADERS
         };
         fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
@@ -225,7 +225,7 @@ const FixtureResultsCountry = () => {
             try {
                 const calResp = await axios.request({
                     method: 'GET',
-                    url: `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
+                    url: `/api/tennis/calendar/${day}/${month}/${year}/categories`,
                     headers: HEADERS
                 });
                 const categories = calResp.data?.categories ?? [];
@@ -237,7 +237,7 @@ const FixtureResultsCountry = () => {
                     try {
                         const res = await axios.request({
                             method: 'GET',
-                            url: `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
+                            url: `/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
                             headers: HEADERS
                         });
                         for (const evt of res.data?.events ?? []) {

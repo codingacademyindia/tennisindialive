@@ -6,7 +6,7 @@ import React, { useEffect, useMemo, useState } from 'react';
  * Usage:
  * - <OddsPanel oddsData={oddsResponse} />
  * OR
- * - <OddsPanel eventId={15190800} /> (requires REACT_APP_RAPIDAPI_KEY in env)
+ * - <OddsPanel eventId={15190800} />
  *
  * The component accepts either an oddsData prop (preferred when parent already fetched)
  * or an eventId to fetch odds itself from the Tennis API.
@@ -77,14 +77,9 @@ export default function OddsPanel({ eventId, oddsData }) {
             if (!eventId) return;
             setLoading(true);
             setError('');
-            const url = `https://tennisapi1.p.rapidapi.com/api/tennis/event/${eventId}/odds`;
-            const headers = {
-                'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY || '',
-                'x-rapidapi-host': 'tennisapi1.p.rapidapi.com',
-                'Accept': 'application/json'
-            };
+            const url = `/api/tennis/event/${eventId}/odds`;
             try {
-                const resp = await fetchWithRetry(url, { headers }, 2, 400);
+                const resp = await fetchWithRetry(url, {}, 2, 400);
                 if (!cancelled) setData(resp);
             } catch (err) {
                 if (!cancelled) setError(err.message || 'Failed to load odds');

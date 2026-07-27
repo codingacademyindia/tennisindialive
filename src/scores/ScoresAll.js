@@ -54,10 +54,6 @@ const CustomFormControl = styled(FormControl)({
     },
 });
 
-const HEADERS = {
-    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-}
 const tournamentName = ''
 
 const FixtureResultsAll = () => {
@@ -113,10 +109,9 @@ const FixtureResultsAll = () => {
         setOpenMatchStat(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`,
-            headers: HEADERS
+            url: `/api/tennis/event/${item.id}/statistics`
         };
-        fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+        fetchMatchStats({ method: 'get', payload: [], url: options.url })
         setSelectedMatchStatus(item?.status?.type)
 
 
@@ -128,10 +123,9 @@ const FixtureResultsAll = () => {
         setOpenH2H(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`,
-            headers: HEADERS
+            url: `/api/tennis/event/${item.id}/duel`
         };
-        fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+        fetchH2H({ method: 'get', payload: [], url: options.url })
 
 
 
@@ -221,8 +215,7 @@ const FixtureResultsAll = () => {
             try {
                 const calResp = await axios.request({
                     method: 'GET',
-                    url: `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
-                    headers: HEADERS
+                    url: `/api/tennis/calendar/${day}/${month}/${year}/categories`
                 });
                 const categories = calResp.data?.categories ?? [];
                 const seen = new Set();
@@ -233,8 +226,7 @@ const FixtureResultsAll = () => {
                     try {
                         const res = await axios.request({
                             method: 'GET',
-                            url: `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
-                            headers: HEADERS
+                            url: `/api/tennis/category/${catId}/events/${day}/${month}/${year}`
                         });
                         for (const evt of res.data?.events ?? []) {
                             if (!seen.has(evt.id)) { seen.add(evt.id); events.push(evt); }

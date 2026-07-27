@@ -31,11 +31,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const HEADERS = {
-  'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-  'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-};
-
 export default function Head2Head(props) {
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -54,10 +49,10 @@ export default function Head2Head(props) {
 
   useEffect(() => {
     if (props.scoreRecord) {
-      fetchP1Data({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.homeTeam.id}`, headers: HEADERS });
-      fetchP2Data({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.awayTeam.id}`, headers: HEADERS });
-      fetchP1Ranking({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.homeTeam.id}/rankings`, headers: HEADERS });
-      fetchP2Ranking({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.awayTeam.id}/rankings`, headers: HEADERS });
+      fetchP1Data({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.homeTeam.id}` });
+      fetchP2Data({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.awayTeam.id}` });
+      fetchP1Ranking({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.homeTeam.id}/rankings` });
+      fetchP2Ranking({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.awayTeam.id}/rankings` });
     }
   }, [props.scoreRecord]);
 
@@ -66,11 +61,10 @@ export default function Head2Head(props) {
       let id = team === "p1" ? props.scoreRecord?.homeTeam.id : props.scoreRecord?.awayTeam.id;
       if (!id) return;
 
-      let reqUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/team/${id}/image`;
-      let IMAGE_HEADERS = { ...HEADERS, Accept: "image/png" };
+      let reqUrl = `/api/tennis/team/${id}/image`;
 
       try {
-        const res = await fetch(reqUrl, { headers: IMAGE_HEADERS });
+        const res = await fetch(reqUrl);
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
 

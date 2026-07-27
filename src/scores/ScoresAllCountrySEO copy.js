@@ -95,7 +95,7 @@ const FixtureResultsCountry = () => {
         setOpenMatchStat(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`,
+            url: `/api/tennis/event/${item.id}/statistics`,
             headers: HEADERS
         };
         fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
@@ -110,7 +110,7 @@ const FixtureResultsCountry = () => {
         setOpenH2H(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`,
+            url: `/api/tennis/event/${item.id}/duel`,
             headers: HEADERS
         };
         fetchH2H({ method: 'get', payload: [], url: options.url, headers: HEADERS })
@@ -233,7 +233,7 @@ const FixtureResultsCountry = () => {
             setError("")
             const options = {
                 method: 'GET',
-                url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
+                url: `/api/tennis/events/${day}/${month}/${year}`,
                 headers: HEADERS
             };
             try {

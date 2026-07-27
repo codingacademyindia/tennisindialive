@@ -29,11 +29,6 @@ import { getItem, setItem } from '../indexDb/indexedDB';
 import { getAlpha3, getBaseRoute, getCountryFullName } from '../utils/utils';
 import { BiInfoCircle } from 'react-icons/bi';
 
-const HEADERS = {
-    'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-};
-
 const tournamentName = '';
 export const TOUR_ICONS = {
     WTA: (
@@ -154,7 +149,7 @@ const FixtureResultsCountry = () => {
         setEventId(item.id);
         setScoreRecord(item);
         setOpenMatchStat(true);
-        fetchMatchStats({ method: 'get', payload: [], url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`, headers: HEADERS });
+        fetchMatchStats({ method: 'get', payload: [], url: `/api/tennis/event/${item.id}/statistics` });
         setMatchStatus(item?.status?.type);
     };
 
@@ -162,7 +157,7 @@ const FixtureResultsCountry = () => {
         setEventId(item.id);
         setScoreRecord(item);
         setOpenH2H(true);
-        fetchH2H({ method: 'get', payload: [], url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`, headers: HEADERS });
+        fetchH2H({ method: 'get', payload: [], url: `/api/tennis/event/${item.id}/duel` });
     };
 
     const handleClickPlayerName = (item) => {
@@ -241,9 +236,13 @@ const FixtureResultsCountry = () => {
 
         let cancelled = false;
         let pollingTimer = null;
+        let isPollingInFlight = false;
 
         async function loadSequential() {
             if (cancelled) return;
+            if (isPollingInFlight) return;
+
+            isPollingInFlight = true;
 
             if (isFirstLoad.current) setLoading(true);
 
@@ -252,21 +251,26 @@ const FixtureResultsCountry = () => {
 
             try {
                 const calResp = await fetchWithRetry(
-                    `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
-                    { headers: HEADERS },
+                    `/api/tennis/calendar/${day}/${month}/${year}/categories`,
+                    {},
                     3,
                     250
                 );
                 const categories = calResp?.categories ?? [];
+                const uniqueCategoryIds = [
+                    ...new Set(
+                        categories
+                            .map((item) => item?.category?.id)
+                            .filter(Boolean)
+                    ),
+                ];
                 const seen = new Set();
                 const events = [];
-                for (const item of categories) {
-                    const catId = item.category?.id;
-                    if (!catId) continue;
+                for (const catId of uniqueCategoryIds) {
                     try {
                         const res = await fetchWithRetry(
-                            `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
-                            { headers: HEADERS },
+                            `/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
+                            {},
                             3,
                             250
                         );
@@ -289,6 +293,7 @@ const FixtureResultsCountry = () => {
             } catch (err) {
                 if (!cancelled) setError(err.message);
             } finally {
+                isPollingInFlight = false;
                 if (!cancelled && isFirstLoad.current) {
                     setLoading(false);
                     isFirstLoad.current = false;
@@ -535,15 +540,17 @@ const FixtureResultsCountry = () => {
                 <div className="flex justify-center gap-1">
                     {validSets.map(([h, a], i) => {
                         const isLastSet = i === validSets.length - 1;
+                        // Don't show tiebreak superscript on the active set — it's already shown via `point` in yellow
+                        const showTiebreak = !(currentStatus === "inprogress" && isLastSet);
                         return (
                             <React.Fragment key={`set-${i}`}>
                                 <div key={i} className="flex flex-col items-center min-w-[24px]">
                                     {/* Set scores */}
                                     <span>
-                                        {h}{homeTiebreaks[i] && <sup className="text-[0.6em]">{homeTiebreaks[i]}</sup>}
+                                        {h}{showTiebreak && homeTiebreaks[i] !== '' && <sup className="text-[0.6em]">{homeTiebreaks[i]}</sup>}
                                     </span>
                                     <span>
-                                        {a}{awayTiebreaks[i] && <sup className="text-[0.6em]">{awayTiebreaks[i]}</sup>}
+                                        {a}{showTiebreak && awayTiebreaks[i] !== '' && <sup className="text-[0.6em]">{awayTiebreaks[i]}</sup>}
                                     </span>
 
                                 </div>

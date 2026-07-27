@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getDailyCategories } from "../services/tennisApiService";
 
 const TOUR_COLORS = {
     atp: "border-emerald-500 text-emerald-400 bg-emerald-500/10",
@@ -59,17 +60,6 @@ function CategoryCard({ item }) {
     );
 }
 
-function getApiUrl(dateStr) {
-    // dateStr: "YYYY-MM-DD"
-    const [year, month, day] = dateStr.split("-");
-    return `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`;
-}
-
-const API_HEADERS = {
-    "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_KEY,
-    "x-rapidapi-host": "tennisapi1.p.rapidapi.com",
-};
-
 export default function TennisSchedule() {
     const today = new Date();
     const defaultDate = today.toISOString().slice(0, 10); // "YYYY-MM-DD"
@@ -84,11 +74,9 @@ export default function TennisSchedule() {
         setError("");
         setData(null);
 
-        fetch(getApiUrl(selectedDate), { headers: API_HEADERS })
-            .then((res) => {
-                if (!res.ok) throw new Error("Failed to fetch calendar data");
-                return res.json();
-            })
+        const [year, month, day] = selectedDate.split("-");
+
+        getDailyCategories(day, month, year)
             .then((data) => {
                 setData(data);
                 setLoading(false);

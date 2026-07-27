@@ -11,6 +11,7 @@ import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
 import { getAlpha3, getCountryFullName } from '../../utils/utils';
 import CountryModal from '../../common/CountryModal';
+import { getLiveRankingsLatest } from '../../services/tennisApiService';
 
 
 const ATPCurrentRankings = () => {
@@ -31,6 +32,51 @@ const ATPCurrentRankings = () => {
     const [countryModal, setCountryModal] = useState(false);
     // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
 
+    const rankingTypeConfig = {
+        'atp-singles': {
+            tour: 'atp',
+            category: 'singles',
+            pageHeader: 'ATP Live Ranking - Singles',
+            pageDesc: "This page provides real-time updates of ATP live rankings for Singles. Use the 'INDIA' button to focus on Indian players or 'ALL' global players.",
+        },
+        'atp-doubles': {
+            tour: 'atp',
+            category: 'doubles',
+            pageHeader: 'ATP Live Ranking - Doubles',
+            pageDesc: "This page provides real-time updates of ATP live rankings for Doubles. Use the 'INDIA' button to focus on Indian players or 'ALL' global players.",
+        },
+        'wta-singles': {
+            tour: 'wta',
+            category: 'singles',
+            pageHeader: 'WTA Live Ranking - Singles',
+            pageDesc: "This page provides real-time updates of WTA live rankings for Singles. Use the 'INDIA' button to focus on Indian players or 'ALL' global players.",
+        },
+        'wta-doubles': {
+            tour: 'wta',
+            category: 'doubles',
+            pageHeader: 'WTA Live Ranking - Doubles',
+            pageDesc: "This page provides real-time updates of WTA live rankings for Doubles. Use the 'INDIA' button to focus on Indian players or 'ALL' global players.",
+        },
+    };
+
+    const parseChangeValue = (changeText) => {
+        if (changeText === null || changeText === undefined) return 0;
+        const text = String(changeText).trim().toLowerCase();
+        if (!text || text === '-' || text === 'same' || text === 'no change') return 0;
+
+        const parsed = Number.parseInt(text.replace(/[^0-9+-]/g, ''), 10);
+        return Number.isNaN(parsed) ? 0 : parsed;
+    };
+
+    const normalizeLiveRankingRows = (rows = []) => {
+        return rows.map((row) => ({
+            rank: row.rank_text ?? row.rank_value ?? '',
+            player: row.player ?? '',
+            country: (row.country ?? '').toUpperCase(),
+            change: parseChangeValue(row.change_text),
+            points: row.points_text ?? row.points_value ?? '',
+        }));
+    };
 
 
     const getFlagUrl = (code) =>
@@ -74,7 +120,7 @@ const ATPCurrentRankings = () => {
             let rankingsDataCopy = JSON.parse(JSON.stringify(data));
             if (selectedCountryAlpha3.toLowerCase() !== 'all') {
                 rankingsDataCopy = rankingsDataCopy.filter(item =>
-                    item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase()
+                    String(item.country || '').toLowerCase() === selectedCountryAlpha3.toLowerCase()
                 );
             }
             setFilteredData(rankingsDataCopy);
@@ -86,7 +132,7 @@ const ATPCurrentRankings = () => {
             let rankingsDataCopy = JSON.parse(JSON.stringify(data));
             if (selectedCountryAlpha3.toLowerCase() !== 'all') {
                 rankingsDataCopy = rankingsDataCopy.filter(item =>
-                    item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase()
+                    String(item.country || '').toLowerCase() === selectedCountryAlpha3.toLowerCase()
                 );
             }
             return rankingsDataCopy
@@ -136,56 +182,41 @@ const ATPCurrentRankings = () => {
 
     useEffect(() => {
         const fetchRankings = async () => {
+            const config = rankingTypeConfig[type];
+            if (!config) {
+                setError('Invalid ranking type.');
+                setRankingsData([]);
+                setFilteredData([]);
+                return;
+            }
+
             setLoading(true);
-            const timestamp = await fetch('/ranking/live/live_ranking_timestamp.json');
-            const timeStampData = await timestamp.json();
+            setError(null);
 
             try {
-                let response, data;
-                switch (type) {
-                    case 'atp-singles':
-                        response = await fetch('/ranking/live/atp/atp-live-ranking.json');
-                        data = await response.json();
-                        setRankingTimestamp(timeStampData['atp-live-ranking']);
-                        setPageHeader("ATP Live Ranking - Singles");
-                        setPageDesc("This page provides real-time updates of ATP live rankings for Singles . Use the 'INDIA' button  to focus on Indian players or 'ALL' global players.")
-                        break;
-                    case 'atp-doubles':
-                        response = await fetch('/ranking/live/atp/atp-doubles-live-ranking.json');
-                        data = await response.json();
-                        setRankingTimestamp(timeStampData['atp-doubles-live-ranking']);
-                        setPageHeader("ATP Live Ranking - Doubles");
-                        setPageDesc("This page provides real-time updates of ATP live rankings for Doubles . Use the 'INDIA' button  to focus on Indian players or 'ALL' global players.")
-                        break;
-                    case 'wta-singles':
-                        response = await fetch('/ranking/live/wta/wta-live-ranking.json');
-                        data = await response.json();
-                        setRankingTimestamp(timeStampData['wta-live-ranking']);
-                        setPageHeader("WTA Live Ranking - Singles");
-                        setPageDesc("This page provides real-time updates of WTA live rankings for Singles . Use the 'INDIA' button  to focus on Indian players or 'ALL' global players.")
-                        break;
-                    case 'wta-doubles':
-                        response = await fetch('/ranking/live/wta/wta-doubles-live-ranking.json');
-                        data = await response.json();
-                        setRankingTimestamp(timeStampData['wta-doubles-live-ranking']);
-                        setPageHeader("WTA Live Ranking - Doubles");
-                        setPageDesc("This page provides real-time updates of WTA live rankings for Doubles . Use the 'INDIA' button  to focus on Indian players or 'ALL' global players.")
-                        break;
-                    default:
-                        data = [];
-                }
+                const apiData = await getLiveRankingsLatest({
+                    tour: config.tour,
+                    category: config.category,
+                    limit: 1000,
+                });
+                const normalizedRows = normalizeLiveRankingRows(apiData.rows || []);
 
-                setRankingsData(data);
-                getFilteredData(data);
+                setRankingTimestamp(apiData.fetched_at ? new Date(apiData.fetched_at).toLocaleString() : 'N/A');
+                setPageHeader(config.pageHeader);
+                setPageDesc(config.pageDesc);
+                setRankingsData(normalizedRows);
+                getFilteredData(normalizedRows);
             } catch (error) {
                 setError("Failed to load rankings data.");
+                setRankingsData([]);
+                setFilteredData([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchRankings();
-    }, [refreshScore]);
+    }, [type, refreshScore]);
 
     useEffect(() => {
         setLoading(true);
@@ -239,11 +270,15 @@ const ATPCurrentRankings = () => {
                 {pageDesc}
             </div> */}
 
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="px-3 py-2 text-red-400 bg-red-950/30 border border-red-900 rounded m-2">{error}</p>}
 
             {loading ? <Loader /> : rankingsData && (
                 <div className="w-full mx-auto border">
-                    <CustomizedTables data={getFilteredDataValue(rankingsData)} countryName={selectedCountry} />
+                    {getFilteredDataValue(rankingsData)?.length > 0 ? (
+                        <CustomizedTables data={getFilteredDataValue(rankingsData)} countryName={selectedCountry} />
+                    ) : (
+                        <div className="p-4 text-slate-300 bg-slate-900">No ranking data found for selected filters.</div>
+                    )}
                 </div>
             )}
 

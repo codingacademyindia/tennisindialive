@@ -24,10 +24,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const HEADERS = {
-  'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-  'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-}
 export default function PlayerInfo(props) {
   const [p1Image, setP1Image] = useState(null);
   const { data: p1Data, loading: loadingP1, error: errorP1, setRequest: fetchP1Data } = useApiCall({ method: 'get', payload: [], url: '' });
@@ -46,20 +42,17 @@ export default function PlayerInfo(props) {
   // }
 
   useEffect(() => {
-    fetchP1Data({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.id}`, payload: [], headers: HEADERS })
-    fetchP1Ranking({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.id}/rankings`, payload: [], headers: HEADERS })
+    fetchP1Data({ method: 'get', url: `/api/tennis/team/${props.id}`, payload: [] })
+    fetchP1Ranking({ method: 'get', url: `/api/tennis/team/${props.id}/rankings`, payload: [] })
 
   }, [props.id]);
 
   useEffect(() => {
     const fetchData = async (team) => {
       try {
-        let reqUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.id}/image`
-        let IMAGE_HEADERS = JSON.parse(JSON.stringify(HEADERS))
-        IMAGE_HEADERS['Accept'] = 'image/png'
+        let reqUrl = `/api/tennis/team/${props.id}/image`
         const res = await fetch(reqUrl, {
-          method: 'GET',
-          headers: IMAGE_HEADERS
+          method: 'GET'
         });
         const blob = await res.blob();
         const url = URL.createObjectURL(blob)

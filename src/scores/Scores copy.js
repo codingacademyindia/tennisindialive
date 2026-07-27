@@ -158,7 +158,7 @@ const FixtureResults = () => {
             setError("")
             const options = {
                 method: 'GET',
-                url: `https://tennisapi1.p.rapidapi.com/api/tennis/events/${day}/${month}/${year}`,
+                url: `/api/tennis/events/${day}/${month}/${year}`,
                 headers: {
                     'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
                     'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'

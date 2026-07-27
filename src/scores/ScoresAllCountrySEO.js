@@ -124,10 +124,6 @@ const StickyToolbar = styled(Box)(({ theme }) => ({
     zIndex: 20,
 }));
 
-const HEADERS = {
-    'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-};
 const tournamentName = '';
 
 const FixtureResultsCountry = () => {
@@ -176,7 +172,7 @@ const FixtureResultsCountry = () => {
         setScoreRecord(item);
         setOpenMatchStat(true);
         fetchMatchStats({
-            method: 'get', payload: [], url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`, headers: HEADERS
+            method: 'get', payload: [], url: `/api/tennis/event/${item.id}/statistics`
         });
         setSelectedMatchStatus(item?.status?.type);
     };
@@ -185,7 +181,7 @@ const FixtureResultsCountry = () => {
         setScoreRecord(item);
         setOpenH2H(true);
         fetchH2H({
-            method: 'get', payload: [], url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/duel`, headers: HEADERS
+            method: 'get', payload: [], url: `/api/tennis/event/${item.id}/duel`
         });
     };
     const handleClickPlayerName = (item) => {
@@ -254,8 +250,7 @@ const FixtureResultsCountry = () => {
             try {
                 const calResp = await axios.request({
                     method: 'GET',
-                    url: `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
-                    headers: HEADERS
+                    url: `/api/tennis/calendar/${day}/${month}/${year}/categories`
                 });
                 const categories = calResp.data?.categories ?? [];
                 const seen = new Set();
@@ -266,8 +261,7 @@ const FixtureResultsCountry = () => {
                     try {
                         const res = await axios.request({
                             method: 'GET',
-                            url: `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
-                            headers: HEADERS
+                            url: `/api/tennis/category/${catId}/events/${day}/${month}/${year}`
                         });
                         for (const evt of res.data?.events ?? []) {
                             if (!seen.has(evt.id)) { seen.add(evt.id); events.push(evt); }

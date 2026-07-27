@@ -57,6 +57,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://localhost:3224",
   "browserslist": [
     ">0.2%",
     "not dead",

@@ -112,11 +112,7 @@ const WtaLiveRankings = () => {
             setLoading(true)
             const options = {
                 method: 'GET',
-                url: 'https://tennisapi1.p.rapidapi.com/api/tennis/rankings/wta/live',
-                headers: {
-                    'x-rapidapi-key': 'b40a588570mshd0ab93b20a9f16dp1cfbccjsneecf38833008',
-                    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-                }
+                url: '/api/tennis/rankings/wta/live'
             };
 
 

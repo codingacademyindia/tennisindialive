@@ -67,6 +67,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3">
               <a href="/live-scores" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">Live Scores</a>
+              <a href="/tournament" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">Tournament Hub</a>
               <a href="/rankings/atp" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">ATP Rankings Dashboard</a>
               <a href="/rankings/wta" target="_blank" className="text-xs text-gray-300 px-2 py-1 rounded-md hover:bg-gray-800/60">WTA Rankings Dashboard</a>
         
@@ -129,6 +130,14 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
             >
               Live Scores
+            </NavLink>
+
+            <NavLink
+              to="/tournament"
+              className={({ isActive }) => `block px-3 py-2 rounded-md ${isActive ? "bg-indigo-700 text-white" : "text-gray-200 hover:bg-gray-800/60"}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              Tournament Hub
             </NavLink>
 
             <div>

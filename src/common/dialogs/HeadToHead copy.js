@@ -80,21 +80,21 @@ export default function Head2Head(props) {
 
   useEffect(() => {
     if (props.scoreRecord) {
-      fetchP1Data({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.homeTeam.id}`, payload: [], headers: HEADERS })
-      fetchP2Data({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.awayTeam.id}`, payload: [], headers: HEADERS })
-      // fetchP1Image({ method: 'image', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.homeTeam.id}/image`, payload: [], headers: HEADERS })
-      // fetchP2Image({ method: 'image', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.awayTeam.id}/image`, payload: [], headers: HEADERS })
-      fetchP1Ranking({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.homeTeam.id}/rankings`, payload: [], headers: HEADERS })
-      fetchP2Ranking({ method: 'get', url: `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.awayTeam.id}/rankings`, payload: [], headers: HEADERS })
+      fetchP1Data({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.homeTeam.id}`, payload: [], headers: HEADERS })
+      fetchP2Data({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.awayTeam.id}`, payload: [], headers: HEADERS })
+      // fetchP1Image({ method: 'image', url: `/api/tennis/team/${props.scoreRecord.homeTeam.id}/image`, payload: [], headers: HEADERS })
+      // fetchP2Image({ method: 'image', url: `/api/tennis/team/${props.scoreRecord.awayTeam.id}/image`, payload: [], headers: HEADERS })
+      fetchP1Ranking({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.homeTeam.id}/rankings`, payload: [], headers: HEADERS })
+      fetchP2Ranking({ method: 'get', url: `/api/tennis/team/${props.scoreRecord.awayTeam.id}/rankings`, payload: [], headers: HEADERS })
     }
   }, [props.scoreRecord, props.eventId]);
 
   useEffect(() => {
     const fetchData = async (team) => {
       try {
-        let reqUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.homeTeam.id}/image`
+        let reqUrl = `/api/tennis/team/${props.scoreRecord.homeTeam.id}/image`
         if (team == "p2") {
-          reqUrl = `https://tennisapi1.p.rapidapi.com/api/tennis/team/${props.scoreRecord.awayTeam.id}/image`
+          reqUrl = `/api/tennis/team/${props.scoreRecord.awayTeam.id}/image`
         }
         let IMAGE_HEADERS = JSON.parse(JSON.stringify(HEADERS))
         IMAGE_HEADERS['Accept'] = 'image/png'

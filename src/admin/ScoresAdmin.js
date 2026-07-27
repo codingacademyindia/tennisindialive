@@ -40,10 +40,6 @@ import { buildGroupedLiveMatchesTweet, buildLiveMatchesTweet, formatLiveScoreTwe
 const rawApiUrl = process.env.REACT_APP_API_URL || '';
 const REACT_APP_API_URL = rawApiUrl && rawApiUrl.includes('cai-service.onrender.com') ? '' : rawApiUrl;
 
-const HEADERS = {
-    'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-    'x-rapidapi-host': 'tennisapi1.p.rapidapi.com'
-}
 const tournamentName = ''
 
 const FixtureResultsAdmin = () => {
@@ -97,9 +93,7 @@ const FixtureResultsAdmin = () => {
     };
 
     const handleOk = () => {
-        // call your tweet API here
-        console.log("Tweet confirmed");
-        setOpenTweetDialog(false);
+        sendTweet();
     };
 
     const handleCloseCountry = () => {
@@ -112,10 +106,9 @@ const FixtureResultsAdmin = () => {
         setOpenMatchStat(true);
         const options = {
             method: 'GET',
-            url: `https://tennisapi1.p.rapidapi.com/api/tennis/event/${item.id}/statistics`,
-            headers: HEADERS
+            url: `/api/tennis/event/${item.id}/statistics`
         };
-        fetchMatchStats({ method: 'get', payload: [], url: options.url, headers: HEADERS })
+        fetchMatchStats({ method: 'get', payload: [], url: options.url })
         setSelectedMatchStatus(item?.status?.type)
 
 
@@ -173,11 +166,24 @@ const FixtureResultsAdmin = () => {
                 },
                 body: JSON.stringify({
                     msg: tweetText,
-                    env: "prod"   // or "prod"
+                    env: "prod"
                 })
             });
 
-            const data = await res.json();
+            const text = await res.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                // Proxy or server returned non-JSON (e.g. HTML error page)
+                throw new Error(`Server error (${res.status}): ${text.slice(0, 300)}`);
+            }
+
+            if (!res.ok) {
+                setTweetStatus("fail:" + (data.error || res.statusText));
+                console.log("Tweet Failed:", data);
+                return;
+            }
 
             if (data.success) {
                 // SUCCESS
@@ -310,8 +316,7 @@ const FixtureResultsAdmin = () => {
             try {
                 const calResp = await axios.request({
                     method: 'GET',
-                    url: `https://tennisapi1.p.rapidapi.com/api/tennis/calendar/${day}/${month}/${year}/categories`,
-                    headers: HEADERS
+                    url: `/api/tennis/calendar/${day}/${month}/${year}/categories`
                 });
                 const categories = calResp.data?.categories ?? [];
                 const seen = new Set();
@@ -322,8 +327,7 @@ const FixtureResultsAdmin = () => {
                     try {
                         const res = await axios.request({
                             method: 'GET',
-                            url: `https://tennisapi1.p.rapidapi.com/api/tennis/category/${catId}/events/${day}/${month}/${year}`,
-                            headers: HEADERS
+                            url: `/api/tennis/category/${catId}/events/${day}/${month}/${year}`
                         });
                         for (const evt of res.data?.events ?? []) {
                             if (!seen.has(evt.id)) { seen.add(evt.id); events.push(evt); }
