@@ -1,3 +1,5 @@
+const API_BASE_URL = (process.env.REACT_APP_API_URL || '').trim().replace(/\/$/, '');
+
 function buildUrl(path, params = {}) {
   const search = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -66,7 +68,9 @@ async function getJson(url, cacheMs = 0) {
 export async function proxyGet(path, params = {}, options = {}) {
   const { cacheMs = 0 } = options;
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return getJson(buildUrl(normalizedPath, params), cacheMs);
+  const relativeUrl = buildUrl(normalizedPath, params);
+  const targetUrl = API_BASE_URL ? `${API_BASE_URL}${relativeUrl}` : relativeUrl;
+  return getJson(targetUrl, cacheMs);
 }
 
 export async function getDailyCategories(day, month, year) {
