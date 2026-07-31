@@ -653,7 +653,7 @@ async def rapidapi_proxy(full_path: str, request: Request) -> Response:
     return await _proxy_to_rapidapi(full_path, request)
 
 
-@app.get("/{full_path:path}", include_in_schema=False)
+@app.api_route("/{full_path:path}", methods=["GET", "HEAD"], include_in_schema=False)
 async def serve_frontend(full_path: str) -> FileResponse:
     # Keep unknown API-like paths as 404s instead of serving the SPA shell.
     if full_path.startswith(("api/", "db/", "proxy/")):
@@ -677,3 +677,8 @@ async def serve_frontend(full_path: str) -> FileResponse:
         status_code=404,
         detail="Frontend build not found. Run `npm run build` at repository root.",
     )
+
+
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+async def serve_frontend_root() -> FileResponse:
+    return await serve_frontend("")
