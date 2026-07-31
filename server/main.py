@@ -13,7 +13,7 @@ import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import FileResponse, Response
 from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
@@ -29,6 +29,8 @@ RAPIDAPI_BASE_URL = os.getenv("RAPIDAPI_BASE_URL", "https://tennisapi1.p.rapidap
 _TABLE_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 db_pool: Optional[AsyncConnectionPool] = None
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+FRONTEND_BUILD_DIR = PROJECT_ROOT / "build"
+FRONTEND_INDEX_FILE = FRONTEND_BUILD_DIR / "index.html"
 
 
 @asynccontextmanager
@@ -649,3 +651,29 @@ async def rankings_live_compat(tour: str, category: str) -> dict[str, Any]:
 )
 async def rapidapi_proxy(full_path: str, request: Request) -> Response:
     return await _proxy_to_rapidapi(full_path, request)
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_frontend(full_path: str) -> FileResponse:
+    # Keep unknown API-like paths as 404s instead of serving the SPA shell.
+    if full_path.startswith(("api/", "db/", "proxy/")):
+        raise HTTPException(status_code=404, detail="Not Found")
+
+    if full_path and FRONTEND_BUILD_DIR.exists():
+        requested_file = (FRONTEND_BUILD_DIR / full_path).resolve(strict=False)
+        build_root = FRONTEND_BUILD_DIR.resolve(strict=False)
+        try:
+            requested_file.relative_to(build_root)
+        except ValueError as exc:
+            raise HTTPException(status_code=404, detail="Not Found") from exc
+
+        if requested_file.is_file():
+            return FileResponse(requested_file)
+
+    if FRONTEND_INDEX_FILE.exists():
+        return FileResponse(FRONTEND_INDEX_FILE)
+
+    raise HTTPException(
+        status_code=404,
+        detail="Frontend build not found. Run `npm run build` at repository root.",
+    )

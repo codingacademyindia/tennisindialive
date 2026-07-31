@@ -1,0 +1,17 @@
+<svg width="430" height="100" viewBox="0 0 430 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tennis Ball Icon -->
+  <circle cx="54" cy="50" r="38" fill="#FFE600" stroke="#243c88" stroke-width="6"/>
+  <path d="M34,46 Q50,35 74,54" stroke="#243c88" stroke-width="4" fill="none"/>
+  <path d="M64,30 Q74,60 38,70" stroke="#43e067" stroke-width="3" fill="none"/>
+  <circle cx="66" cy="62" r="5" fill="#fff" opacity="0.6"/>
+  <!-- Brand Text -->
+  <text x="120" y="58" font-family="Montserrat,Arial,sans-serif" font-size="38" font-weight="bold" 
+        fill="#fff" stroke="#243c88" stroke-width="2" paint-order="stroke">
+    TENNIS NATION
+  </text>
+  <!-- LIVE label -->
+  <rect x="145" y="73" rx="7" width="70" height="24" fill="#43e067"/>
+  <text x="165" y="91" font-family="Montserrat,Arial,sans-serif" font-size="20" font-weight="bold" fill="#243c88">
+    LIVE
+  </text>
+</svg>

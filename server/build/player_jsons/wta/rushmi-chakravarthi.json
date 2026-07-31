@@ -1,0 +1,36 @@
+{
+    "name": "Rushmi Chakravarthi",
+    "nationality": "INDIA",
+    "date_of_birth": "9-October-1977",
+    "height": "1.67 m (5 ft 6 in)",
+    "plays": "Right-handed (two-handed backhand)",
+    "birthplace": "Hyderabad, Telangana, India",
+    "photo": "/images/players/wta/rushmi-chakravarthi.jpg",
+    "source": "ITF",
+    "bio": "<b>Career Overview:</b> Rushmi Chakravarthi is a retired Indian tennis player, renowned for holding the record for the most ITF titles by an Indian woman, retiring in 2017 after a prolific career.<br/><br/><b>Playing Style:</b> Known for her consistent baseline game and endurance, she excelled on hard courts.<br/><br/><b>Career-High WTA Singles Ranking:</b> <span>#314 (October 31, 2005)</span><br/><b>Career-High WTA Doubles Ranking:</b> <span>#208 (October 24, 2005)</span><br/><br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of Wimbledon qualifying in 2005.<br/><br/><b>Notable Achievements:</b><ul><li>Won a record 11 ITF singles titles and 41 ITF doubles titles, totaling 52—the highest by an Indian woman.</li><li>Earned 4 medals at the 2006 Asian Games (team gold, doubles silver, mixed doubles bronze, singles bronze).</li><li>Won a bronze medal in doubles at the 2010 Commonwealth Games with Sania Mirza.</li></ul><br/><b>Other Highlights:</b><ul><li>A Fed Cup stalwart for India from 2000–2012, with a win-loss record of 22–18.</li><li>Competed at the 2012 London Olympics in doubles with Sania Mirza, reaching the first round.</li><li>Mentored younger players post-retirement, contributing to Indian tennis development.</li></ul><br/>Rushmi’s prolific ITF career solidified her as a key figure in Indian tennis history. 🎾🇮🇳",
+    "updated_at": "22-March-2025 11:59 AM",
+    "singles": {
+        "ytd_move": "N/A",
+        "current_rank": "Retired",
+        "ytd_wins": "0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "314",
+        "career_wins": "252",
+        "career_titles": "0",
+        "career_prize_money": "$162,085"
+    },
+    "doubles": {
+        "ytd_move": "N/A",
+        "current_rank": "Retired",
+        "ytd_wins": "0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "208",
+        "career_wins": "398",
+        "career_titles": "0",
+        "career_prize_money": "$162,085"
+    }
+}

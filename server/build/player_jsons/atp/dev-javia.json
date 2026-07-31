@@ -1,0 +1,38 @@
+{
+    "name": "DEV JAVIA",
+    "nationality": "India",
+    "date_of_birth": "23 (2002/03/16)",
+    "weight": "165 lbs (75kg)",
+    "turned_pro": "",
+    "coach": "Alberto L\u00f3pez N\u00fa\u00f1ez",
+    "plays": "Left-Handed, Two-Handed Backhand",
+    "birthplace": "Ankleshwar",
+    "photo": "/images/players/atp/dev-javia.jpg",
+    "source": "KSLTA",
+    "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A left-handed player with a strong serve and powerful forehand, effective on hard and clay courts.<br/><b>Best Grand Slam Singles Performance:</b> Yet to play in a senior Grand Slam main draw; reached the second round of Wimbledon Juniors (2019).<br/><b>Notable Achievements:</b> <b>ITF Titles:</b> Won 1 ITF Futures singles title (2023 M15 Jakarta) and 1 doubles title (2024 M15 Nakhon Si Thammarat). <b>Biggest Singles Win:</b> Defeated World No. 374 Dominik Palan at the 2024 ITF M15 Nakhon Si Thammarat. <b>Junior Success:</b> Achieved a career-high ITF Junior Ranking of #54 (2019) and won the 2019 MCC National Junior U-18 Clay Court Championship. <b>Davis Cup & National Representation:</b> Yet to debut in Davis Cup but named to India\u2019s Junior Davis Cup team (2018).<br/><b>Other Highlights:</b> Trains at the IMPACT Tennis Academy in Bangkok under Mark Gellard (former coach of Nick Kyrgios). Won gold at the 2020 Khelo India Youth Games (U-17). Aims to break into the ATP Top 200 by 2026.<br/>Dev is a promising talent in Indian tennis, steadily climbing the ranks with a focus on physical and mental growth. \ud83c\udfbe\ud83c\uddee\ud83c\uddf3",
+    "updated_at": "30-July-2026 02:43 PM",
+    "singles": {
+        "ytd_move": "1",
+        "current_rank": "985",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$4,767",
+        "career_move": "N/A",
+        "career_high_rank": "604",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$41,557"
+    },
+    "doubles": {
+        "ytd_move": "4",
+        "current_rank": "917",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$1,269",
+        "career_move": "N/A",
+        "career_high_rank": "410",
+        "career_wins": "0 - 0",
+        "career_titles": "0",
+        "career_prize_money": "$41,557"
+    }
+}
