@@ -7,13 +7,7 @@ import Logo from "../common/Logo";
 
 const navItems = [
   { label: "Live Scores", url: "/live-scores" },
-  {
-    label: "Tournaments",
-    dropdown: [
-      { label: "ATP", url: "/tournament/atp" },
-      { label: "WTA", url: "/tournament/wta" },
-    ],
-  },
+  
   {
     label: "ATP Ranking",
     dropdown: [
