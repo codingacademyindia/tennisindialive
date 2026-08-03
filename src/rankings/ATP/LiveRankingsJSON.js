@@ -219,9 +219,7 @@ const ATPCurrentRankings = () => {
     }, [type, refreshScore]);
 
     useEffect(() => {
-        setLoading(true);
         getFilteredData(rankingsData);
-        setLoading(false);
     }, [selectedCountry, selectedCountryAlpha3]);
 
     console.log(selectedCountryAlpha3);

@@ -589,7 +589,11 @@ async def tennis_api_compat_proxy(full_path: str, request: Request) -> Response:
 
 
 @app.get("/api/rankings/live/{tour}/{category}")
-async def rankings_live_compat(tour: str, category: str) -> dict[str, Any]:
+async def rankings_live_compat(
+    tour: str,
+    category: str,
+    limit: int = Query(default=1000, ge=1, le=2000),
+) -> dict[str, Any]:
     normalized_tour = str(tour or "").lower()
     normalized_category = str(category or "").lower()
 
@@ -598,51 +602,44 @@ async def rankings_live_compat(tour: str, category: str) -> dict[str, Any]:
     if normalized_category not in {"singles", "doubles"}:
         raise HTTPException(status_code=400, detail="category must be singles or doubles")
 
-    if normalized_category == "doubles":
-        file_path = PROJECT_ROOT / "public" / "ranking" / "live" / normalized_tour / f"{normalized_tour}-doubles-live-ranking.json"
-        if not file_path.exists():
-            raise HTTPException(status_code=404, detail="Doubles ranking file not found")
+    pool = _require_pool()
 
-        rows = json.loads(file_path.read_text(encoding="utf-8"))
-        normalized_rows = [
-            {
-                "rank_text": row.get("rank"),
-                "rank_value": _parse_maybe_number(row.get("rank")),
-                "player": row.get("player") or "",
-                "country": row.get("country"),
-                "points_text": row.get("points"),
-                "points_value": _parse_maybe_number(row.get("points")),
-                "career_high": None,
-                "change_text": row.get("change"),
-            }
-            for row in rows
-        ]
-    else:
-        if not RAPIDAPI_KEY:
-            raise HTTPException(status_code=500, detail="Missing REACT_APP_RAPIDAPI_KEY in server/.env")
+    latest_ts_query = sql.SQL(
+        "SELECT MAX(fetched_at) AS max_fetched_at FROM tennisdb.live_rankings "
+        "WHERE tour = %s AND category = %s"
+    )
+    rows_query = sql.SQL(
+        """
+        SELECT
+            rank_text, rank_value, player, country,
+            points_text, points_value, career_high, change_text, fetched_at
+        FROM tennisdb.live_rankings
+        WHERE fetched_at = %s AND tour = %s AND category = %s
+        ORDER BY rank_value ASC NULLS LAST, id ASC
+        LIMIT %s
+        """
+    )
 
-        target_url = f"{RAPIDAPI_BASE_URL.rstrip('/')}/api/tennis/rankings/{normalized_tour}/live"
-        headers = {
-            "x-rapidapi-key": RAPIDAPI_KEY,
-            "x-rapidapi-host": RAPIDAPI_HOST,
-        }
+    try:
+        async with pool.connection() as conn:
+            async with conn.cursor(row_factory=dict_row) as cur:
+                await cur.execute(latest_ts_query, [normalized_tour, normalized_category])
+                latest_row = await cur.fetchone()
+                latest_ts = latest_row["max_fetched_at"] if latest_row else None
 
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            upstream_response = await client.get(target_url, headers=headers)
+                if latest_ts is None:
+                    return {"fetched_at": None, "count": 0, "rows": []}
 
-        if upstream_response.status_code >= 400:
-            detail = upstream_response.text[:300] if upstream_response.text else "Upstream error"
-            raise HTTPException(status_code=upstream_response.status_code, detail=detail)
+                await cur.execute(rows_query, [latest_ts, normalized_tour, normalized_category, limit])
+                rows = await cur.fetchall()
 
-        payload = upstream_response.json()
-        base_rows = payload.get("rankings") or payload.get("rows") or payload.get("standings") or []
-        normalized_rows = _normalize_ranking_rows(base_rows)
-
-    return {
-        "fetched_at": None,
-        "count": len(normalized_rows),
-        "rows": normalized_rows,
-    }
+                return {
+                    "fetched_at": latest_ts,
+                    "count": len(rows),
+                    "rows": rows,
+                }
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch live rankings: {exc}") from exc
 
 
 @app.api_route(
