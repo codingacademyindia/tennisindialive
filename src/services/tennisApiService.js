@@ -198,6 +198,13 @@ export async function getLiveRankingsLatest({ sourceSlug, tour, category, limit 
   return proxyGet(`/api/rankings/live/${tour}/${category}`, { limit, source_slug: sourceSlug });
 }
 
+export async function getOfficialRankingsLatest({ tour, category, limit = 1000 } = {}) {
+  if (!tour || !category) {
+    throw new Error('tour and category are required');
+  }
+  return proxyGet(`/api/rankings/official/${tour}/${category}`, { limit });
+}
+
 export async function getCategoryEvents(categoryId, day, month, year) {
   return proxyGet(`/api/tennis/category/${categoryId}/events/${day}/${month}/${year}`);
 }

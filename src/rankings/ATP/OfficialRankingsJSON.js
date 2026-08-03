@@ -14,6 +14,7 @@ import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
 import { getAlpha2FromName, getAlpha3, getCountryFullName } from '../../utils/utils';
 import CountryModal from '../../common/CountryModal';
+import { getOfficialRankingsLatest } from '../../services/tennisApiService';
 
 const OfficialRankings = () => {
     const { type } = useParams();
@@ -36,6 +37,31 @@ const OfficialRankings = () => {
     const [countryModal, setCountryModal] = useState(false);
     // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
 
+    const rankingTypeConfig = {
+        'atp-singles': { tour: 'atp', category: 'singles', pageHeader: 'Official ATP Ranking - Singles' },
+        'atp-doubles': { tour: 'atp', category: 'doubles', pageHeader: 'Official ATP Ranking - Doubles' },
+        'wta-singles': { tour: 'wta', category: 'singles', pageHeader: 'Official WTA Ranking - Singles' },
+        'wta-doubles': { tour: 'wta', category: 'doubles', pageHeader: 'Official WTA Ranking - Doubles' },
+    };
+
+    const parseChangeValue = (changeText) => {
+        if (changeText === null || changeText === undefined) return 0;
+        const text = String(changeText).trim().toLowerCase();
+        if (!text || text === '-' || text === 'same' || text === 'no change') return 0;
+
+        const parsed = Number.parseInt(text.replace(/[^0-9+-]/g, ''), 10);
+        return Number.isNaN(parsed) ? 0 : parsed;
+    };
+
+    const normalizeOfficialRankingRows = (rows = []) => {
+        return rows.map((row) => ({
+            rank: row.rank_text ?? row.rank_value ?? '',
+            player: row.player ?? '',
+            country: (row.country ?? '').toUpperCase(),
+            change: parseChangeValue(row.change_text),
+            points: row.points_text ?? row.points_value ?? '',
+        }));
+    };
 
 
     const getFlagUrl = (code) =>
@@ -140,54 +166,44 @@ const OfficialRankings = () => {
 
     useEffect(() => {
         const fetchRankings = async () => {
+            const config = rankingTypeConfig[type];
+            if (!config) {
+                setError('Invalid ranking type.');
+                setRankingsData([]);
+                setFilteredData([]);
+                return;
+            }
+
             setLoading(true);
             setError(null);
             setPageRefreshTime(new Date().toLocaleString());
 
             try {
-                const timestampRes = await fetch('/ranking/official/official_ranking_timestamp.json');
-                const timeStampData = await timestampRes.json();
+                const apiData = await getOfficialRankingsLatest({
+                    tour: config.tour,
+                    category: config.category,
+                    limit: 1000,
+                });
+                const normalizedRows = normalizeOfficialRankingRows(apiData.rows || []);
 
-                let response;
-                let data;
-                if (type === 'atp-singles') {
-                    response = await fetch('/ranking/official/atp/official-atp-ranking.json');
-                    data = await response.json();
-                    setRankingTimestamp(timeStampData['official-atp-ranking']);
-                    setPageHeader("Official ATP Ranking - Singles");
-                } else if (type === 'atp-doubles') {
-                    response = await fetch('/ranking/official/atp/official-atp-doubles-ranking.json');
-                    data = await response.json();
-                    setRankingTimestamp(timeStampData['official-atp-doubles-ranking']);
-                    setPageHeader("Official ATP Ranking - Doubles");
-                } else if (type === 'wta-singles') {
-                    response = await fetch('/ranking/official/wta/official-wta-ranking.json');
-                    data = await response.json();
-                    setRankingTimestamp(timeStampData['official-wta-ranking']);
-                    setPageHeader("Official WTA Ranking - Singles");
-                } else if (type === 'wta-doubles') {
-                    response = await fetch('/ranking/official/wta/official-wta-doubles-ranking.json');
-                    data = await response.json();
-                    setRankingTimestamp(timeStampData['official-wta-doubles-ranking']);
-                    setPageHeader("Official WTA Ranking - Doubles");
-                }
-
-                setRankingsData(data);
-                getFilteredData(data);
+                setRankingTimestamp(apiData.fetched_at ? new Date(apiData.fetched_at).toLocaleString() : 'N/A');
+                setPageHeader(config.pageHeader);
+                setRankingsData(normalizedRows);
+                getFilteredData(normalizedRows);
             } catch (error) {
                 setError("Failed to load rankings data: " + error.message);
+                setRankingsData([]);
+                setFilteredData([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchRankings();
-    }, [refreshScore]);
+    }, [refreshScore, type]);
 
     useEffect(() => {
-        setLoading(true);
         getFilteredData(rankingsData);
-        setLoading(false);
     }, [selectedCountry, selectedCountryAlpha3]);
 
     return (

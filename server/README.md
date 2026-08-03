@@ -1,11 +1,8 @@
-Server options
+Server
 
-This folder now supports two server options:
+Python/FastAPI (`main.py`) is the only backend. It serves PostgreSQL fetch APIs, the RapidAPI proxy, the tweet endpoint, and the built frontend.
 
-1. Node/Express (`server.js`) for existing tweet/static flow.
-2. Python/FastAPI (`main.py`) for PostgreSQL fetch APIs and RapidAPI proxy.
-
-FastAPI setup (recommended for DB + proxy)
+FastAPI setup
 
 1. Create/update `server/.env` using `server/.env.example`:
 - `DATABASE_URL` should be your Neon URL.
@@ -32,6 +29,7 @@ Available FastAPI endpoints
 - `GET /db/tables` - lists public tables.
 - `GET /db/{table_name}?limit=50` - fetches rows from a table.
 - `ANY /proxy/{path}` - proxies requests to `https://tennisapi1.p.rapidapi.com/{path}`.
+- `POST /tweet/live` - posts a tweet using `{msg, env}` (env: `test` or `prod`), reading `TEST_*`/`PROD_*` Twitter credentials from `server/.env`.
 
 Examples
 

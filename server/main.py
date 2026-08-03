@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import Any, Optional
 
 import httpx
+import tweepy
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import Body, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from psycopg import sql
@@ -19,7 +20,7 @@ from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
 
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 RAPIDAPI_KEY = os.getenv("REACT_APP_RAPIDAPI_KEY", "")
@@ -155,6 +156,34 @@ async def _proxy_to_rapidapi(full_path: str, request: Request) -> Response:
 @app.get("/health")
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.post("/tweet/live")
+async def tweet_live(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
+    msg = payload.get("msg")
+    env = payload.get("env", "test")
+
+    if not msg:
+        raise HTTPException(status_code=400, detail="msg is required")
+
+    prefix = "PROD" if env == "prod" else "TEST"
+    app_key = os.getenv(f"{prefix}_CONSUMER_KEY")
+    app_secret = os.getenv(f"{prefix}_CONSUMER_SECRET")
+    access_token = os.getenv(f"{prefix}_ACCESS_TOKEN")
+    access_secret = os.getenv(f"{prefix}_ACCESS_SECRET")
+
+    try:
+        client = tweepy.Client(
+            consumer_key=app_key,
+            consumer_secret=app_secret,
+            access_token=access_token,
+            access_token_secret=access_secret,
+        )
+        result = client.create_tweet(text=msg)
+        tweet_id = result.data["id"]
+        return {"success": True, "tweetId": tweet_id}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Tweet error: {exc}") from exc
 
 
 @app.get("/db/ping")
@@ -588,6 +617,49 @@ async def tennis_api_compat_proxy(full_path: str, request: Request) -> Response:
     return await _proxy_to_rapidapi(f"api/tennis/{full_path}", request)
 
 
+async def _fetch_latest_ranking_snapshot(
+    table_name: str, tour: str, category: str, limit: int
+) -> dict[str, Any]:
+    pool = _require_pool()
+    table_ident = sql.Identifier("tennisdb", table_name)
+
+    latest_ts_query = sql.SQL(
+        "SELECT MAX(fetched_at) AS max_fetched_at FROM {} WHERE tour = %s AND category = %s"
+    ).format(table_ident)
+    rows_query = sql.SQL(
+        """
+        SELECT
+            rank_text, rank_value, player, country,
+            points_text, points_value, career_high, change_text, fetched_at
+        FROM {}
+        WHERE fetched_at = %s AND tour = %s AND category = %s
+        ORDER BY rank_value ASC NULLS LAST, id ASC
+        LIMIT %s
+        """
+    ).format(table_ident)
+
+    try:
+        async with pool.connection() as conn:
+            async with conn.cursor(row_factory=dict_row) as cur:
+                await cur.execute(latest_ts_query, [tour, category])
+                latest_row = await cur.fetchone()
+                latest_ts = latest_row["max_fetched_at"] if latest_row else None
+
+                if latest_ts is None:
+                    return {"fetched_at": None, "count": 0, "rows": []}
+
+                await cur.execute(rows_query, [latest_ts, tour, category, limit])
+                rows = await cur.fetchall()
+
+                return {
+                    "fetched_at": latest_ts,
+                    "count": len(rows),
+                    "rows": rows,
+                }
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch rankings: {exc}") from exc
+
+
 @app.get("/api/rankings/live/{tour}/{category}")
 async def rankings_live_compat(
     tour: str,
@@ -602,44 +674,24 @@ async def rankings_live_compat(
     if normalized_category not in {"singles", "doubles"}:
         raise HTTPException(status_code=400, detail="category must be singles or doubles")
 
-    pool = _require_pool()
+    return await _fetch_latest_ranking_snapshot("live_rankings", normalized_tour, normalized_category, limit)
 
-    latest_ts_query = sql.SQL(
-        "SELECT MAX(fetched_at) AS max_fetched_at FROM tennisdb.live_rankings "
-        "WHERE tour = %s AND category = %s"
-    )
-    rows_query = sql.SQL(
-        """
-        SELECT
-            rank_text, rank_value, player, country,
-            points_text, points_value, career_high, change_text, fetched_at
-        FROM tennisdb.live_rankings
-        WHERE fetched_at = %s AND tour = %s AND category = %s
-        ORDER BY rank_value ASC NULLS LAST, id ASC
-        LIMIT %s
-        """
-    )
 
-    try:
-        async with pool.connection() as conn:
-            async with conn.cursor(row_factory=dict_row) as cur:
-                await cur.execute(latest_ts_query, [normalized_tour, normalized_category])
-                latest_row = await cur.fetchone()
-                latest_ts = latest_row["max_fetched_at"] if latest_row else None
+@app.get("/api/rankings/official/{tour}/{category}")
+async def rankings_official_compat(
+    tour: str,
+    category: str,
+    limit: int = Query(default=1000, ge=1, le=2000),
+) -> dict[str, Any]:
+    normalized_tour = str(tour or "").lower()
+    normalized_category = str(category or "").lower()
 
-                if latest_ts is None:
-                    return {"fetched_at": None, "count": 0, "rows": []}
+    if normalized_tour not in {"atp", "wta"}:
+        raise HTTPException(status_code=400, detail="tour must be atp or wta")
+    if normalized_category not in {"singles", "doubles"}:
+        raise HTTPException(status_code=400, detail="category must be singles or doubles")
 
-                await cur.execute(rows_query, [latest_ts, normalized_tour, normalized_category, limit])
-                rows = await cur.fetchall()
-
-                return {
-                    "fetched_at": latest_ts,
-                    "count": len(rows),
-                    "rows": rows,
-                }
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch live rankings: {exc}") from exc
+    return await _fetch_latest_ranking_snapshot("official_rankings", normalized_tour, normalized_category, limit)
 
 
 @app.api_route(
