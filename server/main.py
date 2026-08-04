@@ -29,6 +29,7 @@ RAPIDAPI_BASE_URL = os.getenv("RAPIDAPI_BASE_URL", "https://tennisapi1.p.rapidap
 
 _TABLE_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 db_pool: Optional[AsyncConnectionPool] = None
+http_client: Optional[httpx.AsyncClient] = None
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FRONTEND_BUILD_DIR = PROJECT_ROOT / "build"
 FRONTEND_INDEX_FILE = FRONTEND_BUILD_DIR / "index.html"
@@ -36,7 +37,7 @@ FRONTEND_INDEX_FILE = FRONTEND_BUILD_DIR / "index.html"
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    global db_pool
+    global db_pool, http_client
     if DATABASE_URL:
         db_pool = AsyncConnectionPool(
             conninfo=DATABASE_URL,
@@ -46,11 +47,18 @@ async def lifespan(_: FastAPI):
             max_idle=180,
         )
         await db_pool.open()
+    # Reused across requests instead of opening a new client (and connection pool) per proxy call.
+    http_client = httpx.AsyncClient(
+        timeout=30.0,
+        limits=httpx.Limits(max_connections=50, max_keepalive_connections=10),
+    )
     try:
         yield
     finally:
         if db_pool is not None:
             await db_pool.close()
+        if http_client is not None:
+            await http_client.aclose()
 
 
 app = FastAPI(title="TennisIndia FastAPI Proxy", version="1.0.0", lifespan=lifespan)
@@ -137,14 +145,16 @@ async def _proxy_to_rapidapi(full_path: str, request: Request) -> Response:
     if content_type:
         headers["content-type"] = content_type
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        upstream_response = await client.request(
-            method=request.method,
-            url=target_url,
-            params=dict(request.query_params),
-            headers=headers,
-            content=request_body,
-        )
+    if http_client is None:
+        raise HTTPException(status_code=500, detail="HTTP client is not initialized")
+
+    upstream_response = await http_client.request(
+        method=request.method,
+        url=target_url,
+        params=dict(request.query_params),
+        headers=headers,
+        content=request_body,
+    )
 
     return Response(
         content=upstream_response.content,
