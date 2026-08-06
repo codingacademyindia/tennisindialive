@@ -1074,6 +1074,32 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         { label: 'Not Started', key: 'notstarted' },
     ];
 
+    const statusCounts = (() => {
+        if (!rawData) return { all: 0, inprogress: 0, finished: 0, notstarted: 0 };
+        const c = { all: 0, inprogress: 0, finished: 0, notstarted: 0 };
+        const isAllCountry = !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
+        rawData.forEach(item => {
+            const p1 = item.homeTeam;
+            const p2 = item.awayTeam;
+            let matchesCty;
+            if (!item.tournament?.name?.toLowerCase().includes('double')) {
+                matchesCty = isAllCountry ||
+                    p1?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3 ||
+                    p2?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3;
+            } else {
+                const teams = [p1?.subTeams?.[0], p1?.subTeams?.[1], p2?.subTeams?.[0], p2?.subTeams?.[1]];
+                matchesCty = isAllCountry || teams.some(t => t?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3);
+            }
+            if (!matchesCty) return;
+            const type = item.status?.type;
+            c.all++;
+            if (type === 'inprogress') c.inprogress++;
+            else if (type === 'finished') c.finished++;
+            else if (type === 'notstarted') c.notstarted++;
+        });
+        return c;
+    })();
+
     let objFilterBar = (
         <div className="border-b border-gray-800 mb-1">
             {/* Country tab bar */}
@@ -1116,23 +1142,40 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
 
             {/* Status filters + date row */}
             <div className="flex items-center justify-between px-2 py-1.5 gap-2">
-                <div className="flex items-center gap-0.5">
-                    {STATUS_FILTERS.map(s => (
-                        <button
-                            key={s.key}
-                            onClick={() => handleStatusButtonClick(s.key)}
-                            className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium transition-all duration-150 ${
-                                matchStatus === s.key
-                                    ? 'bg-[#1e3a5f] text-blue-300 border border-blue-500/40'
-                                    : 'text-gray-500 hover:text-gray-300 border border-transparent hover:border-gray-700'
-                            }`}
-                        >
-                            {s.key === 'inprogress' && (
-                                <span className={`inline-block w-1.5 h-1.5 rounded-full ${matchStatus === 'inprogress' ? 'bg-green-400 animate-pulse' : 'bg-gray-600'}`} />
-                            )}
-                            {s.label}
-                        </button>
-                    ))}
+                <div className="flex items-center gap-1 flex-wrap">
+                    {STATUS_FILTERS.map(s => {
+                        const count = statusCounts[s.key] ?? 0;
+                        const isActive = matchStatus === s.key;
+                        const isEmpty = count === 0 && s.key !== 'all';
+                        return (
+                            <button
+                                key={s.key}
+                                onClick={() => handleStatusButtonClick(s.key)}
+                                disabled={isEmpty}
+                                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap ${
+                                    isActive
+                                        ? s.key === 'inprogress'
+                                            ? 'bg-green-500/20 text-green-300 border border-green-500/40'
+                                            : 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
+                                        : isEmpty
+                                            ? 'text-gray-700 border border-gray-800 cursor-not-allowed'
+                                            : 'text-gray-400 border border-gray-700 hover:text-gray-200 hover:border-gray-500'
+                                }`}
+                            >
+                                {s.key === 'inprogress' && (
+                                    <span className={`inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                                        isActive ? 'bg-green-400 animate-pulse' : count > 0 ? 'bg-green-600' : 'bg-gray-700'
+                                    }`} />
+                                )}
+                                {s.label}
+                                <span className={`text-[10px] font-bold ${
+                                    isActive
+                                        ? s.key === 'inprogress' ? 'text-green-300' : 'text-blue-300'
+                                        : isEmpty ? 'text-gray-700' : 'text-gray-500'
+                                }`}>{count}</span>
+                            </button>
+                        );
+                    })}
                 </div>
                 <div className="flex items-center gap-1">
                     <DatePickerValue
