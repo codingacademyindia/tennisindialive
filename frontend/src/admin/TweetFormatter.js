@@ -348,7 +348,7 @@ export function buildGroupedLiveMatchesTweet(matches) {
         tweet += lines.join("\n") + "\n\n";
     });
 
-    tweet += `Follow live 👇\n${link}`;
+    tweet += `Follow live -${link}`;
 
     return tweet.trim();
 }
