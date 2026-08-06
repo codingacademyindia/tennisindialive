@@ -186,7 +186,7 @@ export function tweetInProgress(match) {
         `${icon} Live from ${tournament}${round ? " - " + round : ""} 🎾\n\n` +
         `${h} vs ${a}\n` +
         `${leadText} • Score: ${scoreString}\n\n` +
-        `Follow live action 👇\n${link}`
+        `Follow live action - ${link}`
     );
 }
 

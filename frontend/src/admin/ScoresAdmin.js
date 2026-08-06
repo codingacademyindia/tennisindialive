@@ -33,6 +33,14 @@ const rawApiUrl = process.env.REACT_APP_API_URL || '';
 const REACT_APP_API_URL = rawApiUrl && rawApiUrl.includes('cai-service.onrender.com') ? '' : rawApiUrl;
 
 const tournamentName = '';
+const DEFAULT_TABS = [
+    { alpha3: 'all', alpha2: null, label: 'All' },
+    { alpha3: 'IND', alpha2: 'IN', label: 'India' },
+    { alpha3: 'USA', alpha2: 'US', label: 'USA' },
+    { alpha3: 'GBR', alpha2: 'GB', label: 'GBR' },
+    { alpha3: 'AUS', alpha2: 'AU', label: 'AUS' },
+    { alpha3: 'ESP', alpha2: 'ES', label: 'Spain' },
+];
 export const TOUR_ICONS = {
     WTA: (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#d946ef">
@@ -140,13 +148,28 @@ const FixtureResultsAdmin = () => {
     const [expanded, setExpanded] = useState(false);
     const [indianCount, setIndianCount] = useState(0);
     const [countryModal, setCountryModal] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState("IN");
+    const [selectedCountry, setSelectedCountry] = useState("all");
+    const [countryTabs, setCountryTabs] = useState(() => {
+        try { const s = localStorage.getItem('countryTabs'); return s ? JSON.parse(s) : DEFAULT_TABS; } catch { return DEFAULT_TABS; }
+    });
     const [openTweetDialog, setOpenTweetDialog] = useState(false);
     const [tweetText, setTweetText] = useState("");
     const [tweetStatus, setTweetStatus] = useState(""); // "idle" | "sending" | "success" | "error"
+    const tabBarRef = React.useRef(null);
+    const [selectedMatchIds, setSelectedMatchIds] = useState(new Set());
 
     // -------------------- HANDLERS --------------------
     const handleCloseCountry = () => setDialogOpenCountry(false);
+    const scrollTabs = (dir) => {
+        if (tabBarRef.current) tabBarRef.current.scrollBy({ left: dir * 120, behavior: 'smooth' });
+    };
+    const toggleMatchSelection = (id) => {
+        setSelectedMatchIds(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id); else next.add(id);
+            return next;
+        });
+    };
     const countryFullName = getCountryFullName(selectedCountry);
 
 
@@ -174,6 +197,41 @@ const FixtureResultsAdmin = () => {
         setOpenTweetDialog(true);
     };
 
+    const handleTournamentTweet = (tournamentKey) => {
+        setTweetStatus("");
+        const allMatches = (rankingsData[tournamentKey] || []).filter(hasCountry);
+        const hasSelection = allMatches.some(m => selectedMatchIds.has(m.id));
+        const matches = hasSelection ? allMatches.filter(m => selectedMatchIds.has(m.id)) : allMatches;
+        if (matches.length === 0) {
+            toast.info("No matches found for this tournament.");
+            return;
+        }
+        const liveMatches = matches.filter(m => m.status?.type === "inprogress");
+        const tweet = buildGroupedLiveMatchesTweet(liveMatches.length > 0 ? liveMatches : matches);
+        if (!tweet) {
+            toast.info("Could not build tweet for this tournament.");
+            return;
+        }
+        setTweetText(tweet);
+        setOpenTweetDialog(true);
+    };
+
+    const handleTournamentTweetLive = (tournamentKey) => {
+        setTweetStatus("");
+        const allMatches = (rankingsData[tournamentKey] || []).filter(hasCountry);
+        const hasSelection = allMatches.some(m => selectedMatchIds.has(m.id));
+        const candidates = hasSelection ? allMatches.filter(m => selectedMatchIds.has(m.id)) : allMatches;
+        const liveMatches = candidates.filter(m => m.status?.type === "inprogress");
+        if (liveMatches.length === 0) {
+            toast.info("No live matches in this tournament.");
+            return;
+        }
+        const tweet = buildGroupedLiveMatchesTweet(liveMatches);
+        if (!tweet) { toast.info("Could not build tweet."); return; }
+        setTweetText(tweet);
+        setOpenTweetDialog(true);
+    };
+
     const handleAllLive = () => {
         setTweetStatus("");
         const rankingsDataCopy = JSON.parse(JSON.stringify(rankingsData || {}));
@@ -188,6 +246,30 @@ const FixtureResultsAdmin = () => {
 
         const liveMatches = getAllLiveMatchesFromFiltered(rankingsDataCopy, filteredTournaments, selectedCountryAlpha3);
         const tweet = buildGroupedLiveMatchesTweet(liveMatches);
+        setTweetText(tweet);
+        setOpenTweetDialog(true);
+    };
+
+    const handleTweetAll = () => {
+        setTweetStatus("");
+        const isAllCountry = !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
+        const allMatches = (rawData || []).filter(item => {
+            const p1 = item.homeTeam;
+            const p2 = item.awayTeam;
+            if (!item.tournament?.name?.toLowerCase().includes('double')) {
+                return isAllCountry ||
+                    p1?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3 ||
+                    p2?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3;
+            }
+            const teams = [p1?.subTeams?.[0], p1?.subTeams?.[1], p2?.subTeams?.[0], p2?.subTeams?.[1]];
+            return isAllCountry || teams.some(t => t?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3);
+        });
+        if (allMatches.length === 0) {
+            toast.info("No matches found for the selected country.");
+            return;
+        }
+        const tweet = buildGroupedLiveMatchesTweet(allMatches);
+        if (!tweet) { toast.info("Could not build tweet."); return; }
         setTweetText(tweet);
         setOpenTweetDialog(true);
     };
@@ -249,20 +331,39 @@ const FixtureResultsAdmin = () => {
         setOpenH2H(false);
     };
 
-    const handleCountryChange = async (newCountryCode, newValue) => {
-        toast.info("Saving your country...", { autoClose: 1000 });
-        setSelectedCountry(newCountryCode);
-        setSelectedCountryCode(newValue?.code || null);
-        setSelectedCountryAlpha3(newValue?.alpha3.toLowerCase() || null);
+    const handleTabClick = (tab) => {
+        setSelectedCountry(tab.alpha3);
+        setSelectedCountryCode(tab.alpha2 || 'all');
+        setSelectedCountryAlpha3(tab.alpha3 === 'all' ? 'all' : tab.alpha3.toLowerCase());
+    };
 
-        await setItem('country', newCountryCode);
-        await setItem('countryCode', newValue?.code || null);
-        await setItem('countryAlpha3', newValue?.alpha3.toLowerCase() || null);
+    const handleRemoveTab = (alpha3, e) => {
+        e.stopPropagation();
+        setCountryTabs(prev => {
+            const updated = prev.filter(t => t.alpha3 !== alpha3);
+            localStorage.setItem('countryTabs', JSON.stringify(updated));
+            return updated;
+        });
+        if (selectedCountry === alpha3) {
+            setSelectedCountry('all');
+            setSelectedCountryCode('all');
+            setSelectedCountryAlpha3('all');
+        }
+    };
 
-        setTimeout(() => {
-            toast.success("Saved Selected Country, Loading scores now...", { autoClose: 2000 });
-            window.location.href = `${getBaseRoute()}/${getCountryFullName(newCountryCode).toLowerCase()}`;
-        }, 800);
+    const handleAddTab = (alpha3, value) => {
+        if (!alpha3 || alpha3 === 'all') return;
+        const newTab = { alpha3, alpha2: value?.code || null, label: value?.label || alpha3 };
+        setCountryTabs(prev => {
+            if (prev.some(t => t.alpha3 === alpha3)) return prev;
+            const updated = [...prev, newTab];
+            localStorage.setItem('countryTabs', JSON.stringify(updated));
+            return updated;
+        });
+        setSelectedCountry(alpha3);
+        setSelectedCountryCode(value?.code || null);
+        setSelectedCountryAlpha3(alpha3.toLowerCase());
+        setCountryModal(false);
     };
 
     const handleStatusButtonClick = (status) => {
@@ -649,6 +750,13 @@ const FixtureResultsAdmin = () => {
         return (
             <div className="bg-gray-800  p-0.5 text-xs text-gray-200 flex flex-row justify-between space-x-2 shadow-md">
                 <div className="flex items-center gap-1">
+                    <input
+                        type="checkbox"
+                        checked={selectedMatchIds.has(item.id)}
+                        onChange={() => toggleMatchSelection(item.id)}
+                        className="w-3.5 h-3.5 accent-teal-400 cursor-pointer flex-shrink-0"
+                        title="Select for tweet"
+                    />
                     {/* Round - Always shown */}
                     <span className="px-2 py-0.5 text-xs font-semibold rounded 
 bg-[#151515] text-[#D1D5DB]
@@ -846,7 +954,27 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     key={tournament}
                     className="border border-gray-700 rounded bg-gray-900 mb-2 p-1 text-xs text-gray-200"
                 >
-                    {buildHeaderDOM(rankingsData[tournament][0])}
+                    <div className="flex items-center justify-between gap-1">
+                        <div className="flex-1 min-w-0">{buildHeaderDOM(rankingsData[tournament][0])}</div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                            <button
+                                onClick={() => handleTournamentTweetLive(tournament)}
+                                className="flex items-center gap-1 px-2.5 py-1 rounded-full font-medium
+                                    bg-amber-500/10 border border-amber-400/25 text-amber-300 text-[10px]
+                                    hover:bg-amber-500/20 hover:border-amber-300/50 transition-all duration-200"
+                            >
+                                Tweet Live
+                            </button>
+                            <button
+                                onClick={() => handleTournamentTweet(tournament)}
+                                className="flex items-center gap-1 px-2.5 py-1 rounded-full font-medium
+                                    bg-purple-500/10 border border-purple-400/25 text-purple-300 text-[10px]
+                                    hover:bg-purple-500/20 hover:border-purple-300/50 transition-all duration-200"
+                            >
+                                Tweet All
+                            </button>
+                        </div>
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
                         {rankingsData[tournament]
                             .filter(hasCountry)
@@ -888,41 +1016,116 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
     const getFlagUrl = (code) =>
         code ? `https://flagcdn.com/w20/${code.toLowerCase()}.png` : null;
 
-    let objDomCountryButton = (<button
-        onClick={() => setCountryModal(true)}
-        className="
-        flex items-center gap-2 
-        px-3 py-1 rounded-lg 
-        bg-[#1f2937] text-gray-200 
-        border border-gray-700 
-        hover:border-teal-400 hover:text-teal-300
-        hover:shadow-[0_0_10px_rgba(34,211,238,0.25)]
-        active:scale-95 transition-all duration-200
-        text-sm font-medium
-    "
-    >
-        {selectedCountryCode && selectedCountryCode !== "all" ? (
-            <img
-                src={getFlagUrl(selectedCountryCode)}
-                alt={selectedCountryCode}
-                className="w-5 h-4 object-cover rounded-sm shadow-sm"
-                loading="eager"
-            />
-        ) : (
-            <span className="text-lg">🌍</span>
-        )}
+    const statusCounts = (() => {
+        if (!rawData) return { all: 0, inprogress: 0, finished: 0, notstarted: 0 };
+        const c = { all: 0, inprogress: 0, finished: 0, notstarted: 0 };
+        const isAllCountry = !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
+        rawData.forEach(item => {
+            const p1 = item.homeTeam;
+            const p2 = item.awayTeam;
+            let matchesCty;
+            if (!item.tournament?.name?.toLowerCase().includes('double')) {
+                matchesCty = isAllCountry ||
+                    p1?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3 ||
+                    p2?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3;
+            } else {
+                const teams = [p1?.subTeams?.[0], p1?.subTeams?.[1], p2?.subTeams?.[0], p2?.subTeams?.[1]];
+                matchesCty = isAllCountry || teams.some(t => t?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3);
+            }
+            if (!matchesCty) return;
+            const type = item.status?.type;
+            c.all++;
+            if (type === 'inprogress') c.inprogress++;
+            else if (type === 'finished') c.finished++;
+            else if (type === 'notstarted') c.notstarted++;
+        });
+        return c;
+    })();
 
-        <span className="truncate capitalize">
-            {countryFullName || "Select Country"}
-        </span>
-    </button>
+    const objStatusButtons = (
+        <div className="flex items-center gap-1 flex-wrap">
+            {[{ label: 'All', key: 'all' }, { label: 'Live', key: 'inprogress' }, { label: 'Finished', key: 'finished' }, { label: 'Not Started', key: 'notstarted' }].map(s => {
+                const count = statusCounts[s.key] ?? 0;
+                const isActive = matchStatus === s.key;
+                const isEmpty = count === 0 && s.key !== 'all';
+                return (
+                    <button
+                        key={s.key}
+                        onClick={() => handleStatusButtonClick(s.key)}
+                        disabled={isEmpty}
+                        className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap ${
+                            isActive
+                                ? s.key === 'inprogress'
+                                    ? 'bg-green-500/20 text-green-300 border border-green-500/40'
+                                    : 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
+                                : isEmpty
+                                    ? 'text-gray-700 border border-gray-800 cursor-not-allowed'
+                                    : 'text-gray-400 border border-gray-700 hover:text-gray-200 hover:border-gray-500'
+                        }`}
+                    >
+                        {s.key === 'inprogress' && (
+                            <span className={`inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                                isActive ? 'bg-green-400 animate-pulse' : count > 0 ? 'bg-green-600' : 'bg-gray-700'
+                            }`} />
+                        )}
+                        {s.label}
+                        <span className={`text-[10px] font-bold ${
+                            isActive
+                                ? s.key === 'inprogress' ? 'text-green-300' : 'text-blue-300'
+                                : isEmpty ? 'text-gray-700' : 'text-gray-500'
+                        }`}>{count}</span>
+                    </button>
+                );
+            })}
+        </div>
+    );
 
-    )
+    let objFilterBar = (<div className="border-b border-gray-800 mb-1">
 
-    let objFilterBar = (<div className="p-1 border-b border-gray-800 mb-1">
+        {/* Country tab bar */}
+        <div className="flex items-center border-b border-gray-700/50">
+            <button onClick={() => scrollTabs(-1)} className="flex-shrink-0 px-1.5 py-2 text-gray-500 hover:text-gray-300 transition-colors select-none">&#8249;</button>
+            <div ref={tabBarRef} className="flex items-center overflow-x-auto [&::-webkit-scrollbar]:hidden flex-1">
+            {countryTabs.map(tab => {
+                const isActive = selectedCountry === tab.alpha3 ||
+                    (tab.alpha3 === 'all' && (!selectedCountry || selectedCountry === 'all'));
+                return (
+                    <button
+                        key={tab.alpha3}
+                        onClick={() => handleTabClick(tab)}
+                        className={`group flex-shrink-0 flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium whitespace-nowrap border-b-2 -mb-px transition-all duration-150 ${
+                            isActive
+                                ? 'border-teal-400 text-teal-300 bg-teal-500/5'
+                                : 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-600'
+                        }`}
+                    >
+                        {tab.alpha3 === 'all' ? (
+                            <span className="text-sm leading-none">🌍</span>
+                        ) : tab.alpha2 ? (
+                            <img src={`https://flagcdn.com/w20/${tab.alpha2.toLowerCase()}.png`} alt="" className="w-4 h-3 object-cover rounded-sm flex-shrink-0" loading="eager" />
+                        ) : null}
+                        <span>{tab.label}</span>
+                        {tab.alpha3 !== 'all' && (
+                            <span
+                                onClick={(e) => handleRemoveTab(tab.alpha3, e)}
+                                className="opacity-0 group-hover:opacity-100 ml-0.5 text-gray-600 hover:text-red-400 leading-none cursor-pointer transition-opacity"
+                                title="Remove tab"
+                            >×</span>
+                        )}
+                    </button>
+                );
+            })}
+            <button
+                onClick={() => setCountryModal(true)}
+                title="Add country tab"
+                className="flex-shrink-0 mx-1 flex items-center justify-center w-5 h-5 rounded border border-dashed border-gray-700 text-gray-600 hover:text-teal-400 hover:border-teal-600 transition-all text-sm leading-none"
+            >+</button>
+            </div>
+            <button onClick={() => scrollTabs(1)} className="flex-shrink-0 px-1.5 py-2 text-gray-500 hover:text-gray-300 transition-colors select-none">&#8250;</button>
+        </div>
 
         {/* ---- MOBILE (2 rows) ---- */}
-        <div className="flex flex-col gap-2 md:hidden">
+        <div className="flex flex-col gap-2 md:hidden p-1">
 
             <div className="flex items-center gap-1">
                 <div className="flex-1">
@@ -932,9 +1135,27 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                     />
                 </div>
 
-                <div className="flex-1">
-                    {objDomCountryButton}
-                </div>
+                <button
+                    onClick={handleAllLive}
+                    className="flex items-center gap-1 px-3 py-1 rounded-full font-medium
+                 bg-amber-500/10 border border-amber-400/25
+                 text-amber-300 text-xs
+                 hover:bg-amber-500/20 hover:border-amber-300/50
+                 transition-all duration-200 whitespace-nowrap"
+                >
+                    Tweet Live
+                </button>
+
+                <button
+                    onClick={handleTweetAll}
+                    className="flex items-center gap-1 px-3 py-1 rounded-full font-medium
+                 bg-purple-500/10 border border-purple-400/25
+                 text-purple-300 text-xs
+                 hover:bg-purple-500/20 hover:border-purple-300/50
+                 transition-all duration-200 whitespace-nowrap"
+                >
+                    Tweet All
+                </button>
 
                 <IconButton onClick={handleRefresh} className="text-gray-200">
                     <SyncIcon className="text-white" />
@@ -942,21 +1163,13 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             </div>
 
             <div className="w-full flex justify-center">
-                <StatusButtonGroup
-                    matchStatus={matchStatus}
-                    handleStatusButtonClick={handleStatusButtonClick}
-                />
+                {objStatusButtons}
             </div>
         </div>
 
         {/* ---- DESKTOP (everything in one row) ---- */}
-        <div className="hidden md:flex items-center justify-around gap-3">
-            {objDomCountryButton}
-
-            <StatusButtonGroup
-                matchStatus={matchStatus}
-                handleStatusButtonClick={handleStatusButtonClick}
-            />
+        <div className="hidden md:flex items-center justify-around gap-3 p-1">
+            {objStatusButtons}
 
             <DatePickerValue
                 selectedDate={selectedDate}
@@ -971,7 +1184,17 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
              hover:bg-amber-500/20 hover:border-amber-300/50
              transition-all duration-200"
             >
-                Tweet All Live
+                Tweet Live
+            </button>
+            <button
+                onClick={handleTweetAll}
+                className="flex items-center gap-1 px-3 py-1 rounded-full font-medium
+             bg-purple-500/10 border border-purple-400/25
+             text-purple-300 text-xs
+             hover:bg-purple-500/20 hover:border-purple-300/50
+             transition-all duration-200"
+            >
+                Tweet All
             </button>
         </div>
 
@@ -983,7 +1206,7 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
             <CountryModal
                 open={countryModal}
                 onClose={() => setCountryModal(false)}
-                onSelect={handleCountryChange}
+                onSelect={handleAddTab}
             />
             <SEO
                 title={`Tennis Admin - ${countryFullName} Live Scores & Tweet Composer`}

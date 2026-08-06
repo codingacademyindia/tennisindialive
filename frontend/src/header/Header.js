@@ -28,13 +28,6 @@ const navItems = [
       { label: "Doubles Official", url: "/rankings/official/wta-doubles" },
     ],
   },
-  {
-    label: "Players",
-    dropdown: [
-      { label: "ATP", url: "/players/atp" },
-      { label: "WTA", url: "/players/wta" },
-    ],
-  },
 ];
 
 const DRAWER_Z = 99999999;
