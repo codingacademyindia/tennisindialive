@@ -3,6 +3,25 @@ import enLocale from "i18n-iso-countries/langs/en.json";
 import SEO from "../common/seo/SEO";
 countries.registerLocale(enLocale);
 
+// ATP/WTA ranking pages use IOC-style country codes that differ from ISO 3166-1 alpha-3
+const IOC_TO_ISO3 = {
+  GER: "DEU", SUI: "CHE", NED: "NLD", RSA: "ZAF", POR: "PRT", GRE: "GRC",
+  CRO: "HRV", DEN: "DNK", LAT: "LVA", BUL: "BGR", CHI: "CHL", INA: "IDN",
+  IRI: "IRN", PUR: "PRI", ISV: "VIR", IVB: "VGB", TPE: "TWN", MAS: "MYS",
+  SLO: "SVN", ZIM: "ZWE", BAH: "BHS", GEO: "GEO", MGL: "MNG", NGR: "NER",
+  CGO: "COG", ALG: "DZA", ANG: "AGO", BAR: "BRB", BER: "BMU", CAY: "CYM",
+  ESA: "SLV", GUA: "GTM", GUY: "GUY", HAI: "HTI", HON: "HND", KUW: "KWT",
+  LES: "LSO", MRI: "MUS", NCA: "NIC", OMA: "OMN", PAR: "PRY", SEY: "SYC",
+  SKN: "KNA", SRI: "LKA", VIN: "VCT", ANT: "ATG",
+};
+
+// Normalizes a raw ranking-source country code (IOC or ISO alpha-3) to lowercase ISO alpha-3
+export function normalizeRankingCountry(code) {
+  if (!code) return null;
+  const upper = code.trim().toUpperCase();
+  return (IOC_TO_ISO3[upper] || upper).toLowerCase();
+}
+
 export function getAlpha3(countryParam) {
   if (!countryParam) return null;
 

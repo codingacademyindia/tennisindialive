@@ -1,0 +1,38 @@
+{
+    "name": "PURAV RAJA",
+    "nationality": "India",
+    "date_of_birth": "39 (1985/12/07)",
+    "weight": "198 lbs (90kg)",
+    "turned_pro": "2005",
+    "coach": "N/A",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "Mumbai, India",
+    "photo": "/images/players/atp/purav-raja.jpg",
+    "source": "AITA",
+    "bio": "<b>Career Overview:</b> Purav Raja is an Indian professional tennis player known for his expertise in doubles, competing on the ATP Tour and representing India in the Davis Cup.<br/><b>Playing Style:</b> A skilled doubles specialist with a strong net game, favoring indoor carpet surfaces, and renowned for his effective drop shot.<br/><b>Career-High ATP Singles Ranking:</b> #813 (July 30, 2007), <b>Career-High ATP Doubles Ranking:</b> #52 (July 17, 2017).<br/><b>Best Grand Slam Singles Performance:</b> Limited participation, mostly in qualifying rounds.<br/><b>Grand Slam Achievements:</b> Reached the third round in men’s doubles at Wimbledon (2017) and the US Open (2017).<br/><b>Notable Achievements:</b> <b>ATP Titles:</b> Won 2 ATP doubles titles: 2013 Claro Open Colombia and 2016 Los Cabos Open, both with Divij Sharan. <b>Davis Cup & National Representation:</b> Debuted in 2012 for India, partnering with players like Leander Paes, contributing to key ties. <b>Challenger Success:</b> Secured 15 ATP Challenger doubles titles, including notable wins in Kyoto (2013, 2014) and Pune (2016).<br/><b>Other Highlights:</b> Known for his successful partnership with Divij Sharan. Actively supports the Ananda Ashran orphanage and The Fellowship of the Physically Handicapped in Mumbai. Raja continues to compete, maintaining a strong presence in doubles tennis. 🎾🇮🇳",
+    "updated_at": "25-March-2025 06:18 PM",
+    "singles": {
+        "ytd_move": "-",
+        "current_rank": "881",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "813",
+        "career_wins": "N/A",
+        "career_titles": "0",
+        "career_prize_money": "$598,677 (Singles & Doubles Combined)"
+    },
+    "doubles": {
+        "ytd_move": "-",
+        "current_rank": "232",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "52",
+        "career_wins": "108 - 136",
+        "career_titles": "2",
+        "career_prize_money": "$598,677 (Singles & Doubles Combined)"
+    }
+}

@@ -4,38 +4,44 @@ import SEO from "../../common/seo/SEO";
 import { toast } from "react-toastify";
 import PaginatedTablesJSON from "../../common/grids/PaginatedTablesJSON";
 import CountryModal from "../../common/CountryModal";
+import { normalizeRankingCountry } from "../../utils/utils";
+import { getLiveRankingsLatest, getOfficialRankingsLatest } from "../../services/tennisApiService";
 
 const rankingTypes = [
     {
         key: "atp-singles-live",
         tab: "Live Singles",
-        url: "/ranking/live/atp/atp-live-ranking.json",
+        source: "live",
+        tour: "atp",
+        category: "singles",
         header: "ATP Live Ranking - Singles",
-        timestampKey: "atp-live-ranking",
         desc: "Real-time ATP Singles rankings. Use the country filter to focus on India or view all global players."
     },
     {
         key: "atp-singles-official",
         tab: "Official Singles",
-        url: "/ranking/official/atp/official-atp-ranking.json",
+        source: "official",
+        tour: "atp",
+        category: "singles",
         header: "ATP Official Ranking - Singles",
-        timestampKey: "official-atp-ranking",
         desc: "Official ATP Singles rankings. Updated weekly. Use the country filter to focus on India or view all global players."
     },
     {
         key: "atp-doubles-live",
         tab: "Live Doubles",
-        url: "/ranking/live/atp/atp-doubles-live-ranking.json",
+        source: "live",
+        tour: "atp",
+        category: "doubles",
         header: "ATP Live Ranking - Doubles",
-        timestampKey: "atp-doubles-live-ranking",
         desc: "Real-time ATP Doubles rankings. Use the country filter to focus on India or view all global players."
     },
     {
         key: "atp-doubles-official",
         tab: "Official Doubles",
-        url: "/ranking/official/atp/official-atp-doubles-ranking.json",
+        source: "official",
+        tour: "atp",
+        category: "doubles",
         header: "ATP Official Ranking - Doubles",
-        timestampKey: "official-atp-doubles-ranking",
         desc: "Official ATP Doubles rankings. Updated weekly. Use the country filter to focus on India or view all global players."
     }
 ];
@@ -57,40 +63,50 @@ const ATPRankingDashboard = () => {
         try { const s = localStorage.getItem('countryTabs'); return s ? JSON.parse(s) : DEFAULT_TABS_RANKINGS; } catch { return DEFAULT_TABS_RANKINGS; }
     });
 
-    const [rankingsData, setRankingsData] = useState({});
+    const [rawRankingsData, setRawRankingsData] = useState({});
     const [rankingsTimeStamp, setRankingsTimeStamp] = useState({});
     const [loading, setLoading] = useState(true);
     const [countryModal, setCountryModal] = useState(false);
     const [selectedRankingKey, setSelectedRankingKey] = useState(rankingTypes[0].key);
 
-    // Fetch all rankings
+    // Fetch all rankings from the backend API once; country filtering happens client-side on tab switch
     useEffect(() => {
+        const parseChangeValue = (changeText) => {
+            if (changeText === null || changeText === undefined) return 0;
+            const text = String(changeText).trim().toLowerCase();
+            if (!text || text === '-' || text === 'same' || text === 'no change') return 0;
+            const parsed = Number.parseInt(text.replace(/[^0-9+-]/g, ''), 10);
+            return Number.isNaN(parsed) ? 0 : parsed;
+        };
+
+        const normalizeRows = (rows = []) => rows.map(row => ({
+            rank: row.rank_text ?? row.rank_value ?? '',
+            player: row.player ?? '',
+            country: (normalizeRankingCountry(row.country) || '').toUpperCase(),
+            change: parseChangeValue(row.change_text),
+            points: row.points_text ?? row.points_value ?? '',
+            career_high: row.career_high ?? '',
+        }));
+
         const fetchAllRankings = async () => {
             setLoading(true);
 
             const dataObj = {};
             const timeStampObject = {}
             try {
-                const timestamp = await fetch('/ranking/live/live_ranking_timestamp.json');
-                const timeStampDataLive = await timestamp.json();
-                const timestampRes = await fetch('/ranking/official/official_ranking_timestamp.json');
-                const timeStampDataOfficial = await timestampRes.json();
                 for (let r of rankingTypes) {
                     try {
-                        const res = await fetch(`${window.location.origin}${r.url}`);
-                        const data = await res.json();
-                        // Filter by country
-                        const filtered = selectedCountryAlpha3.toLowerCase() !== "all"
-                            ? data.filter(item => item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase())
-                            : data;
-                        dataObj[r.key] = filtered;
-                        timeStampObject[r.key] = r.key.includes("official") ? timeStampDataOfficial[r.timestampKey] : timeStampDataLive[r.timestampKey];
+                        const apiData = r.source === 'official'
+                            ? await getOfficialRankingsLatest({ tour: r.tour, category: r.category, limit: 1000 })
+                            : await getLiveRankingsLatest({ tour: r.tour, category: r.category, limit: 1000 });
+                        dataObj[r.key] = normalizeRows(apiData.rows || []);
+                        timeStampObject[r.key] = apiData.fetched_at ? new Date(apiData.fetched_at).toLocaleString() : 'N/A';
                     } catch (err) {
                         console.error(`Failed to fetch ${r.key}:`, err);
                         dataObj[r.key] = [];
                     }
                 }
-                setRankingsData(dataObj);
+                setRawRankingsData(dataObj);
                 setRankingsTimeStamp(timeStampObject);
             } catch (err) {
                 console.error(err);
@@ -101,7 +117,7 @@ const ATPRankingDashboard = () => {
         };
 
         fetchAllRankings();
-    }, [selectedCountryAlpha3]);
+    }, []);
 
     function getTopCounts(data) {
         const result = [];
@@ -216,7 +232,11 @@ return (
                 <Loader />
             ) : (() => {
                 const r = rankingTypes.find(r => r.key === selectedRankingKey);
-                const topCounts = selectedCountry !== 'all' && rankingsData[r.key] ? getTopCounts(rankingsData[r.key]) : [];
+                const allRows = rawRankingsData[r.key] || [];
+                const filteredRows = selectedCountryAlpha3.toLowerCase() !== 'all'
+                    ? allRows.filter(item => item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase())
+                    : allRows;
+                const topCounts = selectedCountry !== 'all' && filteredRows.length ? getTopCounts(filteredRows) : [];
                 return (
                     <div className="bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-700">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 px-3 py-2 bg-slate-900/80 border border-white/10 rounded-lg mb-3">
@@ -234,7 +254,7 @@ return (
                                 ))}
                             </div>
                         )}
-                        <PaginatedTablesJSON data={rankingsData[r.key] || []} countryName={selectedCountry} />
+                        <PaginatedTablesJSON data={filteredRows} countryName={selectedCountry} />
                     </div>
                 );
             })()}

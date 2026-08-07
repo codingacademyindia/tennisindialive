@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import re
 import json
+import sys
 import asyncio
 import calendar
 from contextlib import asynccontextmanager
@@ -19,6 +20,9 @@ from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
 
+# psycopg's async pool requires the Selector event loop; Windows defaults to Proactor
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 load_dotenv(Path(__file__).resolve().parent / ".env")
 

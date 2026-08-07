@@ -1,0 +1,38 @@
+{
+    "name": "SAKETH MYNENI",
+    "nationality": "India",
+    "date_of_birth": "37 (1987/10/19)",
+    "weight": "187 lbs (85kg)",
+    "turned_pro": "2012",
+    "coach": "N/A (Currently Balachandran Myneni)",
+    "plays": "Right-Handed, Two-Handed Backhand",
+    "birthplace": "Vuyyuru, India",
+    "photo": "/images/players/atp/saketh-myneni.jpg",
+    "source": "tennisworldusa",
+    "bio": "<b>Career Overview:</b> <b>Playing Style:</b> A big server with an aggressive all-court game, effective in both singles and doubles, particularly strong on hard courts.<br/><b>Career-High ATP Singles Ranking:</b> #137 (September 12, 2016), <b>Career-High ATP Doubles Ranking:</b> #74 (January 16, 2023).<br/><b>Best Grand Slam Singles Performance:</b> Reached the first round of the 2016 US Open (lost to Jiří Veselý).<br/><b>Notable Achievements:</b> <b>ATP Challenger Titles:</b> Won 3 Challenger singles titles (2014 Indore, 2015 Vietnam, 2016 Pune) and 11 doubles titles. <b>Doubles Success:</b> Won his first ATP Tour doubles title at the 2022 Chennai Open with Ramkumar Ramanathan. Secured a gold medal in men’s doubles at the 2022 Asian Games with Ramanathan and a mixed doubles silver in 2014 with Sania Mirza. <b>Davis Cup & National Representation:</b> Represented India in Davis Cup ties since 2014, with a 5-2 singles record and key doubles contributions.<br/><b>Other Highlights:</b> Overcame multiple injuries, including shoulder surgery in 2017, to maintain a competitive career. Transitioned to a doubles focus in recent years.<br/>Saketh continues to compete actively, balancing Challenger events and representing India internationally. 🎾🇮🇳",
+    "updated_at": "25-March-2025 06:09 PM",
+    "singles": {
+        "ytd_move": "-",
+        "current_rank": "N/A (Inactive in singles)",
+        "ytd_wins": "0 - 0",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$0",
+        "career_move": "N/A",
+        "career_high_rank": "137",
+        "career_wins": "9 - 14",
+        "career_titles": "0",
+        "career_prize_money": "$702,736"
+    },
+    "doubles": {
+        "ytd_move": "+2",
+        "current_rank": "89",
+        "ytd_wins": "5 - 3",
+        "ytd_titles": "0",
+        "ytd_prize_money": "$15,000",
+        "career_move": "N/A",
+        "career_high_rank": "74",
+        "career_wins": "66 - 62",
+        "career_titles": "1",
+        "career_prize_money": "$702,736"
+    }
+}
