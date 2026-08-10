@@ -130,6 +130,7 @@ const FixtureResultsCountry = () => {
     const [selectedDate, setDate] = useState(dayjs(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`));
     const [matchStatus, setMatchStatus] = useState("all");
     const [matchStatusList, setMatchStatusList] = useState(["notstarted", "inprogress", "canceled", "finished", "interrupted"]);
+    const [matchTour, setMatchTour] = useState("all");
     // const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedCountryCode, setSelectedCountryCode] = useState('');
     const [selectedCountryAlpha3, setSelectedCountryAlpha3] = useState(params.country && params.country.toLowerCase() === 'all' ? null : getAlpha3(params.country));
@@ -219,6 +220,10 @@ const FixtureResultsCountry = () => {
 
     const handleStatusButtonClick = (status) => {
         setMatchStatus(status);
+    };
+
+    const handleTourButtonClick = (tour) => {
+        setMatchTour(tour);
     };
 
     const handleRefresh = () => setRefreshScore(!refreshScore);
@@ -391,6 +396,24 @@ const FixtureResultsCountry = () => {
 
     const getCountryCondition = () => !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
 
+    function getTourKey(item) {
+        const c = (item?.tournament?.category?.name || '').toUpperCase();
+        if (c.includes('CH')) return 'ch';
+
+        const genderRaw = item?.homeTeam?.gender || item?.awayTeam?.gender ||
+            (item?.season?.name?.toLowerCase().includes('women') ? 'F' :
+                item?.season?.name?.toLowerCase().includes('men') ? 'M' : '');
+        if (genderRaw === 'M') return 'men';
+        if (genderRaw === 'F') return 'women';
+
+        // Fallback purely by tour name when gender info is missing
+        if (c === 'ATP') return 'men';
+        if (c === 'WTA') return 'women';
+        return 'other';
+    }
+
+    const getTourCondition = (item) => matchTour === 'all' || getTourKey(item) === matchTour;
+
     const hasCountry = (item) => {
         const p1 = item.homeTeam;
         const p2 = item.awayTeam;
@@ -400,12 +423,14 @@ const FixtureResultsCountry = () => {
             return (getCountryCondition() ||
                 p1?.country?.alpha3?.toLowerCase() === selectedCountry?.toLowerCase() ||
                 p2?.country?.alpha3?.toLowerCase() === selectedCountry?.toLowerCase()) &&
-                matchStatusList.includes(item.status?.type);
+                matchStatusList.includes(item.status?.type) &&
+                getTourCondition(item);
         } else {
             const teams = [p1?.subTeams[0], p1?.subTeams[1], p2?.subTeams[0], p2?.subTeams[1]];
             const countries = teams.map(t => t?.country?.alpha3?.toLowerCase());
             return (getCountryCondition() || countries.includes(selectedCountry?.toLowerCase())) &&
-                matchStatusList.includes(item.status?.type);
+                matchStatusList.includes(item.status?.type) &&
+                getTourCondition(item);
         }
     };
 
@@ -1100,6 +1125,37 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         return c;
     })();
 
+    const TOUR_FILTERS = [
+        { label: 'All', key: 'all' },
+        { label: 'Men', key: 'men' },
+        { label: 'Women', key: 'women' },
+        { label: 'Challenger', key: 'ch' },
+    ];
+
+    const tourCounts = (() => {
+        const c = { all: 0, men: 0, women: 0, ch: 0 };
+        if (!rawData) return c;
+        const isAllCountry = !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
+        rawData.forEach(item => {
+            const p1 = item.homeTeam;
+            const p2 = item.awayTeam;
+            let matchesCty;
+            if (!item.tournament?.name?.toLowerCase().includes('double')) {
+                matchesCty = isAllCountry ||
+                    p1?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3 ||
+                    p2?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3;
+            } else {
+                const teams = [p1?.subTeams?.[0], p1?.subTeams?.[1], p2?.subTeams?.[0], p2?.subTeams?.[1]];
+                matchesCty = isAllCountry || teams.some(t => t?.country?.alpha3?.toLowerCase() === selectedCountryAlpha3);
+            }
+            if (!matchesCty) return;
+            c.all++;
+            const tourKey = getTourKey(item);
+            if (c[tourKey] !== undefined) c[tourKey]++;
+        });
+        return c;
+    })();
+
     let objFilterBar = (
         <div className="border-b border-gray-800 mb-1">
             {/* Country tab bar */}
@@ -1186,6 +1242,34 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
                         <SyncIcon className="text-white" />
                     </IconButton>
                 </div>
+            </div>
+
+            {/* Tour filters */}
+            <div className="flex items-center gap-1 flex-wrap px-2 pb-1.5">
+                {TOUR_FILTERS.map(t => {
+                    const count = tourCounts[t.key] ?? 0;
+                    const isActive = matchTour === t.key;
+                    const isEmpty = count === 0 && t.key !== 'all';
+                    return (
+                        <button
+                            key={t.key}
+                            onClick={() => handleTourButtonClick(t.key)}
+                            disabled={isEmpty}
+                            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap ${
+                                isActive
+                                    ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                                    : isEmpty
+                                        ? 'text-gray-700 border border-gray-800 cursor-not-allowed'
+                                        : 'text-gray-400 border border-gray-700 hover:text-gray-200 hover:border-gray-500'
+                            }`}
+                        >
+                            {t.label}
+                            <span className={`text-[10px] font-bold ${
+                                isActive ? 'text-purple-300' : isEmpty ? 'text-gray-700' : 'text-gray-500'
+                            }`}>{count}</span>
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

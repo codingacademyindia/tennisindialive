@@ -12,9 +12,18 @@ import { toast } from 'react-toastify';
 import SEO from '../../common/seo/SEO';
 import { setItem, getItem } from '../../indexDb/indexedDB';
 import CountryAutocomplete from '../../common/CountryAutoComplete';
-import { getAlpha2FromName, getAlpha3, getCountryFullName } from '../../utils/utils';
+import { getAlpha2FromName, getAlpha3, getCountryFullName, normalizeRankingCountry } from '../../utils/utils';
 import CountryModal from '../../common/CountryModal';
 import { getOfficialRankingsLatest } from '../../services/tennisApiService';
+
+const DEFAULT_TABS_RANKINGS = [
+    { alpha3: 'all', alpha2: null, label: 'All' },
+    { alpha3: 'IND', alpha2: 'IN', label: 'India' },
+    { alpha3: 'USA', alpha2: 'US', label: 'USA' },
+    { alpha3: 'GBR', alpha2: 'GB', label: 'GBR' },
+    { alpha3: 'AUS', alpha2: 'AU', label: 'AUS' },
+    { alpha3: 'ESP', alpha2: 'ES', label: 'Spain' },
+];
 
 const OfficialRankings = () => {
     const { type } = useParams();
@@ -35,6 +44,9 @@ const OfficialRankings = () => {
     const [pageRefreshTime, setPageRefreshTime] = useState("");
 
     const [countryModal, setCountryModal] = useState(false);
+    const [countryTabs, setCountryTabs] = useState(() => {
+        try { const s = localStorage.getItem('countryTabs'); return s ? JSON.parse(s) : DEFAULT_TABS_RANKINGS; } catch { return DEFAULT_TABS_RANKINGS; }
+    });
     // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
 
     const rankingTypeConfig = {
@@ -57,7 +69,7 @@ const OfficialRankings = () => {
         return rows.map((row) => ({
             rank: row.rank_text ?? row.rank_value ?? '',
             player: row.player ?? '',
-            country: (row.country ?? '').toUpperCase(),
+            country: (normalizeRankingCountry(row.country) || '').toUpperCase(),
             change: parseChangeValue(row.change_text),
             points: row.points_text ?? row.points_value ?? '',
         }));
@@ -134,6 +146,72 @@ const OfficialRankings = () => {
         }, 800);
     };
 
+    const handleTabClick = (tab) => {
+        setSelectedCountry(tab.alpha3);
+        setSelectedCountryCode(tab.alpha2 || null);
+        setSelectedCountryAlpha3(tab.alpha3 === 'all' ? 'all' : tab.alpha3.toLowerCase());
+    };
+
+    const handleRemoveTab = (alpha3, e) => {
+        e.stopPropagation();
+        setCountryTabs(prev => {
+            const updated = prev.filter(t => t.alpha3 !== alpha3);
+            localStorage.setItem('countryTabs', JSON.stringify(updated));
+            return updated;
+        });
+        if (selectedCountry === alpha3) {
+            setSelectedCountry('all');
+            setSelectedCountryCode(null);
+            setSelectedCountryAlpha3('all');
+        }
+    };
+
+    const handleAddTab = (alpha3, value) => {
+        if (!alpha3 || alpha3 === 'all') return;
+        const newTab = { alpha3, alpha2: value?.code || null, label: value?.label || alpha3 };
+        setCountryTabs(prev => {
+            if (prev.some(t => t.alpha3 === alpha3)) return prev;
+            const updated = [...prev, newTab];
+            localStorage.setItem('countryTabs', JSON.stringify(updated));
+            return updated;
+        });
+        setSelectedCountry(alpha3);
+        setSelectedCountryCode(value?.code || null);
+        setSelectedCountryAlpha3(alpha3.toLowerCase());
+        setCountryModal(false);
+    };
+
+    const objTabBar = (
+        <div className="flex items-center overflow-x-auto [&::-webkit-scrollbar]:hidden border-b border-gray-800 bg-[#0b1220] px-2 py-1">
+            {countryTabs.map(tab => {
+                const isActive = selectedCountry === tab.alpha3 ||
+                    (tab.alpha3 === 'all' && (!selectedCountry || selectedCountry === 'all'));
+                return (
+                    <button
+                        key={tab.alpha3}
+                        onClick={() => handleTabClick(tab)}
+                        className={`group flex-shrink-0 flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 -mb-px transition-all duration-150 ${
+                            isActive
+                                ? 'border-teal-400 text-teal-200 bg-teal-900/40'
+                                : 'border-transparent text-gray-400 hover:text-gray-300 hover:bg-gray-800/40 hover:border-gray-700'
+                        }`}
+                    >
+                        {tab.alpha3 === 'all' ? (
+                            <span className="text-sm leading-none">🌍</span>
+                        ) : tab.alpha2 ? (
+                            <img src={`https://flagcdn.com/w20/${tab.alpha2.toLowerCase()}.png`} alt="" className="w-4 h-3 object-cover rounded-sm flex-shrink-0" loading="eager" />
+                        ) : null}
+                        <span>{tab.label}</span>
+                        {tab.alpha3 !== 'all' && (
+                            <span onClick={(e) => handleRemoveTab(tab.alpha3, e)} className="opacity-0 group-hover:opacity-100 ml-0.5 text-gray-500 hover:text-red-400 leading-none cursor-pointer transition-opacity" title="Remove tab">×</span>
+                        )}
+                    </button>
+                );
+            })}
+            <button onClick={() => setCountryModal(true)} title="Add country tab" className="flex-shrink-0 mx-1 flex items-center justify-center w-5 h-5 rounded border border-dashed border-gray-700 text-gray-500 hover:text-teal-400 hover:border-teal-600 hover:bg-gray-800/40 transition-all text-sm leading-none">+</button>
+        </div>
+    );
+
     useEffect(() => {
         const fetchValue = async () => {
             const storedValue = await getItem('country');
@@ -207,11 +285,11 @@ const OfficialRankings = () => {
     }, [selectedCountry, selectedCountryAlpha3]);
 
     return (
-        <div>
+        <div className="min-h-screen bg-[#020617]">
             <CountryModal
                 open={countryModal}
                 onClose={() => setCountryModal(false)}
-                onSelect={handleCountryChange}
+                onSelect={handleAddTab}
             />
             <SEO
                 title={`Tennis ${`countryFullName`.toUpperCase()} Live - Official ${type.toUpperCase()} Rankings | Countrywise Rankings & Live Scores`}
@@ -235,8 +313,6 @@ const OfficialRankings = () => {
                     <h1 className="text-sm sm:text-base md:text-lg font-bold text-white truncate">
                         {pageHeader}
                     </h1>
-
-                    {objDomCountryButton}
                 </div>
 
                 {/* Right */}
@@ -257,6 +333,7 @@ const OfficialRankings = () => {
                     </IconButton>
                 </div>
             </div>
+            {objTabBar}
 
 
             {/* Description Section */}

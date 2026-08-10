@@ -104,7 +104,7 @@ const WTARankingDashboard = () => {
     };
 
     const objTabBar = (
-        <div className="flex items-center overflow-x-auto [&::-webkit-scrollbar]:hidden border-b border-gray-700/50 mb-3">
+        <div className="flex items-center overflow-x-auto [&::-webkit-scrollbar]:hidden border-b border-gray-800 mb-3 bg-gray-900/60 px-2 py-1">
             {countryTabs.map(tab => {
                 const isActive = selectedCountry === tab.alpha3 ||
                     (tab.alpha3 === 'all' && (!selectedCountry || selectedCountry === 'all'));
@@ -112,10 +112,10 @@ const WTARankingDashboard = () => {
                     <button
                         key={tab.alpha3}
                         onClick={() => handleTabClick(tab)}
-                        className={`group flex-shrink-0 flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium whitespace-nowrap border-b-2 -mb-px transition-all duration-150 ${
+                        className={`group flex-shrink-0 flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 -mb-px transition-all duration-150 ${
                             isActive
-                                ? 'border-teal-400 text-teal-300 bg-teal-500/5'
-                                : 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-600'
+                                ? 'border-teal-400 text-teal-200 bg-teal-900/40'
+                                : 'border-transparent text-gray-400 hover:text-gray-300 hover:bg-gray-800/40 hover:border-gray-700'
                         }`}
                     >
                         {tab.alpha3 === 'all' ? (
@@ -125,12 +125,12 @@ const WTARankingDashboard = () => {
                         ) : null}
                         <span>{tab.label}</span>
                         {tab.alpha3 !== 'all' && (
-                            <span onClick={(e) => handleRemoveTab(tab.alpha3, e)} className="opacity-0 group-hover:opacity-100 ml-0.5 text-gray-600 hover:text-red-400 leading-none cursor-pointer transition-opacity" title="Remove tab">×</span>
+                            <span onClick={(e) => handleRemoveTab(tab.alpha3, e)} className="opacity-0 group-hover:opacity-100 ml-0.5 text-gray-500 hover:text-red-400 leading-none cursor-pointer transition-opacity" title="Remove tab">×</span>
                         )}
                     </button>
                 );
             })}
-            <button onClick={() => setCountryModal(true)} title="Add country tab" className="flex-shrink-0 mx-1 flex items-center justify-center w-5 h-5 rounded border border-dashed border-gray-700 text-gray-600 hover:text-teal-400 hover:border-teal-600 transition-all text-sm leading-none">+</button>
+            <button onClick={() => setCountryModal(true)} title="Add country tab" className="flex-shrink-0 mx-1 flex items-center justify-center w-5 h-5 rounded border border-dashed border-gray-700 text-gray-500 hover:text-teal-400 hover:border-teal-600 hover:bg-gray-800/40 transition-all text-sm leading-none">+</button>
         </div>
     );
 

@@ -29,7 +29,7 @@
     {
         "rank": "4",
         "player": "Félix Auger-Aliassime",
-        "age": "25",
+        "age": "26",
         "country": "CAN",
         "points": "4740",
         "career_high": "",
@@ -64,21 +64,21 @@
     },
     {
         "rank": "8",
+        "player": "Taylor Fritz",
+        "age": "28",
+        "country": "USA",
+        "points": "3400",
+        "career_high": "",
+        "change": "+2"
+    },
+    {
+        "rank": "9",
         "player": "Flavio Cobolli",
         "age": "24",
         "country": "ITA",
         "points": "3330",
         "career_high": "",
-        "change": "+1"
-    },
-    {
-        "rank": "9",
-        "player": "Taylor Fritz",
-        "age": "28",
-        "country": "USA",
-        "points": "3230",
-        "career_high": "",
-        "change": "+1"
+        "change": ""
     },
     {
         "rank": "10",
@@ -704,7 +704,7 @@
     {
         "rank": "79",
         "player": "Jaime Faria",
-        "age": "22",
+        "age": "23",
         "country": "POR",
         "points": "760",
         "career_high": "",
@@ -875,7 +875,7 @@
     {
         "rank": "98",
         "player": "Dino Prižmić",
-        "age": "20",
+        "age": "21",
         "country": "CRO",
         "points": "652",
         "career_high": "",
@@ -911,7 +911,7 @@
     {
         "rank": "102",
         "player": "Roman Safiullin",
-        "age": "28",
+        "age": "29",
         "country": "RUS",
         "points": "648",
         "career_high": "",
@@ -1244,7 +1244,7 @@
     {
         "rank": "139",
         "player": "Alexei Popyrin",
-        "age": "26",
+        "age": "27",
         "country": "AUS",
         "points": "430",
         "career_high": "",
@@ -1469,7 +1469,7 @@
     {
         "rank": "164",
         "player": "Luca Nardi",
-        "age": "22",
+        "age": "23",
         "country": "ITA",
         "points": "346",
         "career_high": "",
@@ -2000,7 +2000,7 @@
     {
         "rank": "223",
         "player": "Genaro Alberto Olivieri",
-        "age": "27",
+        "age": "28",
         "country": "ARG",
         "points": "249",
         "career_high": "",
@@ -2441,7 +2441,7 @@
     {
         "rank": "272",
         "player": "Chun Hsin Tseng",
-        "age": "24",
+        "age": "25",
         "country": "TWN",
         "points": "202",
         "career_high": "",
@@ -3008,7 +3008,7 @@
     {
         "rank": "335",
         "player": "Yasutaka Uchiyama",
-        "age": "33",
+        "age": "34",
         "country": "JPN",
         "points": "156",
         "career_high": "",
@@ -3674,7 +3674,7 @@
     {
         "rank": "409",
         "player": "Carlos Taberner",
-        "age": "28",
+        "age": "29",
         "country": "ESP",
         "points": "117",
         "career_high": "",
@@ -3719,7 +3719,7 @@
     {
         "rank": "414",
         "player": "Geoffrey Blancaneaux",
-        "age": "27",
+        "age": "28",
         "country": "FRA",
         "points": "116",
         "career_high": "",
@@ -4052,7 +4052,7 @@
     {
         "rank": "451",
         "player": "Alafia Ayeni",
-        "age": "26",
+        "age": "27",
         "country": "USA",
         "points": "101",
         "career_high": "",
@@ -4169,7 +4169,7 @@
     {
         "rank": "464",
         "player": "Filip Misolic",
-        "age": "24",
+        "age": "25",
         "country": "AUT",
         "points": "96",
         "career_high": "",
@@ -4331,7 +4331,7 @@
     {
         "rank": "482",
         "player": "Karl Poling",
-        "age": "26",
+        "age": "27",
         "country": "USA",
         "points": "93",
         "career_high": "",
@@ -4349,7 +4349,7 @@
     {
         "rank": "484",
         "player": "Enzo Aguiard",
-        "age": "23",
+        "age": "24",
         "country": "AUS",
         "points": "92",
         "career_high": "",
@@ -4439,7 +4439,7 @@
     {
         "rank": "494",
         "player": "Aziz Ouakaa",
-        "age": "26",
+        "age": "27",
         "country": "TUN",
         "points": "91",
         "career_high": "",
@@ -4754,7 +4754,7 @@
     {
         "rank": "529",
         "player": "Jelle Sels",
-        "age": "30",
+        "age": "31",
         "country": "NED",
         "points": "80",
         "career_high": "",
@@ -4889,7 +4889,7 @@
     {
         "rank": "544",
         "player": "Mitsuki Wei Kang Leong",
-        "age": "21",
+        "age": "22",
         "country": "MAS",
         "points": "76",
         "career_high": "",
@@ -5483,7 +5483,7 @@
     {
         "rank": "610",
         "player": "Leonardo Rossi",
-        "age": "23",
+        "age": "24",
         "country": "ITA",
         "points": "63",
         "career_high": "",
@@ -5843,7 +5843,7 @@
     {
         "rank": "650",
         "player": "Ryan Seggerman",
-        "age": "26",
+        "age": "27",
         "country": "USA",
         "points": "54",
         "career_high": "",
@@ -5870,7 +5870,7 @@
     {
         "rank": "653",
         "player": "Neil Oberleitner",
-        "age": "26",
+        "age": "27",
         "country": "AUT",
         "points": "54",
         "career_high": "",
@@ -6095,7 +6095,7 @@
     {
         "rank": "678",
         "player": "Giorgio Tabacco",
-        "age": "22",
+        "age": "23",
         "country": "ITA",
         "points": "51",
         "career_high": "",
@@ -6626,7 +6626,7 @@
     {
         "rank": "737",
         "player": "Seydina André",
-        "age": "22",
+        "age": "23",
         "country": "SEN",
         "points": "44",
         "career_high": "",
@@ -7328,7 +7328,7 @@
     {
         "rank": "815",
         "player": "Nicolas Jadoun",
-        "age": "23",
+        "age": "24",
         "country": "FRA",
         "points": "34",
         "career_high": "",
@@ -7544,7 +7544,7 @@
     {
         "rank": "839",
         "player": "Yusuke Kusuhara",
-        "age": "28",
+        "age": "29",
         "country": "JPN",
         "points": "31",
         "career_high": "",
@@ -8723,7 +8723,7 @@
     {
         "rank": "970",
         "player": "Karim Ibrahim",
-        "age": "22",
+        "age": "23",
         "country": "EGY",
         "points": "22",
         "career_high": "",

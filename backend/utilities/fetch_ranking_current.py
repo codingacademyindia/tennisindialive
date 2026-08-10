@@ -54,8 +54,35 @@ def get_meta_from_slug(slug):
     return tour, category
 
 
-def persist_official_rankings(conn, source_slug, rows):
-    if conn is None:
+db_conn = None
+
+
+def ensure_connection():
+    """Return a live DB connection, reconnecting if idle/closed (cloud Postgres drops idle links during long Selenium scrapes)."""
+    global db_conn
+    if not DATABASE_URL:
+        return None
+    if db_conn is not None and not db_conn.closed:
+        try:
+            with db_conn.cursor() as cur:
+                cur.execute("SELECT 1")
+            return db_conn
+        except Exception:
+            try:
+                db_conn.close()
+            except Exception:
+                pass
+            db_conn = None
+    try:
+        db_conn = psycopg2.connect(DATABASE_URL)
+    except Exception as e:
+        print(f"PostgreSQL connection failed: {e}")
+        db_conn = None
+    return db_conn
+
+
+def persist_official_rankings(source_slug, rows):
+    if not DATABASE_URL:
         return
     table_ref = sql.Identifier(DB_SCHEMA, "official_rankings")
     tour, category = get_meta_from_slug(source_slug)
@@ -80,37 +107,54 @@ def persist_official_rankings(conn, source_slug, rows):
             )
         )
 
-    with conn.cursor() as cur:
-        cur.execute(
-            sql.SQL("DELETE FROM {} WHERE source_slug = %s").format(table_ref),
-            (source_slug,),
-        )
-        if payload:
-            insert_query = sql.SQL(
-                """
-                INSERT INTO {} (
-                    source_slug,
-                    tour,
-                    category,
-                    rank_text,
-                    rank_value,
-                    player,
-                    age,
-                    country,
-                    points_text,
-                    points_value,
-                    career_high,
-                    change_text,
-                    fetched_at
-                ) VALUES %s
-                """
-            ).format(table_ref)
-            execute_values(
-                cur,
-                insert_query.as_string(cur),
-                payload,
-            )
-    conn.commit()
+    for attempt in range(2):
+        conn = ensure_connection()
+        if conn is None:
+            print(f"Skipping DB persist for {source_slug}: no connection")
+            return
+        try:
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("DELETE FROM {} WHERE source_slug = %s").format(table_ref),
+                    (source_slug,),
+                )
+                if payload:
+                    insert_query = sql.SQL(
+                        """
+                        INSERT INTO {} (
+                            source_slug,
+                            tour,
+                            category,
+                            rank_text,
+                            rank_value,
+                            player,
+                            age,
+                            country,
+                            points_text,
+                            points_value,
+                            career_high,
+                            change_text,
+                            fetched_at
+                        ) VALUES %s
+                        """
+                    ).format(table_ref)
+                    execute_values(
+                        cur,
+                        insert_query.as_string(cur),
+                        payload,
+                    )
+            conn.commit()
+            return
+        except (psycopg2.OperationalError, psycopg2.InterfaceError) as e:
+            print(f"DB connection dropped while persisting {source_slug}, retrying: {e}")
+            global db_conn
+            try:
+                db_conn.close()
+            except Exception:
+                pass
+            db_conn = None
+            if attempt == 1:
+                print(f"Failed to persist {source_slug} after retry: {e}")
 
 # URL to scrape
 
@@ -119,18 +163,13 @@ def fetch_ranking(url):
     print(f"fetching {url}")
     global xpath
     source_slug = url.split("/")[len(url.split("/")) - 1]
-    file_name = source_slug
-    if "atp" in file_name:
-        file_name = f"ranking/official/atp/{file_name}.json"
-    else:
-        file_name = f"ranking/official/wta/{file_name}.json"
     driver.get(url)
     # Wait for elements to load (optional)
     time.sleep(3)
     # Find all elements matching the XPath
     xpath = "//div[@id='plyrRankings']/table/tbody//tr"
     rows = driver.find_elements(By.XPATH, xpath)
-    # Extract all <td> contents inside each <tr> and store them in JSON format
+    # Extract all <td> contents inside each <tr>
     print(f"data fetched {len(rows)}...")
     data = []
     i=0
@@ -141,7 +180,7 @@ def fetch_ranking(url):
         cells = row.find_elements(By.TAG_NAME, "td")
 
         if len(cells) >= 6:  # Ensure row has enough columns
-            if "live" in file_name:
+            if "live" in source_slug:
                 age, career_high, change, country, player, points, rank = live_ranking(cells)
             else:
                 age, career_high, change, country, player, points, rank = official_ranking(cells)
@@ -156,15 +195,10 @@ def fetch_ranking(url):
                 "change": change
             })
             i=i+1
-    # Store data in JSON file
 
     print(f"data processed {len(data)}")
 
-    print(f"updating text file {file_name}")
-    with open(file_name, "w", encoding="utf-8") as json_file:
-        json.dump(data, json_file, ensure_ascii=False, indent=4)
-
-    persist_official_rankings(db_conn, source_slug, data)
+    persist_official_rankings(source_slug, data)
     if db_conn is not None:
         print(f"updated DB rows for {source_slug}: {len(data)}")
 
@@ -193,16 +227,11 @@ def official_ranking(cells):
 
 
 urls = ["official-atp-ranking","official-atp-doubles-ranking","official-wta-ranking","official-wta-doubles-ranking"]
-db_conn = None
 if DATABASE_URL:
-    try:
-        db_conn = psycopg2.connect(DATABASE_URL)
+    if ensure_connection() is not None:
         print(f"PostgreSQL connected. Using existing official_rankings table. Limit={RECORD_LIMIT}")
-    except Exception as e:
-        db_conn = None
-        print(f"PostgreSQL connection failed: {e}")
 else:
-    print("DATABASE_URL not set. Skipping DB update and only writing JSON files.")
+    print("DATABASE_URL not set. Rankings will not be persisted.")
 
 obj_timestamp = {}
 for url in urls:
@@ -213,9 +242,6 @@ for url in urls:
     # Close the driver
     driver.close()
     driver.quit()
-file_timestamp="ranking/official/official_ranking_timestamp.json"
-with open(file_timestamp, "w", encoding="utf-8") as json_file:
-    json.dump(obj_timestamp, json_file, ensure_ascii=False, indent=4)
 
 if db_conn is not None:
     db_conn.close()
