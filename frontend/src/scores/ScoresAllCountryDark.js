@@ -398,7 +398,6 @@ const FixtureResultsCountry = () => {
 
     function getTourKey(item) {
         const c = (item?.tournament?.category?.name || '').toUpperCase();
-        if (c.includes('CH')) return 'ch';
 
         const genderRaw = item?.homeTeam?.gender || item?.awayTeam?.gender ||
             (item?.season?.name?.toLowerCase().includes('women') ? 'F' :
@@ -406,8 +405,8 @@ const FixtureResultsCountry = () => {
         if (genderRaw === 'M') return 'men';
         if (genderRaw === 'F') return 'women';
 
-        // Fallback purely by tour name when gender info is missing
-        if (c === 'ATP') return 'men';
+        // Fallback purely by tour name when gender info is missing; Challenger is men-only
+        if (c === 'ATP' || c.includes('CH')) return 'men';
         if (c === 'WTA') return 'women';
         return 'other';
     }
@@ -1129,11 +1128,10 @@ shadow-[0_0_6px_rgba(255,255,255,0.1)]">
         { label: 'All', key: 'all' },
         { label: 'Men', key: 'men' },
         { label: 'Women', key: 'women' },
-        { label: 'Challenger', key: 'ch' },
     ];
 
     const tourCounts = (() => {
-        const c = { all: 0, men: 0, women: 0, ch: 0 };
+        const c = { all: 0, men: 0, women: 0 };
         if (!rawData) return c;
         const isAllCountry = !selectedCountryAlpha3 || selectedCountryAlpha3 === 'all';
         rawData.forEach(item => {
