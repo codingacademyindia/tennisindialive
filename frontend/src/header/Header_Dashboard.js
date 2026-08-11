@@ -132,14 +132,7 @@ export default function Navbar() {
               Live Scores
             </NavLink>
 
-            <NavLink
-              to="/tournament"
-              className={({ isActive }) => `block px-3 py-2 rounded-md ${isActive ? "bg-indigo-700 text-white" : "text-gray-200 hover:bg-gray-800/60"}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              Tournament Hub
-            </NavLink>
-
+          
             <div>
               <div className="px-3 py-2 rounded-md text-gray-200 font-semibold bg-gray-800/40">Rankings</div>
               <div className="ml-2 mt-1 space-y-1">
