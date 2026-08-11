@@ -6,6 +6,10 @@ import PaginatedTablesJSON from "../../common/grids/PaginatedTablesJSON";
 import CountryModal from "../../common/CountryModal";
 import { normalizeRankingCountry } from "../../utils/utils";
 import { getLiveRankingsLatest, getOfficialRankingsLatest } from "../../services/tennisApiService";
+import TweetPreviewDialog from "../../admin/TweetPreview";
+
+const rawApiUrl = process.env.REACT_APP_API_URL || '';
+const REACT_APP_API_URL = rawApiUrl && rawApiUrl.includes('cai-service.onrender.com') ? '' : rawApiUrl;
 
 const rankingTypes = [
     {
@@ -68,6 +72,10 @@ const ATPRankingDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [countryModal, setCountryModal] = useState(false);
     const [selectedRankingKey, setSelectedRankingKey] = useState(rankingTypes[0].key);
+    const [openTweetDialog, setOpenTweetDialog] = useState(false);
+    const [tweetText, setTweetText] = useState('');
+    const [tweetStatus, setTweetStatus] = useState('');
+    const isAdmin = localStorage.getItem('mode') === 'admin';
 
     // Fetch all rankings from the backend API once; country filtering happens client-side on tab switch
     useEffect(() => {
@@ -164,6 +172,38 @@ const ATPRankingDashboard = () => {
         setCountryModal(false);
     };
 
+    const handleTweetCurrentView = () => {
+        const r = rankingTypes.find(r => r.key === selectedRankingKey);
+        const allRows = rawRankingsData[r.key] || [];
+        const filteredRows = selectedCountryAlpha3.toLowerCase() !== 'all'
+            ? allRows.filter(item => item.country.toLowerCase() === selectedCountryAlpha3.toLowerCase())
+            : allRows;
+        const top = filteredRows.slice(0, 15);
+        if (top.length === 0) { toast.info('No ranking data to tweet.'); return; }
+        const cName = selectedCountry !== 'all' ? selectedCountry.toUpperCase() : 'Global';
+        let tweet = `\uD83C\uDFBE ${r.header}\n\uD83D\uDCCA ${cName}\n\n`;
+        top.forEach(row => { tweet += `${row.rank}. ${row.player} (${row.country}) - ${row.points} pts\n`; });
+        tweet += `\n\uD83D\uDD17 tennisindialive.com/rankings/atp`;
+        setTweetText(tweet.trim());
+        setTweetStatus('');
+        setOpenTweetDialog(true);
+    };
+
+    const sendTweet = async () => {
+        setTweetStatus('sending');
+        try {
+            const res = await fetch(`${REACT_APP_API_URL}/tweet/live`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ msg: tweetText, env: 'prod' }),
+            });
+            const data = await res.json();
+            setTweetStatus(data.success ? 'pass' : 'fail:' + (data.detail || data.error || 'Unknown error'));
+        } catch (err) {
+            setTweetStatus('error:' + err.message);
+        }
+    };
+
     const objTabBar = (
         <div className="flex items-center overflow-x-auto [&::-webkit-scrollbar]:hidden border-b border-gray-800 mb-3 bg-gray-900/60 px-2 py-1">
             {countryTabs.map(tab => {
@@ -220,7 +260,23 @@ return (
                             {r.tab}
                         </button>
                     ))}
+                    {isAdmin && (
+                    <button
+                        onClick={handleTweetCurrentView}
+                        className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium bg-amber-500/10 border border-amber-400/25 text-amber-300 hover:bg-amber-500/20 hover:border-amber-300/50 transition-all duration-150"
+                    >
+                        Tweet
+                    </button>
+                    )}
                 </div>
+                <TweetPreviewDialog
+                    open={openTweetDialog}
+                    onClose={() => setOpenTweetDialog(false)}
+                    onOk={sendTweet}
+                    tweet={tweetText}
+                    tweetStatus={tweetStatus}
+                    setTweetText={setTweetText}
+                />
                 <CountryModal
                     open={countryModal}
                     onClose={() => setCountryModal(false)}

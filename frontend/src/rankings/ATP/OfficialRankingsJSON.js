@@ -15,6 +15,10 @@ import CountryAutocomplete from '../../common/CountryAutoComplete';
 import { getAlpha2FromName, getAlpha3, getCountryFullName, normalizeRankingCountry } from '../../utils/utils';
 import CountryModal from '../../common/CountryModal';
 import { getOfficialRankingsLatest } from '../../services/tennisApiService';
+import TweetPreviewDialog from '../../admin/TweetPreview';
+
+const rawApiUrl = process.env.REACT_APP_API_URL || '';
+const REACT_APP_API_URL = rawApiUrl && rawApiUrl.includes('cai-service.onrender.com') ? '' : rawApiUrl;
 
 const DEFAULT_TABS_RANKINGS = [
     { alpha3: 'all', alpha2: null, label: 'All' },
@@ -47,6 +51,10 @@ const OfficialRankings = () => {
     const [countryTabs, setCountryTabs] = useState(() => {
         try { const s = localStorage.getItem('countryTabs'); return s ? JSON.parse(s) : DEFAULT_TABS_RANKINGS; } catch { return DEFAULT_TABS_RANKINGS; }
     });
+    const [openTweetDialog, setOpenTweetDialog] = useState(false);
+    const [tweetText, setTweetText] = useState('');
+    const [tweetStatus, setTweetStatus] = useState('');
+    const isAdmin = localStorage.getItem('mode') === 'admin';
     // document.title = `Tennis India Live - ${type.toUpperCase()} Live Rankings`;
 
     const rankingTypeConfig = {
@@ -284,8 +292,44 @@ const OfficialRankings = () => {
         getFilteredData(rankingsData);
     }, [selectedCountry, selectedCountryAlpha3]);
 
+    const handleTweetCurrentView = () => {
+        const rows = getFilteredDataValue(rankingsData) || [];
+        const top = rows.slice(0, 15);
+        if (top.length === 0) { toast.info('No ranking data to tweet.'); return; }
+        const cName = selectedCountry !== 'all' ? selectedCountry.toUpperCase() : 'Global';
+        let tweet = `\uD83C\uDFBE ${pageHeader}\n\uD83D\uDCCA ${cName}\n\n`;
+        top.forEach(row => { tweet += `${row.rank}. ${row.player} (${row.country}) - ${row.points} pts\n`; });
+        tweet += `\n\uD83D\uDD17 tennisindialive.com/rankings/official/${type}`;
+        setTweetText(tweet.trim());
+        setTweetStatus('');
+        setOpenTweetDialog(true);
+    };
+
+    const sendTweet = async () => {
+        setTweetStatus('sending');
+        try {
+            const res = await fetch(`${REACT_APP_API_URL}/tweet/live`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ msg: tweetText, env: 'prod' }),
+            });
+            const data = await res.json();
+            setTweetStatus(data.success ? 'pass' : 'fail:' + (data.detail || data.error || 'Unknown error'));
+        } catch (err) {
+            setTweetStatus('error:' + err.message);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[#020617]">
+            <TweetPreviewDialog
+                open={openTweetDialog}
+                onClose={() => setOpenTweetDialog(false)}
+                onOk={sendTweet}
+                tweet={tweetText}
+                tweetStatus={tweetStatus}
+                setTweetText={setTweetText}
+            />
             <CountryModal
                 open={countryModal}
                 onClose={() => setCountryModal(false)}
@@ -319,6 +363,15 @@ const OfficialRankings = () => {
                 <div className="flex items-center gap-2 text-[11px] text-slate-400">
                     <span className="hidden sm:inline">Updated:</span>
                     <span className="whitespace-nowrap">{rankingTimestamp}</span>
+
+                    {isAdmin && (
+                    <button
+                        onClick={handleTweetCurrentView}
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-amber-500/10 border border-amber-400/25 text-amber-300 hover:bg-amber-500/20 hover:border-amber-300/50 transition-all duration-150"
+                    >
+                        Tweet
+                    </button>
+                    )}
 
                     <IconButton
                         onClick={handleRefresh}
